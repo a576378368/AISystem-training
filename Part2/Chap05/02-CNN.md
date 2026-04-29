@@ -204,11 +204,11 @@ AI芯片中，卷积操作通常会被转换为矩阵乘法（GEMM）来利用�
 设卷积的输入和输出的特征图维度用$(IH, IW), (OH, OW)$表示，卷积核窗口的数据维度用$(KH, KW)$表示，输入通道是$IC$，输出通道是$OC$，输入输出特征图和卷积核数据维度重排的转化对应关系如下：
 
 $$
-\begin{align}
+\begin{aligned}
 &input:(IC, IH, IW)\rightarrow(OH \cdot OW, KH \cdot KW \cdot IC)\\
 &filter: (OC, KH, KW, IC)\rightarrow(OC, KH \cdot KW \cdot IC)\\
 &output:(OC,OH, OW)\rightarrow(OC,OH \cdot OW)
-\end{align}
+\end{aligned}
 $$
 
 ---

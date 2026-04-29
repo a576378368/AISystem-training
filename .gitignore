@@ -8,8 +8,9 @@ __pycache__/
 *.pyc
 .pytest_cache/
 
-# Build
-_build/
+# Build (allowed for doc output)
+!_build/html/
+!_build/pdf/
 __pycache__/
 
 # IDE

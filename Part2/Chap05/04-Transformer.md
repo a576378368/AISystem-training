@@ -103,10 +103,10 @@ class SelfAttention(nn.Module):
 ### 4.3.2 多头注意力的计算
 
 $$
-\begin{align}
+\begin{aligned}
 MultiHead(Q, K, V) &= Concat(head_1, head_2, ..., head_h)W^O \\
 head_i &= Attention(QW_Q^i, KW_K^i, VW_V^i)
-\end{align}
+\end{aligned}
 $$
 
 其中：
@@ -183,10 +183,10 @@ Transformer的解码器（Decoder）同样由$N$个相同的层堆叠而成，�
 由于Transformer没有循环结构，无法直接获取序列的位置信息，因此需要显式添加位置编码：
 
 $$
-\begin{align}
+\begin{aligned}
 PE_{(pos, 2i)} &= \sin\left(\frac{pos}{10000^{2i/d_{model}}}\right) \\
 PE_{(pos, 2i+1)} &= \cos\left(\frac{pos}{10000^{2i/d_{model}}}\right)
-\end{align}
+\end{aligned}
 $$
 
 位置编码可以采用正弦/余弦形式，也可以采用可学习的位置嵌入。

@@ -5,12 +5,6 @@ html_theme_options:
 
 # AI系统工程师培训教程
 
-```{image} _static/cover.png
-:alt: AI系统工程师培训教程封面
-:width: 800px
-:align: center
-```
-
 ## 关于本教程
 
 ### 教材简介
@@ -24,14 +18,6 @@ html_theme_options:
 - 希望系统学习AI全栈知识的人员
 
 ### 学习路径
-
-```{figure} _static/learning_path.png
-:alt: AI系统学习路径图
-:width: 800px
-:align: center
-
-AI系统工程师学习路径
-```
 
 **前置知识要求**：
 - 基本的编程概念

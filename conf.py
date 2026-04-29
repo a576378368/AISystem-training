@@ -18,6 +18,7 @@ latex_elements = {
     "pointsize": "10pt",
     "utf8": True,
     "toc_depth": 3,
+    "secnum_depth": 3,
     "preamble": r"""
 \usepackage{fontspec}
 \setmainfont{STSong}
@@ -30,6 +31,9 @@ latex_theme = "sphinx"
 
 # 使用 xelatex 引擎支持系统字体和中文
 latex_engine = "xelatex"
+
+# LaTeX sectioning: toctree entry documents get \chapter level
+latex_sectioning = "section"
 
 latex_keep_old_macro_names = False
 latex_use_xindy = False
