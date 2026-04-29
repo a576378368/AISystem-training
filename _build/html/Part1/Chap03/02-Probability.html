@@ -1,0 +1,1320 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>概率与统计 &#8212; AI系统工程师培训教程</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Part1/Chap03/02-Probability';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="优化基础" href="03-Optimization.html" />
+    <link rel="prev" title="线性代数基础" href="01-Linear-Algebra.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Apr 29, 2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="AI系统工程师培训教程 - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="AI系统工程师培训教程 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    AI系统工程师培训教程
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">第一阶段：AI基础入门</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap01/README.html">Chap01 计算机基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap01/01-Binary.html">第一章 进制与编码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap01/02-CPU-Memory.html">第二章 CPU与内存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap01/03-Program-Running.html">第三章 程序运行原理</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap02/README.html">Chap02 Python编程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap02/01-Python-Basic.html">Python基础语法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap02/02-NumPy.html">NumPy基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap02/03-PyTorch.html">PyTorch基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Chap03 数学基础</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-Linear-Algebra.html">线性代数基础</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">概率与统计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-Optimization.html">优化基础</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二阶段：AI系统核心</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap04/README.html">Chap04 AI系统概述</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap04/01-Introduction.html">AI系统基本概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap04/02-Architecture.html">AI系统全栈架构</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap05/README.html">Chap05 神经网络基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap05/01-Neuron-Model.html">神经元与网络模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap05/02-CNN.html">卷积神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap05/03-RNN.html">循环神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap05/04-Transformer.html">Transformer与注意力机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap05/05-Quantization.html">模型量化基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap06/README.html">Chap06 AI芯片体系架构</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/01-Chip-Base.html">AI芯片基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/02-GPU-Base.html">GPU原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/03-NVIDIA.html">NVIDIA GPU架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/04-Abroad-Chips.html">国外AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/05-Domestic-Chips.html">国内AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/06-Programming-Model.html">芯片编程模式</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap07/README.html">Chap07 AI编译器原理</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap07/01-Traditional-Compiler.html">第一章 传统编译器基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap07/02-AI-Compiler.html">第二章 AI编译器架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap07/03-Frontend-Optimization.html">第三章 前端优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap07/04-Backend-Optimization.html">第四章 后端优化</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap08/README.html">Chap08 推理系统与引擎</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap08/01-Inference-System.html">01 推理系统概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap08/02-Model-Compression.html">02 模型压缩</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap08/03-Model-Converter.html">03 模型转换与优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap08/04-Inference-Optimization.html">04 推理优化技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap08/05-Kernel-Optimization.html">05 Kernel优化技术</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap09/README.html">Chap09 AI框架核心</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap09/01-Auto-Differentiation.html">自动微分</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap09/02-Computational-Graph.html">计算图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap09/03-Distributed-Training.html">分布式训练</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap10/README.html">Chap10 大模型与集群</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap10/01-LLM-Architecture.html">大模型架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap10/02-AI-Cluster.html">AI集群</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap10/03-Parallel-Strategy.html">并行策略</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三阶段：附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixA/README.html">附录A：AI系统术语表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixB/README.html">附录B：参考文献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixC/README.html">AppendixC 实践项目</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/your-org/AI-System-Training/blob/main/Part1/Chap03/02-Probability.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button"
+   title="Show source"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/Part1/Chap03/02-Probability.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>概率与统计</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">引言</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1 概率基础</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">1.1 概率的定义</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">1.1.1 概率的公理化定义</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">1.1.2 概率的频率解释与主观解释</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">1.2 条件概率</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">1.2.1 条件概率的定义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">1.2.2 乘法公式</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">1.2.3 全概率公式</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">1.3 贝叶斯定理</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">1.3.1 贝叶斯定理的定义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">1.3.2 贝叶斯定理的直观解释</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">1.3.3 贝叶斯定理在机器学习中的应用</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">2 随机变量</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">2.1 随机变量的概念</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">2.2 离散随机变量</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pmf">2.2.1 概率质量函数（PMF）</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cdf">2.2.2 累积分布函数（CDF）</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">2.3 连续随机变量</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pdf">2.3.1 概率密度函数（PDF）</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">2.3.2 累积分布函数（CDF）</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">2.4 常见离散分布</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">2.4.1 伯努利分布</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">2.4.2 二项分布</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">2.4.3 泊松分布</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">2.5 常见连续分布</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">2.5.1 均匀分布</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">2.5.2 正态分布（高斯分布）</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">2.5.3 指数分布</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">2.5.4 拉普拉斯分布</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">2.6 分布的混合</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">3 统计基础</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">3.1 期望</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id33">3.1.1 期望的定义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id34">3.1.2 期望的性质</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">3.1.3 条件期望</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id36">3.2 方差</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id37">3.2.1 方差的定义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id38">3.2.2 方差的性质</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id39">3.2.3 常见分布的期望与方差</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id40">3.3 协方差与相关系数</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id41">3.3.1 协方差的定义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id42">3.3.2 相关系数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id43">3.4 大数定律</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id44">3.4.1 大数定律的表述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id45">3.4.2 大数定律的意义</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id46">3.5 中心极限定理</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id47">3.5.1 中心极限定理的表述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id48">3.5.2 中心极限定理的意义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id49">3.5.3 大数定律与中心极限定理的比较</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id50">3.6 统计在机器学习中的应用</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id51">3.6.1 最大似然估计</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id52">3.6.2 偏差-方差分解</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id53">3.6.3 贝叶斯统计与正则化</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id54">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id55">思考与练习</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>概率与统计<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="id2">
+<h2>学习目标<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>理解概率论的基本概念，包括概率定义、条件概率和贝叶斯定理</p></li>
+<li><p>掌握随机变量的概念，理解离散和连续随机变量的区别</p></li>
+<li><p>熟悉常见概率分布及其在机器学习中的应用</p></li>
+<li><p>理解期望、方差等统计量的含义，掌握大数定律和中心极限定理</p></li>
+</ol>
+</section>
+<section id="id3">
+<h2>引言<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>概率论（Probability Theory）与统计学（Statistics）是人工智能和机器学习的另一核心数学基础。与线性代数不同，概率论处理的是不确定性（Uncertainty）和随机性（Stochasticity）的世界。</p>
+<p>在现实世界中，我们面临的问题往往充满不确定性：传感器读数有噪声、天气预测有随机性、用户的点击行为难以精确预测等。概率论提供了一套严格的数学框架来描述和推理不确定性，而统计学则提供了从数据中学习不确定模型的方法。</p>
+<p>在机器学习中，概率论的应用无处不在：</p>
+<ol class="arabic simple">
+<li><p><strong>模型假设</strong>：许多机器学习模型隐含地或显式地使用概率分布来建模数据。例如，朴素贝叶斯分类器基于贝叶斯定理，高斯混合模型假设数据来自多个高斯分布。</p></li>
+<li><p><strong>不确定性量化</strong>：深度学习中的_dropout_技术可以解释为贝叶斯近似，模型的预测置信度需要通过概率来解释。</p></li>
+<li><p><strong>优化目标</strong>：交叉熵（Cross-Entropy）等损失函数直接来源于概率论，最大似然估计（Maximum Likelihood Estimation）是模型参数学习的基本原则。</p></li>
+<li><p><strong>正则化</strong>：贝叶斯方法提供了一种自然的正则化机制，通过先验分布来约束模型参数。</p></li>
+</ol>
+<p>本章将系统地介绍概率论和统计学的基础知识，从概率的定义开始，逐步深入到随机变量、常见分布，再到统计推断的核心概念。</p>
+</section>
+<section id="id4">
+<h2>1 概率基础<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<section id="id5">
+<h3>1.1 概率的定义<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p><strong>概率（Probability）</strong> 是描述某事件发生可能性大小的数值。在给出概率的严格数学定义之前，我们先介绍一些基本概念。</p>
+<p><strong>随机试验（Random Experiment）</strong> 是指在相同条件下可以重复进行，但结果无法准确预测的试验。例如，抛掷一枚硬币、掷一颗骰子、观察明天的天气等都是随机试验。</p>
+<p><strong>样本空间（Sample Space）</strong> 是随机试验所有可能结果的集合，记作 Ω。例如：</p>
+<ul class="simple">
+<li><p>抛掷一枚硬币的样本空间：Ω = {正面, 反面} 或 Ω = {0, 1}</p></li>
+<li><p>掷一颗六面骰子的样本空间：Ω = {1, 2, 3, 4, 5, 6}</p></li>
+<li><p>连续观察某股票价格，样本空间是所有可能的价格序列</p></li>
+</ul>
+<p><strong>事件（Event）</strong> 是样本空间的子集。事件可以是单一结果，也可以是多个结果的集合。例如，”掷出偶数点数”是事件 {2, 4, 6}。</p>
+</section>
+<section id="id6">
+<h3>1.1.1 概率的公理化定义<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>现代概率论建立在严格的公理体系之上。1933 年，苏联数学家科尔莫戈罗夫（Andrey Kolmogorov）提出了概率论的公理化定义，至今仍是概率论的基础。</p>
+<p>设 Ω 是某随机试验的样本空间，F 是由 Ω 的某些子集构成的集合（事件域），P 是定义在 F 上的函数。如果 P 满足以下三个公理（Kolmogorov 公理），则称 P 为概率测度，简称概率：</p>
+<p><strong>公理 1（非负性）</strong>：对于任意事件 A，有 P(A) ≥ 0</p>
+<p><strong>公理 2（规范性）</strong>：P(Ω) = 1，即样本空间的概率为 1</p>
+<p><strong>公理 3（可列可加性）</strong>：对于两两互不相容的事件序列 A₁, A₂, …, （即当 i ≠ j 时，Ai ∩ Aj = ∅），有：</p>
+<div class="math notranslate nohighlight">
+\[P\left(\bigcup_{i=1}^{\infty} A_i\right) = \sum_{i=1}^{\infty} P(A_i)\]</div>
+<p>这三个公理看似简单，但它们构成了整个概率论的逻辑基础。从这三个公理出发，可以推导出概率论的许多重要性质，例如：</p>
+<ul class="simple">
+<li><p>P(∅) = 0（空事件的概率为零）</p></li>
+<li><p>P(A) ≤ 1（任何事件的概率不超过 1）</p></li>
+<li><p>P(Ā) = 1 - P(A)（补事件的概率）</p></li>
+<li><p>如果 A ⊂ B，则 P(A) ≤ P(B)（包含关系下概率的单调性）</p></li>
+<li><p>P(A ∪ B) = P(A) + P(B) - P(A ∩ B)（容斥公式）</p></li>
+</ul>
+</section>
+<section id="id7">
+<h3>1.1.2 概率的频率解释与主观解释<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>关于”概率是什么”这个问题，有两种主要的哲学立场：</p>
+<p><strong>频率解释（Frequentist Interpretation）</strong>：概率是长期重复试验中事件发生的频率。例如，如果我们说抛掷硬币正面朝上的概率是 0.5，这意味着如果我们重复抛掷该硬币无限次，正面朝上的比例将趋近于 0.5。这种解释强调概率的客观性和可重复性。</p>
+<p><strong>主观解释（Bayesian Interpretation）或贝叶斯解释</strong>：概率是对事件发生相信程度的度量，代表主观的置信度。例如，”明天有 70% 的概率下雨”可以理解为对明天会下雨这件事有 70% 的相信程度。这种解释承认概率可以应用于单次事件，并且可以随着新证据的出现而更新。</p>
+<p>在机器学习中，这两种观点都有其应用场景。频率学派更关注客观的统计性质，常用方法如最大似然估计；贝叶斯学派将概率作为知识状态的表示，通过贝叶斯定理来更新信念。在现代机器学习中，两种方法正在逐步融合。</p>
+</section>
+<section id="id8">
+<h3>1.2 条件概率<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<section id="id9">
+<h4>1.2.1 条件概率的定义<a class="headerlink" href="#id9" title="Link to this heading">#</a></h4>
+<p><strong>条件概率（Conditional Probability）</strong> 是在已知某些信息（事件 B 已发生）的条件下，事件 A 发生的概率，记作 P(A|B)，读作”在 B 发生的条件下 A 发生的概率”。</p>
+<p>条件概率的定义公式为：</p>
+<div class="math notranslate nohighlight">
+\[P(A|B) = \frac{P(A \cap B)}{P(B)}, \quad \text{前提是 } P(B) &gt; 0\]</div>
+<p>这个公式的直观理解是：当我们已经知道 B 发生时，样本空间缩小为 B，原来的 A ∩ B 成为新的”成功”事件。因此，在 B 发生的条件下 A 发生的概率等于 A 和 B 同时发生的概率除以 B 发生的概率（这是新的”单位 1”）。</p>
+<p><strong>示例</strong>：考虑掷两颗骰子的试验。设事件 A = “两颗骰子点数之和为 8”，事件 B = “第一颗骰子点数为 4”。</p>
+<ul class="simple">
+<li><p>P(A) = 5/36（36 种等可能结果中，有 (2,6), (3,5), (4,4), (5,3), (6,2) 五种情况）</p></li>
+<li><p>P(B) = 1/6（第一颗骰子有 6 种等可能结果，每种出现概率相同）</p></li>
+<li><p>A ∩ B = {(4, 4)}，只有一种情况，P(A ∩ B) = 1/36</p></li>
+</ul>
+<p>因此，P(A|B) = P(A ∩ B)/P(B) = (1/36)/(1/6) = 1/6 = 6/36。</p>
+<p>这个结果符合直接计算：在第一颗骰子已知为 4 的情况下，要使两颗骰子之和为 8，第二颗骰子必须为 4，概率为 1/6。</p>
+</section>
+<section id="id10">
+<h4>1.2.2 乘法公式<a class="headerlink" href="#id10" title="Link to this heading">#</a></h4>
+<p>从条件概率的定义可以直接得到<strong>乘法公式（Multiplication Rule）</strong>：</p>
+<div class="math notranslate nohighlight">
+\[P(A \cap B) = P(A|B) P(B) = P(B|A) P(A)\]</div>
+<p>更一般地，对于 n 个事件 A₁, A₂, …, Aₙ，有：</p>
+<div class="math notranslate nohighlight">
+\[P(A_1 \cap A_2 \cap \cdots \cap A_n) = P(A_1) P(A_2|A_1) P(A_3|A_1 \cap A_2) \cdots P(A_n|A_1 \cap \cdots \cap A_{n-1})\]</div>
+<p>乘法公式在计算多个事件同时发生的概率时非常有用，尤其是当这些事件有依赖关系时。</p>
+</section>
+<section id="id11">
+<h4>1.2.3 全概率公式<a class="headerlink" href="#id11" title="Link to this heading">#</a></h4>
+<p><strong>全概率公式（Law of Total Probability）</strong> 是概率论中另一个重要工具，它将一个事件的概率分解为若干互不相容的情况的概率加权和。</p>
+<p>设事件 B₁, B₂, …, Bₙ是样本空间 Ω 的一个<strong>划分（Partition）</strong>，即满足：</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(B_i \cap B_j = \emptyset\)</span>（两两互不相容）</p></li>
+<li><p><span class="math notranslate nohighlight">\(\bigcup_{i=1}^{n} B_i = \Omega\)</span>（覆盖整个样本空间）</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(B_i) &gt; 0\)</span>（每个部分概率为正）</p></li>
+</ul>
+<p>则在一般情况下，对于任意事件 A，有：</p>
+<div class="math notranslate nohighlight">
+\[P(A) = \sum_{i=1}^{n} P(A|B_i) P(B_i)\]</div>
+<p>全概率公式的直观理解是：A 可能在各种不同的”情形”Bᵢ 下发生，而情形 Bᵢ 发生的概率是 P(Bᵢ)，在情形 Bᵢ 下 A 发生的条件概率是 P(A|Bᵢ)，因此 A 的总概率是这些可能情形的加权平均。</p>
+</section>
+</section>
+<section id="id12">
+<h3>1.3 贝叶斯定理<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<section id="id13">
+<h4>1.3.1 贝叶斯定理的定义<a class="headerlink" href="#id13" title="Link to this heading">#</a></h4>
+<p><strong>贝叶斯定理（Bayes’ Theorem）</strong> 是概率论中最重要和最有影响力的公式之一，它描述了如何根据新的证据来更新概率判断。</p>
+<p>贝叶斯定理的公式为：</p>
+<div class="math notranslate nohighlight">
+\[P(B_i|A) = \frac{P(A|B_i) P(B_i)}{P(A)} = \frac{P(A|B_i) P(B_i)}{\sum_{j=1}^{n} P(A|B_j) P(B_j)}\]</div>
+<p>其中：</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P(B_i)\)</span> 称为<strong>先验概率（Prior Probability）</strong>，是在观察到证据 A 之前对 Bᵢ 的概率判断</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(B_i|A)\)</span> 称为<strong>后验概率（Posterior Probability）</strong>，是在观察到证据 A 之后对 Bᵢ 的更新概率</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(A|B_i)\)</span> 称为<strong>似然（Likelihood）</strong>，是在假设 Bᵢ 成立的条件下观察到证据 A 的概率</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(A)\)</span> 是证据的边缘概率，起归一化常数的作用</p></li>
+</ul>
+<p>贝叶斯定理的本质是：<strong>后验概率 ∝ 似然 × 先验</strong>。它告诉我们如何将先验知识（先验概率）与新观察到的数据证据（似然）结合起来，得到更新后的知识状态（后验概率）。</p>
+</section>
+<section id="id14">
+<h4>1.3.2 贝叶斯定理的直观解释<a class="headerlink" href="#id14" title="Link to this heading">#</a></h4>
+<p>让我们通过一个经典例子来理解贝叶斯定理：疾病检测。</p>
+<p>假设有一种疾病，发病率为 1%（即人群中随机一人患有该疾病的概率是 0.01）。有一种检测方法可以检测该疾病：</p>
+<ul class="simple">
+<li><p>如果一个人确实患有该疾病，检测结果呈阳性的概率为 99%（灵敏度）</p></li>
+<li><p>如果一个人没有患有该疾病，检测结果呈阴性的概率为 99%（特异度，即正确拒绝率）</p></li>
+</ul>
+<p>现在的问题是：如果一个人检测结果呈阳性，他真正患有该疾病的概率是多少？</p>
+<p>让我们定义事件：</p>
+<ul class="simple">
+<li><p>D：患有该疾病</p></li>
+<li><p><span class="math notranslate nohighlight">\(\bar{D}\)</span>：不患有该疾病</p></li>
+<li><p>+：检测结果呈阳性</p></li>
+<li><p>-：检测结果呈阴性</p></li>
+</ul>
+<p>已知：</p>
+<ul class="simple">
+<li><p>P(D) = 0.01（发病率，即先验概率）</p></li>
+<li><p>P(+|D) = 0.99（灵敏度）</p></li>
+<li><p>P(-|<span class="math notranslate nohighlight">\(\bar{D}\)</span>) = 0.99（特异度）</p></li>
+<li><p>P(+|<span class="math notranslate nohighlight">\(\bar{D}\)</span>) = 0.01（假阳性率）</p></li>
+</ul>
+<p>要求 P(D|+)，即检测阳性时真正患病的概率。</p>
+<p>由贝叶斯定理：</p>
+<div class="math notranslate nohighlight">
+\[P(D|+) = \frac{P(+|D) P(D)}{P(+)} = \frac{P(+|D) P(D)}{P(+|D)P(D) + P(+|\bar{D})P(\bar{D})}\]</div>
+<p>代入数值：</p>
+<div class="math notranslate nohighlight">
+\[P(D|+) = \frac{0.99 \times 0.01}{0.99 \times 0.01 + 0.01 \times 0.99} = \frac{0.0099}{0.0099 + 0.0099} = \frac{0.0099}{0.0198} = 0.5\]</div>
+<p>令人惊讶的是，即使检测方法的灵敏度和特异度都高达 99%，但当检测结果呈阳性时，真正患病的概率只有 50%！这是因为疾病本身很罕见（发病率只有 1%），假阳性（在不患病的人中约有 1% 检测呈阳性）与真阳性（在患者中约有 99% 检测呈阳性）的数量相当。</p>
+<p>这个例子说明了一个重要的教训：<strong>在评估检测结果时，必须考虑疾病的基率（base rate）</strong>。仅仅知道检测的灵敏度和特异度是不够的，我们还需要知道疾病的流行程度。这正是贝叶斯定理所教导我们的。</p>
+</section>
+<section id="id15">
+<h4>1.3.3 贝叶斯定理在机器学习中的应用<a class="headerlink" href="#id15" title="Link to this heading">#</a></h4>
+<p>贝叶斯定理在机器学习中有着广泛而深刻的应用：</p>
+<p><strong>朴素贝叶斯分类器（Naive Bayes Classifier）</strong>：这是贝叶斯定理最直接的应用之一。给定输入特征 x 和类别标签 y，朴素贝叶斯分类器通过最大化后验概率来进行分类：</p>
+<div class="math notranslate nohighlight">
+\[\hat{y} = \arg\max_y P(y|x) = \arg\max_y \frac{P(x|y) P(y)}{P(x)} \propto \arg\max_y P(x|y) P(y)\]</div>
+<p>“朴素”之处在于假设给定类别标签后，各特征之间相互条件独立，即 <span class="math notranslate nohighlight">\(P(x|y) = \prod_{i} P(x_i|y)\)</span>。尽管这个假设在实际中往往不成立，但朴素贝叶斯分类器在许多实际问题中表现良好，并且具有计算效率高、不容易过拟合等优点。</p>
+<p><strong>贝叶斯优化（Bayesian Optimization）</strong>：在超参数调优中，贝叶斯优化使用贝叶斯定理来构建目标函数的后验分布，并据此选择下一个评估点。它在评估目标函数代价高昂的场景（如神经网络超参数调优）中特别有效。</p>
+<p><strong>贝叶斯神经网络（Bayesian Neural Networks）</strong>：传统的神经网络学习一个点估计（point estimate），而贝叶斯神经网络学习权重的分布。通过对权重分布进行贝叶斯推断，我们可以得到预测的不确定性估计，这对于模型校准、主动学习等任务非常有价值。</p>
+<p><strong>概率图模型（Probabilistic Graphical Models）</strong>：贝叶斯网络、马尔可夫随机场等概率图模型使用图结构来表示变量之间的条件独立性关系，并通过贝叶斯推断进行推理和学习。</p>
+</section>
+</section>
+</section>
+<section id="id16">
+<h2>2 随机变量<a class="headerlink" href="#id16" title="Link to this heading">#</a></h2>
+<section id="id17">
+<h3>2.1 随机变量的概念<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
+<p><strong>随机变量（Random Variable）</strong> 是从随机试验的样本空间到实数的函数。随机变量将随机试验的结果数量化，使得我们可以用实数分析和处理随机现象。</p>
+<p>随机变量通常用大写字母表示，如 X、Y、Z。它的取值用小写字母表示，如 x、y、z。</p>
+<p><strong>示例</strong>：</p>
+<ul class="simple">
+<li><p>抛掷一枚硬币，定义随机变量 X = 1 表示正面，X = 0 表示反面</p></li>
+<li><p>掷骰子，随机变量 X 表示出现的点数</p></li>
+<li><p>观察某网站一天内的访问量，随机变量 X 可以是任意非负整数</p></li>
+</ul>
+<p>根据取值类型的不同，随机变量分为<strong>离散随机变量（Discrete Random Variable）</strong> 和<strong>连续随机变量（Continuous Random Variable）</strong> 两大类。</p>
+</section>
+<section id="id18">
+<h3>2.2 离散随机变量<a class="headerlink" href="#id18" title="Link to this heading">#</a></h3>
+<p><strong>离散随机变量</strong> 的取值是可数的（有限或无限可数）。例如掷骰子的点数、网站的访问量等。</p>
+<section id="pmf">
+<h4>2.2.1 概率质量函数（PMF）<a class="headerlink" href="#pmf" title="Link to this heading">#</a></h4>
+<p>对于离散随机变量 X，<strong>概率质量函数（Probability Mass Function，PMF）</strong> 定义为：</p>
+<div class="math notranslate nohighlight">
+\[p_X(x) = P(X = x)\]</div>
+<p>即随机变量 X 取值为 x 的概率。</p>
+<p>PMF 必须满足以下条件：</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(p_X(x) \geq 0\)</span>（非负性）</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sum_{x} p_X(x) = 1\)</span>（归一性）</p></li>
+</ol>
+</section>
+<section id="cdf">
+<h4>2.2.2 累积分布函数（CDF）<a class="headerlink" href="#cdf" title="Link to this heading">#</a></h4>
+<p><strong>累积分布函数（Cumulative Distribution Function，CDF）</strong> 定义为：</p>
+<div class="math notranslate nohighlight">
+\[F_X(x) = P(X \leq x)\]</div>
+<p>对于离散随机变量，CDF 是阶梯函数，在每个可能的取值点跳跃，跳跃的高度等于该点的概率质量。</p>
+</section>
+</section>
+<section id="id19">
+<h3>2.3 连续随机变量<a class="headerlink" href="#id19" title="Link to this heading">#</a></h3>
+<p><strong>连续随机变量</strong> 的取值是连续的，通常是某个区间内的所有实数。例如人的身高、测量误差、股票价格等。</p>
+<section id="pdf">
+<h4>2.3.1 概率密度函数（PDF）<a class="headerlink" href="#pdf" title="Link to this heading">#</a></h4>
+<p>对于连续随机变量 X，<strong>概率密度函数（Probability Density Function，PDF）</strong> f_X(x) 满足：</p>
+<div class="math notranslate nohighlight">
+\[P(a \leq X \leq b) = \int_a^b f_X(x) \, dx\]</div>
+<p>需要特别注意连续随机变量的概率计算：对于连续随机变量，单个点的概率为零，即 <span class="math notranslate nohighlight">\(P(X = x) = 0\)</span>。因此，在计算概率时，区间端点的开闭不影响结果：<span class="math notranslate nohighlight">\(P(a \leq X \leq b) = P(a &lt; X &lt; b) = P(a \leq X &lt; b) = P(a &lt; X \leq b)\)</span>。</p>
+<p>PDF 必须满足以下条件：</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(f_X(x) \geq 0\)</span>（非负性）</p></li>
+<li><p><span class="math notranslate nohighlight">\(\int_{-\infty}^{+\infty} f_X(x) \, dx = 1\)</span>（归一性）</p></li>
+</ol>
+</section>
+<section id="id20">
+<h4>2.3.2 累积分布函数（CDF）<a class="headerlink" href="#id20" title="Link to this heading">#</a></h4>
+<p>对于连续随机变量，CDF 定义与离散情况相同：</p>
+<div class="math notranslate nohighlight">
+\[F_X(x) = P(X \leq x) = \int_{-\infty}^{x} f_X(t) \, dt\]</div>
+<p>并且有 <span class="math notranslate nohighlight">\(f_X(x) = \frac{dF_X(x)}{dx}\)</span>（在 F_X 可导的点）。</p>
+</section>
+</section>
+<section id="id21">
+<h3>2.4 常见离散分布<a class="headerlink" href="#id21" title="Link to this heading">#</a></h3>
+<section id="id22">
+<h4>2.4.1 伯努利分布<a class="headerlink" href="#id22" title="Link to this heading">#</a></h4>
+<p><strong>伯努利分布（Bernoulli Distribution）</strong> 是最简单的离散分布，描述单次只有两种结果（成功/失败）的随机试验。</p>
+<p>设随机变量 X ~ Bernoulli(p)，其中 p 是成功概率（0 ≤ p ≤ 1），则：</p>
+<ul class="simple">
+<li><p>PMF：<span class="math notranslate nohighlight">\(P(X = 1) = p\)</span>，<span class="math notranslate nohighlight">\(P(X = 0) = 1 - p\)</span></p></li>
+<li><p>期望：<span class="math notranslate nohighlight">\(E[X] = p\)</span></p></li>
+<li><p>方差：<span class="math notranslate nohighlight">\(\text{Var}(X) = p(1-p)\)</span></p></li>
+</ul>
+<p>伯努利分布在机器学习中用于建模二元分类问题。例如，在逻辑回归中，假设给定输入 x，标签 y 服从伯努利分布。</p>
+</section>
+<section id="id23">
+<h4>2.4.2 二项分布<a class="headerlink" href="#id23" title="Link to this heading">#</a></h4>
+<p><strong>二项分布（Binomial Distribution）</strong> 描述 n 次独立伯努利试验中成功的次数。</p>
+<p>设随机变量 X ~ Binomial(n, p)，则：</p>
+<ul class="simple">
+<li><p>PMF：<span class="math notranslate nohighlight">\(P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}\)</span>，其中 k = 0, 1, 2, …, n</p></li>
+<li><p>期望：<span class="math notranslate nohighlight">\(E[X] = np\)</span></p></li>
+<li><p>方差：<span class="math notranslate nohighlight">\(\text{Var}(X) = np(1-p)\)</span></p></li>
+</ul>
+<p>二项分布在统计分析、质量控制、遗传学等领域有广泛应用。在机器学习中，它可用于建模多个独立二元决策的聚合结果。</p>
+</section>
+<section id="id24">
+<h4>2.4.3 泊松分布<a class="headerlink" href="#id24" title="Link to this heading">#</a></h4>
+<p><strong>泊松分布（Poisson Distribution）</strong> 描述单位时间内随机事件发生的次数，常用于建模稀有事件。</p>
+<p>设随机变量 X ~ Poisson(λ)，其中 λ &gt; 0 是单位时间内事件发生的平均次数（也称为率参数），则：</p>
+<ul class="simple">
+<li><p>PMF：<span class="math notranslate nohighlight">\(P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}\)</span>，其中 k = 0, 1, 2, …</p></li>
+<li><p>期望：<span class="math notranslate nohighlight">\(E[X] = \lambda\)</span></p></li>
+<li><p>方差：<span class="math notranslate nohighlight">\(\text{Var}(X) = \lambda\)</span></p></li>
+</ul>
+<p>泊松分布的特点是均值等于方差。这个分布在网络流量分析、生物学（基因突变计数）、金融（保险索赔次数）等领域有广泛应用。</p>
+</section>
+</section>
+<section id="id25">
+<h3>2.5 常见连续分布<a class="headerlink" href="#id25" title="Link to this heading">#</a></h3>
+<section id="id26">
+<h4>2.5.1 均匀分布<a class="headerlink" href="#id26" title="Link to this heading">#</a></h4>
+<p><strong>均匀分布（Uniform Distribution）</strong> 是最简单的连续分布，在区间 [a, b] 上概率密度均匀。</p>
+<p>设随机变量 X ~ U(a, b)，则：</p>
+<ul class="simple">
+<li><p>PDF：<span class="math notranslate nohighlight">\(f(x) = \frac{1}{b-a}\)</span>，当 a ≤ x ≤ b；否则 f(x) = 0</p></li>
+<li><p>CDF：<span class="math notranslate nohighlight">\(F(x) = 0\)</span>（当 x &lt; a），<span class="math notranslate nohighlight">\(F(x) = \frac{x-a}{b-a}\)</span>（当 a ≤ x ≤ b），<span class="math notranslate nohighlight">\(F(x) = 1\)</span>（当 x &gt; b）</p></li>
+<li><p>期望：<span class="math notranslate nohighlight">\(E[X] = \frac{a+b}{2}\)</span></p></li>
+<li><p>方差：<span class="math notranslate nohighlight">\(\text{Var}(X) = \frac{(b-a)^2}{12}\)</span></p></li>
+</ul>
+<p>均匀分布在随机数生成、采样方法（如逆变换采样）和初始化策略中扮演重要角色。</p>
+</section>
+<section id="id27">
+<h4>2.5.2 正态分布（高斯分布）<a class="headerlink" href="#id27" title="Link to this heading">#</a></h4>
+<p><strong>正态分布（Normal Distribution）</strong>，也称<strong>高斯分布（Gaussian Distribution）</strong>，是概率论和统计学中最重要的分布。</p>
+<p>设随机变量 X ~ N(μ, σ²)，其中 μ 是均值，σ² 是方差，则：</p>
+<ul class="simple">
+<li><p>PDF：<span class="math notranslate nohighlight">\(f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}\)</span></p></li>
+<li><p>期望：<span class="math notranslate nohighlight">\(E[X] = μ\)</span></p></li>
+<li><p>方差：<span class="math notranslate nohighlight">\(\text{Var}(X) = σ²\)</span></p></li>
+</ul>
+<p>标准正态分布是 μ = 0，σ² = 1 的正态分布，记作 Z ~ N(0, 1)，其 PDF 为：</p>
+<div class="math notranslate nohighlight">
+\[\phi(z) = \frac{1}{\sqrt{2\pi}} e^{-\frac{z^2}{2}}\]</div>
+<p>标准正态分布的 CDF 通常记作 Φ(z)。</p>
+<p><strong>正态分布的重要性</strong>源于中心极限定理（将在后面讨论），该定理表明大量独立随机变量的和近似服从正态分布。正态分布在自然科学和社会科学的各个领域有广泛应用，在机器学习中更是无处不在：神经网络的权重初始化、梯度下降的噪声、测量误差等都常被假设为正态分布。</p>
+</section>
+<section id="id28">
+<h4>2.5.3 指数分布<a class="headerlink" href="#id28" title="Link to this heading">#</a></h4>
+<p><strong>指数分布（Exponential Distribution）</strong> 描述独立随机事件发生的时间间隔。</p>
+<p>设随机变量 X ~ Exp(λ)，其中 λ &gt; 0 是率参数，则：</p>
+<ul class="simple">
+<li><p>PDF：<span class="math notranslate nohighlight">\(f(x) = \lambda e^{-\lambda x}\)</span>，当 x ≥ 0；否则 f(x) = 0</p></li>
+<li><p>CDF：<span class="math notranslate nohighlight">\(F(x) = 1 - e^{-\lambda x}\)</span>，当 x ≥ 0</p></li>
+<li><p>期望：<span class="math notranslate nohighlight">\(E[X] = \frac{1}{\lambda}\)</span></p></li>
+<li><p>方差：<span class="math notranslate nohighlight">\(\text{Var}(X) = \frac{1}{\lambda^2}\)</span></p></li>
+</ul>
+<p>指数分布具有<strong>无记忆性（Memoryless Property）</strong>：对于任意 s, t ≥ 0，有 <span class="math notranslate nohighlight">\(P(X &gt; s + t | X &gt; s) = P(X &gt; t)\)</span>。这意味着如果已知事件已经发生时间 s，再等待时间 t 的概率与从头等待时间 t 的概率相同。</p>
+<p>指数分布在可靠性工程、排队论、生存分析等领域有广泛应用。在机器学习中，指数分布可用于建模寿命数据、间隔时间等。</p>
+</section>
+<section id="id29">
+<h4>2.5.4 拉普拉斯分布<a class="headerlink" href="#id29" title="Link to this heading">#</a></h4>
+<p><strong>拉普拉斯分布（Laplace Distribution）</strong> 与正态分布相似，但尾部更重（使用绝对值而非平方）。</p>
+<p>设随机变量 X ~ Laplace(μ, b)，其中 μ 是位置参数，b &gt; 0 是尺度参数，则：</p>
+<ul class="simple">
+<li><p>PDF：<span class="math notranslate nohighlight">\(f(x) = \frac{1}{2b} \exp\left(-\frac{|x - \mu|}{b}\right)\)</span></p></li>
+<li><p>期望：<span class="math notranslate nohighlight">\(E[X] = μ\)</span></p></li>
+<li><p>方差：<span class="math notranslate nohighlight">\(\text{Var}(X) = 2b^2\)</span></p></li>
+</ul>
+<p>拉普拉斯分布在信号处理、图像处理（用于去噪）和机器学习（作为拉普拉斯先验用于稀疏估计）中有所应用。</p>
+</section>
+</section>
+<section id="id30">
+<h3>2.6 分布的混合<a class="headerlink" href="#id30" title="Link to this heading">#</a></h3>
+<p>现实世界中的数据往往来自多个分布的混合。例如，一个包含多个类别数据的数据集可以建模为混合分布。</p>
+<p><strong>高斯混合模型（Gaussian Mixture Model，GMM）</strong> 是最常用的混合模型，假设数据来自 K 个高斯分布的混合：</p>
+<div class="math notranslate nohighlight">
+\[P(x) = \sum_{k=1}^{K} \pi_k \mathcal{N}(x | \mu_k, \Sigma_k)\]</div>
+<p>其中 π_k 是混合系数（满足 π_k ≥ 0，Σπ_k = 1），N(x|μ_k, Σ_k) 是第 k 个高斯分量的概率密度。</p>
+<p>GMM 在聚类、密度估计、生成模型等任务中有广泛应用。GMM 的参数通常通过 EM 算法（Expectation-Maximization）来学习。</p>
+</section>
+</section>
+<section id="id31">
+<h2>3 统计基础<a class="headerlink" href="#id31" title="Link to this heading">#</a></h2>
+<section id="id32">
+<h3>3.1 期望<a class="headerlink" href="#id32" title="Link to this heading">#</a></h3>
+<section id="id33">
+<h4>3.1.1 期望的定义<a class="headerlink" href="#id33" title="Link to this heading">#</a></h4>
+<p><strong>期望（Expectation）</strong> 或<strong>数学期望</strong>是随机变量最基本的数字特征之一，描述了随机变量的”平均水平”或”中心位置”。</p>
+<p>对于离散随机变量 X，其 PMF 为 p_X(x)，则期望定义为：</p>
+<div class="math notranslate nohighlight">
+\[E[X] = \sum_{x} x \cdot p_X(x)\]</div>
+<p>对于连续随机变量 X，其 PDF 为 f_X(x)，则期望定义为：</p>
+<div class="math notranslate nohighlight">
+\[E[X] = \int_{-\infty}^{+\infty} x \cdot f_X(x) \, dx\]</div>
+<p>期望存在的前提是上述求和或积分绝对收敛。</p>
+</section>
+<section id="id34">
+<h4>3.1.2 期望的性质<a class="headerlink" href="#id34" title="Link to this heading">#</a></h4>
+<p>期望具有以下重要性质：</p>
+<ol class="arabic simple">
+<li><p><strong>线性性</strong>：<span class="math notranslate nohighlight">\(E[aX + bY] = aE[X] + bE[Y]\)</span>（对任意随机变量 X、Y 和常数 a、b 成立，不要求 X、Y 独立）</p></li>
+<li><p><strong>常数的期望是常数本身</strong>：<span class="math notranslate nohighlight">\(E[c] = c\)</span></p></li>
+<li><p><strong>乘积的期望（独立情况）</strong>：如果 X 和 Y 独立，则 <span class="math notranslate nohighlight">\(E[XY] = E[X]E[Y]\)</span></p></li>
+<li><p><strong>单调性</strong>：如果 <span class="math notranslate nohighlight">\(X \leq Y\)</span>（逐点成立），则 <span class="math notranslate nohighlight">\(E[X] \leq E[Y]\)</span></p></li>
+</ol>
+</section>
+<section id="id35">
+<h4>3.1.3 条件期望<a class="headerlink" href="#id35" title="Link to this heading">#</a></h4>
+<p><strong>条件期望（Conditional Expectation）</strong> 是在给定某条件下随机变量的期望。</p>
+<ul class="simple">
+<li><p>离散情况：<span class="math notranslate nohighlight">\(E[X|Y = y] = \sum_{x} x \cdot P(X = x|Y = y)\)</span></p></li>
+<li><p>连续情况：<span class="math notranslate nohighlight">\(E[X|Y = y] = \int_{-\infty}^{+\infty} x \cdot f_{X|Y}(x|y) \, dx\)</span></p></li>
+</ul>
+<p>条件期望 <span class="math notranslate nohighlight">\(E[X|Y]\)</span> 可以看作 Y 的函数，因此本身是一个随机变量。这个随机变量的期望等于 X 的无条件期望：<span class="math notranslate nohighlight">\(E[E[X|Y]] = E[X]\)</span>。这称为<strong>迭代期望定律（Law of Iterated Expectations）</strong>，在推导许多统计量时非常有用。</p>
+</section>
+</section>
+<section id="id36">
+<h3>3.2 方差<a class="headerlink" href="#id36" title="Link to this heading">#</a></h3>
+<section id="id37">
+<h4>3.2.1 方差的定义<a class="headerlink" href="#id37" title="Link to this heading">#</a></h4>
+<p><strong>方差（Variance）</strong> 描述随机变量取值与其期望的偏离程度，是随机变量最重要的散布度量之一。</p>
+<p>随机变量 X 的方差定义为：</p>
+<div class="math notranslate nohighlight">
+\[\text{Var}(X) = E[(X - E[X])^2]\]</div>
+<p>方差的非负平方根 <span class="math notranslate nohighlight">\(\sqrt{\text{Var}(X)}\)</span> 称为<strong>标准差（Standard Deviation）</strong>，记作 σ。</p>
+<p>由定义可以直接推导方差的计算公式：</p>
+<div class="math notranslate nohighlight">
+\[\text{Var}(X) = E[X^2] - (E[X])^2\]</div>
+<p>这个公式在计算方差时更常用，因为它避免了在公式中显式写出期望。</p>
+</section>
+<section id="id38">
+<h4>3.2.2 方差的性质<a class="headerlink" href="#id38" title="Link to this heading">#</a></h4>
+<p>方差具有以下性质：</p>
+<ol class="arabic simple">
+<li><p><strong>常数的方差为零</strong>：<span class="math notranslate nohighlight">\(\text{Var}(c) = 0\)</span></p></li>
+<li><p><strong>标量乘法</strong>：<span class="math notranslate nohighlight">\(\text{Var}(aX) = a^2 \text{Var}(X)\)</span></p></li>
+<li><p><strong>加法（独立情况）</strong>：如果 X 和 Y 独立，则 <span class="math notranslate nohighlight">\(\text{Var}(X + Y) = \text{Var}(X) + \text{Var}(Y)\)</span></p></li>
+<li><p><strong>一般情况的加法公式</strong>：<span class="math notranslate nohighlight">\(\text{Var}(X + Y) = \text{Var}(X) + \text{Var}(Y) + 2\text{Cov}(X, Y)\)</span>，其中协方差 Cov 衡量两个随机变量的共同变化趋势</p></li>
+</ol>
+</section>
+<section id="id39">
+<h4>3.2.3 常见分布的期望与方差<a class="headerlink" href="#id39" title="Link to this heading">#</a></h4>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>分布</p></th>
+<th class="head"><p>参数</p></th>
+<th class="head"><p>期望</p></th>
+<th class="head"><p>方差</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>伯努利分布</p></td>
+<td><p>p</p></td>
+<td><p>p</p></td>
+<td><p>p(1-p)</p></td>
+</tr>
+<tr class="row-odd"><td><p>二项分布</p></td>
+<td><p>n, p</p></td>
+<td><p>np</p></td>
+<td><p>np(1-p)</p></td>
+</tr>
+<tr class="row-even"><td><p>泊松分布</p></td>
+<td><p>λ</p></td>
+<td><p>λ</p></td>
+<td><p>λ</p></td>
+</tr>
+<tr class="row-odd"><td><p>均匀分布</p></td>
+<td><p>a, b</p></td>
+<td><p>(a+b)/2</p></td>
+<td><p>(b-a)²/12</p></td>
+</tr>
+<tr class="row-even"><td><p>正态分布</p></td>
+<td><p>μ, σ²</p></td>
+<td><p>μ</p></td>
+<td><p>σ²</p></td>
+</tr>
+<tr class="row-odd"><td><p>指数分布</p></td>
+<td><p>λ</p></td>
+<td><p>1/λ</p></td>
+<td><p>1/λ²</p></td>
+</tr>
+<tr class="row-even"><td><p>拉普拉斯分布</p></td>
+<td><p>μ, b</p></td>
+<td><p>μ</p></td>
+<td><p>2b²</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="id40">
+<h3>3.3 协方差与相关系数<a class="headerlink" href="#id40" title="Link to this heading">#</a></h3>
+<section id="id41">
+<h4>3.3.1 协方差的定义<a class="headerlink" href="#id41" title="Link to this heading">#</a></h4>
+<p><strong>协方差（Covariance）</strong> 衡量两个随机变量共同变化的趋势：</p>
+<div class="math notranslate nohighlight">
+\[\text{Cov}(X, Y) = E[(X - E[X])(Y - E[Y])] = E[XY] - E[X]E[Y]\]</div>
+<p>当 Cov(X, Y) &gt; 0 时，X 和 Y 有同时偏离其期望的趋势（正相关）；当 Cov(X, Y) &lt; 0 时，X 和 Y 有向相反方向偏离的趋势（负相关）；当 Cov(X, Y) = 0 时，称 X 和 Y 不相关。</p>
+<p>需要注意的是，不相关只是说明两个随机变量没有线性相关性，它们之间仍可能有非线性关系。</p>
+</section>
+<section id="id42">
+<h4>3.3.2 相关系数<a class="headerlink" href="#id42" title="Link to this heading">#</a></h4>
+<p><strong>相关系数（Correlation Coefficient）</strong> 或<strong>皮尔逊相关系数</strong>是对协方差的标准化，消除了量纲影响：</p>
+<div class="math notranslate nohighlight">
+\[\rho_{XY} = \frac{\text{Cov}(X, Y)}{\sqrt{\text{Var}(X)}\sqrt{\text{Var}(Y)}} = \frac{\text{Cov}(X, Y)}{\sigma_X \sigma_Y}\]</div>
+<p>相关系数满足 <span class="math notranslate nohighlight">\(-1 \leq \rho_{XY} \leq 1\)</span>。当 <span class="math notranslate nohighlight">\(|\rho_{XY}| = 1\)</span> 时，X 和 Y 有完全的线性关系；当 <span class="math notranslate nohighlight">\(\rho_{XY} = 0\)</span> 时，X 和 Y 不相关。</p>
+</section>
+</section>
+<section id="id43">
+<h3>3.4 大数定律<a class="headerlink" href="#id43" title="Link to this heading">#</a></h3>
+<section id="id44">
+<h4>3.4.1 大数定律的表述<a class="headerlink" href="#id44" title="Link to this heading">#</a></h4>
+<p><strong>大数定律（Law of Large Numbers，LLN）</strong> 是概率论中最重要的定理之一，它描述了随着样本数量的增加，样本均值收敛于期望值的现象。</p>
+<p><strong>弱大数定律（Weak Law of Large Numbers）</strong>：设 X₁, X₂, …, Xₙ 是独立同分布的随机变量，<span class="math notranslate nohighlight">\(E[X_i] = \mu\)</span>，<span class="math notranslate nohighlight">\(\text{Var}(X_i) = \sigma^2\)</span> 有限，则对于任意 ε &gt; 0，有：</p>
+<div class="math notranslate nohighlight">
+\[\lim_{n \to \infty} P\left(\left|\frac{1}{n}\sum_{i=1}^{n} X_i - \mu\right| &lt; \epsilon\right) = 1\]</div>
+<p>也就是说，当样本数量 n 趋于无穷时，样本均值 <span class="math notranslate nohighlight">\(\bar{X}_n = \frac{1}{n}\sum_{i=1}^{n} X_i\)</span> 依概率收敛于期望 μ。</p>
+<p><strong>强大数定律（Strong Law of Large Numbers）</strong>：在相同条件下，样本均值几乎必然（almost surely）收敛于期望值，即：</p>
+<div class="math notranslate nohighlight">
+\[P\left(\lim_{n \to \infty} \bar{X}_n = \mu\right) = 1\]</div>
+<p>强大数定律比弱大数定律更强，它表明样本均值不仅依概率收敛，而且以概率 1 收敛（几乎必然收敛）。</p>
+</section>
+<section id="id45">
+<h4>3.4.2 大数定律的意义<a class="headerlink" href="#id45" title="Link to this heading">#</a></h4>
+<p>大数定律有着深刻的理论和实践意义：</p>
+<ol class="arabic simple">
+<li><p><strong>频率解释的理论基础</strong>：大数定律为概率的频率解释提供了数学支持。当我们说某事件发生的概率是 p 时，大数定律告诉我们，如果独立重复试验 n 次，事件发生的频率将趋近于 p。</p></li>
+<li><p><strong>蒙特卡洛方法的基础</strong>：大数定律是蒙特卡洛方法（Monte Carlo Method）的理论依据。蒙特卡洛方法通过大量随机采样来估计复杂系统的期望值，例如用随机采样来计算积分、估计π值等。根据大数定律，样本均值将趋近于真实期望。</p></li>
+<li><p><strong>机器学习中的意义</strong>：在机器学习中，训练数据上的损失函数值通常被用作真实风险的估计。大数定律保证了当训练样本量足够大时，训练损失将趋近于期望损失，这为经验风险最小化提供了理论支持。</p></li>
+</ol>
+</section>
+</section>
+<section id="id46">
+<h3>3.5 中心极限定理<a class="headerlink" href="#id46" title="Link to this heading">#</a></h3>
+<section id="id47">
+<h4>3.5.1 中心极限定理的表述<a class="headerlink" href="#id47" title="Link to this heading">#</a></h4>
+<p><strong>中心极限定理（Central Limit Theorem，CLT）</strong> 是概率论中最令人惊叹的结果之一，它表明大量独立随机变量的和趋向于正态分布，无论这些随机变量原本是什么分布。</p>
+<p><strong>中心极限定理</strong>：设 X₁, X₂, …, Xₙ是独立同分布的随机变量，<span class="math notranslate nohighlight">\(E[X_i] = \mu\)</span>，<span class="math notranslate nohighlight">\(\text{Var}(X_i) = \sigma^2\)</span> 有限（σ² &gt; 0）。令 <span class="math notranslate nohighlight">\(S_n = \sum_{i=1}^{n} X_i\)</span>，则：</p>
+<div class="math notranslate nohighlight">
+\[\lim_{n \to \infty} P\left(\frac{S_n - n\mu}{\sigma\sqrt{n}} \leq x\right) = \Phi(x)\]</div>
+<p>其中 Φ(x) 是标准正态分布的累积分布函数。</p>
+<p>换句话说，标准化后的和 <span class="math notranslate nohighlight">\(\frac{S_n - n\mu}{\sigma\sqrt{n}}\)</span> 收敛于标准正态分布 N(0, 1)。</p>
+</section>
+<section id="id48">
+<h4>3.5.2 中心极限定理的意义<a class="headerlink" href="#id48" title="Link to this heading">#</a></h4>
+<p>中心极限定理的意义深远：</p>
+<ol class="arabic simple">
+<li><p><strong>正态分布的普适性</strong>：中心极限定理解释了为什么正态分布在自然界如此常见。任何受大量微小、独立的随机因素影响的现象，无论每个因素本身是什么分布，其整体表现都将趋近于正态分布。人的身高、测量误差、考试成绩等都近似服从正态分布。</p></li>
+<li><p><strong>统计推断的基础</strong>：中心极限定理为许多统计推断方法（如置信区间、假设检验）提供了理论依据。即使总体分布未知，只要样本量足够大，样本均值近似正态分布，我们可以据此进行推断。</p></li>
+<li><p><strong>机器学习中的应用</strong>：在深度学习中，梯度下降的随机扰动、权重的初始化等经常假设为正态分布。中心极限定理为这些假设提供了一定程度的合理性支持。</p></li>
+</ol>
+</section>
+<section id="id49">
+<h4>3.5.3 大数定律与中心极限定理的比较<a class="headerlink" href="#id49" title="Link to this heading">#</a></h4>
+<p>大数定律和中心极限定理都描述了大量随机变量和的性质，但侧重点不同：</p>
+<ul class="simple">
+<li><p><strong>大数定律</strong> 告诉我们和的均值（除以 n）收敛于期望值，即 <span class="math notranslate nohighlight">\(\bar{X}_n \to \mu\)</span></p></li>
+<li><p><strong>中心极限定理</strong> 告诉我们和的标准化量 <span class="math notranslate nohighlight">\(\frac{S_n - n\mu}{\sigma\sqrt{n}}\)</span> 收敛于标准正态分布</p></li>
+</ul>
+<p>两者并不矛盾：大数定律描述了收敛的目标（μ），中心极限定理描述了收敛的速度和分布（误差以 <span class="math notranslate nohighlight">\(1/\sqrt{n}\)</span> 的速度围绕 μ 分布，渐近正态）。</p>
+</section>
+</section>
+<section id="id50">
+<h3>3.6 统计在机器学习中的应用<a class="headerlink" href="#id50" title="Link to this heading">#</a></h3>
+<section id="id51">
+<h4>3.6.1 最大似然估计<a class="headerlink" href="#id51" title="Link to this heading">#</a></h4>
+<p><strong>最大似然估计（Maximum Likelihood Estimation，MLE）</strong> 是统计学中最基本的参数估计方法之一。</p>
+<p>给定观测数据 <span class="math notranslate nohighlight">\(D = \{x_1, x_2, ..., x_n\}\)</span> 和参数化模型 <span class="math notranslate nohighlight">\(P(x|\theta)\)</span>，似然函数定义为：</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{L}(\theta; D) = P(D|\theta) = \prod_{i=1}^{n} P(x_i|\theta)\]</div>
+<p>最大似然估计选择使似然函数最大化的参数值：</p>
+<div class="math notranslate nohighlight">
+\[\hat{\theta}_{MLE} = \arg\max_\theta \mathcal{L}(\theta; D) = \arg\max_\theta \sum_{i=1}^{n} \log P(x_i|\theta)\]</div>
+<p>在机器学习中，许多模型的学习可以归结为最大似然估计：逻辑回归、线性回归（高斯噪声假设）、神经网络等都可以通过最大化似然来训练。</p>
+</section>
+<section id="id52">
+<h4>3.6.2 偏差-方差分解<a class="headerlink" href="#id52" title="Link to this heading">#</a></h4>
+<p>在机器学习中，预测误差可以分解为偏差、方差和不可约误差三部分。</p>
+<p>设真实函数为 f(x)，模型在输入 x 上的预测为 <span class="math notranslate nohighlight">\(\hat{f}(x)\)</span>，则均方误差可分解为：</p>
+<div class="math notranslate nohighlight">
+\[E[(y - \hat{f}(x))^2] = \text{Bias}^2[\hat{f}(x)] + \text{Var}[\hat{f}(x)] + \sigma^2\]</div>
+<p>其中：</p>
+<ul class="simple">
+<li><p><strong>偏差（Bias）</strong>：<span class="math notranslate nohighlight">\(\text{Bias}[\hat{f}(x)] = E[\hat{f}(x)] - f(x)\)</span>，度量了模型预测值的平均值与真实值的偏离</p></li>
+<li><p><strong>方差（Variance）</strong>：<span class="math notranslate nohighlight">\(\text{Var}[\hat{f}(x)] = E[(\hat{f}(x) - E[\hat{f}(x)])^2]\)</span>，度量了模型预测值的变化范围</p></li>
+<li><p><strong>不可约误差（Irreducible Error）</strong>：<span class="math notranslate nohighlight">\(\sigma^2\)</span>，由标签的固有噪声引起，无法通过改进模型来消除</p></li>
+</ul>
+<p>偏差-方差分解帮助我们理解模型复杂度的选择：简单模型（如线性回归）通常偏差高、方差低，容易欠拟合；复杂模型（如高阶多项式、深度神经网络）通常偏差低、方差高，容易过拟合。</p>
+</section>
+<section id="id53">
+<h4>3.6.3 贝叶斯统计与正则化<a class="headerlink" href="#id53" title="Link to this heading">#</a></h4>
+<p>贝叶斯统计提供了一种不同于频率学派的方法来估计参数和量化不确定性。</p>
+<p>在贝叶斯框架下，我们不仅估计一个参数值，而是估计参数的完整后验分布：</p>
+<div class="math notranslate nohighlight">
+\[P(\theta|D) = \frac{P(D|\theta) P(\theta)}{P(D)}\]</div>
+<p>其中 <span class="math notranslate nohighlight">\(P(\theta)\)</span> 是先验分布，<span class="math notranslate nohighlight">\(P(D|\theta)\)</span> 是似然，<span class="math notranslate nohighlight">\(P(\theta|D)\)</span> 是后验分布。</p>
+<p>贝叶斯方法自然地提供了不确定性量化，并且在先验分布的选择中隐含了正则化。例如，在贝叶斯线性回归中，如果选择方差较大的先验（如球形高斯先验），后验分布会倾向于较大的权重；如果选择方差较小的先验，后验分布会倾向于较小的权重，从而实现正则化的效果。</p>
+<p>在深度学习中，Dropout 可以被解释为贝叶斯神经网络的近似。通过在训练时随机丢弃神经元，Dropout 实际上是在对大量的子网络进行集成，并在推理时对预测进行边缘化。</p>
+</section>
+</section>
+</section>
+<section id="id54">
+<h2>本章小结<a class="headerlink" href="#id54" title="Link to this heading">#</a></h2>
+<p>本章系统介绍了概率论与统计学的基础知识，这些知识是理解机器学习算法的另一核心数学基础。</p>
+<p>在概率基础部分，我们学习了概率的公理化定义，了解了条件概率的概念和计算方法，并深入探讨了贝叶斯定理。贝叶斯定理是连接先验知识与新证据的桥梁，在机器学习的许多算法（如朴素贝叶斯分类器、贝叶斯优化等）中都有核心应用。</p>
+<p>随机变量部分介绍了离散和连续随机变量的概念，以及概率质量函数和概率密度函数。我们详细讨论了几种常见的概率分布：离散分布包括伯努利分布、二项分布和泊松分布；连续分布包括均匀分布、正态分布（高斯分布）、指数分布和拉普拉斯分布。这些分布在机器学习建模中有广泛应用。</p>
+<p>统计基础部分介绍了期望和方差的定义与性质，以及协方差和相关系数。我们重点讨论了大数定律和中心极限定理：前者保证了样本均值收敛于期望值，为蒙特卡洛方法和经验风险最小化提供了理论基础；后者表明大量独立随机变量的和趋向于正态分布，解释了正态分布的普适性，并为统计推断提供了依据。</p>
+<p>最后，我们简要介绍了统计在机器学习中的应用，包括最大似然估计、偏差-方差分解和贝叶斯统计方法。这些内容为理解后续章节的机器学习算法奠定了基础。</p>
+<p>概率论与统计学是数据驱动方法的核心数学基础。在后续的学习中，我们将看到概率论的概念将反复出现在模型定义、损失函数设计、推理算法等各个方面。</p>
+</section>
+<section id="id55">
+<h2>思考与练习<a class="headerlink" href="#id55" title="Link to this heading">#</a></h2>
+<ol class="arabic">
+<li><p><strong>贝叶斯定理应用</strong>：假设某种癌症的发病率为 0.5%（即每 10000 人中有 50 人患病）。有一种早期筛查方法：</p>
+<ul class="simple">
+<li><p>对于真正患病者，筛查呈阳性的概率（灵敏度）为 99%</p></li>
+<li><p>对于健康人，筛查呈阴性的概率（特异度）为 98%</p></li>
+</ul>
+<p>如果某人筛查结果呈阳性，请计算他真正患病的概率。如果发病率变为 5%（提高了 10 倍），这个概率如何变化？从中你能得到什么启示？</p>
+</li>
+<li><p><strong>概率分布计算</strong>：假设某网站一天的访问量 X 服从泊松分布，均值为 1000 次。</p>
+<ul class="simple">
+<li><p>求 P(X = 1000) 和 P(X = 0)</p></li>
+<li><p>求访问量超过 1050 次的概率（使用近似）</p></li>
+<li><p>解释为什么泊松分布适用于描述这类现象</p></li>
+</ul>
+</li>
+<li><p><strong>期望与方差的计算</strong>：设随机变量 X 服从参数为 p 的伯努利分布，即 P(X = 1) = p，P(X = 0) = 1 - p。</p>
+<ul class="simple">
+<li><p>计算 E[X] 和 Var(X)</p></li>
+<li><p>如果 X₁, X₂, …, Xₙ是 n 个独立同分布的伯努利随机变量，Sₙ = X₁ + … + Xₙ是什么分布？求 E[Sₙ] 和 Var(Sₙ)</p></li>
+<li><p>大数定律如何描述 Sₙ/n 的行为？</p></li>
+</ul>
+</li>
+<li><p><strong>中心极限定理验证</strong>：通过编程模拟，验证中心极限定理。</p>
+<ul class="simple">
+<li><p>假设原始分布为均匀分布 U(0, 1)，取 n = 30 个样本，计算其和 Sₙ</p></li>
+<li><p>重复试验 10000 次，绘制 Sₙ的直方图</p></li>
+<li><p>与相同均值和方差的正态分布进行比较，验证中心极限定理</p></li>
+</ul>
+</li>
+<li><p><strong>协方差与相关系数</strong>：设二维随机变量 (X, Y) 服从以下分布（单位：米）：</p>
+<ul class="simple">
+<li><p>X 表示某城市居民的身高，假设 E[X] = 1.70，Var(X) = 0.01</p></li>
+<li><p>Y 表示同一城市居民的体重，假设 E[Y] = 65，Var(Y) = 100</p></li>
+<li><p>X 和 Y 的协方差 Cov(X, Y) = 0.5</p></li>
+<li><p>计算 X 和 Y 的相关系数 ρ</p></li>
+<li><p>这个相关系数说明两者之间有什么关系？</p></li>
+<li><p>如果协方差变为 -0.5，相关系数会如何变化？</p></li>
+</ul>
+</li>
+<li><p><strong>偏差-方差分析</strong>：考虑一个简单的回归问题，假设真实函数为 y = sin(2πx)，噪声为加性高斯噪声 ε ~ N(0, 0.1²)。</p>
+<p>比较以下两种模型的预测误差：</p>
+<ul class="simple">
+<li><p>简单模型：常数预测 <span class="math notranslate nohighlight">\(\hat{y} = \bar{y}\)</span>（训练集的均值）</p></li>
+<li><p>复杂模型：5 阶多项式回归</p></li>
+</ul>
+<p>分析两种模型的偏差和方差，解释为什么简单模型可能泛化能力更好（考虑噪声和过拟合）。</p>
+</li>
+<li><p><strong>似然与后验</strong>：在贝叶斯框架下重新考虑一个问题：假设硬币是不均匀的，抛正面朝上的概率为 θ。进行 n = 10 次独立试验，观察到 k = 7 次正面。</p>
+<ul class="simple">
+<li><p>写出似然函数 P(D|θ)</p></li>
+<li><p>如果使用 Beta(α, β) 作为先验分布（Beta 先验是二项分布的共轭先验），写出后验分布 P(θ|D)</p></li>
+<li><p>如果选择先验 Beta(1, 1)（即均匀先验），后验分布是什么？后验均值是多少？</p></li>
+<li><p>如果选择先验 Beta(0.5, 0.5)（Jeffreys 先验），后验分布是什么？后验均值是多少？</p></li>
+<li><p>比较两种先验下的后验均值，哪一个更接近频率学派的最大似然估计 <span class="math notranslate nohighlight">\(\hat{\theta} = k/n = 0.7\)</span>？</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01-Linear-Algebra.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">线性代数基础</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03-Optimization.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">优化基础</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">引言</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1 概率基础</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">1.1 概率的定义</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">1.1.1 概率的公理化定义</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">1.1.2 概率的频率解释与主观解释</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">1.2 条件概率</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">1.2.1 条件概率的定义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">1.2.2 乘法公式</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">1.2.3 全概率公式</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">1.3 贝叶斯定理</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">1.3.1 贝叶斯定理的定义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">1.3.2 贝叶斯定理的直观解释</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">1.3.3 贝叶斯定理在机器学习中的应用</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">2 随机变量</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">2.1 随机变量的概念</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">2.2 离散随机变量</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pmf">2.2.1 概率质量函数（PMF）</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cdf">2.2.2 累积分布函数（CDF）</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">2.3 连续随机变量</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pdf">2.3.1 概率密度函数（PDF）</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">2.3.2 累积分布函数（CDF）</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">2.4 常见离散分布</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">2.4.1 伯努利分布</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">2.4.2 二项分布</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">2.4.3 泊松分布</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">2.5 常见连续分布</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">2.5.1 均匀分布</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">2.5.2 正态分布（高斯分布）</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">2.5.3 指数分布</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">2.5.4 拉普拉斯分布</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">2.6 分布的混合</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">3 统计基础</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">3.1 期望</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id33">3.1.1 期望的定义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id34">3.1.2 期望的性质</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">3.1.3 条件期望</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id36">3.2 方差</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id37">3.2.1 方差的定义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id38">3.2.2 方差的性质</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id39">3.2.3 常见分布的期望与方差</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id40">3.3 协方差与相关系数</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id41">3.3.1 协方差的定义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id42">3.3.2 相关系数</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id43">3.4 大数定律</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id44">3.4.1 大数定律的表述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id45">3.4.2 大数定律的意义</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id46">3.5 中心极限定理</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id47">3.5.1 中心极限定理的表述</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id48">3.5.2 中心极限定理的意义</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id49">3.5.3 大数定律与中心极限定理的比较</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id50">3.6 统计在机器学习中的应用</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id51">3.6.1 最大似然估计</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id52">3.6.2 偏差-方差分解</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id53">3.6.3 贝叶斯统计与正则化</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id54">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id55">思考与练习</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Author name not set
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Apr 29, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>本教材仅供内部培训使用</p>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

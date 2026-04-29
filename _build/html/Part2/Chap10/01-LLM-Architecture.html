@@ -1,0 +1,1236 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>大模型架构 &#8212; AI系统工程师培训教程</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Part2/Chap10/01-LLM-Architecture';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="AI集群" href="02-AI-Cluster.html" />
+    <link rel="prev" title="Chap10 大模型与集群" href="README.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Apr 29, 2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="AI系统工程师培训教程 - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="AI系统工程师培训教程 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    AI系统工程师培训教程
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">第一阶段：AI基础入门</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap01/README.html">Chap01 计算机基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/01-Binary.html">第一章 进制与编码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/02-CPU-Memory.html">第二章 CPU与内存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/03-Program-Running.html">第三章 程序运行原理</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap02/README.html">Chap02 Python编程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/01-Python-Basic.html">Python基础语法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/02-NumPy.html">NumPy基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/03-PyTorch.html">PyTorch基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap03/README.html">Chap03 数学基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/01-Linear-Algebra.html">线性代数基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/02-Probability.html">概率与统计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/03-Optimization.html">优化基础</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二阶段：AI系统核心</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap04/README.html">Chap04 AI系统概述</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap04/01-Introduction.html">AI系统基本概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap04/02-Architecture.html">AI系统全栈架构</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap05/README.html">Chap05 神经网络基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/01-Neuron-Model.html">神经元与网络模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/02-CNN.html">卷积神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/03-RNN.html">循环神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/04-Transformer.html">Transformer与注意力机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/05-Quantization.html">模型量化基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap06/README.html">Chap06 AI芯片体系架构</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/01-Chip-Base.html">AI芯片基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/02-GPU-Base.html">GPU原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/03-NVIDIA.html">NVIDIA GPU架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/04-Abroad-Chips.html">国外AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/05-Domestic-Chips.html">国内AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/06-Programming-Model.html">芯片编程模式</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap07/README.html">Chap07 AI编译器原理</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/01-Traditional-Compiler.html">第一章 传统编译器基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/02-AI-Compiler.html">第二章 AI编译器架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/03-Frontend-Optimization.html">第三章 前端优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/04-Backend-Optimization.html">第四章 后端优化</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap08/README.html">Chap08 推理系统与引擎</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/01-Inference-System.html">01 推理系统概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/02-Model-Compression.html">02 模型压缩</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/03-Model-Converter.html">03 模型转换与优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/04-Inference-Optimization.html">04 推理优化技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/05-Kernel-Optimization.html">05 Kernel优化技术</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap09/README.html">Chap09 AI框架核心</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/01-Auto-Differentiation.html">自动微分</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/02-Computational-Graph.html">计算图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/03-Distributed-Training.html">分布式训练</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Chap10 大模型与集群</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">大模型架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-AI-Cluster.html">AI集群</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-Parallel-Strategy.html">并行策略</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三阶段：附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixA/README.html">附录A：AI系统术语表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixB/README.html">附录B：参考文献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixC/README.html">AppendixC 实践项目</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/your-org/AI-System-Training/blob/main/Part2/Chap10/01-LLM-Architecture.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button"
+   title="Show source"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/Part2/Chap10/01-LLM-Architecture.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>大模型架构</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformer">1.1 Transformer架构基础</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.1.1 从注意力机制说起</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1.1.2 自注意力机制的数学原理</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">1.1.3 多头注意力机制</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">1.1.4 Transformer总体架构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">1.1.5 位置编码</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">1.2 注意力机制的扩展与优化</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">1.2.1 标准注意力的计算瓶颈</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">1.2.2 多查询注意力与分组查询注意力</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">1.2.3 稀疏注意力机制</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">1.2.4 线性注意力机制</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flashattention">1.2.5 FlashAttention</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">1.2.6 注意力机制的未来发展</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt">1.3 GPT系列模型</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-1">1.3.1 GPT-1：生成式预训练的开创者</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-2">1.3.2 GPT-2：迈向多任务学习</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-3">1.3.3 GPT-3：规模的力量</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-4">1.3.4 GPT-4：多模态与强化学习</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chatgpt">1.3.5 ChatGPT：从语言模型到对话助手</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llama">1.4 LLaMA系列开源模型</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">1.4.1 LLaMA的诞生与设计理念</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">1.4.2 LLaMA的架构特点</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">1.4.3 开源生态的繁荣</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">1.4.4 开源模型的意义</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">1.5 大模型训练的关键技术</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">1.5.1 混合精度训练</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">1.5.2 梯度累积</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">1.5.3 激活检查点技术</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">1.5.4 学习率调度</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">1.5.5 分布式优化器</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">1.5.6 检查点与容错</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenization">1.6 词嵌入与tokenization</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">1.6.1 从文本到数字</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byte-pair-encoding-bpe">1.6.2 Byte Pair Encoding (BPE)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wordpiecesentencepiece">1.6.3 WordPiece与SentencePiece</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">1.7 模型评估与基准测试</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">1.7.1 语言模型的评估指标</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">1.7.2 大模型能力评估</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">小结</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>大模型架构<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="id2">
+<h2>学习目标<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>理解Transformer架构的核心组件及其扩展方法</p></li>
+<li><p>掌握注意力机制的原理和变体</p></li>
+<li><p>了解GPT系列模型的发展历程和架构特点</p></li>
+<li><p>熟悉LLaMA系列开源模型的设计理念</p></li>
+<li><p>理解大模型训练的关键技术</p></li>
+</ol>
+</section>
+<section id="transformer">
+<h2>1.1 Transformer架构基础<a class="headerlink" href="#transformer" title="Link to this heading">#</a></h2>
+<section id="id3">
+<h3>1.1.1 从注意力机制说起<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>在深度学习的早期，循环神经网络（RNN）曾是处理序列数据的主流方法。RNN通过其隐藏状态在序列中传递信息，能够捕捉序列中的时序依赖关系。然而，RNN存在一个根本性的问题：<strong>长距离依赖问题</strong>。当序列过长时，早期的信息会在传播过程中逐渐被稀释，导致模型难以记住重要的历史细节。</p>
+<p>让我们用一个生活中的例子来理解这个问题。假设你在阅读一篇学术论文，需要理解作者在结论部分提出的核心观点。这个观点可能建立在论文开头的研究背景之上，你需要记住”第一章”提到的某个关键技术问题。但在RNN中，经过多层的传递，早期的重要信息可能已经被后续的无关信息所稀释，模型难以建立这种跨越长距离的关联。</p>
+<p>为了解决这个问题，研究者们引入了<strong>注意力机制（Attention Mechanism）</strong>。注意力机制的核心思想是：<strong>在处理每个位置的信息时，允许模型”关注”或”查看”序列中的其他位置，从而更好地捕捉长距离依赖关系</strong>。</p>
+<p>让我们用一个生动的比喻来理解注意力机制。想象你正在观看一场足球比赛。作为观众，你的注意力会自动跟随球的移动——当球传到禁区时，你会更加关注禁区内球员的动向；当球被解围到中场，你的注意力也会随之转移。注意力机制的工作方式与此类似——它让模型能够灵活地权衡序列中不同位置信息的重要性，而不是按固定顺序处理。</p>
+<p>自注意力机制（Self-Attention）是注意力机制的一种变体。与普通的注意力机制不同，自注意力机制与输入序列的位置无关，通过计算序列内部各个元素之间的关系来生成输出。自注意力的核心是<strong>让序列中的每个位置都能关注到序列中的所有其他位置</strong>，从而捕获任意位置的依赖关系。</p>
+</section>
+<section id="id4">
+<h3>1.1.2 自注意力机制的数学原理<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>自注意力机制的计算过程可以通过以下步骤来描述：</p>
+<p><strong>第一步：生成查询、键和值向量</strong></p>
+<p>对于输入序列中的每个词向量 <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span>，我们使用三个独立的权重矩阵 <span class="math notranslate nohighlight">\(\mathbf{W}_q\)</span>、<span class="math notranslate nohighlight">\(\mathbf{W}_k\)</span>、<span class="math notranslate nohighlight">\(\mathbf{W}_v\)</span> 来生成对应的查询（Query）、键（Key）和值（Value）向量：</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{q}_i = \mathbf{W}_q \mathbf{x}_i, \quad \mathbf{k}_i = \mathbf{W}_k \mathbf{x}_i, \quad \mathbf{v}_i = \mathbf{W}_v \mathbf{x}_i
+\]</div>
+<p>这三个向量在注意力机制中扮演不同的角色，理解它们有助于理解整个系统：</p>
+<ul class="simple">
+<li><p><strong>查询向量（Query）</strong>：表示当前位置”想要查询什么信息”，类似于数据库检索中的搜索关键词</p></li>
+<li><p><strong>键向量（Key）</strong>：表示每个位置”包含什么信息”，类似于数据库中的索引，用于匹配查询</p></li>
+<li><p><strong>值向量（Value）</strong>：则是实际要传递的信息内容，当查询与键匹配后，通过值向量传递信息</p></li>
+</ul>
+<p><strong>第二步：计算注意力分数</strong></p>
+<p>接下来，我们计算查询向量与所有键向量的点积，得到注意力分数：</p>
+<div class="math notranslate nohighlight">
+\[
+\text{score}_{ij} = \frac{\mathbf{q}_i \cdot \mathbf{k}_j}{\sqrt{d_k}}
+\]</div>
+<p>其中 <span class="math notranslate nohighlight">\(d_k\)</span> 是键向量的维度。引入这个缩放因子 <span class="math notranslate nohighlight">\(\sqrt{d_k}\)</span> 是为了防止点积结果过大，导致softmax函数进入梯度饱和区。点积结果随着维度的增大而增大，如果不进行缩放，softmax函数可能处于非常尖锐的概率分布状态，导致梯度消失，影响模型训练。</p>
+<p><strong>第三步：归一化与加权求和</strong></p>
+<p>使用softmax函数对注意力分数进行归一化，得到注意力权重：</p>
+<div class="math notranslate nohighlight">
+\[
+\alpha_{ij} = \frac{\exp(\text{score}_{ij})}{\sum_j \exp(\text{score}_{ij})}
+\]</div>
+<p>这些权重表示位置i对位置j的注意力程度，权重之和为1。最后，用注意力权重对值向量进行加权求和，得到最终的输出：</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{o}_i = \sum_j \alpha_{ij} \mathbf{v}_j
+\]</div>
+<p>这个过程可以看作是一次”软查找”操作——每个位置都在整个序列中查找相关信息，并根据相关性加权组合。</p>
+</section>
+<section id="id5">
+<h3>1.1.3 多头注意力机制<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>单一的注意力头可能只能捕获一种类型的相关性。例如，一个注意力头可能学会了关注语法依存关系，另一个头可能学会了关注语义相似性，还有一个头可能捕捉指代关系。为了让模型能够同时关注不同类型的信息，Transformer引入了<strong>多头注意力机制（Multi-Head Attention）</strong>。</p>
+<p>多头注意力的思想是：<strong>将查询、键、值向量分别投影到多个低维空间，在每个空间中独立地计算注意力，然后合并所有头的输出</strong>。</p>
+<p>具体来说，如果有 <span class="math notranslate nohighlight">\(h\)</span> 个注意力头，每个头的维度为 <span class="math notranslate nohighlight">\(d_k' = d_k / h\)</span>，则：</p>
+<div class="math notranslate nohighlight">
+\[
+\text{head}_h = \text{Attention}(\mathbf{W}_q^h \mathbf{x}, \mathbf{W}_k^h \mathbf{x}, \mathbf{W}_v^h \mathbf{W}_o^h \mathbf{x})
+\]</div>
+<p>最终输出为所有注意力头的拼接：</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{o} = \text{Concat}(\text{head}_1, \text{head}_2, \ldots, \text{head}_h) \mathbf{W}_o
+\]</div>
+<p>这种设计让模型能够同时学习多种类型的关系，提高了模型的表达能力。</p>
+</section>
+<section id="id6">
+<h3>1.1.4 Transformer总体架构<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>Transformer采用了经典的编码器-解码器（Encoder-Decoder）架构，这种架构在机器翻译等序列到序列任务中表现出色。编码器负责理解输入序列，解码器负责生成输出序列，两者协同工作完成翻译任务。</p>
+<p><strong>编码器结构</strong></p>
+<p>编码器由 <span class="math notranslate nohighlight">\(N\)</span> 个相同的层堆叠而成，每一层包含两个子层：</p>
+<ol class="arabic simple">
+<li><p><strong>多头自注意力层</strong>：帮助编码器在对每个位置进行编码时，能够关注到上下文的其他位置。这使得编码器在处理每个词时能够”看到”句子中的其他词，更好地理解词语之间的依赖关系。</p></li>
+<li><p><strong>前馈神经网络层</strong>：对注意力层的输出进行非线性变换。这个前馈网络通常是两层全连接神经网络，中间有一个非线性激活函数（如ReLU或GELU）。</p></li>
+</ol>
+<p>每个子层都使用了<strong>残差连接（Residual Connection）<strong>和</strong>层归一化（Layer Normalization）</strong>：</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}' = \text{LayerNorm}(\mathbf{x} + \text{Sublayer}(\mathbf{x}))
+\]</div>
+<p>这种设计有两个重要作用：</p>
+<ul class="simple">
+<li><p><strong>残差连接</strong>：允许梯度直接流过，缓解深层网络的训练困难。残差连接的核心思想是让网络学习输入与输出之间的”残差”，而不是直接学习完整的映射。当子层的输出与输入相差不大时，梯度可以直接反向传播到输入层。</p></li>
+<li><p><strong>层归一化</strong>：通过对每一层的激活值进行归一化，有助于稳定训练过程。层归一化计算同一层中所有神经元激活值的均值和方差，然后进行归一化，使得每层的输入分布保持稳定。</p></li>
+</ul>
+<p><strong>解码器结构</strong></p>
+<p>解码器同样由 <span class="math notranslate nohighlight">\(N\)</span> 个相同的层堆叠而成，但每一层包含三个子层：</p>
+<ol class="arabic simple">
+<li><p><strong>掩码多头自注意力层</strong>：确保解码器只能看到当前及之前的位置，保持自回归特性。在生成任务中，解码器只能基于已经生成的内容进行预测，而不能”看到”未来的信息。掩码机制通过将未生成位置的信息遮盖来实现这一点。</p></li>
+<li><p><strong>编码器-解码器注意力层</strong>：让解码器的每个位置能够关注到编码器的所有位置。这是解码器理解源语言上下文的关键机制。</p></li>
+<li><p><strong>前馈神经网络层</strong>：与编码器相同的全连接层，负责最终的特征变换。</p></li>
+</ol>
+<p>解码器在处理序列时采用自回归的方式——<strong>生成每个token时，只能基于已经生成的token进行预测</strong>，而不能看到未来的信息。这通过在注意力计算时应用掩码来实现。</p>
+</section>
+<section id="id7">
+<h3>1.1.5 位置编码<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>与RNN不同，Transformer架构本身不包含序列中token位置的信息。这是一个设计上的有意选择——让我们能够使用高效的并行计算，但同时也意味着我们需要显式地将位置信息注入模型。</p>
+<p>**位置编码（Positional Encoding）**通过向输入嵌入添加位置信息来实现这一目标。原始Transformer使用了两种位置编码方式：</p>
+<p><strong>方法一：正弦位置编码</strong></p>
+<p>对于位置 <span class="math notranslate nohighlight">\(pos\)</span> 和维度 <span class="math notranslate nohighlight">\(i\)</span>：</p>
+<div class="math notranslate nohighlight">
+\[
+PE_{(pos, 2i)} = \sin\left(\frac{pos}{10000^{2i/d_{model}}}\right)
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+PE_{(pos, 2i+1)} = \cos\left(\frac{pos}{10000^{2i/d_{model}}}\right)
+\]</div>
+<p>这种设计的优点是：<strong>对于任意固定的偏移量 <span class="math notranslate nohighlight">\(k\)</span>，<span class="math notranslate nohighlight">\(PE_{pos+k}\)</span> 可以表示为 <span class="math notranslate nohighlight">\(PE_{pos}\)</span> 的线性函数</strong>，这使得模型能够轻松地学习关注相对位置。</p>
+<p><strong>方法二：可学习的位置编码</strong></p>
+<p>另一种方法是将位置编码作为可学习的参数，让模型从数据中自动学习有意义的位置表示。这种方法在某些任务中表现良好，但正弦编码具有更好的外推性。</p>
+<p><strong>旋转位置编码（RoPE）</strong></p>
+<p>近年来，旋转位置编码成为大语言模型中的主流选择。RoPE通过将位置信息编码为旋转矩阵来实现，其核心思想是：<strong>将位置编码融入到查询和键向量的旋转操作中</strong>。</p>
+<p>具体来说，对于二维情形，RoPE将位置 <span class="math notranslate nohighlight">\(m\)</span> 的查询向量 <span class="math notranslate nohighlight">\(\mathbf{q}\)</span> 旋转角度 <span class="math notranslate nohighlight">\(m\theta\)</span>：</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{q}' = \mathbf{R}(m\theta) \mathbf{q}
+\]</div>
+<p>其中 <span class="math notranslate nohighlight">\(\mathbf{R}(m\theta)\)</span> 是旋转矩阵。这种编码方式具有更好的外推性，能够处理训练时未见过的更长序列。</p>
+</section>
+</section>
+<section id="id8">
+<h2>1.2 注意力机制的扩展与优化<a class="headerlink" href="#id8" title="Link to this heading">#</a></h2>
+<section id="id9">
+<h3>1.2.1 标准注意力的计算瓶颈<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p>标准自注意力的计算复杂度为 <span class="math notranslate nohighlight">\(O(n^2)\)</span>，其中 <span class="math notranslate nohighlight">\(n\)</span> 是序列长度。这意味着当序列长度增加时，计算量会急剧增长。例如，当序列长度从512增加到4096时，计算量会增加64倍。</p>
+<p>在大语言模型中，序列长度通常非常大。例如，GPT-4支持长达32,000个token的上下文，而某些模型甚至支持更长的序列。处理如此长的序列是一个巨大的挑战，特别是在显存和计算时间方面。</p>
+<p>为了解决这个问题，研究者们提出了多种高效的注意力机制变体，包括多查询注意力、分组查询注意力、稀疏注意力、线性注意力和FlashAttention等。</p>
+</section>
+<section id="id10">
+<h3>1.2.2 多查询注意力与分组查询注意力<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>标准多头注意力中，每个注意力头都有独立的查询、键和值向量。但在某些场景下，我们可能希望<strong>共享键向量</strong>，以减少计算和内存开销。</p>
+<p>**多查询注意力（Multi-Query Attention，MQA）**采用了这一思路——所有注意力头共享相同的键和值向量，只有查询向量保持独立。这种设计可以显著减少键值对的存储和计算量。</p>
+<p>MQA的trade-off是：减少了内存和计算，但可能损失一定的表达能力，因为不同头不能学习独立的键值映射。</p>
+<p>**分组查询注意力（Grouped Query Attention，GQA）**是MQA的推广，它将注意力头分成 <span class="math notranslate nohighlight">\(g\)</span> 个组，同一组内的头共享键和值向量，不同组则有独立的键值向量。</p>
+<p>这种设计允许模型在保持一定多样性的同时，减少键值向量的数量，从而降低内存占用和计算成本。LLaMA 2就采用了分组查询注意力来平衡性能和效率。</p>
+</section>
+<section id="id11">
+<h3>1.2.3 稀疏注意力机制<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p>稀疏注意力（Sparse Attention）是一种通过只计算部分注意力分数来提高效率的方法。其核心思想是：<strong>不是所有位置都需要关注所有其他位置，很多注意力模式是可以预测的</strong>。</p>
+<p>例如，在语言数据中，一个词更可能与相近的词产生关联，而距离较远的词之间的直接关联相对较少。这种”局部性”特征在自然语言中普遍存在。同样，在图像数据中，相邻像素之间的关联也比远距离像素更强。</p>
+<p>基于这种观察，稀疏注意力机制只计算局部窗口内的注意力，或只关注某些预设的”重要”位置。</p>
+<p>常见的稀疏注意力模式包括：</p>
+<ol class="arabic simple">
+<li><p><strong>滑窗注意力（Sliding Window Attention）</strong>：每个位置只关注其邻近的 <span class="math notranslate nohighlight">\(w\)</span> 个位置。这种模式适合捕捉局部依赖关系，计算复杂度为 <span class="math notranslate nohighlight">\(O(n \cdot w)\)</span>。</p></li>
+<li><p><strong>扩张滑窗注意力（Dilated Sliding Window）</strong>：在滑窗中引入扩张间隔，增加感受野。例如，扩张率为2的滑窗会跳过一个位置，让感受野更广。</p></li>
+<li><p><strong>全局注意力（Global Attention）</strong>：某些特殊位置（如[CLS] token或特定标记）可以看到所有其他位置，用于汇总信息。</p></li>
+</ol>
+</section>
+<section id="id12">
+<h3>1.2.4 线性注意力机制<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>线性注意力（Linear Attention）通过重新排列计算顺序，将注意力计算的复杂度从 <span class="math notranslate nohighlight">\(O(n^2)\)</span> 降低到 <span class="math notranslate nohighlight">\(O(n)\)</span>。</p>
+<p>标准注意力的计算过程是：</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{o}_i = \sum_j \alpha_{ij} \mathbf{v}_j = \sum_j \frac{\exp(\mathbf{q}_i \cdot \mathbf{k}_j)}{\sum_j \exp(\mathbf{q}_i \cdot \mathbf{k}_j)} \mathbf{v}_j
+\]</div>
+<p>线性注意力的核心思想是<strong>使用核函数近似softmax操作</strong>，从而将计算顺序从 <span class="math notranslate nohighlight">\((\mathbf{q} \cdot \mathbf{k}) \mathbf{v}\)</span> 变为 <span class="math notranslate nohighlight">\(\mathbf{q} \cdot (\mathbf{k} \cdot \mathbf{v})\)</span>，实现计算复杂度的降低。</p>
+<p>具体来说，如果我们使用一个核函数 <span class="math notranslate nohighlight">\(\phi(\cdot)\)</span> 来近似 <span class="math notranslate nohighlight">\(\exp(\mathbf{q} \cdot \mathbf{k})\)</span>，那么：</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{o}_i \approx \mathbf{q}_i^T \left( \sum_j \phi(\mathbf{k}_j) \phi(\mathbf{k}_j)^T \right)
+\]</div>
+<p>这样可以将计算复杂度降低到 <span class="math notranslate nohighlight">\(O(n)\)</span>。</p>
+<p>然而，线性注意力有一个重要的局限性：<strong>它无法自然地支持掩码机制</strong>，这使得它在生成任务中的表现受到影响，因为生成任务需要防止看到未来信息。</p>
+</section>
+<section id="flashattention">
+<h3>1.2.5 FlashAttention<a class="headerlink" href="#flashattention" title="Link to this heading">#</a></h3>
+<p>FlashAttention是一种最近提出的高效注意力计算方法，它利用GPU的层次化内存结构（共享内存、L2缓存、HBM）来加速注意力计算。</p>
+<p>传统的注意力实现需要多次访问HBM（High Bandwidth Memory），这会成为性能瓶颈——HBM的带宽虽然高，但延迟也较大，频繁访问会影响性能。</p>
+<p>FlashAttention的核心思想是<strong>将注意力计算分成多个小块，每次将一小块数据从HBM加载到共享内存，在共享内存中进行计算，然后再写回HBM</strong>。</p>
+<p>通过这种方式，FlashAttention能够：</p>
+<ul class="simple">
+<li><p><strong>减少HBM访问次数</strong>：从 <span class="math notranslate nohighlight">\(O(n^2)\)</span> 次减少到更少的次数</p></li>
+<li><p><strong>避免存储完整的注意力矩阵</strong>：节省 <span class="math notranslate nohighlight">\(O(n^2)\)</span> 的显存占用</p></li>
+<li><p><strong>保持数值精度</strong>：使用在线softmax等技巧保证计算结果的准确性</p></li>
+</ul>
+<p>FlashAttention已经成为训练大语言模型的标准优化技术之一，被广泛应用于GPT、LLAMA等大模型的训练中。</p>
+</section>
+<section id="id13">
+<h3>1.2.6 注意力机制的未来发展<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p>注意力机制的优化仍在持续推进。一些值得关注的研究方向包括：</p>
+<ol class="arabic simple">
+<li><p><strong>状态空间模型（SSM）</strong>：如Mamba等新型架构，试图用递归机制替代注意力，实现线性复杂度的序列建模。</p></li>
+<li><p><strong>稀疏注意力学习</strong>：让模型自动学习最优的稀疏注意力模式，而非人工设计。</p></li>
+<li><p><strong>多尺度注意力</strong>：在不同尺度上应用注意力，捕捉不同范围的依赖关系。</p></li>
+<li><p><strong>硬件感知的注意力</strong>：针对特定硬件特性优化的注意力实现。</p></li>
+</ol>
+</section>
+</section>
+<section id="gpt">
+<h2>1.3 GPT系列模型<a class="headerlink" href="#gpt" title="Link to this heading">#</a></h2>
+<section id="gpt-1">
+<h3>1.3.1 GPT-1：生成式预训练的开创者<a class="headerlink" href="#gpt-1" title="Link to this heading">#</a></h3>
+<p><strong>GPT-1</strong>（Generative Pre-trained Transformer）是OpenAI在2018年提出的模型，它首次系统性地展示了”预训练+微调”范式的强大威力。</p>
+<p>GPT-1的核心思想是：<strong>先在大规模无标注文本上进行生成式预训练，学习语言的基本规律，然后在特定任务上进行有监督微调</strong>。</p>
+<p>这个范式奠定了现代自然语言处理的基础。在此之前，大多数NLP模型需要针对每个任务进行从头训练，而预训练+微调的范式允许模型从大规模无监督数据中学习通用语言表示，然后在特定任务上进行针对性优化。</p>
+<p>模型架构基于Transformer的解码器部分：</p>
+<ul class="simple">
+<li><p>12层Transformer解码器</p></li>
+<li><p>768维隐藏层</p></li>
+<li><p>12个注意力头</p></li>
+<li><p>参数量约1.17亿</p></li>
+</ul>
+<p>预训练任务是<strong>语言建模（Language Modeling）</strong>：给定前文预测下一个词。在大规模 BooksCorpus 数据集（包含约7,000本未出版的书籍）上进行训练。</p>
+<p>GPT-1在多个NLP任务上取得了当时最好的结果，证明了预训练方法的有效性，开启了预训练大模型的时代。</p>
+</section>
+<section id="gpt-2">
+<h3>1.3.2 GPT-2：迈向多任务学习<a class="headerlink" href="#gpt-2" title="Link to this heading">#</a></h3>
+<p><strong>GPT-2</strong>在GPT-1的基础上进行了扩展，展示了**”涌现能力”（Emergent Abilities）**的初步迹象。</p>
+<p>GPT-2的关键特点：</p>
+<ol class="arabic simple">
+<li><p><strong>规模更大</strong>：15亿参数，相比GPT-1增长超过10倍</p></li>
+<li><p><strong>数据更多</strong>：训练数据来自Reddit高赞文章，构建了WebText数据集</p></li>
+<li><p><strong>零样本学习</strong>：GPT-2展示出了在未见过的任务上进行零样本推理的能力</p></li>
+</ol>
+<p>GPT-2的核心观点是：<strong>语言模型可以在无需人类标注的情况下学习执行多种任务</strong>，因为语言本身就是多任务的——人们在写作时已经隐含地包含了各种任务（如问答、翻译、摘要等）。</p>
+<p>例如，当你读一篇新闻文章时，作者可能隐含地提供了新闻摘要；当你读一个说明书时，里面可能包含了解释性的问答。语言模型通过大规模预训练，能够隐式地学习这些任务。</p>
+<p>GPT-2的发布曾引起广泛关注，OpenAI出于安全考虑没有完全开源完整的模型权重，这也引发了对AI安全性的首次大规模讨论。</p>
+</section>
+<section id="gpt-3">
+<h3>1.3.3 GPT-3：规模的力量<a class="headerlink" href="#gpt-3" title="Link to this heading">#</a></h3>
+<p><strong>GPT-3</strong>是AI领域的一个里程碑，它证明了**”规模假设”（Scaling Hypothesis）**——随着模型规模、数据量和计算量的增加，模型能力会持续提升。</p>
+<p>GPT-3的关键数据：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>指标</p></th>
+<th class="head"><p>数值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>参数量</p></td>
+<td><p>1750亿</p></td>
+</tr>
+<tr class="row-odd"><td><p>训练token数</p></td>
+<td><p>约3000亿</p></td>
+</tr>
+<tr class="row-even"><td><p>模型尺寸</p></td>
+<td><p>约350GB（FP16）</p></td>
+</tr>
+<tr class="row-odd"><td><p>训练成本</p></td>
+<td><p>估计约460万美元</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>GPT-3展示了令人惊叹的<strong>上下文学习能力（In-Context Learning）</strong>：用户可以通过在提示中提供几个示例，让模型理解任务并执行新的推理，而无需对模型进行任何权重更新。</p>
+<p>例如，要让GPT-3进行英语到法语翻译，只需在提示中写：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>英语：Hello
+法语：Bonjour
+
+英语：Good morning
+法语：Bon jour
+
+英语：Thank you
+法语：
+</pre></div>
+</div>
+<p>GPT-3能够理解任务并完成翻译。</p>
+<p>GPT-3在众多基准测试中展现出接近甚至超越人类水平的性能，但同时也暴露了一些局限性，如偏见问题和事实性错误。</p>
+</section>
+<section id="gpt-4">
+<h3>1.3.4 GPT-4：多模态与强化学习<a class="headerlink" href="#gpt-4" title="Link to this heading">#</a></h3>
+<p><strong>GPT-4</strong>在GPT-3的基础上进行了多项重要升级：</p>
+<ol class="arabic simple">
+<li><p><strong>多模态能力</strong>：GPT-4能够接受图像和文本输入，在视觉理解任务上表现出色</p></li>
+<li><p><strong>更长上下文</strong>：支持最高32,000个token的上下文窗口</p></li>
+<li><p><strong>更安全的输出</strong>：通过人类反馈强化学习（RLHF）显著减少了有害输出</p></li>
+<li><p><strong>复杂推理能力</strong>：在各类专业和学术考试中展现出高级推理能力</p></li>
+</ol>
+<p>GPT-4的架构细节并未完全公开，但可以推测它延续了GPT系列的核心设计，同时引入了更多的工程优化和后训练增强。</p>
+<p>GPT-4在多项考试中表现出色，包括：</p>
+<ul class="simple">
+<li><p>美国律师资格考试（LSAT）：前10%</p></li>
+<li><p>美国医学执照考试（USMLE）：约86%的通过率</p></li>
+<li><p>GRE语文：前20%</p></li>
+</ul>
+</section>
+<section id="chatgpt">
+<h3>1.3.5 ChatGPT：从语言模型到对话助手<a class="headerlink" href="#chatgpt" title="Link to this heading">#</a></h3>
+<p><strong>ChatGPT</strong>是基于GPT系列模型专门针对对话场景优化的产物。它的出现标志着AI助手进入了一个新时代。</p>
+<p>ChatGPT的关键技术包括：</p>
+<ol class="arabic simple">
+<li><p><strong>指令微调（Instruction Tuning）</strong>：通过人类编写的指令-响应对数据进行微调，让模型学会理解并遵循指令</p></li>
+<li><p><strong>人类反馈强化学习（RLHF）</strong>：使用人类反馈来训练奖励模型，再通过强化学习优化策略</p></li>
+<li><p><strong>安全与有用性平衡</strong>：在保持模型创造力的同时，减少有害输出</p></li>
+</ol>
+<p>RLHF的过程可以分解为三个阶段：</p>
+<ul class="simple">
+<li><p><strong>监督学习阶段</strong>：使用人类示例数据微调GPT-3.5，学习如何生成合适的回复</p></li>
+<li><p><strong>奖励模型训练</strong>：训练一个模型来预测人类偏好，这个模型学习区分”好的”和”不好的”回复</p></li>
+<li><p><strong>强化学习优化</strong>：使用PPO（Proximal Policy Optimization）算法优化模型策略，让模型生成更符合人类期望的回复</p></li>
+</ul>
+<p>ChatGPT展示出了连贯对话、代码编写、文学创作等多样化的能力，但它也继承了基础模型的局限性，包括知识截止日期和偶尔产生幻觉的问题。</p>
+</section>
+</section>
+<section id="llama">
+<h2>1.4 LLaMA系列开源模型<a class="headerlink" href="#llama" title="Link to this heading">#</a></h2>
+<section id="id14">
+<h3>1.4.1 LLaMA的诞生与设计理念<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p><strong>LLaMA</strong>（Large Language Model Meta AI）是Meta在2023年发布的一系列开源大语言模型，它的出现彻底改变了开源社区的格局。</p>
+<p>在LLaMA之前，开源社区虽然有一些小型语言模型，但缺乏能够与GPT系列竞争的大规模模型。LLaMA的发布让开源社区首次拥有了可以媲美闭源模型的基础模型。</p>
+<p>LLaMA的核心设计理念是：<strong>以更小的规模实现顶级模型相当的性能</strong>。</p>
+<p>LLaMA提供了多个规模的版本：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>模型</p></th>
+<th class="head"><p>参数量</p></th>
+<th class="head"><p>隐藏维度</p></th>
+<th class="head"><p>注意力头数</p></th>
+<th class="head"><p>层数</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>LLaMA-7B</p></td>
+<td><p>70亿</p></td>
+<td><p>4096</p></td>
+<td><p>32</p></td>
+<td><p>32</p></td>
+</tr>
+<tr class="row-odd"><td><p>LLaMA-13B</p></td>
+<td><p>130亿</p></td>
+<td><p>5120</p></td>
+<td><p>40</p></td>
+<td><p>40</p></td>
+</tr>
+<tr class="row-even"><td><p>LLaMA-33B</p></td>
+<td><p>330亿</p></td>
+<td><p>6656</p></td>
+<td><p>52</p></td>
+<td><p>60</p></td>
+</tr>
+<tr class="row-odd"><td><p>LLaMA-65B</p></td>
+<td><p>650亿</p></td>
+<td><p>8192</p></td>
+<td><p>64</p></td>
+<td><p>80</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>值得注意的是，<strong>LLaMA-13B在多数基准测试中超越了GPT-3（175B参数）</strong>，这证明了小模型通过更好的训练也能获得出色的性能。</p>
+</section>
+<section id="id15">
+<h3>1.4.2 LLaMA的架构特点<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<p>LLaMA的架构基于Transformer，但进行了多项重要改进：</p>
+<p><strong>1. 预归一化（Pre-normalization）</strong></p>
+<p>与标准Transformer不同，LLaMA对每个子层的输入进行归一化，而不是对输出进行归一化。具体使用RMSNorm：</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{x}' = \mathbf{x} \otimes \frac{\mathbf{g}}{\sqrt{\text{RMS}(\mathbf{x})}}, \quad \text{RMS}(\mathbf{x}) = \sqrt{\frac{1}{n}\sum_i x_i^2}
+\]</div>
+<p>这种归一化方式比层归一化更简单，计算更快，同时在实验中表现良好。</p>
+<p><strong>2. 分组查询注意力（GQA）</strong></p>
+<p>LLaMA-65B和LLaMA-33B使用分组查询注意力，在保持推理效率的同时不牺牲模型性能。</p>
+<p><strong>3. 旋转位置编码（RoPE）</strong></p>
+<p>LLaMA使用旋转位置编码取代了绝对位置编码，具有更好的外推性。这对于处理长序列尤为重要。</p>
+<p><strong>4. SwiGLU激活函数</strong></p>
+<p>LLaMA使用SwiGLU激活函数取代ReLU：</p>
+<div class="math notranslate nohighlight">
+\[
+\text{SwiGLU}(x) = x \cdot \sigma(x) \cdot \text{Swish}(x) = x \cdot \sigma(x) \cdot \frac{x}{1+e^{-x}}
+\]</div>
+<p>SwiGLU结合了门控机制和Swish激活函数的优点，在多项实验中表现优于标准激活函数。</p>
+</section>
+<section id="id16">
+<h3>1.4.3 开源生态的繁荣<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<p>LLaMA的开源引发了开源社区的爆炸式发展，产生了众多重要衍生项目：</p>
+<p><strong>Alpaca</strong></p>
+<p>斯坦福大学发布的轻量级指令微调模型，基于LLaMA-7B，使用52K条人类指令数据进行微调。Alpaca展示了通过低成本微调就能获得出色性能的可能性，训练成本不到600美元。</p>
+<p><strong>Vicuna</strong></p>
+<p>由伯克利、CMU等机构开发的对话模型，通过在用户共享对话上进行微调，实现了高质量的对话能力。Vicuna-13B在多项评测中表现接近ChatGPT。</p>
+<p><strong>LLaMA 2</strong></p>
+<p>Meta在2023年发布了LLaMA 2，进一步提升了性能，并开放了更友好的商业许可。LLaMA 2包含专门优化的对话版本Llama Chat和助手版本LLaMA 2-CHAT。</p>
+<p>LLaMA 2使用超过100万条人工标注数据进行安全训练，在安全性和有用性方面都有显著提升。</p>
+</section>
+<section id="id17">
+<h3>1.4.4 开源模型的意义<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
+<p>开源大语言模型的出现带来了深远的影响：</p>
+<ol class="arabic simple">
+<li><p><strong>民主化AI</strong>：让研究者和小型组织也能接触到顶级AI能力，不再完全依赖商业API</p></li>
+<li><p><strong>加速创新</strong>：开源社区的快速迭代加速了新技术的验证和优化</p></li>
+<li><p><strong>透明与安全</strong>：开源模型的可审查性有助于识别和解决安全问题</p></li>
+<li><p><strong>降低成本</strong>：企业可以基于开源模型进行定制开发，而非完全依赖商业服务</p></li>
+</ol>
+<p>开源模型与闭源模型的竞争正在推动AI领域更快地向前发展，形成了百花齐放的生态。</p>
+</section>
+</section>
+<section id="id18">
+<h2>1.5 大模型训练的关键技术<a class="headerlink" href="#id18" title="Link to this heading">#</a></h2>
+<section id="id19">
+<h3>1.5.1 混合精度训练<a class="headerlink" href="#id19" title="Link to this heading">#</a></h3>
+<p>混合精度训练是训练大模型的基础技术，它通过使用不同的数值精度来加速训练并减少显存占用。</p>
+<p>混合精度训练的核心思想：</p>
+<ul class="simple">
+<li><p><strong>FP16/BF16</strong>：用于大部分计算密集操作（前向传播、反向传播）</p></li>
+<li><p><strong>FP32</strong>：用于累积梯度、权重更新等对精度敏感的操作</p></li>
+<li><p><strong>混合精度前向传播</strong>：使用低精度进行计算，同时保存FP32主权重</p></li>
+</ul>
+<p>混合精度的优势：</p>
+<ul class="simple">
+<li><p>加速计算：Tensor Core在FP16/BF16上的吞吐量是FP32的两倍</p></li>
+<li><p>减少显存：低精度权重、激活值、梯度，显存占用几乎减半</p></li>
+<li><p>通信加速：梯度通信量减半，加快分布式训练中的梯度同步</p></li>
+</ul>
+<p><strong>BF16 vs FP16</strong>：</p>
+<p>BF16（Brain Float 16）是Google为TPU开发的格式，后来被广泛采用。BF16与FP16的主要区别：</p>
+<ul class="simple">
+<li><p>FP16：1位符号，5位指数，10位尾数</p></li>
+<li><p>BF16：1位符号，8位指数，7位尾数</p></li>
+</ul>
+<p>BF16有更多的指数位，与FP32相同的动态范围，因此在训练大模型时更不容易出现数值溢出问题，越来越成为主流选择。</p>
+</section>
+<section id="id20">
+<h3>1.5.2 梯度累积<a class="headerlink" href="#id20" title="Link to this heading">#</a></h3>
+<p>梯度累积是一种允许使用更大有效批大小的技术，在显存受限的情况下尤为重要。</p>
+<p>工作原理：</p>
+<ol class="arabic simple">
+<li><p>将大batch分成多个小batch（micro-batch）</p></li>
+<li><p>分别计算每个micro-batch的梯度并累积</p></li>
+<li><p>当累积到预定数量后，再执行一次参数更新</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+\theta_{t+1} = \theta_t - \eta \cdot \sum_{i=1}^{m} \nabla\mathcal{L}_i(\theta_t)
+\]</div>
+<p>梯度累积的优势：</p>
+<ul class="simple">
+<li><p>有效批大小 = micro-batch大小 × 累积步数</p></li>
+<li><p>无需增加物理batch大小即可获得更大有效批大小</p></li>
+<li><p>与流水线并行结合使用时效果尤为明显</p></li>
+</ul>
+</section>
+<section id="id21">
+<h3>1.5.3 激活检查点技术<a class="headerlink" href="#id21" title="Link to this heading">#</a></h3>
+<p>激活检查点（Activation Checkpointing，也称Gradient Checkpointing）是一种用计算换显存的技术。</p>
+<p>工作原理：</p>
+<ul class="simple">
+<li><p>在前向传播时不保存所有中间激活值</p></li>
+<li><p>在反向传播时重新计算需要的激活值</p></li>
+<li><p>节省显存用于更大的模型或更大的batch</p></li>
+</ul>
+<p>对于Transformer模型，激活检查点可以将显存需求减少到原来的约 <span class="math notranslate nohighlight">\(\sqrt{N}\)</span>（<span class="math notranslate nohighlight">\(N\)</span>为层数）。</p>
+<p>激活检查点的trade-off是增加了计算量（前向传播需要重新计算某些激活值），但换取了大比例的显存节省。</p>
+</section>
+<section id="id22">
+<h3>1.5.4 学习率调度<a class="headerlink" href="#id22" title="Link to this heading">#</a></h3>
+<p>大模型训练通常使用复杂的学习率调度策略：</p>
+<ol class="arabic simple">
+<li><p><strong>预热（Warm-up）</strong>：初期学习率从小到大逐渐增加，帮助模型稳定</p></li>
+<li><p><strong>余弦退火（Cosine Decay）</strong>：学习率随训练步数按照余弦曲线下降</p></li>
+<li><p><strong>线性预热+余弦退火</strong>：组合策略，先线性预热再余弦退火</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\eta_t = \begin{cases}
+\eta_{max} \cdot \frac{t}{T_{warm}} &amp; t &lt; T_{warm} \\
+\eta_{max} \cdot 0.5 \cdot \left(1 + \cos\left(\frac{t - T_{warm}}{T_{total} - T_{warm}} \cdot \pi\right)\right) &amp; t \geq T_{warm}
+\end{cases}
+\end{split}\]</div>
+<p>预热阶段的作用：</p>
+<ul class="simple">
+<li><p>避免早期过大梯度导致的不稳定</p></li>
+<li><p>让优化器有机会找到更好的参数空间区域</p></li>
+<li><p>特别对于大批量训练尤为重要</p></li>
+</ul>
+</section>
+<section id="id23">
+<h3>1.5.5 分布式优化器<a class="headerlink" href="#id23" title="Link to this heading">#</a></h3>
+<p>在大规模分布式训练中，优化器本身也需要特殊处理。</p>
+<p><strong>分布式Adam优化器</strong>：</p>
+<p>标准的Adam优化器需要保存动量和方差。对于70B参数的模型，仅优化器状态就需要约280GB（FP32）。使用ZeRO技术将这些状态分片到不同GPU可以大幅降低显存需求。</p>
+<p><strong>AdamW与LAMB</strong>：</p>
+<ul class="simple">
+<li><p><strong>AdamW</strong>：在Adam基础上加入权重衰减，更好地正则化Transformer模型</p></li>
+<li><p><strong>LAMB</strong>：Layer-wise Adaptive Moments optimizer，适合大batch训练</p></li>
+</ul>
+</section>
+<section id="id24">
+<h3>1.5.6 检查点与容错<a class="headerlink" href="#id24" title="Link to this heading">#</a></h3>
+<p>大规模训练需要完善的检查点机制来处理节点故障：</p>
+<p><strong>检查点策略</strong>：</p>
+<ul class="simple">
+<li><p>定期保存模型状态（权重、优化器状态等）</p></li>
+<li><p>保存训练进度（元数据）</p></li>
+<li><p>增量检查点优化</p></li>
+</ul>
+<p><strong>容错机制</strong>：</p>
+<ul class="simple">
+<li><p>检测节点故障并自动恢复</p></li>
+<li><p>从最近检查点重启训练</p></li>
+<li><p>弹性训练支持动态调整资源</p></li>
+</ul>
+<p>PyTorch的TorchElastic和DeepSpeed的Zero Redundancy都是为这类场景设计的。</p>
+</section>
+</section>
+<section id="tokenization">
+<h2>1.6 词嵌入与tokenization<a class="headerlink" href="#tokenization" title="Link to this heading">#</a></h2>
+<section id="id25">
+<h3>1.6.1 从文本到数字<a class="headerlink" href="#id25" title="Link to this heading">#</a></h3>
+<p>神经网络无法直接处理文本，需要将文本转换为数字表示。这个过程叫做tokenization（分词）。</p>
+<p><strong>Tokenization的基本概念</strong>：</p>
+<ul class="simple">
+<li><p><strong>词表（Vocabulary）</strong>：将所有可能的token映射到整数ID</p></li>
+<li><p><strong>Token</strong>：文本的最小单元，可以是词、子词或字符</p></li>
+<li><p><strong>ID</strong>：Token在词表中的整数索引</p></li>
+</ul>
+<p>常见的tokenization方法：</p>
+<ol class="arabic simple">
+<li><p><strong>词级别（Word-level）</strong>：每个词作为一个token</p></li>
+<li><p><strong>字符级别（Char-level）</strong>：每个字符作为一个token</p></li>
+<li><p><strong>子词级别（Subword-level）</strong>：如BPE、WordPiece</p></li>
+</ol>
+</section>
+<section id="byte-pair-encoding-bpe">
+<h3>1.6.2 Byte Pair Encoding (BPE)<a class="headerlink" href="#byte-pair-encoding-bpe" title="Link to this heading">#</a></h3>
+<p>BPE是一种常用的子词分词算法，最初用于数据压缩，后来被广泛应用于语言模型。</p>
+<p>BPE的工作原理：</p>
+<ol class="arabic simple">
+<li><p>将文本分割为字符</p></li>
+<li><p>统计相邻字符对的出现频率</p></li>
+<li><p>合并最频繁的字符对</p></li>
+<li><p>重复步骤2-3直到达到预设词表大小</p></li>
+</ol>
+<p>BPE的优势：</p>
+<ul class="simple">
+<li><p>能够处理未登录词（OOV）</p></li>
+<li><p>平衡词表大小和序列长度</p></li>
+<li><p>便于处理多语言文本</p></li>
+</ul>
+</section>
+<section id="wordpiecesentencepiece">
+<h3>1.6.3 WordPiece与SentencePiece<a class="headerlink" href="#wordpiecesentencepiece" title="Link to this heading">#</a></h3>
+<p><strong>WordPiece</strong>是Google为BERT开发的分词算法，与BPE类似但基于语言学优化。</p>
+<p><strong>SentencePiece</strong>是一种更通用的分词框架：</p>
+<ul class="simple">
+<li><p>将文本视为字节序列而非字符</p></li>
+<li><p>端到端学习分词，无需预处理</p></li>
+<li><p>支持多种语言</p></li>
+</ul>
+<p>LLaMA使用SentencePiece进行分词。</p>
+</section>
+</section>
+<section id="id26">
+<h2>1.7 模型评估与基准测试<a class="headerlink" href="#id26" title="Link to this heading">#</a></h2>
+<section id="id27">
+<h3>1.7.1 语言模型的评估指标<a class="headerlink" href="#id27" title="Link to this heading">#</a></h3>
+<p>评估语言模型需要多维度的指标：</p>
+<p><strong>困惑度（Perplexity）</strong>：</p>
+<div class="math notranslate nohighlight">
+\[
+\text{PPL} = \exp\left(-\frac{1}{N}\sum_{i=1}^{N} \log P(w_i | w_{&lt;i})\right)
+\]</div>
+<p>困惑度越低，模型越好。</p>
+<p><strong>下游任务评估</strong>：</p>
+<ul class="simple">
+<li><p>问答（SQuAD、HotpotQA）</p></li>
+<li><p>文本分类（GLUE、SuperGLUE）</p></li>
+<li><p>摘要生成（CNN/Daily Mail）</p></li>
+<li><p>机器翻译（WMT）</p></li>
+</ul>
+</section>
+<section id="id28">
+<h3>1.7.2 大模型能力评估<a class="headerlink" href="#id28" title="Link to this heading">#</a></h3>
+<p>超越困惑度，评估大模型的”涌现能力”：</p>
+<p><strong>Few-shot评估</strong>：</p>
+<p>给模型少量示例后测试，无需参数更新。</p>
+<p><strong>思维链（Chain-of-Thought）评估</strong>：</p>
+<p>测试模型的多步推理能力。</p>
+<p><strong>复杂推理评估</strong>：</p>
+<p>如MATH数据集，需要详细的解题步骤。</p>
+</section>
+</section>
+<section id="id29">
+<h2>小结<a class="headerlink" href="#id29" title="Link to this heading">#</a></h2>
+<p>本节我们系统地学习了大语言模型的核心架构和关键技术。</p>
+<p><strong>核心要点</strong>：</p>
+<ol class="arabic simple">
+<li><p>Transformer架构通过自注意力机制有效解决了长距离依赖问题，成为现代大语言模型的基础</p></li>
+<li><p>多头注意力机制让模型能够同时捕获多种类型的关系，提升了表达能力</p></li>
+<li><p>位置编码解决了Transformer无法感知序列位置的问题，RoPE等新型编码具有更好的外推性</p></li>
+<li><p>GPT系列展示了从GPT-1到GPT-4的演进历程，证明了规模的力量和预训练+微调范式的有效性</p></li>
+<li><p>LLaMA系列的开源推动了AI技术的民主化，引发了社区的创新热潮</p></li>
+<li><p>混合精度、梯度累积、激活检查点等技术是训练大模型的关键</p></li>
+</ol>
+<p><strong>思考题</strong>：</p>
+<ol class="arabic simple">
+<li><p>为什么Transformer使用残差连接和层归一化？它们各自的作用是什么？如果没有残差连接，深层网络会面临什么问题？</p></li>
+<li><p>与RNN相比，Transformer在处理序列数据时有哪些优势和劣势？在什么场景下RNN可能仍然是更好的选择？</p></li>
+<li><p>GPT系列模型是如何通过规模扩展提升能力的？规模扩展是否可持续？有什么替代或补充方案？</p></li>
+<li><p>LLaMA采用的分组查询注意力和旋转位置编码相比标准注意力有什么优势？为什么这些设计在大模型中尤为重要？</p></li>
+<li><p>大模型训练中，为什么需要复杂的调度策略（如预热+余弦退火）？如果没有预热阶段可能会出现什么问题？</p></li>
+</ol>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="README.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Chap10 大模型与集群</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02-AI-Cluster.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">AI集群</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformer">1.1 Transformer架构基础</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.1.1 从注意力机制说起</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1.1.2 自注意力机制的数学原理</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">1.1.3 多头注意力机制</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">1.1.4 Transformer总体架构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">1.1.5 位置编码</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">1.2 注意力机制的扩展与优化</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">1.2.1 标准注意力的计算瓶颈</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">1.2.2 多查询注意力与分组查询注意力</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">1.2.3 稀疏注意力机制</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">1.2.4 线性注意力机制</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flashattention">1.2.5 FlashAttention</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">1.2.6 注意力机制的未来发展</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt">1.3 GPT系列模型</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-1">1.3.1 GPT-1：生成式预训练的开创者</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-2">1.3.2 GPT-2：迈向多任务学习</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-3">1.3.3 GPT-3：规模的力量</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-4">1.3.4 GPT-4：多模态与强化学习</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chatgpt">1.3.5 ChatGPT：从语言模型到对话助手</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#llama">1.4 LLaMA系列开源模型</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">1.4.1 LLaMA的诞生与设计理念</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">1.4.2 LLaMA的架构特点</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">1.4.3 开源生态的繁荣</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">1.4.4 开源模型的意义</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">1.5 大模型训练的关键技术</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">1.5.1 混合精度训练</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">1.5.2 梯度累积</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">1.5.3 激活检查点技术</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">1.5.4 学习率调度</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">1.5.5 分布式优化器</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">1.5.6 检查点与容错</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenization">1.6 词嵌入与tokenization</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">1.6.1 从文本到数字</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#byte-pair-encoding-bpe">1.6.2 Byte Pair Encoding (BPE)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wordpiecesentencepiece">1.6.3 WordPiece与SentencePiece</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">1.7 模型评估与基准测试</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">1.7.1 语言模型的评估指标</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">1.7.2 大模型能力评估</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">小结</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Author name not set
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Apr 29, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>本教材仅供内部培训使用</p>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

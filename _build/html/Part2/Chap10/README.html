@@ -1,0 +1,676 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Chap10 大模型与集群 &#8212; AI系统工程师培训教程</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Part2/Chap10/README';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="大模型架构" href="01-LLM-Architecture.html" />
+    <link rel="prev" title="分布式训练" href="../Chap09/03-Distributed-Training.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Apr 29, 2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="AI系统工程师培训教程 - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="AI系统工程师培训教程 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    AI系统工程师培训教程
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">第一阶段：AI基础入门</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap01/README.html">Chap01 计算机基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/01-Binary.html">第一章 进制与编码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/02-CPU-Memory.html">第二章 CPU与内存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/03-Program-Running.html">第三章 程序运行原理</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap02/README.html">Chap02 Python编程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/01-Python-Basic.html">Python基础语法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/02-NumPy.html">NumPy基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/03-PyTorch.html">PyTorch基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap03/README.html">Chap03 数学基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/01-Linear-Algebra.html">线性代数基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/02-Probability.html">概率与统计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/03-Optimization.html">优化基础</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二阶段：AI系统核心</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap04/README.html">Chap04 AI系统概述</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap04/01-Introduction.html">AI系统基本概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap04/02-Architecture.html">AI系统全栈架构</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap05/README.html">Chap05 神经网络基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/01-Neuron-Model.html">神经元与网络模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/02-CNN.html">卷积神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/03-RNN.html">循环神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/04-Transformer.html">Transformer与注意力机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/05-Quantization.html">模型量化基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap06/README.html">Chap06 AI芯片体系架构</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/01-Chip-Base.html">AI芯片基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/02-GPU-Base.html">GPU原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/03-NVIDIA.html">NVIDIA GPU架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/04-Abroad-Chips.html">国外AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/05-Domestic-Chips.html">国内AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/06-Programming-Model.html">芯片编程模式</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap07/README.html">Chap07 AI编译器原理</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/01-Traditional-Compiler.html">第一章 传统编译器基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/02-AI-Compiler.html">第二章 AI编译器架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/03-Frontend-Optimization.html">第三章 前端优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/04-Backend-Optimization.html">第四章 后端优化</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap08/README.html">Chap08 推理系统与引擎</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/01-Inference-System.html">01 推理系统概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/02-Model-Compression.html">02 模型压缩</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/03-Model-Converter.html">03 模型转换与优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/04-Inference-Optimization.html">04 推理优化技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/05-Kernel-Optimization.html">05 Kernel优化技术</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap09/README.html">Chap09 AI框架核心</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/01-Auto-Differentiation.html">自动微分</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/02-Computational-Graph.html">计算图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/03-Distributed-Training.html">分布式训练</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Chap10 大模型与集群</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="01-LLM-Architecture.html">大模型架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-AI-Cluster.html">AI集群</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-Parallel-Strategy.html">并行策略</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三阶段：附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixA/README.html">附录A：AI系统术语表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixB/README.html">附录B：参考文献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixC/README.html">AppendixC 实践项目</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/your-org/AI-System-Training/blob/main/Part2/Chap10/README.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button"
+   title="Show source"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/Part2/Chap10/README.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chap10 大模型与集群</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">本章学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">前置知识</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">内容导航</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">本章小结</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-architecture">大模型架构（01-LLM-Architecture）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ai-02-ai-cluster">AI集群（02-AI-Cluster）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-strategy">并行策略（03-Parallel-Strategy）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">思考与练习</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">第一章 大模型架构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ai">第二章 AI集群</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">第三章 并行策略</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="chap10">
+<h1>Chap10 大模型与集群<a class="headerlink" href="#chap10" title="Link to this heading">#</a></h1>
+<section id="id1">
+<h2>本章学习目标<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>理解大模型的发展历程和架构</p></li>
+<li><p>掌握AI集群的构建和通信</p></li>
+<li><p>了解混合并行训练策略</p></li>
+<li><p>认识模型并行和数据并行的优劣</p></li>
+</ol>
+</section>
+<section id="id2">
+<h2>前置知识<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Chap06 AI芯片体系架构</p></li>
+<li><p>Chap09 AI框架核心</p></li>
+</ul>
+</section>
+<section id="id3">
+<h2>内容导航<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="01-LLM-Architecture.html">大模型架构</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="01-LLM-Architecture.html#id2">学习目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-LLM-Architecture.html#transformer">1.1 Transformer架构基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-LLM-Architecture.html#id8">1.2 注意力机制的扩展与优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-LLM-Architecture.html#gpt">1.3 GPT系列模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-LLM-Architecture.html#llama">1.4 LLaMA系列开源模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-LLM-Architecture.html#id18">1.5 大模型训练的关键技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-LLM-Architecture.html#tokenization">1.6 词嵌入与tokenization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-LLM-Architecture.html#id26">1.7 模型评估与基准测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-LLM-Architecture.html#id29">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="02-AI-Cluster.html">AI集群</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="02-AI-Cluster.html#id1">学习目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-AI-Cluster.html#id2">2.1 AI集群架构概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-AI-Cluster.html#id6">2.2 计算节点</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-AI-Cluster.html#id9">2.3 存储系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-AI-Cluster.html#id13">2.4 网络互联</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-AI-Cluster.html#id17">2.5 通信原语</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-AI-Cluster.html#id20">2.6 调度系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-AI-Cluster.html#id25">2.7 通信优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-AI-Cluster.html#id30">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="03-Parallel-Strategy.html">并行策略</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="03-Parallel-Strategy.html#id2">学习目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-Parallel-Strategy.html#id3">3.1 并行策略概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-Parallel-Strategy.html#id7">3.2 数据并行</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-Parallel-Strategy.html#id12">3.3 模型并行</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-Parallel-Strategy.html#id17">3.4 混合并行</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-Parallel-Strategy.html#id19">3.5 通信优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-Parallel-Strategy.html#id25">小结</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="id4">
+<h2>本章小结<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>本章系统地介绍了大语言模型的核心架构、AI集群的关键技术，以及分布式训练中的并行策略。</p>
+<section id="llm-architecture">
+<h3>大模型架构（01-LLM-Architecture）<a class="headerlink" href="#llm-architecture" title="Link to this heading">#</a></h3>
+<p>本节深入探讨了Transformer架构及其在大型语言模型中的应用。从注意力机制的原理出发，介绍了自注意力的数学推导、多头注意力的设计，以及Transformer完整的编码器-解码器结构。特别讲解了位置编码的重要性及其演进（从正弦编码到旋转位置编码RoPE）。</p>
+<p>在注意力机制的扩展部分，详细分析了多查询注意力、分组查询注意力、稀疏注意力、线性注意力以及FlashAttention等优化技术，这些技术是训练超大模型的关键。</p>
+<p>GPT系列模型部分按时间线介绍了GPT-1到GPT-4以及ChatGPT的演进历程，展示了”规模假设”的有效性——通过增大模型规模、数据量和计算量，模型能力持续提升。</p>
+<p>LLaMA系列部分介绍了Meta开源的大语言模型，其设计理念是以更小的规模实现顶级模型的性能，并详细解析了LLaMA的架构改进（RMSNorm、GQA、RoPE、SwiGLU等）。</p>
+<p>最后，讲解了大模型训练的关键技术，包括混合精度训练、梯度累积、激活检查点、学习率调度等。</p>
+</section>
+<section id="ai-02-ai-cluster">
+<h3>AI集群（02-AI-Cluster）<a class="headerlink" href="#ai-02-ai-cluster" title="Link to this heading">#</a></h3>
+<p>本节介绍了AI集群的整体架构和组成。AI集群采用分层架构，包括计算层、网络层、存储层和调度层。</p>
+<p>计算节点部分详细介绍了GPU架构与并行计算、多GPU互联技术（PCIe、NVLink、NVSwitch），以及如何构建高效的计算节点。</p>
+<p>存储系统部分分析了训练任务的存储需求，介绍了分布式文件系统（Lustre、PVFS等），以及存储性能优化策略。</p>
+<p>网络互联部分讲解了InfiniBand和RoCE等高速网络技术，以及网络拓扑设计（Fat-Tree、DragonFly等）。</p>
+<p>通信原语部分深入介绍了NCCL集合通信库和RDMA通信技术，以及AllReduce等集合通信算法的原理。</p>
+<p>调度系统部分介绍了Kubernetes容器编排和GPU调度技术，包括gang调度、优先级调度等策略。</p>
+</section>
+<section id="parallel-strategy">
+<h3>并行策略（03-Parallel-Strategy）<a class="headerlink" href="#parallel-strategy" title="Link to this heading">#</a></h3>
+<p>本节详细介绍了分布式训练中的各种并行策略。</p>
+<p>数据并行部分讲解了同步与异步数据并行、分布式数据并行（DDP）的实现细节，以及完全分片数据并行（FSDP）和ZeRO优化器。</p>
+<p>模型并行部分分别介绍了张量并行和流水线并行。张量并行将单层计算分割到多个设备；流水线并行将不同层分配到不同设备，通过micro-batch实现计算重叠。</p>
+<p>混合并行部分讲解了3D混合并行（DP+PP+TP）以及主流框架Megatron-LM和DeepSpeed的设计要点。</p>
+<p>通信优化部分介绍了梯度压缩、计算与通信重叠等关键技术。</p>
+</section>
+</section>
+<section id="id5">
+<h2>思考与练习<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<section id="id6">
+<h3>第一章 大模型架构<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>详细解释自注意力机制中查询、键、值三个向量的作用及其在计算中的意义。</p></li>
+<li><p>Transformer使用残差连接和层归一化的设计有什么深意？如果移除残差连接，深层网络会面临什么问题？</p></li>
+<li><p>分析GPT系列模型从GPT-1到GPT-4的技术演进，说明”规模假设”是如何体现在这些演进中的。</p></li>
+<li><p>LLaMA模型采用了哪些架构改进？这些改进相比标准Transformer有什么优势？</p></li>
+<li><p>大模型训练中，混合精度训练为什么能够加速训练同时减少显存占用？BF16相比FP16有什么优势？</p></li>
+</ol>
+</section>
+<section id="ai">
+<h3>第二章 AI集群<a class="headerlink" href="#ai" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>AI集群为什么需要专门的高速网络？传统TCP/IP网络的主要局限性是什么？</p></li>
+<li><p>解释Ring AllReduce算法的工作原理，为什么它比简单的树形AllReduce更适合大规模分布式训练？</p></li>
+<li><p>NCCL是如何利用网络拓扑信息进行通信优化的？拓扑感知的通信有什么优势？</p></li>
+<li><p>Kubernetes在AI集群调度中扮演什么角色？如何实现GPU的容器化调度？</p></li>
+<li><p>分析AI集群中存储系统面临的挑战，分布式文件系统是如何解决这些问题的？</p></li>
+</ol>
+</section>
+<section id="id7">
+<h3>第三章 并行策略<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>数据并行和模型并行的核心区别是什么？各自适合什么场景？</p></li>
+<li><p>解释FSDP（完全分片数据并行）中ZeRO三个阶段的区别，为什么需要分阶段启用？</p></li>
+<li><p>流水线并行中的”气泡”是如何产生的？Gpipe和PipeDream分别是如何解决这个问题的？</p></li>
+<li><p>3D混合并行中，为什么要将张量并行限制在节点内，而流水线并行可以跨节点？</p></li>
+<li><p>梯度压缩技术（如Top-K稀疏压缩）在实际应用中需要注意哪些问题？如何权衡压缩率和模型精度？</p></li>
+</ol>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../Chap09/03-Distributed-Training.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">分布式训练</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="01-LLM-Architecture.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">大模型架构</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">本章学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">前置知识</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">内容导航</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">本章小结</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#llm-architecture">大模型架构（01-LLM-Architecture）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ai-02-ai-cluster">AI集群（02-AI-Cluster）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-strategy">并行策略（03-Parallel-Strategy）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">思考与练习</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">第一章 大模型架构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ai">第二章 AI集群</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">第三章 并行策略</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Author name not set
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Apr 29, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>本教材仅供内部培训使用</p>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

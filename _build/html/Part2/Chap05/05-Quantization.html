@@ -1,0 +1,1169 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>模型量化基础 &#8212; AI系统工程师培训教程</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Part2/Chap05/05-Quantization';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Chap06 AI芯片体系架构" href="../Chap06/README.html" />
+    <link rel="prev" title="Transformer与注意力机制" href="04-Transformer.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Apr 29, 2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="AI系统工程师培训教程 - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="AI系统工程师培训教程 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    AI系统工程师培训教程
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">第一阶段：AI基础入门</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap01/README.html">Chap01 计算机基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/01-Binary.html">第一章 进制与编码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/02-CPU-Memory.html">第二章 CPU与内存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/03-Program-Running.html">第三章 程序运行原理</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap02/README.html">Chap02 Python编程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/01-Python-Basic.html">Python基础语法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/02-NumPy.html">NumPy基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/03-PyTorch.html">PyTorch基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap03/README.html">Chap03 数学基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/01-Linear-Algebra.html">线性代数基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/02-Probability.html">概率与统计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/03-Optimization.html">优化基础</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二阶段：AI系统核心</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap04/README.html">Chap04 AI系统概述</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap04/01-Introduction.html">AI系统基本概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap04/02-Architecture.html">AI系统全栈架构</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Chap05 神经网络基础</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-Neuron-Model.html">神经元与网络模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-CNN.html">卷积神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-RNN.html">循环神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-Transformer.html">Transformer与注意力机制</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">模型量化基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap06/README.html">Chap06 AI芯片体系架构</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/01-Chip-Base.html">AI芯片基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/02-GPU-Base.html">GPU原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/03-NVIDIA.html">NVIDIA GPU架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/04-Abroad-Chips.html">国外AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/05-Domestic-Chips.html">国内AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/06-Programming-Model.html">芯片编程模式</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap07/README.html">Chap07 AI编译器原理</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/01-Traditional-Compiler.html">第一章 传统编译器基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/02-AI-Compiler.html">第二章 AI编译器架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/03-Frontend-Optimization.html">第三章 前端优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/04-Backend-Optimization.html">第四章 后端优化</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap08/README.html">Chap08 推理系统与引擎</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/01-Inference-System.html">01 推理系统概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/02-Model-Compression.html">02 模型压缩</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/03-Model-Converter.html">03 模型转换与优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/04-Inference-Optimization.html">04 推理优化技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/05-Kernel-Optimization.html">05 Kernel优化技术</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap09/README.html">Chap09 AI框架核心</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/01-Auto-Differentiation.html">自动微分</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/02-Computational-Graph.html">计算图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/03-Distributed-Training.html">分布式训练</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap10/README.html">Chap10 大模型与集群</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/01-LLM-Architecture.html">大模型架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/02-AI-Cluster.html">AI集群</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/03-Parallel-Strategy.html">并行策略</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三阶段：附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixA/README.html">附录A：AI系统术语表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixB/README.html">附录B：参考文献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixC/README.html">AppendixC 实践项目</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/your-org/AI-System-Training/blob/main/Part2/Chap05/05-Quantization.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button"
+   title="Show source"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/Part2/Chap05/05-Quantization.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>模型量化基础</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">5.1 模型量化概述</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">5.1.1 什么是模型量化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">5.1.2 为什么需要模型量化</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">5.2 量化基本概念</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">5.2.1 量化数学原理</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">5.2.2 对称量化和非对称量化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">5.2.3 量化粒度</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">5.3 量化方法</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minmax">5.3.1 MinMax量化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kl">5.3.2 KL散度量化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#percentile-quantization">5.3.3 百分位量化（Percentile Quantization）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#power-law-quantization">5.3.4 幂律量化（Power-Law Quantization）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">5.4 数据精度格式</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">5.4.1 浮点数表示基础</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ai">5.4.2 AI中的浮点数据类型</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">5.4.3 低比特整数类型</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fp8">5.4.4 FP8数据类型</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">5.5 量化方式</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#post-training-quantization-ptq">5.5.1 训练后量化（Post-Training Quantization, PTQ）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-aware-training-qat">5.5.2 量化感知训练（Quantization-Aware Training, QAT）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">5.5.3 动态量化和静态量化</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">5.6 模型剪枝</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">5.6.1 剪枝的基本概念</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">5.6.2 剪枝的分类</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">5.6.3 剪枝的时机和方式</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">5.6.4 剪枝的流程</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">5.7 量化与AI芯片设计</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">5.7.1 AI芯片对量化的支持</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">5.7.2 降低比特位宽的好处</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">5.7.3 不同精度格式的芯片支持</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">5.8 量化研究热点</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">5.8.1 量化方法研究</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">5.8.2 量化方式研究</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">5.8.3 模型设计研究</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">5.9 量化实践指南</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">5.9.1 量化方案选择</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">5.9.2 量化调试技巧</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">5.9.3 量化效果评估</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">5.10 未来展望</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id33">5.10.1 更低比特的探索</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id34">5.10.2 量化与稀疏的结合</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">5.10.3 端到端优化</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id36">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id37">思考与练习</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>模型量化基础<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="id2">
+<h2>5.1 模型量化概述<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<section id="id3">
+<h3>5.1.1 什么是模型量化<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>模型量化是指通过减少神经模型权重表示或者激活所需的比特数来将高精度模型转换为低精度模型的过程。在深度学习训练中，通常使用FP32（32位浮点）精度来保证模型收敛和精度；而在推理阶段，过高的精度并不是必需的，低精度量化可以在保持模型性能的同时大幅减少计算和存储需求。</p>
+<p>量化是模型压缩和加速的重要技术之一，与网络剪枝、知识蒸馏等方法共同构成模型压缩技术体系。量化压缩与网络剪枝的示意如下图所示：</p>
+<p><img alt="量化压缩与网络剪枝" src="../../_images/02ArchSlim08.png" /></p>
+</section>
+<section id="id4">
+<h3>5.1.2 为什么需要模型量化<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>将高比特模型进行低比特量化具有如下几个好处：</p>
+<p><strong>1. 降低内存</strong></p>
+<p>低比特量化将模型的权重和激活值转换为较低位宽度的整数或定点数，从而大幅减少了模型的存储需求。一个FP32模型占用的存储空间是INT8模型的4倍。这意味着一个原本需要4GB存储的模型，量化后可能只需要1GB。</p>
+<p><strong>2. 降低成本</strong></p>
+<p>低比特量化降低了神经网络中乘法和加法操作的精度要求，从而减少了计算量，加速了推理过程。例如，使用INT8进行MAC运算比FP32快4倍，同时硬件资源消耗更少。</p>
+<p><strong>3. 降低能耗</strong></p>
+<p>低比特量化减少了模型的计算需求，因此可以降低模型在移动设备和嵌入式系统上的能耗。在边缘设备中，能耗是关键考量指标，低比特量化可以显著延长设备电池寿命。</p>
+<p><strong>4. 提升速度</strong></p>
+<p>虽然低比特量化会引入一定程度的信息丢失，但在合理选择量化参数的情况下，可以最大程度地保持模型的性能和准确度，同时获得存储和计算上的优势。</p>
+<p><strong>5. 丰富模型的部署场景</strong></p>
+<p>低比特量化压缩了模型参数，可以使得模型更容易在移动设备、边缘设备和嵌入式系统等资源受限的环境中部署和运行，为各种应用场景提供更大的灵活性和可行性。</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id5">
+<h2>5.2 量化基本概念<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<section id="id6">
+<h3>5.2.1 量化数学原理<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>量化的本质是在高精度数值和低精度数值之间建立一种映射关系。设<span class="math notranslate nohighlight">\(R\)</span>表示浮点数，<span class="math notranslate nohighlight">\(Q\)</span>表示量化后的整数，<span class="math notranslate nohighlight">\(S\)</span>表示缩放因子（Scale），<span class="math notranslate nohighlight">\(Z\)</span>表示零值（Zero Point）。量化的基本公式为：</p>
+<div class="math notranslate nohighlight">
+\[
+Q = R/S + Z
+\]</div>
+<p>对于反向过程（反量化）：</p>
+<div class="math notranslate nohighlight">
+\[
+R = (Q - Z) \times S
+\]</div>
+<p>其中：</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(S = (R_{max} - R_{min})/(Q_{max} - Q_{min})\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(Z = Q_{max} - R_{max}/S\)</span></p></li>
+</ul>
+</section>
+<section id="id7">
+<h3>5.2.2 对称量化和非对称量化<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>量化策略分为对称量化和非对称量化两种。</p>
+<p><strong>对称量化（Symmetric Quantization）</strong></p>
+<p>对称量化中，浮点数的最大值和最小值关于0对称，即<span class="math notranslate nohighlight">\(R_{max} = -R_{min}\)</span>。这意味着只需要找到浮点区间的绝对值最大的那个值即可。</p>
+<p>对称量化的特点：</p>
+<ul class="simple">
+<li><p>零点固定为0</p></li>
+<li><p>量化范围是<span class="math notranslate nohighlight">\([-127, 127]\)</span>（对于INT8）</p></li>
+<li><p>实现简单，计算效率高</p></li>
+<li><p>对于正负数均匀分布的数据效果好</p></li>
+</ul>
+<p>对称量化的问题：当数据分布不均匀时，如浮点数X全部是正数，进行8bit非对称量化后的数据全部在[0, 127]一侧，那么[-128, 0]的区间就浪费了。</p>
+<p><strong>非对称量化（Asymmetric Quantization）</strong></p>
+<p>非对称量化允许浮点数据分布在任意范围，不需要关于0对称。零点<span class="math notranslate nohighlight">\(Z\)</span>可以是任意值，不一定是0。</p>
+<p>非对称量化的特点：</p>
+<ul class="simple">
+<li><p>零点<span class="math notranslate nohighlight">\(Z\)</span>可以是任意值</p></li>
+<li><p>量化范围充分利用[0, 255]（对于INT8）</p></li>
+<li><p>对于数据分布偏斜的情况更友好</p></li>
+<li><p>计算复杂度稍高</p></li>
+</ul>
+<p>下图是两种量化方法进行8bit量化数据映射的示意图：</p>
+<p><img alt="对称与非对称量化示意" src="../../_images/02ArchSlim09.png" /></p>
+</section>
+<section id="id8">
+<h3>5.2.3 量化粒度<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p>神经网络的权重量化以layer为单位，求每一层权重的量化参数（S, Z）时候，分为by channel和by layer两种方式：</p>
+<p><strong>By Layer量化</strong></p>
+<ul class="simple">
+<li><p>整个层的所有参数共用一组(S, Z)</p></li>
+<li><p>量化参数存储开销小</p></li>
+<li><p>实现简单</p></li>
+</ul>
+<p><strong>By Channel量化</strong></p>
+<ul class="simple">
+<li><p>每层的每个channel都计算一个(S, Z)</p></li>
+<li><p>量化精度更高</p></li>
+<li><p>需要存储更多的量化参数</p></li>
+<li><p>适合权重分布不均匀的层</p></li>
+</ul>
+<p>在实际部署中需要权衡量化精度提升和量化参数存储开销。</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id9">
+<h2>5.3 量化方法<a class="headerlink" href="#id9" title="Link to this heading">#</a></h2>
+<section id="minmax">
+<h3>5.3.1 MinMax量化<a class="headerlink" href="#minmax" title="Link to this heading">#</a></h3>
+<p>MinMax量化是最简单也最通用的量化算法。基本思想是将浮点数的最小值映射到量化类型的最小值，最大值映射到量化类型的最大值。</p>
+<p>设原始浮点数据范围为<span class="math notranslate nohighlight">\([R_{min}, R_{max}]\)</span>，量化后的整数范围为<span class="math notranslate nohighlight">\([Q_{min}, Q_{max}]\)</span>（对于INT8为[-128, 127]或[0, 255]）。</p>
+<p><strong>缩放因子计算</strong>：
+$<span class="math notranslate nohighlight">\(S = \frac{R_{max} - R_{min}}{Q_{max} - Q_{min}}\)</span>$</p>
+<p><strong>零点计算</strong>：
+$<span class="math notranslate nohighlight">\(Z = Q_{min} - \frac{R_{min}}{S}\)</span>$</p>
+<p><strong>量化过程</strong>：
+$<span class="math notranslate nohighlight">\(Q = round\left(\frac{R}{S}\right) + Z\)</span>$</p>
+</section>
+<section id="kl">
+<h3>5.3.2 KL散度量化<a class="headerlink" href="#kl" title="Link to this heading">#</a></h3>
+<p>KL散度量化是一种更精确的量化方法，它通过最小化原始浮点分布和量化后分布之间的KL散度来确定量化参数。</p>
+<p>KL散度（也称为相对熵）衡量两个概率分布之间的差异：
+$<span class="math notranslate nohighlight">\(D_{KL}(P \| Q) = \sum_i P(i) \log\frac{P(i)}{Q(i)}\)</span>$</p>
+<p>KL散度量化的步骤：</p>
+<ol class="arabic simple">
+<li><p>收集原始浮点数据的直方图分布</p></li>
+<li><p>对不同的缩放因子候选值，计算量化后的分布</p></li>
+<li><p>选择使KL散度最小的缩放因子</p></li>
+</ol>
+<p>KL散度量化相比MinMax量化能更好地保留原始数据的分布信息，但计算复杂度更高。</p>
+</section>
+<section id="percentile-quantization">
+<h3>5.3.3 百分位量化（Percentile Quantization）<a class="headerlink" href="#percentile-quantization" title="Link to this heading">#</a></h3>
+<p>百分位量化使用数据的百分位数来确定量化范围，而不是使用最大值和最小值。这种方法对异常值更鲁棒。</p>
+<p>设使用<span class="math notranslate nohighlight">\(p\)</span>百分位，则：
+$<span class="math notranslate nohighlight">\(R_{min} = percentile(X, 100-p), \quad R_{max} = percentile(X, p)\)</span>$</p>
+</section>
+<section id="power-law-quantization">
+<h3>5.3.4 幂律量化（Power-Law Quantization）<a class="headerlink" href="#power-law-quantization" title="Link to this heading">#</a></h3>
+<p>幂律量化根据数据的幂律分布特性进行量化设计，适用于某些特定分布的数据。</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id10">
+<h2>5.4 数据精度格式<a class="headerlink" href="#id10" title="Link to this heading">#</a></h2>
+<section id="id11">
+<h3>5.4.1 浮点数表示基础<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p>在深入AI数据类型之前，先回顾一下计算机中浮点数的表示方法。浮点数采用IEEE 754标准，由三部分组成：</p>
+<ul class="simple">
+<li><p><strong>符号位（S）</strong>：1位，表示正负</p></li>
+<li><p><strong>指数部分（E）</strong>：决定数值范围</p></li>
+<li><p><strong>尾数部分（M）</strong>：决定数值精度</p></li>
+</ul>
+<p>对于规格化浮点数，其真实值为：
+$<span class="math notranslate nohighlight">\((-1)^S \times 2^{E-B} \times (1+M)\)</span>$</p>
+<p>其中<span class="math notranslate nohighlight">\(B = 2^{E_{bw}-1} - 1\)</span>是指数偏移量，<span class="math notranslate nohighlight">\(E_{bw}\)</span>是指数位宽。</p>
+</section>
+<section id="ai">
+<h3>5.4.2 AI中的浮点数据类型<a class="headerlink" href="#ai" title="Link to this heading">#</a></h3>
+<p>目前神经网络中的常用的类型有FP32, TF32, FP16, BF16这四种类型。</p>
+<p><img alt="浮点数据类型格式" src="../../_images/02ArchSlim10.png" /></p>
+<p><strong>FP32（单精度浮点）</strong></p>
+<p>FP32是单精度浮点数格式，是一种广泛使用的数据格式，其可以表示很大的实数范围，足够深度学习训练和推理中使用。每个数据占4个字节（32位）。</p>
+<p>FP32的组成：</p>
+<ul class="simple">
+<li><p>符号位：1位</p></li>
+<li><p>指数部分：8位</p></li>
+<li><p>尾数部分：23位</p></li>
+</ul>
+<p><strong>TF32（Tensor Float 32）</strong></p>
+<p>Tensor Float 32是Tensor Core支持的新型数据类型，从英伟达A100中开始支持。TF32的峰值计算速度相比FP32有了很大的提升。</p>
+<p>TF32的组成：</p>
+<ul class="simple">
+<li><p>符号位：1位</p></li>
+<li><p>指数部分：8位（与FP32相同）</p></li>
+<li><p>尾数部分：10位（比FP16多，但比FP32少）</p></li>
+</ul>
+<p><strong>FP16（半精度浮点）</strong></p>
+<p>FP16是一种半精度浮点格式，深度学习有使用FP16而不是FP32的趋势，因为较低精度的计算对于神经网络来说似乎并不重要。</p>
+<p>FP16的组成：</p>
+<ul class="simple">
+<li><p>符号位：1位</p></li>
+<li><p>指数部分：5位</p></li>
+<li><p>尾数部分：10位</p></li>
+</ul>
+<p>FP16的缺点是动态范围较窄，在某些场景下可能不足以表示所需的数据范围。</p>
+<p><strong>BF16（Brain Floating Point）</strong></p>
+<p>FP16设计时并未考虑深度学习应用，其动态范围太窄。由谷歌开发的16位浮点格式称为”Brain Floating Point Format”，简称”bfloat16”，bfloat16解决了这个问题，提供与FP32相同的动态范围。</p>
+<p>BF16的组成：</p>
+<ul class="simple">
+<li><p>符号位：1位</p></li>
+<li><p>指数部分：8位（与FP32相同）</p></li>
+<li><p>尾数部分：7位</p></li>
+</ul>
+<p>BF16可以认为是直接将FP32的前16位截取获得的，目前也得到了广泛的应用，特别是在Transformer架构模型中表现优异。</p>
+</section>
+<section id="id12">
+<h3>5.4.3 低比特整数类型<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p><strong>INT8（8位整数）</strong></p>
+<p>INT8是最常用的低比特量化格式，可以表示-128到127的有符号整数，或0到255的无符号整数。</p>
+<p><strong>INT4（4位整数）</strong></p>
+<p>INT4可以表示-8到7的有符号整数，或0到15的无符号整数。压缩率更高，但精度损失更大。</p>
+<p><strong>INT2/Binary（二值化）</strong></p>
+<p>二值化网络将权重和激活限制为{-1, +1}或{0, 1}，极大地减少存储和计算开销。</p>
+</section>
+<section id="fp8">
+<h3>5.4.4 FP8数据类型<a class="headerlink" href="#fp8" title="Link to this heading">#</a></h3>
+<p>FP8是NVIDIA H100 GPU产品中推出的一种8bit位宽浮点数据类型，有E4M3和E5M2两种设计：</p>
+<p><strong>FP8 E4M3</strong></p>
+<ul class="simple">
+<li><p>符号位：1位</p></li>
+<li><p>指数部分：4位</p></li>
+<li><p>尾数部分：3位</p></li>
+<li><p>动态范围较小，但精度较高</p></li>
+<li><p>适合前向传播的Activations和Weights</p></li>
+</ul>
+<p><strong>FP8 E5M2</strong></p>
+<ul class="simple">
+<li><p>符号位：1位</p></li>
+<li><p>指数部分：5位</p></li>
+<li><p>尾数部分：2位</p></li>
+<li><p>保持与FP16相似的动态范围</p></li>
+<li><p>适合反向传播的Gradients</p></li>
+</ul>
+<p><img alt="FP8数据类型范围" src="../../_images/06BitWidth05.png" /></p>
+<p>FP8数据类型的出现，使得在大规模语言模型训练中可以使用更低的精度，同时保持模型精度，大幅提升训练效率和降低内存占用。</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id13">
+<h2>5.5 量化方式<a class="headerlink" href="#id13" title="Link to this heading">#</a></h2>
+<section id="post-training-quantization-ptq">
+<h3>5.5.1 训练后量化（Post-Training Quantization, PTQ）<a class="headerlink" href="#post-training-quantization-ptq" title="Link to this heading">#</a></h3>
+<p>训练后量化是在模型训练完成之后再进行量化，不需要重新训练。这是最常用的量化方式，简单易实现。</p>
+<p>PTQ的优点：</p>
+<ul class="simple">
+<li><p>实现简单，不需要修改训练流程</p></li>
+<li><p>计算开销小，量化速度快</p></li>
+<li><p>适用于已有模型的快速部署</p></li>
+</ul>
+<p>PTQ的缺点：</p>
+<ul class="simple">
+<li><p>可能带来较大的精度损失</p></li>
+<li><p>对于某些模型结构效果不佳</p></li>
+</ul>
+</section>
+<section id="quantization-aware-training-qat">
+<h3>5.5.2 量化感知训练（Quantization-Aware Training, QAT）<a class="headerlink" href="#quantization-aware-training-qat" title="Link to this heading">#</a></h3>
+<p>量化感知训练是一种在训练期间考虑量化的技术，通过模拟量化效果来训练模型，使模型适应低精度表示。</p>
+<p>QAT的过程：</p>
+<ol class="arabic simple">
+<li><p>在模型中插入伪量化节点，模拟量化效果</p></li>
+<li><p>正常进行前向传播和反向传播</p></li>
+<li><p>梯度更新时考虑量化的影响</p></li>
+<li><p>最终模型对量化更鲁棒</p></li>
+</ol>
+<p>QAT的优点：</p>
+<ul class="simple">
+<li><p>精度损失更小</p></li>
+<li><p>可以达到接近全精度的性能</p></li>
+</ul>
+<p>QAT的缺点：</p>
+<ul class="simple">
+<li><p>需要重新训练或微调</p></li>
+<li><p>训练时间增加</p></li>
+<li><p>实现复杂度较高</p></li>
+</ul>
+</section>
+<section id="id14">
+<h3>5.5.3 动态量化和静态量化<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p><strong>动态量化（Dynamic Quantization）</strong></p>
+<ul class="simple">
+<li><p>权重在推理前量化，激活在推理时量化</p></li>
+<li><p>灵活但速度较慢</p></li>
+<li><p>常用于CPU推理</p></li>
+</ul>
+<p><strong>静态量化（Static Quantization）</strong></p>
+<ul class="simple">
+<li><p>权重和激活都在推理前量化</p></li>
+<li><p>速度更快，适合硬件加速</p></li>
+<li><p>需要校准数据集确定量化参数</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id15">
+<h2>5.6 模型剪枝<a class="headerlink" href="#id15" title="Link to this heading">#</a></h2>
+<section id="id16">
+<h3>5.6.1 剪枝的基本概念<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<p>模型剪枝是一种有效的模型压缩方法，通过对模型中的权重进行剔除，降低模型的复杂度，从而达到减少存储空间、计算资源和加速模型推理的目的。</p>
+<p>下图是一个简单的多层神经网络的剪枝示意，卷积算法定义可以分为两种：一种是对全连接层神经元之间的连接线进行剪枝，另一种是对神经元的剪枝。</p>
+<p><img alt="剪枝示意" src="../../_images/02ArchSlim11.png" /></p>
+</section>
+<section id="id17">
+<h3>5.6.2 剪枝的分类<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
+<p>根据剪枝的粒度，可分为：</p>
+<p><strong>结构化剪枝（Structured Pruning）</strong></p>
+<ul class="simple">
+<li><p>按通道、滤波器或层进行剪枝</p></li>
+<li><p>剪枝后的模型仍然是规则的tensor运算</p></li>
+<li><p>硬件友好，适合实际部署</p></li>
+</ul>
+<p><strong>非结构化剪枝（Unstructured Pruning）</strong></p>
+<ul class="simple">
+<li><p>任意剪枝单个权重</p></li>
+<li><p>稀疏性更高，但硬件支持困难</p></li>
+<li><p>需要专门的稀疏矩阵存储和计算</p></li>
+</ul>
+</section>
+<section id="id18">
+<h3>5.6.3 剪枝的时机和方式<a class="headerlink" href="#id18" title="Link to this heading">#</a></h3>
+<p>根据剪枝的时机和方式，可以将模型剪枝分为以下几种类型：</p>
+<p><strong>静态剪枝（Static Pruning）</strong></p>
+<ul class="simple">
+<li><p>在训练结束后对模型进行剪枝</p></li>
+<li><p>优点是简单易行</p></li>
+<li><p>缺点是无法充分利用训练过程中的信息</p></li>
+</ul>
+<p><strong>动态剪枝（Dynamic Pruning）</strong></p>
+<ul class="simple">
+<li><p>在训练过程中进行剪枝</p></li>
+<li><p>根据训练过程中的数据和误差信息动态调整网络结构</p></li>
+<li><p>优点是能够自适应优化模型结构</p></li>
+<li><p>缺点是实现起来较为复杂</p></li>
+</ul>
+<p><strong>知识蒸馏剪枝（Knowledge Distillation Pruning）</strong></p>
+<ul class="simple">
+<li><p>通过将大模型的”知识”蒸馏到小模型中</p></li>
+<li><p>实现小模型的剪枝</p></li>
+<li><p>需要额外的训练步骤</p></li>
+<li><p>可以获得较好的压缩效果</p></li>
+</ul>
+</section>
+<section id="id19">
+<h3>5.6.4 剪枝的流程<a class="headerlink" href="#id19" title="Link to this heading">#</a></h3>
+<p>对神经网络模型的剪枝可以描述为如下三个步骤：</p>
+<p><strong>1. 训练 Training</strong></p>
+<ul class="simple">
+<li><p>训练过参数化模型，得到最佳网络性能</p></li>
+<li><p>以此作为基准</p></li>
+</ul>
+<p><strong>2. 剪枝 Pruning</strong></p>
+<ul class="simple">
+<li><p>根据算法对模型剪枝</p></li>
+<li><p>调整网络结构中通道或层数</p></li>
+<li><p>得到剪枝后的网络结构</p></li>
+</ul>
+<p><strong>3. 微调 Finetune</strong></p>
+<ul class="simple">
+<li><p>在原数据集上进行微调</p></li>
+<li><p>用于重新弥补因为剪枝后的稀疏模型丢失的精度性能</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id20">
+<h2>5.7 量化与AI芯片设计<a class="headerlink" href="#id20" title="Link to this heading">#</a></h2>
+<section id="id21">
+<h3>5.7.1 AI芯片对量化的支持<a class="headerlink" href="#id21" title="Link to this heading">#</a></h3>
+<p>根据上面AI模型的量化和剪枝算法的研究进展，AI芯片设计可以引出如下对于AI计算模式的思考：</p>
+<p><strong>提供不同的bit位数的计算单元</strong></p>
+<p>为了提升芯片性能并适应低比特量化研究的需求，AI芯片设计中应集成多种不同位宽的计算单元和存储格式。例如，可以探索实现FP8、INT8、INT4等不同精度的计算单元，以适应不同精度要求的应用场景。</p>
+<p><strong>提供不同的bit位数存储格式</strong></p>
+<p>在数据存储方面，在M-bits（如FP32）和E-bits（如TF32）格式之间做出明智的权衡，以及在FP16与BF16等不同精度的存储格式之间做出选择，以平衡存储效率和计算精度。</p>
+<p><strong>利用硬件提供专门针对稀疏结构计算的优化逻辑</strong></p>
+<p>为了优化稀疏结构的计算，在硬件层面提供专门的优化逻辑，这将有助于提高稀疏数据的处理效率。同时，支持多种稀疏算法逻辑，并对硬件的计算取数模块进行设计上的优化，将进一步增强对稀疏数据的处理能力。</p>
+<p><strong>硬件提供专门针对量化压缩算法的硬件电路</strong></p>
+<p>通过增加数据压缩模块的设计，可以有效地减少内存带宽的压力，从而提升整体的系统性能。</p>
+</section>
+<section id="id22">
+<h3>5.7.2 降低比特位宽的好处<a class="headerlink" href="#id22" title="Link to this heading">#</a></h3>
+<p>降低比特位宽其实就是降低数据的精度，对于AI芯片来说，降低比特位宽可以带来如下好处：</p>
+<ol class="arabic simple">
+<li><p><strong>降低MAC的输入和输出数据位宽</strong>，能够有效减少数据的搬运和存储开销。更小的内存搬移带来更低的功耗开销。</p></li>
+<li><p><strong>减少MAC计算的开销和代价</strong>，比如，两个INT8数据类型的相乘，累加和使用16bit位宽的寄存器即可，而FP16数据类型的相乘，累加和需要设计32位宽的寄存器。8bit和16bit计算对硬件电路设计的复杂度影响也很大。</p></li>
+</ol>
+<p><img alt="位宽对功耗和面积的影响" src="../../_images/06BitWidth06.png" /></p>
+<p>如上图所示，随着比特位宽的增加，对应乘加操作的能耗在逐渐增加，从SRAM的数据搬移过程是功耗的主要来源；同时，随着数据位宽的增加，需要的芯片面积也在成倍增加。</p>
+</section>
+<section id="id23">
+<h3>5.7.3 不同精度格式的芯片支持<a class="headerlink" href="#id23" title="Link to this heading">#</a></h3>
+<p>针对AI芯片不同阶段的精度需求，市场上已经推出了8-bit的推理芯片产品和16-bit浮点数据的训练芯片产品。</p>
+<p><img alt="不同精度AI芯片产品" src="../../_images/06BitWidth07.png" /></p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id24">
+<h2>5.8 量化研究热点<a class="headerlink" href="#id24" title="Link to this heading">#</a></h2>
+<section id="id25">
+<h3>5.8.1 量化方法研究<a class="headerlink" href="#id25" title="Link to this heading">#</a></h3>
+<p>根据要量化的原始数据分布范围，可以将量化方法分为：</p>
+<p><strong>线性量化</strong></p>
+<ul class="simple">
+<li><p>MinMax量化：简单直接，效果稳定</p></li>
+<li><p>百分位量化：对异常值更鲁棒</p></li>
+</ul>
+<p><strong>非线性量化</strong></p>
+<ul class="simple">
+<li><p>KL散度量化：更精确的分布匹配</p></li>
+<li><p>Log-Net算法：基于对数域的量化</p></li>
+<li><p>Non-uniform量化：非均匀量化网格</p></li>
+</ul>
+</section>
+<section id="id26">
+<h3>5.8.2 量化方式研究<a class="headerlink" href="#id26" title="Link to this heading">#</a></h3>
+<p><strong>量化感知训练（QAT）</strong></p>
+<ul class="simple">
+<li><p>在训练中模拟量化效果</p></li>
+<li><p>减少量化误差</p></li>
+<li><p>是提高低比特量化精度的有效方法</p></li>
+</ul>
+<p><strong>混合精度量化</strong></p>
+<ul class="simple">
+<li><p>不同层使用不同的量化精度</p></li>
+<li><p>关键层保持高精度，非关键层使用低精度</p></li>
+<li><p>在精度和效率之间取得平衡</p></li>
+</ul>
+</section>
+<section id="id27">
+<h3>5.8.3 模型设计研究<a class="headerlink" href="#id27" title="Link to this heading">#</a></h3>
+<p><strong>二值化网络（Binary Neural Networks, BNNs）</strong></p>
+<p>二值化网络模型是一种将神经网络中的权重和激活值二值化为{-1, +1}或{0, 1}的模型。这种二值化可以极大地减少模型的存储需求和计算成本，从而使得在资源受限的设备上进行高效的推断成为可能。</p>
+<p><strong>训练时量化（Training with Quantization）</strong></p>
+<p>与训练后量化不同，训练时量化在反向传播中也考虑量化的影响，使模型在训练阶段就学习适应低精度表示。</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id28">
+<h2>5.9 量化实践指南<a class="headerlink" href="#id28" title="Link to this heading">#</a></h2>
+<section id="id29">
+<h3>5.9.1 量化方案选择<a class="headerlink" href="#id29" title="Link to this heading">#</a></h3>
+<p>选择合适的量化方案需要考虑：</p>
+<ol class="arabic simple">
+<li><p><strong>目标硬件</strong>：不同的AI芯片支持不同的精度格式</p></li>
+<li><p><strong>精度要求</strong>：任务对模型精度的要求</p></li>
+<li><p><strong>延迟要求</strong>：推理延迟的限制</p></li>
+<li><p><strong>内存约束</strong>：可用的存储和内存</p></li>
+</ol>
+</section>
+<section id="id30">
+<h3>5.9.2 量化调试技巧<a class="headerlink" href="#id30" title="Link to this heading">#</a></h3>
+<p><strong>1. 逐层分析</strong></p>
+<p>对模型逐层进行量化，分析每层对量化误差的敏感性，找出关键层。</p>
+<p><strong>2. 混合精度</strong></p>
+<p>对敏感层使用较高精度，对不敏感层使用较低精度。</p>
+<p><strong>3. 温度调节</strong></p>
+<p>使用温度调节（Temperature Scaling）来校准量化参数。</p>
+<p><strong>4. 重训练/微调</strong></p>
+<p>如果PTQ效果不佳，尝试QAT或微调来恢复精度。</p>
+</section>
+<section id="id31">
+<h3>5.9.3 量化效果评估<a class="headerlink" href="#id31" title="Link to this heading">#</a></h3>
+<p><strong>精度评估</strong></p>
+<ul class="simple">
+<li><p>与全精度模型对比Top-1/Top-5准确率</p></li>
+<li><p>检查任务特定指标的变化</p></li>
+</ul>
+<p><strong>性能评估</strong></p>
+<ul class="simple">
+<li><p>测量推理延迟</p></li>
+<li><p>测量内存占用</p></li>
+<li><p>测量吞吐量</p></li>
+</ul>
+<p><strong>数值评估</strong></p>
+<ul class="simple">
+<li><p>观察权重分布变化</p></li>
+<li><p>分析量化误差分布</p></li>
+<li><p>检查激活值范围</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id32">
+<h2>5.10 未来展望<a class="headerlink" href="#id32" title="Link to this heading">#</a></h2>
+<section id="id33">
+<h3>5.10.1 更低比特的探索<a class="headerlink" href="#id33" title="Link to this heading">#</a></h3>
+<p>随着模型规模增长和对效率的追求，更低比特（如INT2、1-bit）的量化技术正在研究中：</p>
+<ul class="simple">
+<li><p><strong>二值网络优化</strong>：改进训练方法，提高二值网络的精度</p></li>
+<li><p><strong>混合精度扩展</strong>：探索更多精度组合</p></li>
+<li><p><strong>硬件协同设计</strong>：设计专门支持极端量化的硬件</p></li>
+</ul>
+</section>
+<section id="id34">
+<h3>5.10.2 量化与稀疏的结合<a class="headerlink" href="#id34" title="Link to this heading">#</a></h3>
+<p>量化和稀疏是互补的模型压缩技术：</p>
+<ul class="simple">
+<li><p>稀疏后再量化可以获得更好的压缩效果</p></li>
+<li><p>量化可以增强稀疏性</p></li>
+<li><p>联合优化是未来方向</p></li>
+</ul>
+</section>
+<section id="id35">
+<h3>5.10.3 端到端优化<a class="headerlink" href="#id35" title="Link to this heading">#</a></h3>
+<p>未来的模型部署将更加重视端到端的整体优化：</p>
+<ul class="simple">
+<li><p>从训练到部署的统一量化流程</p></li>
+<li><p>软硬件协同优化</p></li>
+<li><p>自动化的量化方案搜索</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id36">
+<h2>本章小结<a class="headerlink" href="#id36" title="Link to this heading">#</a></h2>
+<p>本章系统介绍了模型量化的理论与实践：</p>
+<ol class="arabic simple">
+<li><p><strong>量化基本概念</strong>：量化是通过减少数据位宽来压缩模型的技术，包括对称量化和非对称量化两种主要方式。</p></li>
+<li><p><strong>量化数学原理</strong>：量化的核心是建立浮点数到整数的映射关系，通过缩放因子和零点实现。</p></li>
+<li><p><strong>量化方法</strong>：包括MinMax量化、KL散度量化等多种方法，适用于不同的应用场景。</p></li>
+<li><p><strong>数据精度格式</strong>：从FP32到FP16、BF16、FP8、INT8等，不同精度有不同的应用场景。</p></li>
+<li><p><strong>量化方式</strong>：训练后量化（PTQ）和量化感知训练（QAT）两种主要方式，各有优缺点。</p></li>
+<li><p><strong>模型剪枝</strong>：与量化互补的模型压缩技术，包括结构化和非结构化剪枝。</p></li>
+<li><p><strong>AI芯片设计</strong>：量化需求推动AI芯片支持多种精度计算单元和存储格式。</p></li>
+<li><p><strong>实践指南</strong>：量化方案选择、调试技巧和效果评估方法。</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="id37">
+<h2>思考与练习<a class="headerlink" href="#id37" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>量化计算</strong>：假设浮点数据范围是[-3.5, 5.2]，使用INT8对称量化，计算缩放因子S和量化后的整数值（假设使用[-127, 127]范围）。</p></li>
+<li><p><strong>对称vs非对称</strong>：分析什么情况下对称量化效果较好，什么情况下非对称量化更优。给出具体的数值例子说明。</p></li>
+<li><p><strong>量化误差分析</strong>：分析量化误差的主要来源。如何减小量化误差对模型精度的影响？</p></li>
+<li><p><strong>FP16 vs BF16</strong>：比较FP16和BF16的优缺点。解释为什么在大语言模型训练中BF16更受欢迎？</p></li>
+<li><p><strong>AI芯片设计</strong>：讨论AI芯片应该如何设计来更好地支持模型量化。需要考虑哪些硬件特性？</p></li>
+</ol>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="04-Transformer.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Transformer与注意力机制</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../Chap06/README.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Chap06 AI芯片体系架构</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">5.1 模型量化概述</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">5.1.1 什么是模型量化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">5.1.2 为什么需要模型量化</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">5.2 量化基本概念</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">5.2.1 量化数学原理</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">5.2.2 对称量化和非对称量化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">5.2.3 量化粒度</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">5.3 量化方法</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minmax">5.3.1 MinMax量化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kl">5.3.2 KL散度量化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#percentile-quantization">5.3.3 百分位量化（Percentile Quantization）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#power-law-quantization">5.3.4 幂律量化（Power-Law Quantization）</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">5.4 数据精度格式</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">5.4.1 浮点数表示基础</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ai">5.4.2 AI中的浮点数据类型</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">5.4.3 低比特整数类型</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fp8">5.4.4 FP8数据类型</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">5.5 量化方式</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#post-training-quantization-ptq">5.5.1 训练后量化（Post-Training Quantization, PTQ）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-aware-training-qat">5.5.2 量化感知训练（Quantization-Aware Training, QAT）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">5.5.3 动态量化和静态量化</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">5.6 模型剪枝</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">5.6.1 剪枝的基本概念</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">5.6.2 剪枝的分类</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">5.6.3 剪枝的时机和方式</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">5.6.4 剪枝的流程</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">5.7 量化与AI芯片设计</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">5.7.1 AI芯片对量化的支持</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">5.7.2 降低比特位宽的好处</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">5.7.3 不同精度格式的芯片支持</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">5.8 量化研究热点</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">5.8.1 量化方法研究</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">5.8.2 量化方式研究</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">5.8.3 模型设计研究</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">5.9 量化实践指南</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">5.9.1 量化方案选择</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">5.9.2 量化调试技巧</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">5.9.3 量化效果评估</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">5.10 未来展望</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id33">5.10.1 更低比特的探索</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id34">5.10.2 量化与稀疏的结合</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">5.10.3 端到端优化</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id36">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id37">思考与练习</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Author name not set
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Apr 29, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>本教材仅供内部培训使用</p>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

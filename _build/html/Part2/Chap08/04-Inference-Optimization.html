@@ -1,0 +1,1289 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>04 推理优化技术 &#8212; AI系统工程师培训教程</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Part2/Chap08/04-Inference-Optimization';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="05 Kernel优化技术" href="05-Kernel-Optimization.html" />
+    <link rel="prev" title="03 模型转换与优化" href="03-Model-Converter.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Apr 29, 2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="AI系统工程师培训教程 - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="AI系统工程师培训教程 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    AI系统工程师培训教程
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">第一阶段：AI基础入门</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap01/README.html">Chap01 计算机基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/01-Binary.html">第一章 进制与编码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/02-CPU-Memory.html">第二章 CPU与内存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/03-Program-Running.html">第三章 程序运行原理</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap02/README.html">Chap02 Python编程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/01-Python-Basic.html">Python基础语法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/02-NumPy.html">NumPy基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/03-PyTorch.html">PyTorch基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap03/README.html">Chap03 数学基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/01-Linear-Algebra.html">线性代数基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/02-Probability.html">概率与统计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/03-Optimization.html">优化基础</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二阶段：AI系统核心</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap04/README.html">Chap04 AI系统概述</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap04/01-Introduction.html">AI系统基本概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap04/02-Architecture.html">AI系统全栈架构</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap05/README.html">Chap05 神经网络基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/01-Neuron-Model.html">神经元与网络模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/02-CNN.html">卷积神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/03-RNN.html">循环神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/04-Transformer.html">Transformer与注意力机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/05-Quantization.html">模型量化基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap06/README.html">Chap06 AI芯片体系架构</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/01-Chip-Base.html">AI芯片基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/02-GPU-Base.html">GPU原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/03-NVIDIA.html">NVIDIA GPU架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/04-Abroad-Chips.html">国外AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/05-Domestic-Chips.html">国内AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/06-Programming-Model.html">芯片编程模式</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap07/README.html">Chap07 AI编译器原理</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/01-Traditional-Compiler.html">第一章 传统编译器基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/02-AI-Compiler.html">第二章 AI编译器架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/03-Frontend-Optimization.html">第三章 前端优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/04-Backend-Optimization.html">第四章 后端优化</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Chap08 推理系统与引擎</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-Inference-System.html">01 推理系统概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-Model-Compression.html">02 模型压缩</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-Model-Converter.html">03 模型转换与优化</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">04 推理优化技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-Kernel-Optimization.html">05 Kernel优化技术</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap09/README.html">Chap09 AI框架核心</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/01-Auto-Differentiation.html">自动微分</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/02-Computational-Graph.html">计算图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/03-Distributed-Training.html">分布式训练</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap10/README.html">Chap10 大模型与集群</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/01-LLM-Architecture.html">大模型架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/02-AI-Cluster.html">AI集群</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/03-Parallel-Strategy.html">并行策略</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三阶段：附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixA/README.html">附录A：AI系统术语表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixB/README.html">附录B：参考文献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixC/README.html">AppendixC 实践项目</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/your-org/AI-System-Training/blob/main/Part2/Chap08/04-Inference-Optimization.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button"
+   title="Show source"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/Part2/Chap08/04-Inference-Optimization.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>04 推理优化技术</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">4.1 推理优化概述</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">4.1.1 推理优化的目标</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">4.1.2 性能评价指标</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">4.1.3 性能瓶颈分析</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">4.2 延迟优化</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">4.2.1 批处理优化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">4.2.2 异步执行</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">4.2.3 预热与缓存</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">4.2.4 流水线并行</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">4.3 吞吐量优化</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">4.3.1 并发推理</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">4.3.2 模型并行</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">4.3.3 数据并行推理</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">4.4 内存优化</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">4.4.1 内存复用</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">4.4.2 显存优化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">4.4.3 内存优化技术</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">4.5 推理优化实践</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">4.5.1 延迟优化实践</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">4.5.2 吞吐量优化实践</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">4.5.3 综合优化策略</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">思考与练习</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>04 推理优化技术<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="id2">
+<h2>学习目标<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>理解推理优化的核心目标和评价指标</p></li>
+<li><p>掌握延迟优化的主要技术和策略</p></li>
+<li><p>了解吞吐量优化的方法，包括并发推理和模型并行</p></li>
+<li><p>掌握内存优化的核心技术，包括内存复用和显存优化</p></li>
+<li><p>理解推理优化的综合实践方法</p></li>
+</ol>
+</section>
+<section id="id3">
+<h2>4.1 推理优化概述<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<section id="id4">
+<h3>4.1.1 推理优化的目标<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>推理优化是确保深度学习模型在生产环境中高效运行的关键环节。与模型压缩不同，推理优化更关注<strong>如何在给定硬件和模型条件下最大化推理性能</strong>。</p>
+<p><strong>核心优化目标</strong></p>
+<ol class="arabic simple">
+<li><p><strong>延迟（Latency）</strong>：单个请求从发送到返回结果的端到端时间。对于实时交互应用（如语音助手、自动驾驶），延迟是关键指标。</p></li>
+<li><p><strong>吞吐量（Throughput）</strong>：单位时间内系统处理的请求数量。对于高并发服务（如推荐系统、搜索排序），吞吐量是关键指标。</p></li>
+<li><p><strong>资源效率（Resource Efficiency）</strong>：单位资源消耗能够处理的请求数量。资源包括CPU/GPU时间、内存、显存、带宽等。</p></li>
+<li><p><strong>能效比（Energy Efficiency）</strong>：单位能耗能够处理的请求数量。对于边缘设备和移动端尤为重要。</p></li>
+</ol>
+<p><strong>延迟与吞吐量的关系</strong></p>
+<p>延迟和吞吐量往往是相互制约的：</p>
+<ul class="simple">
+<li><p>低延迟系统通常采用<strong>小批次</strong>甚至<strong>单请求</strong>处理，减少等待时间</p></li>
+<li><p>高吞吐量系统通常采用<strong>大批次</strong>处理，通过并行化分摊固定开销</p></li>
+</ul>
+<p>理想情况下，我们希望同时优化延迟和吞吐量。但在实际系统中，需要根据业务场景进行权衡：</p>
+<ul class="simple">
+<li><p>实时交互应用 → 优化延迟优先</p></li>
+<li><p>批处理服务 → 优化吞吐量优先</p></li>
+<li><p>在线推理服务 → 两者兼顾</p></li>
+</ul>
+</section>
+<section id="id5">
+<h3>4.1.2 性能评价指标<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p><strong>延迟指标</strong></p>
+<ul class="simple">
+<li><p><strong>平均延迟（Average Latency）</strong>：所有请求延迟的算术平均值</p></li>
+<li><p><strong>P50延迟（P50 Latency）</strong>：50%请求的延迟低于此值</p></li>
+<li><p><strong>P95延迟（P95 Latency）</strong>：95%请求的延迟低于此值</p></li>
+<li><p><strong>P99延迟（P99 Latency）</strong>：99%请求的延迟低于此值</p></li>
+<li><p><strong>最大延迟（Max Latency）</strong>：所有请求中延迟的最大值</p></li>
+</ul>
+<p>P95/P99延迟称为<strong>尾部延迟（Tail Latency）</strong>，反映了用户体验的”最坏情况”。对于SLA要求高的服务，尾部延迟是关键指标。</p>
+<p><strong>吞吐量指标</strong></p>
+<ul class="simple">
+<li><p><strong>QPS（Queries Per Second）</strong>：每秒请求数</p></li>
+<li><p><strong>RPS（Requests Per Second）</strong>：每秒请求数（与QPS类似）</p></li>
+<li><p><strong>TPS（Transactions Per Second）</strong>：每秒事务数</p></li>
+<li><p><strong>FPS（Frames Per Second）</strong>：每秒处理的帧数（用于视频/图像场景）</p></li>
+</ul>
+<p><strong>资源效率指标</strong></p>
+<ul class="simple">
+<li><p><strong>GPU利用率（GPU Utilization）</strong>：GPU计算单元的实际使用百分比</p></li>
+<li><p><strong>显存带宽利用率（Memory Bandwidth Utilization）</strong>：实际显存带宽使用相对于峰值的比例</p></li>
+<li><p><strong>CPU/GPU空闲时间（Idle Time）</strong>：设备等待数据或同步的时间比例</p></li>
+</ul>
+</section>
+<section id="id6">
+<h3>4.1.3 性能瓶颈分析<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p><strong>计算瓶颈（Compute Bound）</strong></p>
+<p>当GPU计算能力不足时，称为计算瓶颈。表现为GPU利用率高，但内存带宽未充分利用。</p>
+<p>可能的解决方案：</p>
+<ul class="simple">
+<li><p>使用更高效的算子实现</p></li>
+<li><p>启用TensorCore等专用计算单元</p></li>
+<li><p>使用更低精度的计算（如FP16替代FP32）</p></li>
+</ul>
+<p><strong>内存带宽瓶颈（Memory Bound）</strong></p>
+<p>当GPU等待数据传输时，称为内存带宽瓶颈。表现为显存带宽利用率低，GPU经常空闲等待数据。</p>
+<p>可能的解决方案：</p>
+<ul class="simple">
+<li><p>使用更高效的数据布局（如NCHW4）</p></li>
+<li><p>启用内存复用，减少数据传输</p></li>
+<li><p>使用异步计算，隐藏内存访问延迟</p></li>
+</ul>
+<p><strong>内存容量瓶颈（Memory Capacity Bound）</strong></p>
+<p>当模型或中间结果无法完全放入显存时，称为内存容量瓶颈。表现为频繁的CPU-GPU数据传输。</p>
+<p>可能的解决方案：</p>
+<ul class="simple">
+<li><p>启用模型并行，将模型分布在多卡</p></li>
+<li><p>启用内存复用，优化中间结果生命周期</p></li>
+<li><p>使用更小的数据类型（如INT8替代FP32）</p></li>
+</ul>
+</section>
+</section>
+<section id="id7">
+<h2>4.2 延迟优化<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
+<section id="id8">
+<h3>4.2.1 批处理优化<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p><strong>动态批处理（Dynamic Batching）</strong></p>
+<p>动态批处理是平衡延迟和吞吐量的关键技术。核心思想是：</p>
+<ul class="simple">
+<li><p>当请求较少时，不等待，直接处理当前请求（保持低延迟）</p></li>
+<li><p>当请求较多时，积攒多个请求形成批次处理（提高吞吐量）</p></li>
+</ul>
+<p><strong>实现策略</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">DynamicBatcher</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">max_wait_time_ms</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_batch_size</span> <span class="o">=</span> <span class="n">max_batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_wait_time</span> <span class="o">=</span> <span class="n">max_wait_time_ms</span> <span class="o">/</span> <span class="mf">1000.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">requests</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">requests</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        
+        <span class="c1"># 检查是否可以形成批次</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">requests</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_batch_size</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_form_batch</span><span class="p">()</span>
+        
+        <span class="c1"># 检查是否超时</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wait_timeout</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_form_batch</span><span class="p">()</span>
+        
+        <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># 继续等待</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_form_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">requests</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">requests</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">max_batch_size</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">requests</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">requests</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">max_batch_size</span><span class="p">:]</span>
+        <span class="k">return</span> <span class="n">batch</span>
+</pre></div>
+</div>
+<p><strong>批处理优化策略</strong></p>
+<ol class="arabic simple">
+<li><p><strong>自适应批次大小</strong>：根据当前负载动态调整最大批次大小</p></li>
+<li><p><strong>优先级调度</strong>：重要请求优先处理，避免高优请求等待</p></li>
+<li><p><strong>亲和性调度</strong>：将相似请求调度到同一实例，提高缓存命中率</p></li>
+</ol>
+</section>
+<section id="id9">
+<h3>4.2.2 异步执行<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p><strong>同步执行 vs 异步执行</strong></p>
+<p>同步执行模式下，请示必须等待前一个请求完成后才能处理。异步执行允许请求的并行处理。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>同步执行：
+请求1 → 请求2 → 请求3 → ...
+         等待     等待
+
+异步执行：
+请求1 ──────────→ 返回
+请求2 ──→ 返回
+请求3 ────→ 返回
+</pre></div>
+</div>
+<p><strong>CUDA异步操作</strong></p>
+<p>CUDA中的异步操作允许计算和数据传输并行进行：</p>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="c1">// 异步内存拷贝</span>
+<span class="n">cudaMemcpyAsync</span><span class="p">(</span><span class="n">d_dst</span><span class="p">,</span><span class="w"> </span><span class="n">h_src</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">cudaMemcpyHostToDevice</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="p">);</span>
+
+<span class="c1">// 异步执行Kernel</span>
+<span class="n">my_kernel</span><span class="o">&lt;&lt;&lt;</span><span class="n">blocks</span><span class="p">,</span><span class="w"> </span><span class="n">threads</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">stream</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">d_data</span><span class="p">);</span>
+
+<span class="c1">// 并行进行：CPU准备下一个batch的数据，GPU处理当前batch</span>
+</pre></div>
+</div>
+<p><strong>流（Stream）管理</strong></p>
+<p>CUDA Stream允许指定操作的执行顺序和依赖关系：</p>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="n">cudaStream_t</span><span class="w"> </span><span class="n">stream1</span><span class="p">,</span><span class="w"> </span><span class="n">stream2</span><span class="p">;</span>
+<span class="n">cudaStreamCreate</span><span class="p">(</span><span class="o">&amp;</span><span class="n">stream1</span><span class="p">);</span>
+<span class="n">cudaStreamCreate</span><span class="p">(</span><span class="o">&amp;</span><span class="n">stream2</span><span class="p">);</span>
+
+<span class="c1">// Stream 1: 执行推理</span>
+<span class="n">cudaMemcpyAsync</span><span class="p">(</span><span class="n">d_input</span><span class="p">,</span><span class="w"> </span><span class="n">h_input1</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">cudaMemcpyHostToDevice</span><span class="p">,</span><span class="w"> </span><span class="n">stream1</span><span class="p">);</span>
+<span class="n">infer_kernel</span><span class="o">&lt;&lt;&lt;</span><span class="p">...,</span><span class="w"> </span><span class="n">stream1</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">d_input</span><span class="p">,</span><span class="w"> </span><span class="n">d_output</span><span class="p">);</span>
+<span class="n">cudaMemcpyAsync</span><span class="p">(</span><span class="n">h_output1</span><span class="p">,</span><span class="w"> </span><span class="n">d_output</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">cudaMemcpyDeviceToHost</span><span class="p">,</span><span class="w"> </span><span class="n">stream1</span><span class="p">);</span>
+
+<span class="c1">// Stream 2: 同时进行下一个请求的数据准备</span>
+<span class="n">cudaMemcpyAsync</span><span class="p">(</span><span class="n">d_input2</span><span class="p">,</span><span class="w"> </span><span class="n">h_input2</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">cudaMemcpyHostToDevice</span><span class="p">,</span><span class="w"> </span><span class="n">stream2</span><span class="p">);</span>
+<span class="n">infer_kernel</span><span class="o">&lt;&lt;&lt;</span><span class="p">...,</span><span class="w"> </span><span class="n">stream2</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">d_input2</span><span class="p">,</span><span class="w"> </span><span class="n">d_output2</span><span class="p">);</span>
+<span class="c1">// ...</span>
+</pre></div>
+</div>
+</section>
+<section id="id10">
+<h3>4.2.3 预热与缓存<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p><strong>模型预热（Warmup）</strong></p>
+<p>首次推理时，由于CPU-GPU数据传输、内核JIT编译、缓存预填充等因素，延迟通常较高。预热通过在服务启动后执行若干次推理来解决这个问题：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">warmup</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">warmup_inputs</span><span class="p">,</span> <span class="n">num_warmup</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;预热模型&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_warmup</span><span class="p">):</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">warmup_inputs</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">warmup_inputs</span><span class="p">)])</span>
+    
+    <span class="c1"># 同步，确保所有操作完成</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>计算结果缓存</strong></p>
+<p>对于输入分布相对稳定的场景，可以缓存部分计算结果避免重复计算：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ResultCache</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">access_count</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_size</span> <span class="o">=</span> <span class="n">max_size</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_hash</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">input_hash</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">access_count</span><span class="p">[</span><span class="n">input_hash</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">input_hash</span><span class="p">]</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_hash</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_size</span><span class="p">:</span>
+            <span class="c1"># LRU淘汰</span>
+            <span class="n">lru_key</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">access_count</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">access_count</span><span class="o">.</span><span class="n">get</span><span class="p">)</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">lru_key</span><span class="p">]</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">access_count</span><span class="p">[</span><span class="n">lru_key</span><span class="p">]</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">input_hash</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">access_count</span><span class="p">[</span><span class="n">input_hash</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="id11">
+<h3>4.2.4 流水线并行<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p><strong>推理流水线</strong></p>
+<p>将推理过程分解为多个阶段，每个阶段由专用资源处理，形成流水线：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>请求 → 预处理 → 推理 → 后处理 → 响应
+         ↓          ↓         ↓
+       阶段1      阶段2     阶段3
+</pre></div>
+</div>
+<p>不同阶段的计算特性和资源需求不同，流水线并行可以让各阶段并行处理：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">queue</span><span class="w"> </span><span class="kn">import</span> <span class="n">Queue</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">threading</span><span class="w"> </span><span class="kn">import</span> <span class="n">Thread</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">InferencePipeline</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">preprocess_queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inference_queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">postprocess_queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+        
+        <span class="c1"># 启动各阶段线程</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">preprocess_thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_preprocess_loop</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inference_thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_inference_loop</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">postprocess_thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_postprocess_loop</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_preprocess_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">preprocess_queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">preprocessed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_preprocess</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inference_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">preprocessed</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_inference_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">preprocessed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inference_queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">preprocessed</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">postprocess_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_postprocess_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">postprocess_queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_postprocess</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="c1"># 发送响应...</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id12">
+<h2>4.3 吞吐量优化<a class="headerlink" href="#id12" title="Link to this heading">#</a></h2>
+<section id="id13">
+<h3>4.3.1 并发推理<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p><strong>多实例部署</strong></p>
+<p>部署多个模型实例并行处理请求，是提高吞吐量的基本方法：</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Kubernetes Deployment配置</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deployment</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">inference-service</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w">  </span><span class="c1"># 4个副本</span>
+<span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">containers</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">inference</span>
+<span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-inference:latest</span>
+<span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">limits</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">nvidia.com/gpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w">  </span><span class="c1"># 每个副本使用1个GPU</span>
+</pre></div>
+</div>
+<p><strong>多实例+负载均衡</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aiohttp</span><span class="w"> </span><span class="kn">import</span> <span class="n">web</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">LoadBalancer</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instances</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instances</span> <span class="o">=</span> <span class="n">instances</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">route</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="c1"># 轮询选择实例</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">instance</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">health_check</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># 健康检查，移除不健康的实例</span>
+        <span class="n">healthy</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">:</span>
+            <span class="k">if</span> <span class="k">await</span> <span class="n">inst</span><span class="o">.</span><span class="n">is_healthy</span><span class="p">():</span>
+                <span class="n">healthy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inst</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instances</span> <span class="o">=</span> <span class="n">healthy</span>
+</pre></div>
+</div>
+</section>
+<section id="id14">
+<h3>4.3.2 模型并行<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p>当单个GPU无法容纳整个模型时，需要将模型分布到多个GPU上：</p>
+<p><strong>模型切分策略</strong></p>
+<ol class="arabic simple">
+<li><p><strong>按层切分</strong>：将不同层放到不同GPU</p></li>
+<li><p><strong>按通道切分</strong>：将同一层的不同通道放到不同GPU</p></li>
+<li><p><strong>混合切分</strong>：结合前两种策略</p></li>
+</ol>
+<p><strong>张量并行（Tensor Parallelism）</strong></p>
+<p>张量并行将单个层的参数矩阵切分到多个GPU：</p>
+<p>对于矩阵乘法<span class="math notranslate nohighlight">\(Y = XA\)</span>，其中<span class="math notranslate nohighlight">\(A\)</span>是<span class="math notranslate nohighlight">\(m \times n\)</span>的权重矩阵，可以将<span class="math notranslate nohighlight">\(A\)</span>按列切分为<span class="math notranslate nohighlight">\([A_1, A_2]\)</span>，分别放到GPU1和GPU2：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">TensorParallelLinear</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_features</span><span class="p">,</span> <span class="n">out_features</span><span class="p">,</span> <span class="n">num_gpus</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_gpus</span> <span class="o">=</span> <span class="n">num_gpus</span>
+        <span class="c1"># 每个GPU只存储out_features/num_gpus列</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight_shards</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">out_features</span><span class="o">//</span><span class="n">num_gpus</span><span class="p">,</span> <span class="n">in_features</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_gpus</span><span class="p">)</span>
+        <span class="p">]</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># 将输入广播到所有GPU</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+        <span class="c1"># 各GPU并行计算部分结果</span>
+        <span class="n">partial_outputs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">weight</span><span class="o">.</span><span class="n">cuda</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weight_shards</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="c1"># 汇总结果</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">partial_outputs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>流水线并行（Pipeline Parallelism）</strong></p>
+<p>流水线并行将不同层放到不同GPU，形成”生产者-消费者”关系：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GPU0: Layer0 → Layer1 → Layer2 →
+GPU1:                Layer3 → Layer4 → Layer5 →
+GPU2:                             Layer6 → Layer7 → Output
+</pre></div>
+</div>
+<p>为减少流水线气泡，通常使用**微批次（Microbatch）**调度：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">PipelineParallel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stage_devices</span><span class="p">,</span> <span class="n">stage_layers</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stages</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">device</span><span class="p">,</span> <span class="n">num_layers</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">stage_devices</span><span class="p">,</span> <span class="n">stage_layers</span><span class="p">):</span>
+            <span class="n">stage</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">create_layer</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_layers</span><span class="p">)])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stage</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">microbatches</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">chunk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_microbatches</span><span class="p">)</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">for</span> <span class="n">mb</span> <span class="ow">in</span> <span class="n">microbatches</span><span class="p">:</span>
+            <span class="c1"># 顺序流经各阶段</span>
+            <span class="k">for</span> <span class="n">stage</span><span class="p">,</span> <span class="n">device</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stages</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stage_devices</span><span class="p">):</span>
+                <span class="n">mb</span> <span class="o">=</span> <span class="n">mb</span><span class="o">.</span><span class="n">cuda</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+                <span class="n">mb</span> <span class="o">=</span> <span class="n">stage</span><span class="p">(</span><span class="n">mb</span><span class="p">)</span>
+            <span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mb</span><span class="o">.</span><span class="n">cpu</span><span class="p">())</span>
+        
+        <span class="c1"># 合并微批次结果</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id15">
+<h3>4.3.3 数据并行推理<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<p>对于相同模型处理不同输入的场景，可以使用数据并行：</p>
+<p><strong>多输入批量处理</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">batch_inference</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;将多个输入合并为批次处理&quot;&quot;&quot;</span>
+    <span class="c1"># 确保所有输入形状一致</span>
+    <span class="n">batch</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+    
+    <span class="c1"># 单次前向传播</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+    
+    <span class="c1"># 拆分结果</span>
+    <span class="k">return</span> <span class="n">outputs</span><span class="o">.</span><span class="n">unbind</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Prefetch预取</strong></p>
+<p>在GPU处理当前批次时，CPU同时准备下一批次数据：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">PrefetchInference</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">num_streams</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">streams</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">Stream</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_streams</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_stream</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_batch</span><span class="p">,</span> <span class="n">next_batch</span><span class="p">):</span>
+        <span class="n">stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_stream</span><span class="p">]</span>
+        
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">stream</span><span class="p">):</span>
+            <span class="c1"># GPU处理当前批次</span>
+            <span class="n">current_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">current_batch</span><span class="o">.</span><span class="n">cuda</span><span class="p">())</span>
+            
+            <span class="c1"># 准备下一批次数据（异步）</span>
+            <span class="n">next_batch_pinned</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pin_memory</span><span class="p">(</span><span class="n">next_batch</span><span class="p">)</span>
+        
+        <span class="c1"># 切换stream</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_stream</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_stream</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">streams</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">current_output</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id16">
+<h2>4.4 内存优化<a class="headerlink" href="#id16" title="Link to this heading">#</a></h2>
+<section id="id17">
+<h3>4.4.1 内存复用<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
+<p><strong>内存分配策略</strong></p>
+<p>推理过程中的内存分配策略直接影响内存使用效率：</p>
+<p><strong>Inplace操作</strong></p>
+<p>Inplace操作直接在输入的内存位置写入输出，节省内存：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 普通实现</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">relu</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># 分配新内存</span>
+    <span class="k">return</span> <span class="n">y</span>
+
+<span class="c1"># Inplace实现</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">relu_</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">x</span><span class="o">.</span><span class="n">clamp_</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># 直接修改x的内存</span>
+    <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+</div>
+<p><strong>内存池（Memory Pool）</strong></p>
+<p>预先分配一块内存池，复用已分配的内存：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">MemoryPool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">total_size</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cuda&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pool</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">total_size</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allocated</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">allocate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">+</span> <span class="n">size</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">numel</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># 简单策略：环形复用</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">+=</span> <span class="n">size</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">[</span><span class="n">offset</span><span class="p">:</span><span class="n">offset</span><span class="o">+</span><span class="n">size</span><span class="p">]</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</section>
+<section id="id18">
+<h3>4.4.2 显存优化<a class="headerlink" href="#id18" title="Link to this heading">#</a></h3>
+<p><strong>显存复用策略</strong></p>
+<p>GPU显存的分配和释放有较高开销，应尽量复用已分配的显存：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">GPUMemoryPool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buffers</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffers</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">buffers</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cuda&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffers</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">buffers</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cuda&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffers</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">release_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buffers</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">empty_cache</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>中间结果复用</strong></p>
+<p>推理过程中的中间结果可以在使用完毕后复用：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">InferenceMemory</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tensor_lifetime</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">allocate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tensor_lifetime</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">tensor</span>
+        <span class="k">return</span> <span class="n">tensor</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">reuse_if_possible</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tensor_lifetime</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tensor_lifetime</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">size</span><span class="p">:</span>
+                <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="p">[:</span><span class="n">size</span><span class="p">]</span>
+                <span class="k">return</span> <span class="n">t</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cuda&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id19">
+<h3>4.4.3 内存优化技术<a class="headerlink" href="#id19" title="Link to this heading">#</a></h3>
+<p><strong>梯度检查点（Gradient Checkpointing）</strong></p>
+<p>通过重计算减少显存占用：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 前向传播时不保存所有中间结果</span>
+<span class="c1"># 反向传播时重新计算需要的中间结果</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CheckpointedModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># 只保存少量检查点</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layer1</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layer2</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer3</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">w</span>
+</pre></div>
+</div>
+<p><strong>混合精度推理</strong></p>
+<p>使用FP16替代FP32可以减少一半的显存占用：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 自动混合精度</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">amp</span><span class="o">.</span><span class="n">autocast</span><span class="p">():</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+
+<span class="c1"># 手动FP16推理</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">half</span><span class="p">()</span>  <span class="c1"># 转换为FP16</span>
+<span class="nb">input</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">half</span><span class="p">()</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>内存估算</strong></p>
+<p>在实际部署前，估算模型推理的显存需求：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">estimate_memory</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">input_shape</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;估算推理显存占用&quot;&quot;&quot;</span>
+    <span class="n">input_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="o">*</span><span class="n">input_shape</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+    
+    <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">reset_peak_memory_stats</span><span class="p">()</span>
+    
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">)</span>
+    
+    <span class="n">peak_memory</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">max_memory_allocated</span><span class="p">()</span> <span class="o">/</span> <span class="mi">1024</span><span class="o">**</span><span class="mi">2</span>  <span class="c1"># MB</span>
+    <span class="k">return</span> <span class="n">peak_memory</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id20">
+<h2>4.5 推理优化实践<a class="headerlink" href="#id20" title="Link to this heading">#</a></h2>
+<section id="id21">
+<h3>4.5.1 延迟优化实践<a class="headerlink" href="#id21" title="Link to this heading">#</a></h3>
+<p><strong>端到端延迟分析</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">contextmanager</span>
+
+<span class="nd">@contextmanager</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">profile</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="k">yield</span>
+    <span class="n">elapsed</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">ms&quot;</span><span class="p">)</span>
+
+<span class="c1"># 端到端推理延迟分析</span>
+<span class="k">with</span> <span class="n">profile</span><span class="p">(</span><span class="s2">&quot;Total&quot;</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">profile</span><span class="p">(</span><span class="s2">&quot;Preprocess&quot;</span><span class="p">):</span>
+        <span class="n">preprocessed</span> <span class="o">=</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">raw_input</span><span class="p">)</span>
+    
+    <span class="k">with</span> <span class="n">profile</span><span class="p">(</span><span class="s2">&quot;CUDA copy&quot;</span><span class="p">):</span>
+        <span class="n">input_gpu</span> <span class="o">=</span> <span class="n">preprocessed</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+    
+    <span class="k">with</span> <span class="n">profile</span><span class="p">(</span><span class="s2">&quot;Inference&quot;</span><span class="p">):</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">input_gpu</span><span class="p">)</span>
+    
+    <span class="k">with</span> <span class="n">profile</span><span class="p">(</span><span class="s2">&quot;Postprocess&quot;</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">postprocess</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">cpu</span><span class="p">())</span>
+</pre></div>
+</div>
+<p><strong>针对性优化</strong></p>
+<p>分析各阶段耗时，针对性优化：</p>
+<ol class="arabic simple">
+<li><p><strong>预处理耗时过多</strong> → 使用向量化操作、SIMD</p></li>
+<li><p><strong>CUDA拷贝耗时过多</strong> → 使用Pinned Memory、异步拷贝</p></li>
+<li><p><strong>推理耗时过多</strong> → 优化模型结构、使用TensorRT</p></li>
+<li><p><strong>后处理耗时过多</strong> → 优化算法、使用CUDA加速</p></li>
+</ol>
+</section>
+<section id="id22">
+<h3>4.5.2 吞吐量优化实践<a class="headerlink" href="#id22" title="Link to this heading">#</a></h3>
+<p><strong>Benchmark工具</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ThroughputBenchmark</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_requests</span><span class="p">,</span> <span class="n">num_warmup</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="c1"># 预热</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_warmup</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_run_one_batch</span><span class="p">()</span>
+        
+        <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
+        
+        <span class="c1"># 开始计时</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_requests</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_run_one_batch</span><span class="p">()</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
+        <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+        
+        <span class="n">qps</span> <span class="o">=</span> <span class="n">num_requests</span> <span class="o">/</span> <span class="n">elapsed</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;QPS: </span><span class="si">{</span><span class="n">qps</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, Total time: </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">qps</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_run_one_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)]</span>
+        <span class="n">batch</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id23">
+<h3>4.5.3 综合优化策略<a class="headerlink" href="#id23" title="Link to this heading">#</a></h3>
+<p><strong>分层优化方法</strong></p>
+<ol class="arabic simple">
+<li><p><strong>算法层优化</strong>：选择更高效的模型结构（如MobileNet替代ResNet）</p></li>
+<li><p><strong>框架层优化</strong>：使用高效的推理引擎（如TensorRT、ONNX Runtime）</p></li>
+<li><p><strong>算子层优化</strong>：使用算子融合、布局转换等优化</p></li>
+<li><p><strong>Kernel层优化</strong>：使用高效的Kernel实现（如Winograd、Im2Col）</p></li>
+</ol>
+<p><strong>典型优化配置</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># TensorRT优化配置示例</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tensorrt</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">trt</span>
+
+<span class="n">builder</span> <span class="o">=</span> <span class="n">trt</span><span class="o">.</span><span class="n">Builder</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<span class="n">network</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">create_network</span><span class="p">()</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">create_builder_config</span><span class="p">()</span>
+
+<span class="c1"># 启用FP16</span>
+<span class="n">config</span><span class="o">.</span><span class="n">set_flag</span><span class="p">(</span><span class="n">trt</span><span class="o">.</span><span class="n">BuilderFlag</span><span class="o">.</span><span class="n">FP16</span><span class="p">)</span>
+
+<span class="c1"># 设置显存上限</span>
+<span class="n">config</span><span class="o">.</span><span class="n">max_workspace_size</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">30</span>  <span class="c1"># 1GB</span>
+
+<span class="c1"># 启用CUBLAS CUBMM搜索</span>
+<span class="n">config</span><span class="o">.</span><span class="n">set_flag</span><span class="p">(</span><span class="n">trt</span><span class="o">.</span><span class="n">BuilderFlag</span><span class="o">.</span><span class="n">CUBLA_ALLOW_FP32_FP16_WILDCARD</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">set_flag</span><span class="p">(</span><span class="n">trt</span><span class="o">.</span><span class="n">BuilderFlag</span><span class="o">.</span><span class="n">CUBLAS_ALLOW_WILDCARD</span><span class="p">)</span>
+
+<span class="c1"># 构建引擎</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">build_serialized_network</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>性能监控与告警</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">PerformanceMonitor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sla_latency_ms</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latencies</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sla_latency</span> <span class="o">=</span> <span class="n">sla_latency_ms</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">record</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">latency_ms</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latencies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">latency_ms</span><span class="p">)</span>
+        
+        <span class="c1"># 计算指标</span>
+        <span class="n">avg_latency</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latencies</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latencies</span><span class="p">)</span>
+        <span class="n">p99_latency</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latencies</span><span class="p">)[</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latencies</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.99</span><span class="p">)]</span>
+        
+        <span class="c1"># 检查SLA</span>
+        <span class="k">if</span> <span class="n">p99_latency</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">sla_latency</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_send_alert</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P99延迟 </span><span class="si">{</span><span class="n">p99_latency</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">ms 超过SLA </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sla_latency</span><span class="si">}</span><span class="s2">ms&quot;</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;avg_latency&#39;</span><span class="p">:</span> <span class="n">avg_latency</span><span class="p">,</span>
+            <span class="s1">&#39;p99_latency&#39;</span><span class="p">:</span> <span class="n">p99_latency</span><span class="p">,</span>
+            <span class="s1">&#39;requests&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latencies</span><span class="p">)</span>
+        <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id24">
+<h2>本章小结<a class="headerlink" href="#id24" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>推理优化目标</strong>：核心目标是降低延迟、提高吞吐量和资源效率。延迟和吞吐量往往需要权衡，需要根据业务场景选择优化方向。</p></li>
+<li><p><strong>延迟优化</strong>：主要技术包括动态批处理（平衡延迟和吞吐）、异步执行（计算与传输并行）、预热与缓存（消除冷启动开销）、流水线并行（各阶段并行处理）。</p></li>
+<li><p><strong>吞吐量优化</strong>：主要技术包括多实例部署+负载均衡、模型并行（张量并行/流水线并行，将大模型分布到多GPU）、数据并行推理（多输入合并批次处理）、Prefetch预取。</p></li>
+<li><p><strong>内存优化</strong>：主要技术包括Inplace操作（直接修改输入内存）、内存池（复用已分配内存）、显存复用策略、梯度检查点（重计算换内存）、混合精度推理（FP16替代FP32）。</p></li>
+<li><p><strong>优化实践</strong>：通过端到端延迟分析定位瓶颈，针对性优化。典型优化流程是：算法层→框架层→算子层→Kernel层逐层优化。</p></li>
+</ol>
+</section>
+<section id="id25">
+<h2>思考与练习<a class="headerlink" href="#id25" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>概念理解</strong>：解释为什么动态批处理可以同时优化延迟和吞吐量。如果只有静态批次（即固定批次大小），会有什么缺点？</p></li>
+<li><p><strong>原理分析</strong>：CUDA中的异步执行是如何”隐藏”内存访问延迟的？请分析异步Memcpy和异步Kernel执行的关系。</p></li>
+<li><p><strong>设计思考</strong>：假设你需要为一个实时视频分析服务设计推理优化方案，输入是视频流，每帧需要独立推理。请从延迟优化和吞吐量优化两个角度分析你会采用哪些技术？</p></li>
+<li><p><strong>实践分析</strong>：对比张量并行和流水线并行两种模型并行策略的优缺点。什么场景下适合使用张量并行？什么场景下适合使用流水线并行？</p></li>
+<li><p><strong>内存优化</strong>：解释梯度检查点（Checkpointing）是如何”用计算换内存”的。在什么场景下这种trade-off是值得的？</p></li>
+<li><p><strong>综合应用</strong>：假设你在部署一个目标检测模型到边缘设备（只有4GB显存），但模型+中间结果需要6GB显存。请设计一个综合使用多种优化技术的方案来满足这个显存约束。</p></li>
+</ol>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03-Model-Converter.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">03 模型转换与优化</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="05-Kernel-Optimization.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">05 Kernel优化技术</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">4.1 推理优化概述</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">4.1.1 推理优化的目标</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">4.1.2 性能评价指标</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">4.1.3 性能瓶颈分析</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">4.2 延迟优化</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">4.2.1 批处理优化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">4.2.2 异步执行</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">4.2.3 预热与缓存</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">4.2.4 流水线并行</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">4.3 吞吐量优化</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">4.3.1 并发推理</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">4.3.2 模型并行</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">4.3.3 数据并行推理</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">4.4 内存优化</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">4.4.1 内存复用</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">4.4.2 显存优化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">4.4.3 内存优化技术</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">4.5 推理优化实践</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">4.5.1 延迟优化实践</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">4.5.2 吞吐量优化实践</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">4.5.3 综合优化策略</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">思考与练习</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Author name not set
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Apr 29, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>本教材仅供内部培训使用</p>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

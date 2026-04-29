@@ -1,0 +1,658 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Chap01 计算机基础 &#8212; AI系统工程师培训教程</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Part1/Chap01/README';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="第一章 进制与编码" href="01-Binary.html" />
+    <link rel="prev" title="AI系统工程师培训教程" href="../../index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Apr 29, 2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="AI系统工程师培训教程 - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="AI系统工程师培训教程 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    AI系统工程师培训教程
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">第一阶段：AI基础入门</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Chap01 计算机基础</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="01-Binary.html">第一章 进制与编码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-CPU-Memory.html">第二章 CPU与内存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-Program-Running.html">第三章 程序运行原理</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap02/README.html">Chap02 Python编程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap02/01-Python-Basic.html">Python基础语法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap02/02-NumPy.html">NumPy基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap02/03-PyTorch.html">PyTorch基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap03/README.html">Chap03 数学基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap03/01-Linear-Algebra.html">线性代数基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap03/02-Probability.html">概率与统计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap03/03-Optimization.html">优化基础</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二阶段：AI系统核心</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap04/README.html">Chap04 AI系统概述</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap04/01-Introduction.html">AI系统基本概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap04/02-Architecture.html">AI系统全栈架构</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap05/README.html">Chap05 神经网络基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap05/01-Neuron-Model.html">神经元与网络模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap05/02-CNN.html">卷积神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap05/03-RNN.html">循环神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap05/04-Transformer.html">Transformer与注意力机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap05/05-Quantization.html">模型量化基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap06/README.html">Chap06 AI芯片体系架构</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/01-Chip-Base.html">AI芯片基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/02-GPU-Base.html">GPU原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/03-NVIDIA.html">NVIDIA GPU架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/04-Abroad-Chips.html">国外AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/05-Domestic-Chips.html">国内AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/06-Programming-Model.html">芯片编程模式</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap07/README.html">Chap07 AI编译器原理</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap07/01-Traditional-Compiler.html">第一章 传统编译器基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap07/02-AI-Compiler.html">第二章 AI编译器架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap07/03-Frontend-Optimization.html">第三章 前端优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap07/04-Backend-Optimization.html">第四章 后端优化</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap08/README.html">Chap08 推理系统与引擎</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap08/01-Inference-System.html">01 推理系统概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap08/02-Model-Compression.html">02 模型压缩</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap08/03-Model-Converter.html">03 模型转换与优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap08/04-Inference-Optimization.html">04 推理优化技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap08/05-Kernel-Optimization.html">05 Kernel优化技术</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap09/README.html">Chap09 AI框架核心</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap09/01-Auto-Differentiation.html">自动微分</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap09/02-Computational-Graph.html">计算图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap09/03-Distributed-Training.html">分布式训练</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap10/README.html">Chap10 大模型与集群</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap10/01-LLM-Architecture.html">大模型架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap10/02-AI-Cluster.html">AI集群</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap10/03-Parallel-Strategy.html">并行策略</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三阶段：附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixA/README.html">附录A：AI系统术语表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixB/README.html">附录B：参考文献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixC/README.html">AppendixC 实践项目</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/your-org/AI-System-Training/blob/main/Part1/Chap01/README.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button"
+   title="Show source"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/Part1/Chap01/README.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chap01 计算机基础</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">本章学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">前置知识</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">内容导航</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">思考与练习</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="chap01">
+<h1>Chap01 计算机基础<a class="headerlink" href="#chap01" title="Link to this heading">#</a></h1>
+<section id="id1">
+<h2>本章学习目标<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>理解进制与编码的基本概念</p></li>
+<li><p>掌握CPU与内存的工作原理</p></li>
+<li><p>了解程序运行的基本原理</p></li>
+</ol>
+</section>
+<section id="id2">
+<h2>前置知识<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>本章为预备知识第一章，无需特殊前置知识。</p>
+</section>
+<section id="id3">
+<h2>内容导航<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="01-Binary.html">第一章 进制与编码</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="01-Binary.html#id2">学习目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-Binary.html#id3">1.1 进制的概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-Binary.html#id9">1.2 进制转换</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-Binary.html#id16">1.3 二进制运算</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-Binary.html#id24">1.4 数据编码：整数表示</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-Binary.html#ieee-754">1.5 浮点数编码：IEEE 754</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-Binary.html#id40">1.6 字符编码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-Binary.html#id46">1.7 布尔代数与逻辑门</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-Binary.html#id55">本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-Binary.html#id56">思考与练习</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="02-CPU-Memory.html">第二章 CPU与内存</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="02-CPU-Memory.html#id1">学习目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-CPU-Memory.html#id2">2.1 冯诺依曼架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-CPU-Memory.html#id9">2.2 CPU的基本结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-CPU-Memory.html#id15">2.3 内存层次结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-CPU-Memory.html#id22">2.4 CPU与内存交互</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-CPU-Memory.html#id30">本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-CPU-Memory.html#id31">思考与练习</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="03-Program-Running.html">第三章 程序运行原理</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="03-Program-Running.html#id2">学习目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-Program-Running.html#id3">3.1 从源代码到可执行程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-Program-Running.html#id10">3.2 进程与线程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-Program-Running.html#id19">3.3 并发与并行</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-Program-Running.html#id26">3.4 操作系统与系统调用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-Program-Running.html#id35">本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-Program-Running.html#id36">思考与练习</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="id4">
+<h2>本章小结<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>本章为计算机基础预备知识章节，共包含三个部分：</p>
+<p><strong>第一部分：进制与编码</strong></p>
+<ul class="simple">
+<li><p>介绍了二进制、八进制、十六进制的基本概念和相互转换方法</p></li>
+<li><p>详细讲解了原码、反码、补码的原理，以及计算机如何用补码表示有符号整数</p></li>
+<li><p>解释了IEEE 754浮点数标准，包括规格化数、非规格化数和特殊值</p></li>
+<li><p>介绍了ASCII和UTF-8字符编码的原理</p></li>
+</ul>
+<p><strong>第二部分：CPU与内存</strong></p>
+<ul class="simple">
+<li><p>阐述了冯诺依曼架构的基本原理和五大组成部分</p></li>
+<li><p>深入分析了CPU的结构：ALU、控制单元、寄存器和指令执行流程</p></li>
+<li><p>讲解了内存层次结构：寄存器、高速缓存、主存、虚拟内存的工作原理</p></li>
+<li><p>介绍了局部性原理（时间局部性和空间局部性）是缓存技术的基础</p></li>
+<li><p>说明了总线、DMA、缓存一致性和中断机制等CPU与内存交互的关键概念</p></li>
+</ul>
+<p><strong>第三部分：程序运行原理</strong></p>
+<ul class="simple">
+<li><p>描述了从源代码到可执行程序的完整过程：预处理、编译、汇编、链接</p></li>
+<li><p>解释了ELF可执行文件格式的结构和程序的内存布局</p></li>
+<li><p>深入讲解了进程与线程的概念、区别和同步机制</p></li>
+<li><p>分析了并发与并行的区别，以及并发编程面临的问题（竞态条件、死锁等）</p></li>
+<li><p>介绍了操作系统在内核态与用户态的角色，以及系统调用的工作机制</p></li>
+</ul>
+</section>
+<section id="id5">
+<h2>思考与练习<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>进制转换与编码</strong></p>
+<ul class="simple">
+<li><p>将二进制数 <span class="math notranslate nohighlight">\(1101011_2\)</span> 转换为十进制、八进制和十六进制。</p></li>
+<li><p>为什么计算机使用补码而不是原码来表示有符号整数？</p></li>
+<li><p>解释浮点数精度问题：为什么 <code class="docutils literal notranslate"><span class="pre">0.1</span> <span class="pre">+</span> <span class="pre">0.2</span> <span class="pre">!=</span> <span class="pre">0.3</span></code> 在大多数编程语言中成立？</p></li>
+</ul>
+</li>
+<li><p><strong>CPU与内存</strong></p>
+<ul class="simple">
+<li><p>描述冯诺依曼架构的基本工作流程，解释什么是”冯诺依曼瓶颈”。</p></li>
+<li><p>假设L1 Cache未命中，CPU接下来会检查哪里？请描述缓存逐级查找的过程。</p></li>
+<li><p>什么是虚拟内存？它解决了哪些问题？</p></li>
+</ul>
+</li>
+<li><p><strong>进程与线程</strong></p>
+<ul class="simple">
+<li><p>fork()系统调用有什么特殊之处？为什么它返回两次？</p></li>
+<li><p>多线程程序中，为什么需要互斥锁来保护共享数据？请分析如果不加保护会发生什么问题。</p></li>
+<li><p>线程与进程的根本区别是什么？</p></li>
+</ul>
+</li>
+<li><p><strong>并发与并行</strong></p>
+<ul class="simple">
+<li><p>并发（Concurrency）和并行（Parallelism）的区别是什么？请各举一个实际应用场景。</p></li>
+<li><p>什么是死锁？死锁产生的四个必要条件是什么？如何避免死锁？</p></li>
+<li><p>如果程序中有90%的代码可以并行化，使用8核处理器，理论最大加速比是多少？（根据Amdahl定律计算）</p></li>
+</ul>
+</li>
+<li><p><strong>系统调用与程序运行</strong></p>
+<ul class="simple">
+<li><p>为什么用户程序不能直接访问硬件？系统调用是如何实现用户态和内核态切换的？</p></li>
+<li><p>描述在Linux终端执行 <code class="docutils literal notranslate"><span class="pre">./a.out</span></code> 时，从shell创建进程到程序运行的完整过程。</p></li>
+<li><p>静态链接和动态链接各有什么优缺点？</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../../index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">AI系统工程师培训教程</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="01-Binary.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">第一章 进制与编码</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">本章学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">前置知识</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">内容导航</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">思考与练习</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Author name not set
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Apr 29, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>本教材仅供内部培训使用</p>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

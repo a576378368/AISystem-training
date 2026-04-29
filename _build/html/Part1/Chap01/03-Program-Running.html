@@ -1,0 +1,1617 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>第三章 程序运行原理 &#8212; AI系统工程师培训教程</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Part1/Chap01/03-Program-Running';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Chap02 Python编程" href="../Chap02/README.html" />
+    <link rel="prev" title="第二章 CPU与内存" href="02-CPU-Memory.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Apr 29, 2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="AI系统工程师培训教程 - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="AI系统工程师培训教程 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    AI系统工程师培训教程
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">第一阶段：AI基础入门</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Chap01 计算机基础</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-Binary.html">第一章 进制与编码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-CPU-Memory.html">第二章 CPU与内存</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">第三章 程序运行原理</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap02/README.html">Chap02 Python编程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap02/01-Python-Basic.html">Python基础语法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap02/02-NumPy.html">NumPy基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap02/03-PyTorch.html">PyTorch基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap03/README.html">Chap03 数学基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap03/01-Linear-Algebra.html">线性代数基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap03/02-Probability.html">概率与统计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap03/03-Optimization.html">优化基础</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二阶段：AI系统核心</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap04/README.html">Chap04 AI系统概述</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap04/01-Introduction.html">AI系统基本概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap04/02-Architecture.html">AI系统全栈架构</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap05/README.html">Chap05 神经网络基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap05/01-Neuron-Model.html">神经元与网络模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap05/02-CNN.html">卷积神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap05/03-RNN.html">循环神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap05/04-Transformer.html">Transformer与注意力机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap05/05-Quantization.html">模型量化基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap06/README.html">Chap06 AI芯片体系架构</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/01-Chip-Base.html">AI芯片基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/02-GPU-Base.html">GPU原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/03-NVIDIA.html">NVIDIA GPU架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/04-Abroad-Chips.html">国外AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/05-Domestic-Chips.html">国内AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/06-Programming-Model.html">芯片编程模式</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap07/README.html">Chap07 AI编译器原理</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap07/01-Traditional-Compiler.html">第一章 传统编译器基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap07/02-AI-Compiler.html">第二章 AI编译器架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap07/03-Frontend-Optimization.html">第三章 前端优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap07/04-Backend-Optimization.html">第四章 后端优化</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap08/README.html">Chap08 推理系统与引擎</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap08/01-Inference-System.html">01 推理系统概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap08/02-Model-Compression.html">02 模型压缩</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap08/03-Model-Converter.html">03 模型转换与优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap08/04-Inference-Optimization.html">04 推理优化技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap08/05-Kernel-Optimization.html">05 Kernel优化技术</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap09/README.html">Chap09 AI框架核心</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap09/01-Auto-Differentiation.html">自动微分</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap09/02-Computational-Graph.html">计算图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap09/03-Distributed-Training.html">分布式训练</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap10/README.html">Chap10 大模型与集群</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap10/01-LLM-Architecture.html">大模型架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap10/02-AI-Cluster.html">AI集群</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap10/03-Parallel-Strategy.html">并行策略</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三阶段：附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixA/README.html">附录A：AI系统术语表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixB/README.html">附录B：参考文献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixC/README.html">AppendixC 实践项目</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/your-org/AI-System-Training/blob/main/Part1/Chap01/03-Program-Running.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button"
+   title="Show source"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/Part1/Chap01/03-Program-Running.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>第三章 程序运行原理</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3.1 从源代码到可执行程序</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3.1.1 程序的生命周期</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.1.2 编译过程详解</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">3.1.3 链接过程</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">3.1.4 可执行文件格式</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">3.1.5 加载可执行文件</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">本节小结</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">3.2 进程与线程</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">3.2.1 进程的概念</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">3.2.2 进程的创建</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">3.2.3 进程的终止</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">3.2.4 线程的概念</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">3.2.5 进程与线程的区别</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">3.2.6 线程的创建与同步</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">3.2.7 线程的状态</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">本节小结</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">3.3 并发与并行</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">3.3.1 并发与并行的概念</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">3.3.2 并发的应用场景</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">3.3.3 并行的应用场景</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">3.3.4 并发与并行的实现方式</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">3.3.5 并发的问题与挑战</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#amdahl">3.3.6 Amdahl定律</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">本节小结</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">3.4 操作系统与系统调用</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">3.4.1 操作系统的作用</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">3.4.2 内核与用户态</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">3.4.3 系统调用概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">3.4.4 常见系统调用</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">3.4.5 系统调用的实现</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c">3.4.6 C库与系统调用</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">3.4.7 操作系统启动过程</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id33">3.4.8 应用程序的执行</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id34">本节小结</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id36">思考与练习</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>第三章 程序运行原理<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="id2">
+<h2>学习目标<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>理解从源代码到可执行程序的全过程：编译、链接、加载</p></li>
+<li><p>掌握进程和线程的概念，理解它们的区别和联系</p></li>
+<li><p>理解并发与并行的区别</p></li>
+<li><p>掌握操作系统在程序运行中的角色</p></li>
+<li><p>了解系统调用的概念和常用系统调用</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id3">
+<h2>3.1 从源代码到可执行程序<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<section id="id4">
+<h3>3.1.1 程序的生命周期<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>当我们编写一个程序时，从键盘敲下第一行代码，到程序最终在计算机上运行，经历了多个阶段。这个过程可以概括为：</p>
+<p><strong>源代码 → 预处理器 → 编译器 → 汇编器 → 目标文件 → 链接器 → 可执行文件 → 加载器 → 进程</strong></p>
+<p>这个看似简单的流程，实际上涉及了多个复杂的转换步骤。理解这些转换过程，对于理解计算机系统的工作方式至关重要。</p>
+</section>
+<section id="id5">
+<h3>3.1.2 编译过程详解<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>**编译（Compilation）**是将高级语言（如C、C++、Rust）转换为机器能理解的形式的第一步。但”编译”这个术语实际上涵盖了多个子阶段。</p>
+<p><strong>1. 预处理（Preprocessing）</strong></p>
+<p>预处理是编译的第一个阶段，负责处理源代码中的预处理指令。</p>
+<p>预处理指令以<code class="docutils literal notranslate"><span class="pre">#</span></code>开头，常见的包括：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">#include</span></code>：包含头文件内容</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">#define</span></code>：定义宏</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">#if</span></code>、<code class="docutils literal notranslate"><span class="pre">#ifdef</span></code>、<code class="docutils literal notranslate"><span class="pre">#endif</span></code>：条件编译</p></li>
+</ul>
+<p>例如，对于以下代码：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define PI 3.14159</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello, PI is %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">PI</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>预处理后，<code class="docutils literal notranslate"><span class="pre">#define</span> <span class="pre">PI</span> <span class="pre">3.14159</span></code>会被替换为实际的数值，<code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;stdio.h&gt;</span></code>会被stdio.h文件的内容替换。</p>
+<p><strong>2. 编译（Compiling）</strong></p>
+<p>编译阶段将预处理后的源代码转换为汇编语言。这一阶段是整个编译过程中最复杂的部分。</p>
+<p>编译阶段主要包括：</p>
+<ul class="simple">
+<li><p><strong>词法分析（Lexical Analysis）</strong>：将源代码分割成一个个的标记（Token），如关键字、标识符、运算符等</p></li>
+<li><p><strong>语法分析（Syntax Analysis）</strong>：将标记组织成语法树，检查语法是否正确</p></li>
+<li><p><strong>语义分析（Semantic Analysis）</strong>：检查类型是否匹配、变量是否声明等语义问题</p></li>
+<li><p><strong>优化（Optimization）</strong>：对代码进行各种优化，如常量折叠、死代码消除、循环优化等</p></li>
+<li><p><strong>代码生成（Code Generation）</strong>：生成目标平台的汇编代码</p></li>
+</ul>
+<p><strong>3. 汇编（Assembly）</strong></p>
+<p>汇编阶段将汇编语言转换为机器码，生成目标文件（Object File）。</p>
+<p>目标文件是二进制格式，包含：</p>
+<ul class="simple">
+<li><p>机器指令</p></li>
+<li><p>程序数据</p></li>
+<li><p>符号表（Symbol Table）：记录程序中的变量和函数名及其地址</p></li>
+<li><p>调试信息</p></li>
+<li><p>重定位信息</p></li>
+</ul>
+<p>不同平台的目标文件格式不同：</p>
+<ul class="simple">
+<li><p>Linux/Unix：ELF（Executable and Linkable Format）</p></li>
+<li><p>Windows：PE（Portable Executable）</p></li>
+<li><p>macOS：Mach-O</p></li>
+</ul>
+</section>
+<section id="id6">
+<h3>3.1.3 链接过程<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>**链接（Linking）**是将多个目标文件合并成一个可执行文件的过程。</p>
+<p>为什么需要链接？</p>
+<p>现代程序通常由多个源文件组成，每个源文件独立编译成目标文件。链接器负责：</p>
+<ul class="simple">
+<li><p>合并所有目标文件</p></li>
+<li><p>解析符号引用（一个文件中引用的函数/变量可能在另一个文件中定义）</p></li>
+<li><p>确定每个符号的最终地址</p></li>
+<li><p>决定内存布局</p></li>
+</ul>
+<p><strong>链接的两种类型</strong>：</p>
+<p><strong>1. 静态链接（Static Linking）</strong></p>
+<p>静态链接在编译时完成，所有代码被合并到一个可执行文件中。</p>
+<p>优点：</p>
+<ul class="simple">
+<li><p>可执行文件是独立的，不依赖外部库</p></li>
+<li><p>加载速度快（无需在运行时加载库）</p></li>
+</ul>
+<p>缺点：</p>
+<ul class="simple">
+<li><p>可执行文件体积较大</p></li>
+<li><p>如果多个程序使用同一个库，每个程序都有一份库的副本</p></li>
+<li><p>更新库需要重新编译所有程序</p></li>
+</ul>
+<p><strong>2. 动态链接（Dynamic Linking）</strong></p>
+<p>动态链接在程序加载或运行时完成，库代码不直接写入可执行文件，而是记录对库的引用。</p>
+<p>优点：</p>
+<ul class="simple">
+<li><p>可执行文件体积较小</p></li>
+<li><p>多个程序共享同一个库的代码，节省内存</p></li>
+<li><p>更新库不需要重新编译使用该库的程序</p></li>
+</ul>
+<p>缺点：</p>
+<ul class="simple">
+<li><p>加载速度稍慢（需要在运行时解析符号）</p></li>
+<li><p>如果库文件缺失或版本不匹配，程序无法运行</p></li>
+</ul>
+<p><strong>动态链接库</strong>：</p>
+<ul class="simple">
+<li><p>Linux：.so文件（Shared Object）</p></li>
+<li><p>Windows：.dll文件（Dynamic Link Library）</p></li>
+<li><p>macOS：.dylib文件</p></li>
+</ul>
+<p><strong>符号解析（Symbol Resolution）</strong>：</p>
+<p>链接器需要解析各种符号引用：</p>
+<ul class="simple">
+<li><p><strong>外部符号（External Symbol）</strong>：在一个目标文件中引用，但在另一个目标文件中定义</p></li>
+<li><p><strong>强符号（Strong Symbol）</strong>：已初始化的全局变量和函数</p></li>
+<li><p><strong>弱符号（Weak Symbol）</strong>：未初始化的全局变量</p></li>
+</ul>
+<p>链接规则：</p>
+<ul class="simple">
+<li><p>每个符号只能有一个定义</p></li>
+<li><p>如果有多个强符号，会产生链接错误（重复定义）</p></li>
+<li><p>弱符号可以被强符号覆盖</p></li>
+</ul>
+</section>
+<section id="id7">
+<h3>3.1.4 可执行文件格式<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>**ELF（Executable and Linkable Format）**是Linux和许多Unix系统使用的可执行文件格式。理解ELF格式有助于理解程序的加载和运行。</p>
+<p><strong>ELF文件结构</strong>：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─────────────────────┐
+│ ELF Header          │  ← 文件基本信息：入口点、段表位置等
+├─────────────────────┤
+│ Program Header Table│  ← 加载信息（运行时需要）
+├─────────────────────┤
+│ .text               │  ← 代码段：机器指令
+├─────────────────────┤
+│ .rodata             │  ← 只读数据段：常量字符串等
+├─────────────────────┤
+│ .data               │  ← 已初始化数据段：全局变量等
+├─────────────────────┤
+│ .bss                │  ← 未初始化数据段
+├─────────────────────┤
+│ ...其他段...        │
+├─────────────────────┤
+│ Section Header Table│  ← 段表（链接时需要）
+└─────────────────────┘
+</pre></div>
+</div>
+<p><strong>ELF Header</strong>包含：</p>
+<ul class="simple">
+<li><p>Magic number：标识ELF文件</p></li>
+<li><p>程序入口点（Entry Point）</p></li>
+<li><p>Program Header Table的位置和大小</p></li>
+<li><p>Section Header Table的位置和大小</p></li>
+<li><p>等等</p></li>
+</ul>
+<p><strong>Program Header Table</strong>告诉加载器如何加载文件：</p>
+<ul class="simple">
+<li><p>每个表项描述一个段（Segment）</p></li>
+<li><p>包括段的类型、文件中的偏移、虚拟地址、权限（读/写/执行）等</p></li>
+</ul>
+<p><strong>常见的段（Section）</strong>：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">.text</span></code>：存放可执行指令</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.data</span></code>：存放已初始化的全局和静态变量</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.bss</span></code>：存放未初始化的全局和静态变量（不占文件空间，只预留位置）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.rodata</span></code>：存放只读数据，如字符串常量</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.symtab</span></code>：符号表</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.strtab</span></code>：字符串表</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.debug</span></code>：调试信息</p></li>
+</ul>
+</section>
+<section id="id8">
+<h3>3.1.5 加载可执行文件<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p>当我们运行一个程序时，**加载器（Loader）**负责将可执行文件加载到内存中，并开始执行。</p>
+<p><strong>Linux下的加载过程</strong>：</p>
+<ol class="arabic simple">
+<li><p><strong>shell调用execve系统调用</strong></p></li>
+<li><p><strong>内核检查可执行文件格式</strong>（如ELF）</p></li>
+<li><p><strong>读取ELF Header，获取入口点地址</strong></p></li>
+<li><p><strong>根据Program Header Table，将文件的各个段映射到虚拟内存</strong></p></li>
+<li><p><strong>创建栈、设置参数和环境变量</strong></p></li>
+<li><p><strong>设置寄存器，将控制权交给入口点</strong></p></li>
+</ol>
+<p><strong>内存布局</strong>：</p>
+<p>程序加载后，在虚拟内存中的典型布局：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>高位地址
+┌────────────────────┐
+│       内核空间      │
+├────────────────────┤ ← stack pointer初始位置
+│                    │
+│      栈            │ ← 向下增长，存储函数调用、局部变量
+│                    │
+├────────────────────┤
+│    未使用          │
+├────────────────────┤
+│       堆           │ ← 向上增长，动态分配内存（malloc/new）
+│                    │
+├────────────────────┤
+│   .data 和 .bss    │ ← 全局/静态数据
+├────────────────────┤
+│     .text          │ ← 代码段
+├────────────────────┤
+│   ELF Header等     │
+└────────────────────┘
+低位地址
+</pre></div>
+</div>
+</section>
+<section id="id9">
+<h3>本节小结<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>程序从源代码到可执行文件需要经过预处理、编译、汇编、链接四个阶段</p></li>
+<li><p>预处理处理宏包含和条件编译，编译进行词法分析、语法分析、语义分析、优化和代码生成</p></li>
+<li><p>链接将多个目标文件合并成可执行文件，解析符号引用</p></li>
+<li><p>静态链接在编译时完成，动态链接在运行时完成</p></li>
+<li><p>ELF是Linux常用的可执行文件格式，包含ELF Header、Program Header Table和各种段</p></li>
+<li><p>加载器负责将可执行文件加载到内存，并开始执行程序</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id10">
+<h2>3.2 进程与线程<a class="headerlink" href="#id10" title="Link to this heading">#</a></h2>
+<section id="id11">
+<h3>3.2.1 进程的概念<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p>**进程（Process）**是操作系统中一个非常重要的概念。它是程序执行的实例，是操作系统进行资源分配和调度的基本单位。</p>
+<p>要理解进程，我们需要从两个角度来看：</p>
+<ul class="simple">
+<li><p><strong>从用户角度看</strong>：进程是运行中的程序，是一个活动的实体</p></li>
+<li><p><strong>从操作系统角度看</strong>：进程是一个资源容器的数据结构，包含程序运行所需的所有资源</p></li>
+</ul>
+<p><strong>进程的组成</strong>：</p>
+<p>每个进程都有自己独立的虚拟地址空间、寄存器状态、程序计数器、栈、堆等资源。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>进程的数据结构（进程控制块/PCB）
+├── PID（进程标识符）
+├── 状态（运行、就绪、阻塞等）
+├── 程序计数器
+├── 寄存器状态
+├── 内存管理信息（页表/段表）
+├── 打开的文件列表
+├── 信号处理方式
+├── 资源使用信息
+└── ...其他信息
+</pre></div>
+</div>
+<p><strong>进程的状态</strong>：</p>
+<p>进程在生命周期内会处于不同的状态：</p>
+<ul class="simple">
+<li><p><strong>创建（New）</strong>：进程正在被创建</p></li>
+<li><p><strong>就绪（Ready）</strong>：进程已准备好运行，等待CPU分配</p></li>
+<li><p><strong>运行（Running）</strong>：进程正在CPU上执行</p></li>
+<li><p><strong>阻塞（Blocked）</strong>：进程因等待某个事件（如I/O完成）而暂停</p></li>
+<li><p><strong>终止（Terminated）</strong>：进程执行完毕</p></li>
+</ul>
+<p>状态转换：</p>
+<ul class="simple">
+<li><p>新进程创建 → 就绪</p></li>
+<li><p>调度程序选择该进程 → 运行</p></li>
+<li><p>时间片用完 → 就绪</p></li>
+<li><p>进程请求I/O → 阻塞</p></li>
+<li><p>I/O完成 → 就绪</p></li>
+<li><p>进程结束 → 终止</p></li>
+</ul>
+</section>
+<section id="id12">
+<h3>3.2.2 进程的创建<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>在Linux系统中，进程的创建通过<strong>fork系统调用</strong>完成。</p>
+<p><strong>fork的作用</strong>：</p>
+<p>fork创建一个新的进程，称为<strong>子进程</strong>。调用fork的进程是<strong>父进程</strong>。</p>
+<p>fork的特殊之处在于：它被调用一次，但返回两次——在父进程中返回子进程的PID，在子进程中返回0。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">pid_t</span><span class="w"> </span><span class="n">pid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fork</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pid</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;我是子进程，PID=%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">getpid</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;我是父进程，子进程PID=%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">pid</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>执行结果：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>我是父进程，子进程PID=12345
+我是子进程，PID=12346
+</pre></div>
+</div>
+<p><strong>fork之后发生了什么</strong>：</p>
+<p>fork之后，父进程和子进程拥有：</p>
+<ul class="simple">
+<li><p>相同的代码段</p></li>
+<li><p>相同的全局变量和堆（复制）</p></li>
+<li><p>独立的栈空间（复制）</p></li>
+<li><p>独立的寄存器状态和程序计数器</p></li>
+</ul>
+<p>子进程是父进程的副本，但它们是独立的进程，有各自的虚拟地址空间（尽管内容相同）。对子进程的修改不会影响父进程，反之亦然。</p>
+</section>
+<section id="id13">
+<h3>3.2.3 进程的终止<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p>进程可以通过多种方式终止：</p>
+<p><strong>正常终止</strong>：</p>
+<ul class="simple">
+<li><p>main函数返回</p></li>
+<li><p>调用exit()函数</p></li>
+<li><p>调用_exit()系统调用</p></li>
+</ul>
+<p><strong>异常终止</strong>：</p>
+<ul class="simple">
+<li><p>收到信号（如SIGSEGV、SIGINT）</p></li>
+<li><p>调用abort()函数</p></li>
+<li><p>未处理的异常</p></li>
+</ul>
+<p><strong>进程退出的资源回收</strong>：</p>
+<p>当进程终止时，它并不会立即消失，而是变成一个<strong>僵尸进程（Zombie Process）</strong>。僵尸进程保留进程的退出状态等信息，等待父进程调用<strong>wait系统调用</strong>来收集这些信息。</p>
+<p>如果父进程没有调用wait，子进程就会一直保持僵尸状态。但init进程（PID=1）会定期回收孤儿进程的僵尸。</p>
+<p><strong>孤儿进程（Orphan Process）</strong>：</p>
+<p>如果父进程先于子进程终止，子进程就会变成孤儿进程，被init进程（PID=1）收养。init会负责回收这些子进程。</p>
+</section>
+<section id="id14">
+<h3>3.2.4 线程的概念<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p>**线程（Thread）**是进程内的执行单元，是CPU调度的基本单位。</p>
+<p>在引入线程之前，进程是调度的基本单位。但进程有一个问题：同一进程内的多个任务无法共享地址空间，如果要共享数据，必须通过进程间通信（IPC）机制，效率较低。</p>
+<p>线程的引入解决了这个问题：同一进程内的多个线程共享：</p>
+<ul class="simple">
+<li><p>地址空间</p></li>
+<li><p>全局变量</p></li>
+<li><p>堆</p></li>
+<li><p>打开的文件</p></li>
+<li><p>信号处理函数</p></li>
+</ul>
+<p>但每个线程有自己独立的：</p>
+<ul class="simple">
+<li><p>程序计数器</p></li>
+<li><p>寄存器状态</p></li>
+<li><p>栈</p></li>
+<li><p>errno（错误码）</p></li>
+</ul>
+</section>
+<section id="id15">
+<h3>3.2.5 进程与线程的区别<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>特性</p></th>
+<th class="head"><p>进程</p></th>
+<th class="head"><p>线程</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>创建速度</p></td>
+<td><p>较慢（需要复制整个地址空间）</p></td>
+<td><p>较快（可以共享进程资源）</p></td>
+</tr>
+<tr class="row-odd"><td><p>通信速度</p></td>
+<td><p>较慢（需要IPC机制）</p></td>
+<td><p>较快（直接共享内存）</p></td>
+</tr>
+<tr class="row-even"><td><p>隔离性</p></td>
+<td><p>完全隔离，一个进程崩溃不影响其他进程</p></td>
+<td><p>共享地址空间，一个线程崩溃可能导致整个进程崩溃</p></td>
+</tr>
+<tr class="row-odd"><td><p>资源占用</p></td>
+<td><p>较多（每个进程有独立地址空间）</p></td>
+<td><p>较少（共享大部分资源）</p></td>
+</tr>
+<tr class="row-even"><td><p>同步复杂度</p></td>
+<td><p>较低（独立地址空间天然隔离）</p></td>
+<td><p>较高（需要显式同步，避免竞态条件）</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id16">
+<h3>3.2.6 线程的创建与同步<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<p><strong>创建线程</strong>（以POSIX线程为例）：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;pthread.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+
+<span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="nf">thread_function</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">arg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">;</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;线程运行，参数=%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">num</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">pthread_t</span><span class="w"> </span><span class="kr">thread</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">arg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// 创建线程</span>
+<span class="w">    </span><span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="kr">thread</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">thread_function</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">arg</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// 等待线程结束</span>
+<span class="w">    </span><span class="n">pthread_join</span><span class="p">(</span><span class="kr">thread</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>线程同步</strong>：</p>
+<p>由于多个线程共享地址空间，如果不加以控制，并发访问共享数据会导致<strong>竞态条件（Race Condition）</strong>。</p>
+<p>常见的线程同步机制：</p>
+<p><strong>1. 互斥锁（Mutex）</strong></p>
+<p>互斥锁用于保护共享资源，一次只允许一个线程访问。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">pthread_mutex_t</span><span class="w"> </span><span class="n">mutex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PTHREAD_MUTEX_INITIALIZER</span><span class="p">;</span>
+
+<span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+<span class="c1">// 访问共享资源</span>
+<span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>2. 信号量（Semaphore）</strong></p>
+<p>信号量是一个计数器，用于控制对共享资源的访问数量。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">sem_t</span><span class="w"> </span><span class="n">sem</span><span class="p">;</span>
+<span class="n">sem_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sem</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w">  </span><span class="c1">// 初始值为1</span>
+
+<span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sem</span><span class="p">);</span><span class="w">  </span><span class="c1">// 减1，如果为0则阻塞</span>
+<span class="c1">// 访问共享资源</span>
+<span class="n">sem_post</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sem</span><span class="p">);</span><span class="w">  </span><span class="c1">// 加1</span>
+</pre></div>
+</div>
+<p><strong>3. 条件变量（Condition Variable）</strong></p>
+<p>条件变量用于线程间的等待和通知机制。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">pthread_mutex_t</span><span class="w"> </span><span class="n">mutex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PTHREAD_MUTEX_INITIALIZER</span><span class="p">;</span>
+<span class="n">pthread_cond_t</span><span class="w"> </span><span class="n">cond</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PTHREAD_COND_INITIALIZER</span><span class="p">;</span>
+
+<span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">some_condition_is_false</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">pthread_cond_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cond</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span><span class="w">  </span><span class="c1">// 解锁mutex并等待</span>
+<span class="p">}</span>
+<span class="c1">// 条件满足，处理</span>
+<span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="id17">
+<h3>3.2.7 线程的状态<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
+<p>线程与进程类似，也有多种状态：</p>
+<ul class="simple">
+<li><p><strong>创建</strong>：线程正在被创建</p></li>
+<li><p><strong>就绪</strong>：线程已准备好运行，等待CPU</p></li>
+<li><p><strong>运行</strong>：线程正在CPU上执行</p></li>
+<li><p><strong>阻塞</strong>：线程因等待某个条件而暂停</p></li>
+<li><p><strong>终止</strong>：线程执行完毕</p></li>
+</ul>
+<p>线程的创建和终止比进程快，因为线程不需要创建新的地址空间。</p>
+</section>
+<section id="id18">
+<h3>本节小结<a class="headerlink" href="#id18" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>进程是程序执行的实例，是操作系统资源分配的基本单位</p></li>
+<li><p>进程有独立的地址空间，通过fork创建，通过exit/_exit终止</p></li>
+<li><p>线程是进程内的执行单元，是CPU调度的基本单位</p></li>
+<li><p>同一进程的多个线程共享地址空间，但有独立的栈和寄存器</p></li>
+<li><p>线程同步机制包括互斥锁、信号量和条件变量，用于防止竞态条件</p></li>
+<li><p>进程和线程各有优缺点，选择取决于具体应用场景</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id19">
+<h2>3.3 并发与并行<a class="headerlink" href="#id19" title="Link to this heading">#</a></h2>
+<section id="id20">
+<h3>3.3.1 并发与并行的概念<a class="headerlink" href="#id20" title="Link to this heading">#</a></h3>
+<p>**并发（Concurrency）<strong>和</strong>并行（Parallelism）**是两个容易混淆但含义不同的概念。</p>
+<p><strong>并发（Concurrency）</strong>：</p>
+<p>并发是指多个任务在<strong>同一时间段内</strong>交替执行。在单核CPU上，由于只有一个核心，操作系统通过快速切换任务，让人感觉多个任务在同时执行，但任意时刻只有一个任务在CPU上运行。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>时间 →
+┌────────┬────────┬────────┬────────┐
+│ 任务A  │ 任务B  │ 任务A  │ 任务B  │
+└────────┴────────┴────────┴────────┘
+        ↑                    ↑
+     切换                   切换
+</pre></div>
+</div>
+<p><strong>并行（Parallelism）</strong>：</p>
+<p>并行是指多个任务在<strong>同一时刻</strong>同时执行。这需要多核CPU或多台计算机，每个处理单元同时执行不同的任务。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>时间 →
+┌────────┬────────┐
+│ 任务A  │ 任务B  │  同时执行
+│ (核1)  │ (核2)  │
+└────────┴────────┘
+</pre></div>
+</div>
+<p><strong>简单类比</strong>：</p>
+<ul class="simple">
+<li><p>并发就像一个厨师同时管理多个锅，通过切换注意力和时间来”同时”处理多个烹饪任务</p></li>
+<li><p>并行就像多个厨师各自负责一个锅，真正同时地处理多个任务</p></li>
+</ul>
+</section>
+<section id="id21">
+<h3>3.3.2 并发的应用场景<a class="headerlink" href="#id21" title="Link to this heading">#</a></h3>
+<p>并发不是为了加快执行速度，而是为了：</p>
+<ul class="simple">
+<li><p><strong>提高资源利用率</strong>：当一个任务等待I/O时，CPU可以切换到另一个任务</p></li>
+<li><p><strong>提高系统响应性</strong>：如GUI程序中，后台任务不会阻塞用户界面</p></li>
+<li><p><strong>简化问题模型</strong>：某些问题天然适合分解为多个独立或半独立子任务</p></li>
+</ul>
+<p><strong>I/O密集型任务的并发</strong>：</p>
+<p>对于涉及大量I/O操作的任务（如Web服务器），并发可以显著提高吞吐量。</p>
+<p>单线程顺序处理：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>请求1 → [等待I/O] → 处理 → 响应1
+请求2 → [等待I/O] → 处理 → 响应2
+...
+总时间 = N × (I/O时间 + 处理时间)
+</pre></div>
+</div>
+<p>多线程/异步并发处理：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>请求1 → [等待I/O]
+请求2 → [等待I/O]  → 处理 → 响应2
+请求3 → [等待I/O]  → 处理 → 响应3
+...
+总时间 ≈ N × I/O时间 + 处理时间（重叠I/O等待）
+</pre></div>
+</div>
+</section>
+<section id="id22">
+<h3>3.3.3 并行的应用场景<a class="headerlink" href="#id22" title="Link to this heading">#</a></h3>
+<p>并行主要用于<strong>计算密集型任务</strong>，通过多核同时计算来加速执行。</p>
+<p><strong>并行计算的例子</strong>：</p>
+<p><strong>1. 矩阵乘法</strong></p>
+<p>对于大型矩阵乘法，可以将矩阵分块，分配给不同CPU核心计算：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>        A                   B
+   ┌───┬───┐           ┌───┬───┐
+   │ A11│ A12│    ×     │ B11│ B12│
+   ├───┼───┤           ├───┼───┤
+   │ A21│ A22│           │ B21│ B22│
+   └───┴───┘           └───┴───┘
+</pre></div>
+</div>
+<p>A11和B11的乘法可以分配给核心1，A12和B21的乘法可以分配给核心2，以此类推。</p>
+<p><strong>2. 图像处理</strong></p>
+<p>图像的每个像素处理通常相互独立，可以将图像分成多个区域，并行处理。</p>
+<p><strong>3. 科学计算</strong></p>
+<p>气候模拟、流体力学模拟、分子动力学等科学计算，需要大量浮点运算，并行化可以显著加速。</p>
+</section>
+<section id="id23">
+<h3>3.3.4 并发与并行的实现方式<a class="headerlink" href="#id23" title="Link to this heading">#</a></h3>
+<p><strong>多进程并发</strong>：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>进程A ←→ 进程B ←→ 进程C
+(通过IPC通信，如管道、消息队列、共享内存)
+</pre></div>
+</div>
+<p>优点：隔离性好，一个进程崩溃不影响其他进程
+缺点：通信开销大（需要复制数据）</p>
+<p><strong>多线程并发</strong>：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>线程A ←→ 线程B ←→ 线程C
+(直接共享内存地址空间)
+</pre></div>
+</div>
+<p>优点：通信效率高（直接访问共享内存）
+缺点：需要显式同步，一个线程崩溃可能导致整个进程崩溃</p>
+<p><strong>异步编程</strong>：</p>
+<p>异步编程是一种单线程并发模型，通过事件循环和回调函数实现。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Python异步IO示例</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">fetch</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="c1"># 发起网络请求，但不阻塞</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># 并发发起多个请求</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span>
+        <span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;http://example.com/1&quot;</span><span class="p">),</span>
+        <span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;http://example.com/2&quot;</span><span class="p">),</span>
+        <span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;http://example.com/3&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+
+<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<section id="id24">
+<h3>3.3.5 并发的问题与挑战<a class="headerlink" href="#id24" title="Link to this heading">#</a></h3>
+<p>并发编程比顺序编程复杂得多，因为并发会引入新的问题：</p>
+<p><strong>1. 竞态条件（Race Condition）</strong></p>
+<p>当多个线程并发访问和修改共享数据时，最终结果取决于线程的执行顺序，就发生了竞态条件。</p>
+<p>示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 共享变量</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">counter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="c1">// 线程A执行的函数</span>
+<span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="nf">thread_a</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">arg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1000000</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">counter</span><span class="o">++</span><span class="p">;</span><span class="w">  </span><span class="c1">// 读取、+1、写回</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 线程B执行的函数</span>
+<span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="nf">thread_b</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">arg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1000000</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">counter</span><span class="o">++</span><span class="p">;</span><span class="w">  </span><span class="c1">// 读取、+1、写回</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>期望结果：counter = 2000000
+但由于竞态条件，实际结果往往小于2000000。</p>
+<p><strong>2. 死锁（Deadlock）</strong></p>
+<p>死锁是指两个或多个线程互相等待对方释放资源，导致都无法继续执行。</p>
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>线程A：获取锁1，等待锁2
+线程B：获取锁2，等待锁1
+
+结果：两个线程都在等待对方，永远无法继续
+</pre></div>
+</div>
+<p>死锁产生的四个必要条件（咖啡馆定律）：</p>
+<ul class="simple">
+<li><p><strong>互斥</strong>：资源每次只能被一个线程使用</p></li>
+<li><p><strong>持有并等待</strong>：线程持有资源的同时请求其他资源</p></li>
+<li><p><strong>不可抢占</strong>：资源不能被强制从线程中夺走</p></li>
+<li><p><strong>循环等待</strong>：存在一个线程循环等待链</p></li>
+</ul>
+<p>避免死锁的方法：</p>
+<ul class="simple">
+<li><p>破坏其中一个条件</p></li>
+<li><p>固定顺序获取锁</p></li>
+<li><p>使用try_lock而非lock，设置超时</p></li>
+</ul>
+<p><strong>3. 活锁（Livelock）</strong></p>
+<p>活锁是指线程一直在运行，但无法取得进展。与死锁不同，活锁中的线程不是在等待，而是不断重复相同的操作。</p>
+<p>例如：两辆车在狭窄的桥上相遇，双方都礼让对方，但由于礼让动作相同，双方都无法通过。</p>
+<p><strong>4. 饥饿（Starvation）</strong></p>
+<p>饥饿是指某些线程由于各种原因无法获得所需的资源，一直无法执行。</p>
+<p>例如：如果系统总是调度高优先级任务，低优先级任务可能永远得不到CPU时间。</p>
+</section>
+<section id="amdahl">
+<h3>3.3.6 Amdahl定律<a class="headerlink" href="#amdahl" title="Link to this heading">#</a></h3>
+<p><strong>Amdahl定律</strong>是并行计算中的重要定律，用于计算并行化能达到的最大加速比。</p>
+<p>假设程序中有P比例的部分可以并行化，(1-P)比例的部分必须串行执行。</p>
+<ul class="simple">
+<li><p>单核执行时间：T</p></li>
+<li><p>并行执行时间：<span class="math notranslate nohighlight">\(T_{parallel} = T \times (1-P) + \frac{T \times P}{N}\)</span></p></li>
+</ul>
+<p>其中N是核心数量。</p>
+<p><strong>加速比（Speedup）</strong>：</p>
+<div class="math notranslate nohighlight">
+\[S = \frac{T}{T_{parallel}} = \frac{1}{(1-P) + \frac{P}{N}}\]</div>
+<p><strong>举例</strong>：</p>
+<p>如果90%的代码可以并行化（N→∞）：
+$<span class="math notranslate nohighlight">\(S = \frac{1}{0.1 + 0} = 10\)</span>$</p>
+<p>即使无限多的核心，加速比最多也只有10倍。</p>
+<p><strong>启示</strong>：</p>
+<p>Amdahl定律告诉我们，并行化的收益是有限的。要提高加速比：</p>
+<ul class="simple">
+<li><p>尽量增加可并行化的比例P</p></li>
+<li><p>减少串行部分</p></li>
+<li><p>但当P接近100%时，加速比主要受核心数量N限制</p></li>
+</ul>
+</section>
+<section id="id25">
+<h3>本节小结<a class="headerlink" href="#id25" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>并发是多个任务在同一时间段内交替执行（单核），并行是多个任务在同一时刻同时执行（多核）</p></li>
+<li><p>并发提高资源利用率和系统响应性，并行提高计算速度</p></li>
+<li><p>并发实现方式包括多进程、多线程和异步编程</p></li>
+<li><p>并发编程面临竞态条件、死锁、活锁、饥饿等挑战</p></li>
+<li><p>Amdahl定律指出并行化的加速比受串行部分限制</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id26">
+<h2>3.4 操作系统与系统调用<a class="headerlink" href="#id26" title="Link to this heading">#</a></h2>
+<section id="id27">
+<h3>3.4.1 操作系统的作用<a class="headerlink" href="#id27" title="Link to this heading">#</a></h3>
+<p>**操作系统（Operating System, OS）**是计算机系统中最基础的系统软件，它是用户和硬件之间的桥梁。</p>
+<p><strong>操作系统的核心功能</strong>：</p>
+<ol class="arabic simple">
+<li><p><strong>资源管理</strong></p>
+<ul class="simple">
+<li><p>CPU调度：为多个进程分配CPU时间</p></li>
+<li><p>内存管理：分配和回收内存，实现虚拟内存</p></li>
+<li><p>设备管理：管理各种I/O设备</p></li>
+<li><p>文件系统管理：组织和管理磁盘上的数据</p></li>
+</ul>
+</li>
+<li><p><strong>提供服务</strong></p>
+<ul class="simple">
+<li><p>进程管理：创建、终止、调度进程</p></li>
+<li><p>进程间通信：提供进程间通信机制</p></li>
+<li><p>保护和安全：隔离进程，保护资源</p></li>
+</ul>
+</li>
+<li><p><strong>抽象接口</strong></p>
+<ul class="simple">
+<li><p>将硬件抽象为更易用的接口</p></li>
+<li><p>提供统一的系统调用接口</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="id28">
+<h3>3.4.2 内核与用户态<a class="headerlink" href="#id28" title="Link to this heading">#</a></h3>
+<p>现代操作系统通常采用**微内核（Microkernel）<strong>或</strong>宏内核（Monolithic Kernel）**设计。</p>
+<p><strong>宏内核（如Linux）</strong>：</p>
+<p>将大多数操作系统服务（进程管理、内存管理、文件系统、设备驱动等）都运行在<strong>内核态（Kernel Mode）</strong>。</p>
+<p>优点：</p>
+<ul class="simple">
+<li><p>性能好（内核内部函数调用速度快）</p></li>
+<li><p>各组件配合紧密</p></li>
+</ul>
+<p>缺点：</p>
+<ul class="simple">
+<li><p>内核臃肿（包含大量功能）</p></li>
+<li><p>一个组件的问题可能影响整个系统</p></li>
+</ul>
+<p><strong>微内核（如MINIX）</strong>：</p>
+<p>只将最核心的功能（调度、进程间通信）放在内核态，其他服务（文件系统、设备驱动）运行在用户态，作为独立进程。</p>
+<p>优点：</p>
+<ul class="simple">
+<li><p>系统更稳定（一个服务崩溃不会影响其他服务）</p></li>
+<li><p>内核小巧</p></li>
+</ul>
+<p>缺点：</p>
+<ul class="simple">
+<li><p>组件间通信（IPC）开销大</p></li>
+<li><p>性能稍差</p></li>
+</ul>
+<p><strong>用户态与内核态</strong>：</p>
+<p>CPU有特权级别（Privilege Level）或Ring（如Ring 0到Ring 3）：</p>
+<ul class="simple">
+<li><p><strong>内核态（Ring 0）</strong>：可以执行特权指令，访问所有硬件</p></li>
+<li><p><strong>用户态（Ring 3）</strong>：只能访问有限的资源，不能直接执行特权指令</p></li>
+</ul>
+<p>用户程序运行在用户态，当需要操作系统服务时，通过<strong>系统调用</strong>进入内核态。</p>
+</section>
+<section id="id29">
+<h3>3.4.3 系统调用概述<a class="headerlink" href="#id29" title="Link to this heading">#</a></h3>
+<p>**系统调用（System Call）**是用户程序请求操作系统服务的接口。</p>
+<p>当用户程序需要：</p>
+<ul class="simple">
+<li><p>读取/写入文件</p></li>
+<li><p>创建新进程</p></li>
+<li><p>分配内存</p></li>
+<li><p>进行网络通信</p></li>
+<li><p>其他需要特权的操作</p></li>
+</ul>
+<p>必须通过系统调用请求内核完成。</p>
+<p><strong>系统调用与普通函数调用的区别</strong>：</p>
+<p>普通函数调用：</p>
+<ul class="simple">
+<li><p>用户代码 → 用户库函数</p></li>
+<li><p>在同一地址空间执行</p></li>
+<li><p>只是一次普通的函数跳转</p></li>
+</ul>
+<p>系统调用：</p>
+<ul class="simple">
+<li><p>用户代码 → 用户库函数 → 触发软中断/syscall指令</p></li>
+<li><p>切换到内核态</p></li>
+<li><p>内核代码执行请求的操作</p></li>
+<li><p>返回用户态</p></li>
+<li><p>返回用户代码</p></li>
+</ul>
+</section>
+<section id="id30">
+<h3>3.4.4 常见系统调用<a class="headerlink" href="#id30" title="Link to this heading">#</a></h3>
+<p><strong>进程控制</strong>：</p>
+<ul class="simple">
+<li><p><strong>fork()</strong>：创建新进程</p></li>
+<li><p><strong>execve()</strong>：执行新程序</p></li>
+<li><p><strong>exit()</strong>：终止进程</p></li>
+<li><p><strong>wait()</strong>：等待子进程终止</p></li>
+<li><p><strong>getpid()</strong>：获取进程ID</p></li>
+<li><p><strong>getppid()</strong>：获取父进程ID</p></li>
+</ul>
+<p><strong>文件操作</strong>：</p>
+<ul class="simple">
+<li><p><strong>open()</strong>：打开文件</p></li>
+<li><p><strong>read()</strong>：读取文件</p></li>
+<li><p><strong>write()</strong>：写入文件</p></li>
+<li><p><strong>close()</strong>：关闭文件</p></li>
+<li><p><strong>lseek()</strong>：移动文件指针</p></li>
+<li><p><strong>unlink()</strong>：删除文件</p></li>
+</ul>
+<p><strong>内存管理</strong>：</p>
+<ul class="simple">
+<li><p><strong>brk()</strong>：改变数据段大小</p></li>
+<li><p><strong>mmap()</strong>：映射内存</p></li>
+<li><p><strong>munmap()</strong>：解除内存映射</p></li>
+</ul>
+<p><strong>进程通信</strong>：</p>
+<ul class="simple">
+<li><p><strong>pipe()</strong>：创建管道</p></li>
+<li><p><strong>socket()</strong>：创建套接字</p></li>
+<li><p><strong>connect()</strong>：连接套接字</p></li>
+<li><p><strong>send()</strong>/<strong>recv()</strong>：发送/接收数据</p></li>
+</ul>
+<p><strong>时间相关</strong>：</p>
+<ul class="simple">
+<li><p><strong>time()</strong>：获取当前时间</p></li>
+<li><p><strong>alarm()</strong>：设置闹钟</p></li>
+<li><p><strong>sleep()</strong>：进程睡眠</p></li>
+</ul>
+</section>
+<section id="id31">
+<h3>3.4.5 系统调用的实现<a class="headerlink" href="#id31" title="Link to this heading">#</a></h3>
+<p><strong>Linux系统调用过程</strong>：</p>
+<ol class="arabic simple">
+<li><p><strong>用户程序</strong>调用C库函数（如read）</p></li>
+<li><p><strong>C库</strong>准备系统调用参数（如文件描述符、缓冲区地址、字节数）</p></li>
+<li><p><strong>C库</strong>执行<strong>syscall指令</strong>（或int 0x80软中断）</p></li>
+<li><p><strong>CPU切换到内核态</strong>，跳转到内核设定的系统调用入口</p></li>
+<li><p><strong>内核</strong>根据系统调用号，调用相应的内核函数</p></li>
+<li><p><strong>内核</strong>执行操作，将结果返回</p></li>
+<li><p><strong>CPU切换回用户态</strong>，返回到C库</p></li>
+<li><p><strong>C库</strong>返回到用户程序</p></li>
+</ol>
+<p><strong>系统调用号</strong>：</p>
+<p>每个系统调用都有一个唯一的编号（系统调用号），如：</p>
+<ul class="simple">
+<li><p>Linux x86-64：</p>
+<ul>
+<li><p>read = 0</p></li>
+<li><p>write = 1</p></li>
+<li><p>open = 2</p></li>
+<li><p>close = 3</p></li>
+<li><p>fork = 57</p></li>
+<li><p>execve = 59</p></li>
+<li><p>exit = 60</p></li>
+<li><p>getpid = 39</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>系统调用表</strong>：</p>
+<p>内核维护一个系统调用表（sys_call_table），通过系统调用号索引，存储对应内核函数的地址。</p>
+</section>
+<section id="c">
+<h3>3.4.6 C库与系统调用<a class="headerlink" href="#c" title="Link to this heading">#</a></h3>
+<p>大多数情况下，程序员不直接使用系统调用，而是通过**C标准库（libc）**来间接使用。</p>
+<p>例如，<code class="docutils literal notranslate"><span class="pre">printf</span></code>函数内部会调用<code class="docutils literal notranslate"><span class="pre">write</span></code>系统调用来输出数据：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>用户代码 → printf() → write() → syscall → 内核
+</pre></div>
+</div>
+<p>使用C库的好处：</p>
+<ul class="simple">
+<li><p>接口更友好（比系统调用更易用）</p></li>
+<li><p>可移植性（不同操作系统的系统调用不同，但C库提供统一接口）</p></li>
+<li><p>功能更丰富（如printf的格式化功能是C库实现的，不是系统调用）</p></li>
+</ul>
+</section>
+<section id="id32">
+<h3>3.4.7 操作系统启动过程<a class="headerlink" href="#id32" title="Link to this heading">#</a></h3>
+<p>理解操作系统启动过程有助于理解系统各组件如何配合工作。</p>
+<p><strong>BIOS/UEFI启动</strong>：</p>
+<ol class="arabic simple">
+<li><p>计算机上电，CPU开始执行BIOS/UEFI代码</p></li>
+<li><p>BIOS/UEFI进行POST（加电自检）</p></li>
+<li><p>BIOS/UEFI根据启动顺序，读取启动设备（通常是硬盘）的第一个扇区（MBR或EFI分区）</p></li>
+<li><p>加载引导装载程序（Bootloader，如GRUB）</p></li>
+</ol>
+<p><strong>引导装载程序</strong>：</p>
+<ol class="arabic simple">
+<li><p>从磁盘读取操作系统内核</p></li>
+<li><p>将控制权交给操作系统内核</p></li>
+</ol>
+<p><strong>Linux内核启动</strong>：</p>
+<ol class="arabic simple">
+<li><p>内核解压（如果是压缩内核）</p></li>
+<li><p>初始化内核各个子系统（内存管理、进程调度等）</p></li>
+<li><p>挂载根文件系统（root filesystem）</p></li>
+<li><p>启动第一个用户空间进程（PID 1，通常是systemd/init）</p></li>
+<li><p>系统进入多用户模式</p></li>
+</ol>
+<p><strong>init进程</strong>：</p>
+<p>init进程是系统中的第一个用户空间进程，负责：</p>
+<ul class="simple">
+<li><p>启动系统服务（如网络服务、SSH服务）</p></li>
+<li><p>管理用户登录</p></li>
+<li><p>回收孤儿进程</p></li>
+<li><p>处理系统关机</p></li>
+</ul>
+</section>
+<section id="id33">
+<h3>3.4.8 应用程序的执行<a class="headerlink" href="#id33" title="Link to this heading">#</a></h3>
+<p>当我们在shell中运行一个程序时：</p>
+<ol class="arabic simple">
+<li><p><strong>shell解析命令</strong>，如果是内置命令则直接执行，否则认为是可执行文件</p></li>
+<li><p><strong>shell调用fork()</strong>，创建一个子进程</p></li>
+<li><p><strong>子进程调用execve()</strong>，将可执行文件加载到内存</p></li>
+<li><p><strong>新程序开始执行</strong></p></li>
+<li><p><strong>父进程调用wait()</strong>，等待子进程结束</p></li>
+<li><p><strong>子进程结束后</strong>，父进程回收资源，继续等待下一个命令</p></li>
+</ol>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// shell执行命令的简化逻辑</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">builtin</span><span class="p">(</span><span class="n">command</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">pid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fork</span><span class="p">();</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pid</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 子进程</span>
+<span class="w">        </span><span class="n">execve</span><span class="p">(</span><span class="n">command</span><span class="p">,</span><span class="w"> </span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="n">envp</span><span class="p">);</span>
+<span class="w">        </span><span class="c1">// 如果execve成功，不会到达这里</span>
+<span class="w">        </span><span class="n">perror</span><span class="p">(</span><span class="s">&quot;execve&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 父进程</span>
+<span class="w">        </span><span class="n">wait</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id34">
+<h3>本节小结<a class="headerlink" href="#id34" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>操作系统管理计算机资源，提供用户程序与硬件之间的接口</p></li>
+<li><p>内核运行在特权模式（内核态），用户程序运行在用户态</p></li>
+<li><p>系统调用是用户程序请求内核服务的接口，通过软中断或syscall指令触发</p></li>
+<li><p>常见系统调用包括进程控制（fork/exec/exit）、文件操作（open/read/write）和内存管理（mmap）</p></li>
+<li><p>程序员通常通过C库间接使用系统调用，C库提供更友好的接口</p></li>
+<li><p>程序执行时，shell通过fork+execve创建新进程</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id35">
+<h2>本章小结<a class="headerlink" href="#id35" title="Link to this heading">#</a></h2>
+<p>本章介绍了程序从源代码到运行的全过程，以及操作系统在程序运行中的角色。</p>
+<p><strong>从源代码到可执行文件</strong>：</p>
+<ul class="simple">
+<li><p>编译过程包括预处理、编译、汇编、链接四个阶段</p></li>
+<li><p>预处理处理宏和头文件，编译进行词法分析、语法分析和代码生成</p></li>
+<li><p>链接合并目标文件并解析符号引用，分为静态链接和动态链接</p></li>
+<li><p>ELF是Linux常用的可执行文件格式</p></li>
+</ul>
+<p><strong>进程与线程</strong>：</p>
+<ul class="simple">
+<li><p>进程是程序执行的实例，是资源分配的基本单位</p></li>
+<li><p>线程是进程内的执行单元，是CPU调度的基本单位</p></li>
+<li><p>同一进程的多个线程共享地址空间，但有独立的栈和寄存器</p></li>
+<li><p>线程同步机制包括互斥锁、信号量和条件变量</p></li>
+</ul>
+<p><strong>并发与并行</strong>：</p>
+<ul class="simple">
+<li><p>并发是多个任务在同一时间段交替执行（单核），并行是多个任务同时执行（多核）</p></li>
+<li><p>并发提高资源利用率，并行提高计算速度</p></li>
+<li><p>并发编程面临竞态条件、死锁、活锁、饥饿等挑战</p></li>
+<li><p>Amdahl定律指出并行化的加速比受串行部分限制</p></li>
+</ul>
+<p><strong>操作系统与系统调用</strong>：</p>
+<ul class="simple">
+<li><p>操作系统管理计算机资源，提供用户程序与硬件之间的接口</p></li>
+<li><p>系统调用是用户程序请求内核服务的接口</p></li>
+<li><p>常用系统调用包括进程控制（fork/exec）和文件操作（open/read/write）</p></li>
+<li><p>程序执行时，shell通过fork+execve创建新进程</p></li>
+</ul>
+<p>理解程序运行原理，有助于编写正确的程序和诊断问题。</p>
+</section>
+<hr class="docutils" />
+<section id="id36">
+<h2>思考与练习<a class="headerlink" href="#id36" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>编译与链接</strong></p>
+<ul class="simple">
+<li><p>描述从源代码到可执行文件的完整过程，各个阶段分别完成什么任务？</p></li>
+<li><p>静态链接和动态链接各有什么优缺点？</p></li>
+<li><p>什么是符号解析？为什么链接时需要解析符号？</p></li>
+</ul>
+</li>
+<li><p><strong>进程与线程</strong></p>
+<ul class="simple">
+<li><p>fork()系统调用有什么特殊之处？为什么它返回两次？</p></li>
+<li><p>进程和线程有什么区别？什么情况下应该使用多线程而不是多进程？</p></li>
+<li><p>什么是竞态条件？请举例说明。</p></li>
+</ul>
+</li>
+<li><p><strong>并发与并行</strong></p>
+<ul class="simple">
+<li><p>并发和并行的区别是什么？请各举一个例子。</p></li>
+<li><p>什么是死锁？死锁产生的四个必要条件是什么？</p></li>
+<li><p>如果程序中有50%的代码可以并行化，使用4核处理器，最大加速比是多少？</p></li>
+</ul>
+</li>
+<li><p><strong>系统调用</strong></p>
+<ul class="simple">
+<li><p>为什么用户程序不能直接访问硬件，而必须通过系统调用？</p></li>
+<li><p>描述一次read系统调用的完整过程。</p></li>
+<li><p>open()和fopen()有什么区别？各自属于哪一层？</p></li>
+</ul>
+</li>
+<li><p><strong>综合应用</strong></p>
+<ul class="simple">
+<li><p>假设你编写了一个Web服务器程序，分析它可能使用哪些系统调用？</p></li>
+<li><p>解释为什么一个线程的崩溃可能导致整个进程崩溃，而进程的隔离性可以防止这种情况？</p></li>
+<li><p>在多线程程序中，为什么需要同步机制？请分析如果不同步会发生什么问题？</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="02-CPU-Memory.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">第二章 CPU与内存</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../Chap02/README.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Chap02 Python编程</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3.1 从源代码到可执行程序</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3.1.1 程序的生命周期</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.1.2 编译过程详解</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">3.1.3 链接过程</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">3.1.4 可执行文件格式</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">3.1.5 加载可执行文件</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">本节小结</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">3.2 进程与线程</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">3.2.1 进程的概念</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">3.2.2 进程的创建</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">3.2.3 进程的终止</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">3.2.4 线程的概念</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">3.2.5 进程与线程的区别</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">3.2.6 线程的创建与同步</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">3.2.7 线程的状态</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">本节小结</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">3.3 并发与并行</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">3.3.1 并发与并行的概念</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">3.3.2 并发的应用场景</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">3.3.3 并行的应用场景</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">3.3.4 并发与并行的实现方式</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">3.3.5 并发的问题与挑战</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#amdahl">3.3.6 Amdahl定律</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">本节小结</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">3.4 操作系统与系统调用</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">3.4.1 操作系统的作用</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">3.4.2 内核与用户态</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">3.4.3 系统调用概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">3.4.4 常见系统调用</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">3.4.5 系统调用的实现</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c">3.4.6 C库与系统调用</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">3.4.7 操作系统启动过程</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id33">3.4.8 应用程序的执行</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id34">本节小结</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id36">思考与练习</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Author name not set
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Apr 29, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>本教材仅供内部培训使用</p>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

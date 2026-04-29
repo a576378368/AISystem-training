@@ -1,0 +1,668 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Chap06 AI芯片体系架构 &#8212; AI系统工程师培训教程</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Part2/Chap06/README';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="AI芯片基础" href="01-Chip-Base.html" />
+    <link rel="prev" title="模型量化基础" href="../Chap05/05-Quantization.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Apr 29, 2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="AI系统工程师培训教程 - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="AI系统工程师培训教程 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    AI系统工程师培训教程
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">第一阶段：AI基础入门</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap01/README.html">Chap01 计算机基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/01-Binary.html">第一章 进制与编码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/02-CPU-Memory.html">第二章 CPU与内存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/03-Program-Running.html">第三章 程序运行原理</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap02/README.html">Chap02 Python编程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/01-Python-Basic.html">Python基础语法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/02-NumPy.html">NumPy基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/03-PyTorch.html">PyTorch基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap03/README.html">Chap03 数学基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/01-Linear-Algebra.html">线性代数基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/02-Probability.html">概率与统计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/03-Optimization.html">优化基础</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二阶段：AI系统核心</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap04/README.html">Chap04 AI系统概述</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap04/01-Introduction.html">AI系统基本概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap04/02-Architecture.html">AI系统全栈架构</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap05/README.html">Chap05 神经网络基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/01-Neuron-Model.html">神经元与网络模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/02-CNN.html">卷积神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/03-RNN.html">循环神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/04-Transformer.html">Transformer与注意力机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/05-Quantization.html">模型量化基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Chap06 AI芯片体系架构</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="01-Chip-Base.html">AI芯片基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-GPU-Base.html">GPU原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-NVIDIA.html">NVIDIA GPU架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-Abroad-Chips.html">国外AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-Domestic-Chips.html">国内AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06-Programming-Model.html">芯片编程模式</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap07/README.html">Chap07 AI编译器原理</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/01-Traditional-Compiler.html">第一章 传统编译器基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/02-AI-Compiler.html">第二章 AI编译器架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/03-Frontend-Optimization.html">第三章 前端优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/04-Backend-Optimization.html">第四章 后端优化</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap08/README.html">Chap08 推理系统与引擎</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/01-Inference-System.html">01 推理系统概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/02-Model-Compression.html">02 模型压缩</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/03-Model-Converter.html">03 模型转换与优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/04-Inference-Optimization.html">04 推理优化技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/05-Kernel-Optimization.html">05 Kernel优化技术</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap09/README.html">Chap09 AI框架核心</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/01-Auto-Differentiation.html">自动微分</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/02-Computational-Graph.html">计算图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/03-Distributed-Training.html">分布式训练</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap10/README.html">Chap10 大模型与集群</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/01-LLM-Architecture.html">大模型架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/02-AI-Cluster.html">AI集群</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/03-Parallel-Strategy.html">并行策略</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三阶段：附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixA/README.html">附录A：AI系统术语表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixB/README.html">附录B：参考文献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixC/README.html">AppendixC 实践项目</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/your-org/AI-System-Training/blob/main/Part2/Chap06/README.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button"
+   title="Show source"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/Part2/Chap06/README.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chap06 AI芯片体系架构</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">本章学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">前置知识</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">内容导航</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">思考与练习</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="chap06-ai">
+<h1>Chap06 AI芯片体系架构<a class="headerlink" href="#chap06-ai" title="Link to this heading">#</a></h1>
+<section id="id1">
+<h2>本章学习目标<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>理解AI芯片的基本概念和分类</p></li>
+<li><p>掌握GPU的工作原理和架构</p></li>
+<li><p>了解主流AI芯片（TPU/昇腾/寒武纪等）</p></li>
+<li><p>理解DSA/SIMT/SIMD等编程模式</p></li>
+</ol>
+</section>
+<section id="id2">
+<h2>前置知识<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Chap04 AI系统概述</p></li>
+<li><p>Chap05 神经网络基础</p></li>
+</ul>
+</section>
+<section id="id3">
+<h2>内容导航<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="01-Chip-Base.html">AI芯片基础</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="01-Chip-Base.html#id1">学习目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-Chip-Base.html#id2">章节导言</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-Chip-Base.html#id3">1.1 什么是AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-Chip-Base.html#id7">1.2 AI芯片的分类</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-Chip-Base.html#id11">1.3 AI芯片发展历程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-Chip-Base.html#id16">1.4 AI芯片应用场景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-Chip-Base.html#id20">1.5 主流AI芯片技术路线对比</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-Chip-Base.html#id21">本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="01-Chip-Base.html#id22">思考与练习</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="02-GPU-Base.html">GPU原理</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="02-GPU-Base.html#id1">学习目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-GPU-Base.html#id2">章节导言</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-GPU-Base.html#id3">2.1 GPU发展历史</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-GPU-Base.html#id6">2.2 GPU工作原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-GPU-Base.html#id10">2.3 GPU线程结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-GPU-Base.html#id14">2.4 GPU内存架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-GPU-Base.html#tensor-core">2.5 Tensor Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-GPU-Base.html#id24">本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-GPU-Base.html#id25">思考与练习</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="03-NVIDIA.html">NVIDIA GPU架构</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="03-NVIDIA.html#id1">学习目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-NVIDIA.html#id2">章节导言</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-NVIDIA.html#id3">3.1 NVIDIA GPU架构演进概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-NVIDIA.html#fermi-2010">3.2 Fermi架构（2010）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-NVIDIA.html#kepler-2012">3.3 Kepler架构（2012）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-NVIDIA.html#maxwell-2014">3.4 Maxwell架构（2014）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-NVIDIA.html#pascal-2016">3.5 Pascal架构（2016）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-NVIDIA.html#volta-2017">3.6 Volta架构（2017）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-NVIDIA.html#turing-2018">3.7 Turing架构（2018）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-NVIDIA.html#ampere-2020">3.8 Ampere架构（2020）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-NVIDIA.html#hopper-2022">3.9 Hopper架构（2022）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-NVIDIA.html#blackwell-2024">3.10 Blackwell架构（2024）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-NVIDIA.html#cuda">3.11 CUDA编程详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-NVIDIA.html#nvlinknvswitch">3.12 NVLink与NVSwitch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-NVIDIA.html#id23">本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-NVIDIA.html#id24">思考与练习</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="04-Abroad-Chips.html">国外AI芯片</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="04-Abroad-Chips.html#id1">学习目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-Abroad-Chips.html#id2">章节导言</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-Abroad-Chips.html#google-tpu">4.1 Google TPU概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-Abroad-Chips.html#tpu-v1">4.2 TPU v1架构详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-Abroad-Chips.html#tpu-v2v3">4.3 TPU v2与v3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-Abroad-Chips.html#tpu-v4">4.4 TPU v4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-Abroad-Chips.html#edge-tpupixel-neural-core">4.5 Edge TPU与Pixel Neural Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-Abroad-Chips.html#tesla-dojo">4.6 Tesla DOJO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-Abroad-Chips.html#gaudi">4.7 英特尔Gaudi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-Abroad-Chips.html#id15">4.8 其他国外AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-Abroad-Chips.html#id16">本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-Abroad-Chips.html#id17">思考与练习</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="05-Domestic-Chips.html">国内AI芯片</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="05-Domestic-Chips.html#id1">学习目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-Domestic-Chips.html#id2">章节导言</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-Domestic-Chips.html#id3">5.1 华为昇腾概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-Domestic-Chips.html#id6">5.2 昇腾910</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-Domestic-Chips.html#id10">5.3 昇腾310</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-Domestic-Chips.html#cann">5.4 CANN软件栈</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-Domestic-Chips.html#mlu">5.5 寒武纪MLU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-Domestic-Chips.html#id18">5.6 燧原科技</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-Domestic-Chips.html#id22">5.7 壁仞科技</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-Domestic-Chips.html#id25">5.8 其他国产AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-Domestic-Chips.html#id29">5.9 国产AI芯片软件生态对比</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-Domestic-Chips.html#id33">本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-Domestic-Chips.html#id34">思考与练习</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="06-Programming-Model.html">芯片编程模式</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="06-Programming-Model.html#id2">学习目标</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06-Programming-Model.html#id3">章节导言</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06-Programming-Model.html#simd">6.1 SIMD模式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06-Programming-Model.html#simt">6.2 SIMT模式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06-Programming-Model.html#dsa">6.3 DSA架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06-Programming-Model.html#id15">6.4 异构计算</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06-Programming-Model.html#id18">6.5 编程模式的融合与演进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06-Programming-Model.html#id22">本章小结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06-Programming-Model.html#id23">思考与练习</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="id4">
+<h2>本章小结<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>本章系统介绍了AI芯片体系架构的核心内容，主要包括以下方面：</p>
+<p><strong>AI芯片基础</strong>：AI芯片是专门为加速人工智能应用中的矩阵计算、卷积运算等核心任务而设计的处理器，采用领域专用架构（DSA）优化。AI芯片可分为CPU、GPU、FPGA、ASIC四大类，按应用场景可分为云端芯片和边缘端芯片。</p>
+<p><strong>GPU原理</strong>：GPU从图形专用演进为通用并行计算平台，其核心是SIMT（单指令多线程）执行模型。GPU通过大规模线程超配掩盖内存延迟，实现高吞吐量计算。Tensor Core专门加速深度学习矩阵运算，支持混合精度训练。</p>
+<p><strong>NVIDIA GPU架构</strong>：NVIDIA GPU从Fermi到Blackwell经历九代演进，核心技术包括CUDA编程模型、Tensor Core、NVLink高速互联。CUDA通过Grid/Block/Thread层次组织线程，NVLink实现多GPU高效互联。</p>
+<p><strong>国外AI芯片</strong>：Google TPU采用脉动阵列架构专门优化矩阵运算，经历v1到v4四代演进。Tesla DOJO专为自动驾驶训练设计。Intel Gaudi面向云端AI训练市场。</p>
+<p><strong>国内AI芯片</strong>：华为昇腾采用达芬奇架构，昇腾910面向云端训练，昇腾310面向边缘推理，CANN软件栈提供完整工具链。寒武纪MLU采用MLU Core+Memory Core设计，BANG C编程语言。燧原、壁仞等企业也在各自领域有技术积累。</p>
+<p><strong>芯片编程模式</strong>：SIMD通过单指令多数据实现并行，SIMT在硬件层面支持线程独立执行。异构计算通过CPU+GPU/FPGA/ASIC协同工作，超异构是发展趋势。</p>
+</section>
+<section id="id5">
+<h2>思考与练习<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>综合分析</strong>：对比分析CPU、GPU、FPGA、ASIC四大芯片架构在AI计算场景下的优劣势，并说明各自的典型应用场景。</p></li>
+<li><p><strong>GPU理解</strong>：解释GPU的SIMT执行模型与CPU的SIMD执行模型的核心区别。为什么GPU比CPU更适合执行深度学习工作负载？</p></li>
+<li><p><strong>架构演进</strong>：分析NVIDIA GPU从Fermi到Blackwell九代架构演进的主要驱动力。每代架构的核心技术创新是什么？</p></li>
+<li><p><strong>TPU分析</strong>：Google TPU采用的脉动阵列架构与NVIDIA GPU采用的架构有什么本质区别？脉动阵列的优势和局限性是什么？</p></li>
+<li><p><strong>国产芯片</strong>：分析华为昇腾和寒武纪这两家国内AI芯片厂商的技术路线差异。国产AI芯片在软件生态建设方面面临哪些挑战？</p></li>
+<li><p><strong>编程模式</strong>：比较SIMD、SIMT和DSA三种编程模式的特点和适用场景。如果你要开发一个深度学习应用，会如何选择合适的硬件和编程模式？</p></li>
+<li><p><strong>异构计算</strong>：解释什么是超异构计算。为什么说超异构是未来计算架构的发展方向？实现超异构计算需要解决哪些技术挑战？</p></li>
+</ol>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../Chap05/05-Quantization.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">模型量化基础</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="01-Chip-Base.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">AI芯片基础</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">本章学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">前置知识</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">内容导航</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">思考与练习</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Author name not set
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Apr 29, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>本教材仅供内部培训使用</p>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

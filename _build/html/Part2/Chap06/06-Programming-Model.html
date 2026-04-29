@@ -1,0 +1,1359 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>芯片编程模式 &#8212; AI系统工程师培训教程</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Part2/Chap06/06-Programming-Model';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Chap07 AI编译器原理" href="../Chap07/README.html" />
+    <link rel="prev" title="国内AI芯片" href="05-Domestic-Chips.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Apr 29, 2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="AI系统工程师培训教程 - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="AI系统工程师培训教程 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    AI系统工程师培训教程
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">第一阶段：AI基础入门</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap01/README.html">Chap01 计算机基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/01-Binary.html">第一章 进制与编码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/02-CPU-Memory.html">第二章 CPU与内存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/03-Program-Running.html">第三章 程序运行原理</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap02/README.html">Chap02 Python编程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/01-Python-Basic.html">Python基础语法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/02-NumPy.html">NumPy基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/03-PyTorch.html">PyTorch基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap03/README.html">Chap03 数学基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/01-Linear-Algebra.html">线性代数基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/02-Probability.html">概率与统计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/03-Optimization.html">优化基础</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二阶段：AI系统核心</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap04/README.html">Chap04 AI系统概述</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap04/01-Introduction.html">AI系统基本概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap04/02-Architecture.html">AI系统全栈架构</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap05/README.html">Chap05 神经网络基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/01-Neuron-Model.html">神经元与网络模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/02-CNN.html">卷积神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/03-RNN.html">循环神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/04-Transformer.html">Transformer与注意力机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/05-Quantization.html">模型量化基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Chap06 AI芯片体系架构</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-Chip-Base.html">AI芯片基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-GPU-Base.html">GPU原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-NVIDIA.html">NVIDIA GPU架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-Abroad-Chips.html">国外AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-Domestic-Chips.html">国内AI芯片</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">芯片编程模式</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap07/README.html">Chap07 AI编译器原理</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/01-Traditional-Compiler.html">第一章 传统编译器基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/02-AI-Compiler.html">第二章 AI编译器架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/03-Frontend-Optimization.html">第三章 前端优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/04-Backend-Optimization.html">第四章 后端优化</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap08/README.html">Chap08 推理系统与引擎</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/01-Inference-System.html">01 推理系统概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/02-Model-Compression.html">02 模型压缩</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/03-Model-Converter.html">03 模型转换与优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/04-Inference-Optimization.html">04 推理优化技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/05-Kernel-Optimization.html">05 Kernel优化技术</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap09/README.html">Chap09 AI框架核心</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/01-Auto-Differentiation.html">自动微分</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/02-Computational-Graph.html">计算图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/03-Distributed-Training.html">分布式训练</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap10/README.html">Chap10 大模型与集群</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/01-LLM-Architecture.html">大模型架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/02-AI-Cluster.html">AI集群</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/03-Parallel-Strategy.html">并行策略</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三阶段：附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixA/README.html">附录A：AI系统术语表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixB/README.html">附录B：参考文献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixC/README.html">AppendixC 实践项目</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/your-org/AI-System-Training/blob/main/Part2/Chap06/06-Programming-Model.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button"
+   title="Show source"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/Part2/Chap06/06-Programming-Model.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>芯片编程模式</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">章节导言</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simd">6.1 SIMD模式</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">6.1.1 SIMD概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">6.1.2 SIMD的发展历程</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">6.1.3 SIMD工作原理</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simdai">6.1.4 SIMD在AI中的应用</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">6.1.5 SIMD的局限性</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simt">6.2 SIMT模式</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">6.2.1 SIMT概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">6.2.2 SIMT的工作原理</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">6.2.3 SIMT的分支处理</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simtcuda">6.2.4 SIMT与CUDA</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dsa">6.3 DSA架构</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">6.3.1 DSA概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dsa-vs">6.3.2 DSA vs 通用处理器</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">6.3.3 DSA的典型案例</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">6.3.4 DSA的编程挑战</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">6.3.5 DSA的发展趋势</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">6.4 异构计算</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">6.4.1 异构计算概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-gpu">6.4.2 CPU+GPU异构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-fpga">6.4.3 CPU+FPGA异构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-asic">6.4.4 CPU+ASIC异构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">6.4.5 超异构计算</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">6.5 编程模式的融合与演进</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">6.5.1 模式趋同</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">6.5.2 编程抽象的发展</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">6.5.3 未来编程趋势</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">思考与练习</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <!--Copyright © 适用于[License](https://github.com/chenzomi12/AISystem)版权许可-->
+<section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>芯片编程模式<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="id2">
+<h2>学习目标<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>理解SIMD（单指令多数据）模式的工作原理和应用场景</p></li>
+<li><p>掌握SIMT（单指令多线程）模式与SIMD的区别和联系</p></li>
+<li><p>了解DSA（领域专用架构）的设计理念和编程特点</p></li>
+<li><p>理解异构计算的基本概念和CPU+GPU/FPGA/ASIC的协同模式</p></li>
+<li><p>掌握超异构计算的概念和未来发展趋势</p></li>
+</ol>
+</section>
+<section id="id3">
+<h2>章节导言<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>在AI芯片领域，不同的硬件架构采用不同的并行计算模式，而编程模式则是连接软件与硬件的桥梁。理解各种编程模式的特点，对于AI开发者选择合适的硬件和优化应用性能至关重要。</p>
+<p>本章将详细介绍AI芯片领域的三种主要编程模式：SIMD、SIMT和DSA。SIMD是最基础的并行计算模式，广泛应用于CPU和GPU；SIMT是NVIDIA提出的GPU编程模型，兼顾了易用性和性能；DSA则是针对特定领域优化的专用架构，代表了后摩尔定律时代的重要技术方向。</p>
+<p>我们还将探讨异构计算的概念，即如何将CPU、GPU、FPGA、ASIC等多种不同类型的计算单元组合在一起，协同完成复杂任务。这种异构协同计算模式正在成为现代计算系统的主流架构。</p>
+</section>
+<section id="simd">
+<h2>6.1 SIMD模式<a class="headerlink" href="#simd" title="Link to this heading">#</a></h2>
+<section id="id4">
+<h3>6.1.1 SIMD概述<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>SIMD（Single Instruction, Multiple Data，单指令多数据）是一种数据并行的硬件实现技术。SIMD的核心思想是：使用一条指令同时对多个数据执行相同的操作，从而在单个时钟周期内完成更多计算。</p>
+<p><strong>SIMD的本质</strong></p>
+<p>SIMD通过增加硬件数据通路宽度，使一条指令能够同时处理多个数据元素。例如，一个256位的SIMD单元可以同时处理：</p>
+<ul class="simple">
+<li><p>8个32位浮点数</p></li>
+<li><p>16个16位整数</p></li>
+<li><p>32个8位整数</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>传统标量处理：
+指令1 → 处理数据1
+指令2 → 处理数据2
+指令3 → 处理数据3
+...
+
+SIMD处理：
+一条指令 → 同时处理 [数据1, 数据2, 数据3, ...]
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3>6.1.2 SIMD的发展历程<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p><strong>早期发展</strong></p>
+<p>SIMD的概念可以追溯到早期超级计算机：</p>
+<ul class="simple">
+<li><p>1970年代：CRAY-1引入向量处理</p></li>
+<li><p>1996年：Intel推出MMX指令集</p></li>
+<li><p>1999年：Intel推出SSE（Streaming SIMD Extensions）</p></li>
+</ul>
+<p><strong>现代SIMD</strong></p>
+<ul class="simple">
+<li><p>2001年：Intel推出SSE2</p></li>
+<li><p>2006年：Intel推出SSE4</p></li>
+<li><p>2011年：Intel推出AVX（Advanced Vector Extensions）256位</p></li>
+<li><p>2013年：Intel推出AVX-512 512位</p></li>
+<li><p>ARM：NEON 128位SIMD</p></li>
+</ul>
+<p><strong>SIMD演进</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>指令集</p></th>
+<th class="head"><p>位宽</p></th>
+<th class="head"><p>可同时处理FP32数量</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MMX</p></td>
+<td><p>64位</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p>SSE</p></td>
+<td><p>128位</p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-even"><td><p>AVX</p></td>
+<td><p>256位</p></td>
+<td><p>8</p></td>
+</tr>
+<tr class="row-odd"><td><p>AVX-512</p></td>
+<td><p>512位</p></td>
+<td><p>16</p></td>
+</tr>
+<tr class="row-even"><td><p>NEON</p></td>
+<td><p>128位</p></td>
+<td><p>4</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id6">
+<h3>6.1.3 SIMD工作原理<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p><strong>硬件结构</strong></p>
+<p>SIMD单元的硬件结构：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────────┐
+│          控制单元 (Control)           │
+└─────────────────────────────────────┘
+                    ↓
+┌─────────────────────────────────────┐
+│     数据通道 (Data Path) 256位        │
+│  ┌────┬────┬────┬────┬────┬────┐   │
+│  │ D0 │ D1 │ D2 │ D3 │ D4 │... │   │
+│  └────┴────┴────┴────┴────┴────┘   │
+│         ↓              ↓             │
+│      算术逻辑单元    算术逻辑单元      │
+└─────────────────────────────────────┘
+</pre></div>
+</div>
+<p><strong>向量加法示例</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 传统标量代码</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="c1">// SIMD向量化代码（使用AVX）</span>
+<span class="n">__m256d</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_mm256_load_pd</span><span class="p">(</span><span class="o">&amp;</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+<span class="n">__m256d</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_mm256_load_pd</span><span class="p">(</span><span class="o">&amp;</span><span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+<span class="n">__m256d</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_mm256_add_pd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+<span class="n">_mm256_store_pd</span><span class="p">(</span><span class="o">&amp;</span><span class="n">C</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+<span class="c1">// 一条指令处理4个double（256位/64位）</span>
+</pre></div>
+</div>
+</section>
+<section id="simdai">
+<h3>6.1.4 SIMD在AI中的应用<a class="headerlink" href="#simdai" title="Link to this heading">#</a></h3>
+<p><strong>神经网络中的SIMD</strong></p>
+<p>神经网络中的许多操作天然适合SIMD：</p>
+<ol class="arabic simple">
+<li><p><strong>向量运算</strong>：激活函数、逐元素操作</p></li>
+<li><p><strong>矩阵运算</strong>：分解为向量运算</p></li>
+<li><p><strong>卷积运算</strong>：Img2Col + GEMM</p></li>
+</ol>
+<p><strong>性能提升</strong></p>
+<p>SIMD带来的性能提升：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>操作</p></th>
+<th class="head"><p>标量 vs SIMD</p></th>
+<th class="head"><p>典型加速比</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>向量加法</p></td>
+<td><p>8倍</p></td>
+<td><p>4-8x</p></td>
+</tr>
+<tr class="row-odd"><td><p>矩阵乘法</p></td>
+<td><p>数十倍</p></td>
+<td><p>与矩阵大小相关</p></td>
+</tr>
+<tr class="row-even"><td><p>卷积</p></td>
+<td><p>数十倍</p></td>
+<td><p>与实现相关</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id7">
+<h3>6.1.5 SIMD的局限性<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>SIMD虽然强大，但也有其局限性：</p>
+<p><strong>1. 数据对齐要求</strong></p>
+<p>SIMD通常要求数据地址对齐：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// AVX要求32字节对齐</span>
+<span class="n">__m256d</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_mm256_load_pd</span><span class="p">(</span><span class="o">&amp;</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span><span class="w">  </span><span class="c1">// 必须32字节对齐</span>
+<span class="c1">// 未对齐访问需要特殊指令</span>
+<span class="n">__m256d</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_mm256_loadu_pd</span><span class="p">(</span><span class="o">&amp;</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span><span class="w"> </span><span class="c1">// 较慢</span>
+</pre></div>
+</div>
+<p><strong>2. 分支处理</strong></p>
+<p>当数据需要条件分支时：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 标量：每个元素独立判断</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// SIMD：需要masked operations或分支</span>
+<span class="c1">// 效率可能下降</span>
+</pre></div>
+</div>
+<p><strong>3. 不规则访问</strong></p>
+<p>当数据访问模式不规则时：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 标量：任意索引</span>
+<span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">idx</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+
+<span class="c1">// SIMD：难以向量化</span>
+<span class="c1">// 需要gather/scatter指令（效率较低）</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="simt">
+<h2>6.2 SIMT模式<a class="headerlink" href="#simt" title="Link to this heading">#</a></h2>
+<section id="id8">
+<h3>6.2.1 SIMT概述<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p>SIMT（Single Instruction, Multiple Threads，单指令多线程）是NVIDIA在其GPU架构中引入的并行计算模式。SIMT可以看作是SIMD的推广，但提供了更高的灵活性。</p>
+<p><strong>SIMT vs SIMD</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>特性</p></th>
+<th class="head"><p>SIMD</p></th>
+<th class="head"><p>SIMT</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>执行单位</p></td>
+<td><p>向量lane</p></td>
+<td><p>线程</p></td>
+</tr>
+<tr class="row-odd"><td><p>数据寻址</p></td>
+<td><p>连续/规则</p></td>
+<td><p>任意/独立</p></td>
+</tr>
+<tr class="row-even"><td><p>分支处理</p></td>
+<td><p>困难</p></td>
+<td><p>自然支持</p></td>
+</tr>
+<tr class="row-odd"><td><p>编程模型</p></td>
+<td><p>显式向量</p></td>
+<td><p>线程模型</p></td>
+</tr>
+<tr class="row-even"><td><p>代表架构</p></td>
+<td><p>CPU AVX</p></td>
+<td><p>GPU CUDA</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id9">
+<h3>6.2.2 SIMT的工作原理<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p><strong>线程模型</strong></p>
+<p>SIMT将每个执行单元映射为一个线程：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>SIMD模式（向量lane）：
+[lane0][lane1][lane2][lane3]... 同一指令，强制对齐
+
+SIMT模式（线程）：
+[Thread0][Thread1][Thread2][Thread3]... 同一指令，独立数据
+</pre></div>
+</div>
+<p><strong>硬件实现</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────────────┐
+│           Warp Scheduler                  │
+│         (管理32个线程)                   │
+└─────────────────────────────────────────┘
+         ↓ 发射同一条指令
+┌─────────────────────────────────────────┐
+│ Thread0 → RegFile → ALU                │
+│ Thread1 → RegFile → ALU                │
+│ Thread2 → RegFile → ALU                │
+│ ...                                    │
+│ Thread31 → RegFile → ALU               │
+└─────────────────────────────────────────┘
+</pre></div>
+</div>
+</section>
+<section id="id10">
+<h3>6.2.3 SIMT的分支处理<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>SIMT的重要优势是自然支持分支：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 假设 threadIdx.x 0-31，但条件分支：</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Thread 0-15 执行</span>
+<span class="w">    </span><span class="n">A</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...;</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Thread 16-31 执行</span>
+<span class="w">    </span><span class="n">B</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...;</span>
+<span class="p">}</span>
+
+<span class="c1">// GPU执行：</span>
+<span class="c1">// 时间步1: Thread 0-15 执行A, 16-31空转</span>
+<span class="c1">// 时间步2: Thread 16-31 执行B, 0-15空转</span>
+<span class="c1">// 总开销 = 2个时间步（而非串型的N个）</span>
+</pre></div>
+</div>
+<p><strong>分支效率</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>场景</p></th>
+<th class="head"><p>SIMD效率</p></th>
+<th class="head"><p>SIMT效率</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>无分支</p></td>
+<td><p>100%</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>50%线程分支</p></td>
+<td><p>约50%</p></td>
+<td><p>接近100%*</p></td>
+</tr>
+<tr class="row-even"><td><p>完全分歧</p></td>
+<td><p>难以处理</p></td>
+<td><p>线程独立执行</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>*SIMT通过时间多路复用处理分歧线程</p>
+</section>
+<section id="simtcuda">
+<h3>6.2.4 SIMT与CUDA<a class="headerlink" href="#simtcuda" title="Link to this heading">#</a></h3>
+<p>CUDA是SIMT编程模型的典型代表：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// CUDA kernel：所有线程执行相同代码</span>
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">vectorAdd</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">B</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">N</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 每个线程有独立的数据索引</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// 每个线程独立执行</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">idx</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">C</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">idx</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>执行模型</strong>：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Grid (所有线程)
+└── Block 0 (1024线程)
+    ├── Warp 0 (32线程) → 同步执行同一条指令
+    ├── Warp 1 (32线程) → 同步执行同一条指令
+    └── ...
+</pre></div>
+</div>
+</section>
+</section>
+<section id="dsa">
+<h2>6.3 DSA架构<a class="headerlink" href="#dsa" title="Link to this heading">#</a></h2>
+<section id="id11">
+<h3>6.3.1 DSA概述<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p>DSA（Domain-Specific Architecture，领域专用架构）是后摩尔定律时代最重要的技术趋势之一。DSA通过为特定应用领域专门设计硬件架构，在该领域实现数量级的性能提升和能效优化。</p>
+<p><strong>DSA的核心思想</strong></p>
+<ol class="arabic simple">
+<li><p><strong>领域专用</strong></p>
+<ul class="simple">
+<li><p>针对特定应用场景优化</p></li>
+<li><p>牺牲通用性换取极致性能</p></li>
+<li><p>硬件资源集中于核心计算</p></li>
+</ul>
+</li>
+<li><p><strong>算法驱动</strong></p>
+<ul class="simple">
+<li><p>由应用算法特征驱动硬件设计</p></li>
+<li><p>硬件结构匹配计算模式</p></li>
+<li><p>减少通用性开销</p></li>
+</ul>
+</li>
+<li><p><strong>垂直整合</strong></p>
+<ul class="simple">
+<li><p>软硬件协同设计</p></li>
+<li><p>编译器深入理解硬件</p></li>
+<li><p>端到端优化</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="dsa-vs">
+<h3>6.3.2 DSA vs 通用处理器<a class="headerlink" href="#dsa-vs" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>特性</p></th>
+<th class="head"><p>通用处理器 (CPU/GPU)</p></th>
+<th class="head"><p>DSA</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>目标场景</p></td>
+<td><p>广泛适用</p></td>
+<td><p>特定领域</p></td>
+</tr>
+<tr class="row-odd"><td><p>性能（特定领域）</p></td>
+<td><p>一般</p></td>
+<td><p>极高 (10-100x)</p></td>
+</tr>
+<tr class="row-even"><td><p>能效（特定领域）</p></td>
+<td><p>一般</p></td>
+<td><p>极高</p></td>
+</tr>
+<tr class="row-odd"><td><p>灵活性</p></td>
+<td><p>高</p></td>
+<td><p>低</p></td>
+</tr>
+<tr class="row-even"><td><p>开发成本</p></td>
+<td><p>低</p></td>
+<td><p>高</p></td>
+</tr>
+<tr class="row-odd"><td><p>规模化成本</p></td>
+<td><p>低</p></td>
+<td><p>取决于产量</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id12">
+<h3>6.3.3 DSA的典型案例<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p><strong>Google TPU</strong></p>
+<p>TPU是DSA最成功的案例之一：</p>
+<ul class="simple">
+<li><p>脉动阵列：专门优化矩阵运算</p></li>
+<li><p>简化控制：仅占芯片2%面积</p></li>
+<li><p>量化支持：INT8推理优化</p></li>
+<li><p>确定性执行：可预测性能</p></li>
+</ul>
+<p><strong>NVIDIA Tensor Core</strong></p>
+<p>Tensor Core是GPU中的DSA单元：</p>
+<ul class="simple">
+<li><p>专门加速矩阵乘法</p></li>
+<li><p>混合精度计算</p></li>
+<li><p>针对深度学习优化</p></li>
+</ul>
+<p><strong>DSA的应用领域</strong></p>
+<ul class="simple">
+<li><p>AI推理：TPU、NPU</p></li>
+<li><p>网络处理：SmartNIC、DPU</p></li>
+<li><p>图形处理：GPU</p></li>
+<li><p>信号处理：DSP</p></li>
+<li><p>数据库加速：Query engines</p></li>
+</ul>
+</section>
+<section id="id13">
+<h3>6.3.4 DSA的编程挑战<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p>DSA架构虽然性能卓越，但编程难度较高：</p>
+<p><strong>1. 专用编程模型</strong></p>
+<p>每个DSA有自己的编程接口：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TPU</span><span class="p">:</span> <span class="n">TensorFlow</span> <span class="n">Lite</span> <span class="n">Micro</span> <span class="o">/</span> <span class="n">JAX</span>
+<span class="n">NPU</span><span class="p">:</span> <span class="n">厂商特定SDK</span> <span class="p">(</span><span class="n">CANN</span><span class="p">,</span> <span class="n">BANG</span> <span class="n">C等</span><span class="p">)</span>
+<span class="n">DPU</span><span class="p">:</span> <span class="n">Data</span> <span class="n">Path</span> <span class="n">Development</span> <span class="n">Kit</span>
+</pre></div>
+</div>
+<p><strong>2. 编译器支持有限</strong></p>
+<ul class="simple">
+<li><p>编译器难以自动矢量化</p></li>
+<li><p>需要手动优化</p></li>
+<li><p>工具链不成熟</p></li>
+</ul>
+<p><strong>3. 碎片化问题</strong></p>
+<ul class="simple">
+<li><p>各厂商DSA架构各异</p></li>
+<li><p>应用难以在不同DSA间迁移</p></li>
+<li><p>生态系统建设困难</p></li>
+</ul>
+</section>
+<section id="id14">
+<h3>6.3.5 DSA的发展趋势<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p><strong>标准化努力</strong></p>
+<p>业界正在推动DSA标准化：</p>
+<ul class="simple">
+<li><p>OpenCL for DSA</p></li>
+<li><p>MLIR中间表示</p></li>
+<li><p>跨DSA编译框架</p></li>
+</ul>
+<p><strong>可编程性提升</strong></p>
+<ul class="simple">
+<li><p>领域特定语言 (DSL)</p></li>
+<li><p>高级综合 (HLS)</p></li>
+<li><p>智能编译器</p></li>
+</ul>
+</section>
+</section>
+<section id="id15">
+<h2>6.4 异构计算<a class="headerlink" href="#id15" title="Link to this heading">#</a></h2>
+<section id="id16">
+<h3>6.4.1 异构计算概述<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<p>异构计算是指在同一个系统中整合多种不同类型的计算单元（如CPU、GPU、FPGA、ASIC），协同完成计算任务。</p>
+<p><strong>为什么需要异构？</strong></p>
+<p>单一处理器难以兼顾：</p>
+<ul class="simple">
+<li><p>通用性：需要CPU</p></li>
+<li><p>并行计算：需要GPU</p></li>
+<li><p>极致能效：需要DSA</p></li>
+<li><p>硬件加速：需要FPGA</p></li>
+</ul>
+<p><strong>异构计算的优势</strong></p>
+<ol class="arabic simple">
+<li><p><strong>性能优化</strong></p>
+<ul class="simple">
+<li><p>不同任务分配给最适合的处理单元</p></li>
+<li><p>发挥每种芯片的优势</p></li>
+</ul>
+</li>
+<li><p><strong>能效提升</strong></p>
+<ul class="simple">
+<li><p>根据任务动态选择处理单元</p></li>
+<li><p>降低整体功耗</p></li>
+</ul>
+</li>
+<li><p><strong>灵活性</strong></p>
+<ul class="simple">
+<li><p>适应多样化工作负载</p></li>
+<li><p>兼顾通用和专用</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="cpu-gpu">
+<h3>6.4.2 CPU+GPU异构<a class="headerlink" href="#cpu-gpu" title="Link to this heading">#</a></h3>
+<p>最常见的异构模式是CPU+GPU：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────────────┐
+│                 主机 (CPU)               │
+│  ├── 操作系统                            │
+│  ├── 控制逻辑                            │
+│  ├── 任务调度                            │
+│  └── 数据准备                            │
+└─────────────────────────────────────────┘
+              ↓ PCIe/NVLink
+┌─────────────────────────────────────────┐
+│               设备 (GPU)                  │
+│  ├── 大规模并行计算                       │
+│  ├── 矩阵运算加速                         │
+│  └── 深度学习训练/推理                    │
+└─────────────────────────────────────────┘
+</pre></div>
+</div>
+<p><strong>工作流程</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// CPU负责任务编排</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">hybridCompute</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 1. CPU准备数据</span>
+<span class="w">    </span><span class="n">prepareData</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// 2. CPU启动GPU计算</span>
+<span class="w">    </span><span class="n">cudaMemcpy</span><span class="p">(</span><span class="n">d_data</span><span class="p">,</span><span class="w"> </span><span class="n">h_data</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">cudaMemcpyHostToDevice</span><span class="p">);</span>
+<span class="w">    </span><span class="n">kernel</span><span class="o">&lt;&lt;&lt;</span><span class="n">grid</span><span class="p">,</span><span class="w"> </span><span class="n">block</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">d_data</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// 3. CPU等待GPU完成</span>
+<span class="w">    </span><span class="n">cudaDeviceSynchronize</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// 4. CPU处理结果</span>
+<span class="w">    </span><span class="n">processResult</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="cpu-fpga">
+<h3>6.4.3 CPU+FPGA异构<a class="headerlink" href="#cpu-fpga" title="Link to this heading">#</a></h3>
+<p>CPU+FPGA是另一种重要的异构模式：</p>
+<p><strong>FPGA的优势</strong></p>
+<ul class="simple">
+<li><p>硬件可重构：可配置不同功能</p></li>
+<li><p>低延迟：硬件级流水</p></li>
+<li><p>高能效：专用电路</p></li>
+</ul>
+<p><strong>典型应用</strong></p>
+<ul class="simple">
+<li><p>网络加速：SmartNIC</p></li>
+<li><p>实时推理：低延迟要求场景</p></li>
+<li><p>数据加速：数据库、存储</p></li>
+</ul>
+</section>
+<section id="cpu-asic">
+<h3>6.4.4 CPU+ASIC异构<a class="headerlink" href="#cpu-asic" title="Link to this heading">#</a></h3>
+<p>CPU+ASIC是最高能效的组合：</p>
+<p><strong>ASIC的特点</strong></p>
+<ul class="simple">
+<li><p>极致性能/功耗比</p></li>
+<li><p>固定功能</p></li>
+<li><p>难以修改</p></li>
+</ul>
+<p><strong>典型架构</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 推理系统中的CPU+ASIC</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">InferenceSystem</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpu</span> <span class="o">=</span> <span class="n">ControlProcessor</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">npu</span> <span class="o">=</span> <span class="n">NeuralProcessor</span><span class="p">()</span>  <span class="c1"># ASIC</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">):</span>
+        <span class="c1"># CPU预处理</span>
+        <span class="n">preprocessed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">preprocess</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+
+        <span class="c1"># ASIC执行推理</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">npu</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">preprocessed</span><span class="p">)</span>
+
+        <span class="c1"># CPU后处理</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">postprocess</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id17">
+<h3>6.4.5 超异构计算<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
+<p>超异构计算（Hyper-Heterogeneous Computing）是异构计算的进一步发展。</p>
+<p><strong>概念</strong></p>
+<p>超异构将三种以上类型的计算单元有机结合：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────────────┐
+│           超异构计算系统                   │
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐  │
+│  │   CPU   │  │   GPU   │  │   DSA   │  │
+│  │ (通用)  │  │ (并行)  │  │ (专用)  │  │
+│  └────┬────┘  └────┬────┘  └────┬────┘  │
+│       └────────────┼────────────┘        │
+│                    ↓                    │
+│            统一互联架构                   │
+│                    ↓                    │
+│            统一编程模型                   │
+└─────────────────────────────────────────┘
+</pre></div>
+</div>
+<p><strong>核心特征</strong></p>
+<ol class="arabic simple">
+<li><p><strong>多层级并行</strong></p>
+<ul class="simple">
+<li><p>CPU核内指令级并行</p></li>
+<li><p>GPU线程级并行</p></li>
+<li><p>DSA数据级并行</p></li>
+</ul>
+</li>
+<li><p><strong>统一内存</strong></p>
+<ul class="simple">
+<li><p>CPU和加速器共享虚拟地址空间</p></li>
+<li><p>简化编程模型</p></li>
+<li><p>支持内存一致性问题</p></li>
+</ul>
+</li>
+<li><p><strong>智能任务映射</strong></p>
+<ul class="simple">
+<li><p>运行时分析任务特征</p></li>
+<li><p>动态分配到最适合的处理单元</p></li>
+<li><p>编译器和运行时协同优化</p></li>
+</ul>
+</li>
+</ol>
+<p><strong>未来展望</strong></p>
+<p>超异构计算代表了计算架构的发展方向：</p>
+<ul class="simple">
+<li><p>适应多样化AI工作负载</p></li>
+<li><p>兼顾性能和灵活性</p></li>
+<li><p>软硬件协同设计</p></li>
+<li><p>开放生态标准</p></li>
+</ul>
+</section>
+</section>
+<section id="id18">
+<h2>6.5 编程模式的融合与演进<a class="headerlink" href="#id18" title="Link to this heading">#</a></h2>
+<section id="id19">
+<h3>6.5.1 模式趋同<a class="headerlink" href="#id19" title="Link to this heading">#</a></h3>
+<p>现代AI芯片呈现出多种编程模式融合的趋势：</p>
+<p><strong>GPU中的DSA</strong></p>
+<ul class="simple">
+<li><p>NVIDIA在GPU中集成Tensor Core（SIMT + DSA）</p></li>
+<li><p>AMD在GPU中集成Matrix Core</p></li>
+<li><p>通用并行 + 专用矩阵运算</p></li>
+</ul>
+<p><strong>DSA中的SIMT</strong></p>
+<ul class="simple">
+<li><p>TPU等DSA开始支持更灵活的并行</p></li>
+<li><p>DSA编译器引入线程概念</p></li>
+<li><p>平衡效率和灵活性</p></li>
+</ul>
+</section>
+<section id="id20">
+<h3>6.5.2 编程抽象的发展<a class="headerlink" href="#id20" title="Link to this heading">#</a></h3>
+<p><strong>从底层到高层</strong></p>
+<ol class="arabic simple">
+<li><p><strong>硬件描述语言</strong> (Verilog/VHDL)</p></li>
+<li><p><strong>低级API</strong> (CUDA/OpenCL)</p></li>
+<li><p><strong>高级框架</strong> (TensorFlow/PyTorch)</p></li>
+<li><p><strong>AI编译优化</strong> (MLIR/XLA)</p></li>
+</ol>
+<p><strong>抽象层次</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>应用层
+├── TensorFlow/PyTorch
+│
+框架层
+├── 算子融合
+├── 图优化
+│
+编译层
+├── MLIR/LLVM
+├── 目标硬件适配
+│
+硬件层
+├── CPU (SIMD)
+├── GPU (SIMT)
+└── DSA (专用)
+</pre></div>
+</div>
+</section>
+<section id="id21">
+<h3>6.5.3 未来编程趋势<a class="headerlink" href="#id21" title="Link to this heading">#</a></h3>
+<p><strong>1. 自动化并行化</strong></p>
+<p>编译器自动识别并行机会：</p>
+<ul class="simple">
+<li><p>依赖分析</p></li>
+<li><p>调度优化</p></li>
+<li><p>内存优化</p></li>
+</ul>
+<p><strong>2. 智能编译</strong></p>
+<p>AI辅助编译优化：</p>
+<ul class="simple">
+<li><p>性能建模</p></li>
+<li><p>自动调参</p></li>
+<li><p>代码生成</p></li>
+</ul>
+<p><strong>3. 统一编程模型</strong></p>
+<p>跨架构编程成为可能：</p>
+<ul class="simple">
+<li><p>OpenCL更新</p></li>
+<li><p>SYCL标准</p></li>
+<li><p>MLIR统一中间表示</p></li>
+</ul>
+</section>
+</section>
+<section id="id22">
+<h2>本章小结<a class="headerlink" href="#id22" title="Link to this heading">#</a></h2>
+<p>本章系统介绍了AI芯片的编程模式：</p>
+<ol class="arabic simple">
+<li><p><strong>SIMD模式</strong>：</p>
+<ul class="simple">
+<li><p>单指令多数据</p></li>
+<li><p>通过增加数据通路宽度实现并行</p></li>
+<li><p>广泛应用于CPU和GPU</p></li>
+<li><p>数据对齐和分支处理是主要挑战</p></li>
+</ul>
+</li>
+<li><p><strong>SIMT模式</strong>：</p>
+<ul class="simple">
+<li><p>单指令多线程</p></li>
+<li><p>比SIMD更灵活，支持线程独立寻址</p></li>
+<li><p>NVIDIA CUDA是其典型代表</p></li>
+<li><p>通过Warp调度掩盖延迟</p></li>
+</ul>
+</li>
+<li><p><strong>DSA架构</strong>：</p>
+<ul class="simple">
+<li><p>领域专用架构</p></li>
+<li><p>牺牲通用性换取极致性能</p></li>
+<li><p>代表后摩尔定律时代的重要方向</p></li>
+<li><p>编程复杂性和碎片化是挑战</p></li>
+</ul>
+</li>
+<li><p><strong>异构计算</strong>：</p>
+<ul class="simple">
+<li><p>CPU+GPU/FPGA/ASIC协同</p></li>
+<li><p>发挥每种芯片的优势</p></li>
+<li><p>超异构是发展趋势</p></li>
+</ul>
+</li>
+</ol>
+<p>理解这些编程模式，对于AI开发者选择合适的硬件、优化应用性能具有重要意义。</p>
+</section>
+<section id="id23">
+<h2>思考与练习<a class="headerlink" href="#id23" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>SIMD vs SIMT</strong>：比较SIMD和SIMT两种并行计算模式的本质区别。SIMT相比SIMD在编程模型和硬件实现上有哪些优势？</p></li>
+<li><p><strong>DSA理解</strong>：什么是领域专用架构（DSA）？为什么说DSA代表了后摩尔定律时代的重要技术方向？DSA面临的主要挑战是什么？</p></li>
+<li><p><strong>分支处理</strong>：解释GPU中Warp分支处理的原理。当Warp内线程执行不同分支时，硬件如何保证正确性？这会带来什么性能影响？</p></li>
+<li><p><strong>异构计算</strong>：分析CPU+GPU异构计算中，CPU和GPU各自承担什么角色？这种分工的优势是什么？</p></li>
+<li><p><strong>Tensor Core分析</strong>：Tensor Core是一种DSA单元。分析它与传统CUDA Core在计算模型、编程接口和适用场景上的区别。</p></li>
+<li><p><strong>未来趋势</strong>：展望AI芯片编程模式的未来发展趋势。哪些技术创新可能改变未来的编程范式？</p></li>
+</ol>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="05-Domestic-Chips.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">国内AI芯片</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../Chap07/README.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Chap07 AI编译器原理</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">章节导言</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simd">6.1 SIMD模式</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">6.1.1 SIMD概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">6.1.2 SIMD的发展历程</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">6.1.3 SIMD工作原理</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simdai">6.1.4 SIMD在AI中的应用</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">6.1.5 SIMD的局限性</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simt">6.2 SIMT模式</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">6.2.1 SIMT概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">6.2.2 SIMT的工作原理</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">6.2.3 SIMT的分支处理</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simtcuda">6.2.4 SIMT与CUDA</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dsa">6.3 DSA架构</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">6.3.1 DSA概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dsa-vs">6.3.2 DSA vs 通用处理器</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">6.3.3 DSA的典型案例</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">6.3.4 DSA的编程挑战</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">6.3.5 DSA的发展趋势</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">6.4 异构计算</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">6.4.1 异构计算概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-gpu">6.4.2 CPU+GPU异构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-fpga">6.4.3 CPU+FPGA异构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-asic">6.4.4 CPU+ASIC异构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">6.4.5 超异构计算</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">6.5 编程模式的融合与演进</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">6.5.1 模式趋同</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">6.5.2 编程抽象的发展</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">6.5.3 未来编程趋势</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">思考与练习</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Author name not set
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Apr 29, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>本教材仅供内部培训使用</p>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

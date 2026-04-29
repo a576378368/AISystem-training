@@ -1,0 +1,1375 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>05 Kernel优化技术 &#8212; AI系统工程师培训教程</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Part2/Chap08/05-Kernel-Optimization';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Chap09 AI框架核心" href="../Chap09/README.html" />
+    <link rel="prev" title="04 推理优化技术" href="04-Inference-Optimization.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Apr 29, 2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="AI系统工程师培训教程 - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="AI系统工程师培训教程 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    AI系统工程师培训教程
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">第一阶段：AI基础入门</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap01/README.html">Chap01 计算机基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/01-Binary.html">第一章 进制与编码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/02-CPU-Memory.html">第二章 CPU与内存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/03-Program-Running.html">第三章 程序运行原理</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap02/README.html">Chap02 Python编程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/01-Python-Basic.html">Python基础语法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/02-NumPy.html">NumPy基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/03-PyTorch.html">PyTorch基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap03/README.html">Chap03 数学基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/01-Linear-Algebra.html">线性代数基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/02-Probability.html">概率与统计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/03-Optimization.html">优化基础</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二阶段：AI系统核心</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap04/README.html">Chap04 AI系统概述</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap04/01-Introduction.html">AI系统基本概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap04/02-Architecture.html">AI系统全栈架构</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap05/README.html">Chap05 神经网络基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/01-Neuron-Model.html">神经元与网络模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/02-CNN.html">卷积神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/03-RNN.html">循环神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/04-Transformer.html">Transformer与注意力机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/05-Quantization.html">模型量化基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap06/README.html">Chap06 AI芯片体系架构</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/01-Chip-Base.html">AI芯片基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/02-GPU-Base.html">GPU原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/03-NVIDIA.html">NVIDIA GPU架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/04-Abroad-Chips.html">国外AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/05-Domestic-Chips.html">国内AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/06-Programming-Model.html">芯片编程模式</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap07/README.html">Chap07 AI编译器原理</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/01-Traditional-Compiler.html">第一章 传统编译器基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/02-AI-Compiler.html">第二章 AI编译器架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/03-Frontend-Optimization.html">第三章 前端优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/04-Backend-Optimization.html">第四章 后端优化</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Chap08 推理系统与引擎</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-Inference-System.html">01 推理系统概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-Model-Compression.html">02 模型压缩</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-Model-Converter.html">03 模型转换与优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-Inference-Optimization.html">04 推理优化技术</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">05 Kernel优化技术</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap09/README.html">Chap09 AI框架核心</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/01-Auto-Differentiation.html">自动微分</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/02-Computational-Graph.html">计算图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/03-Distributed-Training.html">分布式训练</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap10/README.html">Chap10 大模型与集群</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/01-LLM-Architecture.html">大模型架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/02-AI-Cluster.html">AI集群</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/03-Parallel-Strategy.html">并行策略</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三阶段：附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixA/README.html">附录A：AI系统术语表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixB/README.html">附录B：参考文献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixC/README.html">AppendixC 实践项目</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/your-org/AI-System-Training/blob/main/Part2/Chap08/05-Kernel-Optimization.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button"
+   title="Show source"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/Part2/Chap08/05-Kernel-Optimization.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>05 Kernel优化技术</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">5.1 Kernel优化概述</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">5.1.1 什么是Kernel</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">5.1.2 Kernel优化的重要性</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">5.1.3 Kernel优化策略</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#im2col">5.2 Im2Col算法详解</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">5.2.1 Im2Col算法原理</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">5.2.2 Im2Col实现过程</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">5.2.3 Im2Col的优化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">5.2.4 Im2Col的代码实现</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#winograd">5.3 Winograd算法详解</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">5.3.1 Winograd算法原理</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">5.3.2 二维Winograd</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">5.3.3 Winograd的变换矩阵</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">5.3.4 Winograd的优缺点</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#qnnpack">5.4 QNNPACK算法详解</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">5.4.1 QNNPACK概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">5.4.2 间接卷积算法原理</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">5.4.3 间接缓冲区</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">5.4.4 QNNPACK的优化技术</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qnnpack-vs-im2col">5.4.5 QNNPACK vs Im2Col</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">5.5 内存访问优化</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">5.5.1 内存层级与访问成本</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#blocking-tiling">5.5.2 数据分块（Blocking/Tiling）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prefetching">5.5.3 数据预取（Prefetching）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">5.5.4 数据复用</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">5.5.5 内存对齐与向量化</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">5.6 Kernel优化实践</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">5.6.1 卷积Kernel优化示例</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">5.6.2 优化检查清单</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">5.6.3 性能分析方法</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">思考与练习</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="kernel">
+<h1>05 Kernel优化技术<a class="headerlink" href="#kernel" title="Link to this heading">#</a></h1>
+<section id="id1">
+<h2>学习目标<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>理解Kernel的概念以及Kernel优化在推理引擎中的作用</p></li>
+<li><p>掌握Im2Col算法的原理、实现和优化方法</p></li>
+<li><p>理解Winograd算法的原理以及如何减少卷积计算量</p></li>
+<li><p>掌握QNNPACK的核心技术和间接卷积算法</p></li>
+<li><p>了解内存访问优化的关键技术和方法</p></li>
+</ol>
+</section>
+<section id="id2">
+<h2>5.1 Kernel优化概述<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<section id="id3">
+<h3>5.1.1 什么是Kernel<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>在深度学习推理引擎中，<strong>Kernel是算子在特定硬件上的具体实现</strong>。如果说算子（Operator）是对数学运算的高层抽象，那么Kernel就是这些运算在底层硬件上的实际执行代码。</p>
+<p>以卷积算子为例：</p>
+<ul class="simple">
+<li><p><strong>算子层</strong>：定义了卷积的数学运算（输入与卷积核的滑动窗口乘加）</p></li>
+<li><p><strong>Kernel层</strong>：针对不同硬件（CPU、GPU、NPU）有不同的实现，如使用cuDNN的Kernel、使用OpenCL的Kernel、使用NEON的Kernel等</p></li>
+</ul>
+<p>Kernel优化是推理引擎性能优化的最后一环，也是最关键的环节。即使上层的图优化、算子融合做得再好，如果底层Kernel实现低效，推理性能也无法达到预期。</p>
+</section>
+<section id="id4">
+<h3>5.1.2 Kernel优化的重要性<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>在CNN网络中，卷积操作占据了大约60%-90%的计算时间。因此，卷积Kernel的优化程度直接决定了整个推理系统的性能上限。</p>
+<p>Kernel优化的核心目标是：<strong>在给定硬件上，以最少的时钟周期完成指定的张量运算</strong>。这涉及到：</p>
+<ol class="arabic simple">
+<li><p><strong>计算效率</strong>：充分利用硬件的并行计算能力</p></li>
+<li><p><strong>内存访问效率</strong>：减少内存访问延迟和带宽消耗</p></li>
+<li><p><strong>指令级并行</strong>：利用SIMD/Vector指令加速计算</p></li>
+<li><p><strong>线程级并行</strong>：利用多核并行加速计算</p></li>
+</ol>
+</section>
+<section id="id5">
+<h3>5.1.3 Kernel优化策略<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p><strong>算法层面的优化</strong></p>
+<p>通过改进卷积的计算算法来减少计算量，如：</p>
+<ul class="simple">
+<li><p>Im2Col：将卷积转换为矩阵乘法，利用成熟的BLAS库</p></li>
+<li><p>Winograd：通过多项式优化减少乘法次数</p></li>
+<li><p>稀疏化：跳过零值的计算</p></li>
+</ul>
+<p><strong>内存访问层面的优化</strong></p>
+<p>通过优化数据排布和访问模式来提高缓存命中率，如：</p>
+<ul class="simple">
+<li><p>数据分块（Blocking/Tiling）：提高缓存局部性</p></li>
+<li><p>数据预取（Prefetching）：隐藏内存访问延迟</p></li>
+<li><p>数据复用：在寄存器级别复用数据</p></li>
+</ul>
+<p><strong>硬件层面的优化</strong></p>
+<p>充分利用硬件特性，如：</p>
+<ul class="simple">
+<li><p>SIMD向量指令：单指令多数据</p></li>
+<li><p>共享内存：GPU线程间共享数据</p></li>
+<li><p>Tensor Core：专门用于矩阵运算的硬件单元</p></li>
+</ul>
+</section>
+</section>
+<section id="im2col">
+<h2>5.2 Im2Col算法详解<a class="headerlink" href="#im2col" title="Link to this heading">#</a></h2>
+<section id="id6">
+<h3>5.2.1 Im2Col算法原理<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p><strong>为什么需要Im2Col？</strong></p>
+<p>在传统的卷积计算中，卷积核在输入特征图上滑动，每次滑动计算一个输出点。这种方式的缺点是：</p>
+<ol class="arabic simple">
+<li><p>内存访问不连续：不同行的数据在内存中不连续</p></li>
+<li><p>计算效率低：每次只计算一个输出点</p></li>
+<li><p>难以利用硬件优化：无法使用高效的矩阵乘法库</p></li>
+</ol>
+<p>Im2Col（Image to Column）算法将卷积操作转换为矩阵乘法（GEMM，General Matrix Multiply），从而可以利用成熟的矩阵乘法库来加速计算。</p>
+<p><strong>Im2Col的核心思想</strong></p>
+<p>Im2Col将输入特征图按照卷积窗口展开成列，卷积核展开成行，从而将卷积转化为矩阵乘法。</p>
+<p>设输入特征图为<span class="math notranslate nohighlight">\(X\)</span>，形状为<span class="math notranslate nohighlight">\((N, C_{in}, H_{in}, W_{in})\)</span>，卷积核为<span class="math notranslate nohighlight">\(W\)</span>，形状为<span class="math notranslate nohighlight">\((C_{out}, C_{in}, K_H, K_W)\)</span>，输出为<span class="math notranslate nohighlight">\(Y\)</span>，形状为<span class="math notranslate nohighlight">\((N, C_{out}, H_{out}, W_{out})\)</span>。</p>
+<p>卷积的计算公式为：</p>
+<div class="math notranslate nohighlight">
+\[Y(n, c_{out}, h_{out}, w_{out}) = \sum_{c_{in}=0}^{C_{in}-1}\sum_{k_h=0}^{K_H-1}\sum_{k_w=0}^{K_W-1} X(n, c_{in}, h_{out}+k_h, w_{out}+k_w) \cdot W(c_{out}, c_{in}, k_h, k_w)\]</div>
+<p>Im2Col将输入转换为矩阵<span class="math notranslate nohighlight">\(A\)</span>，形状为<span class="math notranslate nohighlight">\((H_{out}W_{out}, K_HK_WC_{in})\)</span>，将卷积核转换为矩阵<span class="math notranslate nohighlight">\(B\)</span>，形状为<span class="math notranslate nohighlight">\((C_{out}, K_HK_WC_{in})\)</span>，则输出为矩阵<span class="math notranslate nohighlight">\(C = AB\)</span>，形状为<span class="math notranslate nohighlight">\((H_{out}W_{out}, C_{out})\)</span>。</p>
+</section>
+<section id="id7">
+<h3>5.2.2 Im2Col实现过程<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p><strong>输入数据重排</strong></p>
+<p>将输入特征图按照卷积窗口展开成矩阵。假设输入为单通道图像，卷积核为3x3，步长为1：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>输入特征图：
+[[a, b, c, d],
+ [e, f, g, h],
+ [i, j, k, l],
+ [m, n, o, p]]
+
+卷积窗口滑动的位置：
+位置(0,0): [a, b, c, e, f, g, i, j, k]
+位置(0,1): [b, c, d, f, g, h, j, k, l]
+位置(1,0): [e, f, g, i, j, k, m, n, o]
+位置(1,1): [f, g, h, j, k, l, n, o, p]
+
+Im2Col转换后的矩阵A（每行是一个卷积窗口的展开）：
+[[a, b, c, e, f, g, i, j, k],   # 位置(0,0)
+ [b, c, d, f, g, h, j, k, l],   # 位置(0,1)
+ [e, f, g, i, j, k, m, n, o],   # 位置(1,0)
+ [f, g, h, j, k, l, n, o, p]]   # 位置(1,1)
+</pre></div>
+</div>
+<p><strong>卷积核重排</strong></p>
+<p>将卷积核展开成矩阵。假设有<span class="math notranslate nohighlight">\(C_{out}\)</span>个卷积核，每个卷积核的形状为<span class="math notranslate nohighlight">\((C_{in}, K_H, K_W)\)</span>：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>卷积核权重：
+形状为(C_out, C_in*K_H*K_W)
+
+每个卷积核展开为一行：
+[[w_00, w_01, ..., w_0n],  # 卷积核0
+ [w_10, w_11, ..., w_1n],  # 卷积核1
+ ...
+ [w_m0, w_m1, ..., w_mn]]   # 卷积核m
+</pre></div>
+</div>
+<p><strong>矩阵乘法</strong></p>
+<p>将Im2Col转换后的矩阵<span class="math notranslate nohighlight">\(A\)</span>和卷积核矩阵<span class="math notranslate nohighlight">\(B^T\)</span>相乘：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span> <span class="o">=</span> <span class="n">A</span> <span class="o">@</span> <span class="n">B</span><span class="o">^</span><span class="n">T</span>
+
+<span class="n">C的形状为</span><span class="p">(</span><span class="n">H_out</span><span class="o">*</span><span class="n">W_out</span><span class="p">,</span> <span class="n">C_out</span><span class="p">)</span>
+
+<span class="n">每个输出点对应C的一行</span>
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h3>5.2.3 Im2Col的优化<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p><strong>空间组合优化</strong></p>
+<p>空间组合（Spatial Pack）优化是一种基于分治法的Im2Col优化策略。它将输入特征图在空间维度上划分为多个小区域，分别处理。</p>
+<p>假设将输出划分为<span class="math notranslate nohighlight">\(2\times2\)</span>的小块：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>原始输出划分：
+[[小块0, 小块1],
+ [小块2, 小块3]]
+
+每个小块使用独立的Im2Col计算
+</pre></div>
+</div>
+<p>空间组合优化的优势：</p>
+<ol class="arabic simple">
+<li><p>提高缓存局部性：每个小块的计算 Working Set更小</p></li>
+<li><p>支持并行化：不同小块可以并行计算</p></li>
+<li><p>减少内存占用：中间结果更小</p></li>
+</ol>
+<p><strong>内存拷贝优化</strong></p>
+<p>Im2Col的一个主要开销是数据重排时的内存拷贝。优化策略包括：</p>
+<ol class="arabic simple">
+<li><p><strong>原地重排</strong>：如果内存足够，利用原地置换算法减少拷贝</p></li>
+<li><p><strong>增量更新</strong>：只更新发生变化的数据，而非全量重排</p></li>
+<li><p><strong>延迟执行</strong>：将Im2Col融入计算过程中，避免显式重排</p></li>
+</ol>
+</section>
+<section id="id9">
+<h3>5.2.4 Im2Col的代码实现<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">im2col</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    将输入特征图转换为列矩阵</span>
+
+<span class="sd">    参数:</span>
+<span class="sd">        input_data: (C, H, W) 或 (N, C, H, W)</span>
+<span class="sd">        kernel_size: 卷积核尺寸</span>
+<span class="sd">        stride: 步长</span>
+<span class="sd">        padding: 填充</span>
+
+<span class="sd">    返回:</span>
+<span class="sd">        col: (out_h*out_w, C*kernel_size*kernel_size)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">input_data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">input_data</span> <span class="o">=</span> <span class="n">input_data</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>  <span class="c1"># 添加batch维度</span>
+
+    <span class="n">N</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">W</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="n">kernel_size</span>
+    <span class="n">out_h</span> <span class="o">=</span> <span class="p">(</span><span class="n">H</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">padding</span> <span class="o">-</span> <span class="n">K</span><span class="p">)</span> <span class="o">//</span> <span class="n">stride</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">out_w</span> <span class="o">=</span> <span class="p">(</span><span class="n">W</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">padding</span> <span class="o">-</span> <span class="n">K</span><span class="p">)</span> <span class="o">//</span> <span class="n">stride</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c1"># 应用padding</span>
+    <span class="k">if</span> <span class="n">padding</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">padded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span>
+                       <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">padding</span><span class="p">,</span> <span class="n">padding</span><span class="p">),</span> <span class="p">(</span><span class="n">padding</span><span class="p">,</span> <span class="n">padding</span><span class="p">)),</span>
+                       <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">padded</span> <span class="o">=</span> <span class="n">input_data</span>
+
+    <span class="c1"># 分配输出矩阵</span>
+    <span class="n">col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">out_h</span><span class="p">,</span> <span class="n">out_w</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">K</span><span class="p">))</span>
+
+    <span class="c1"># 填充col矩阵</span>
+    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">out_h</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">out_w</span><span class="p">):</span>
+            <span class="n">y_start</span> <span class="o">=</span> <span class="n">y</span> <span class="o">*</span> <span class="n">stride</span>
+            <span class="n">x_start</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">stride</span>
+            <span class="n">col</span><span class="p">[:,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">padded</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">y_start</span><span class="p">:</span><span class="n">y_start</span><span class="o">+</span><span class="n">K</span><span class="p">,</span> <span class="n">x_start</span><span class="p">:</span><span class="n">x_start</span><span class="o">+</span><span class="n">K</span><span class="p">]</span>
+
+    <span class="c1"># 变换形状: (N, out_h, out_w, C, K, K) -&gt; (N*out_h*out_w, C*K*K)</span>
+    <span class="n">col</span> <span class="o">=</span> <span class="n">col</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="n">out_h</span> <span class="o">*</span> <span class="n">out_w</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">col</span><span class="p">,</span> <span class="p">(</span><span class="n">out_h</span><span class="p">,</span> <span class="n">out_w</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">conv_im2col</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    使用Im2Col实现卷积</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">N</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">W</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">K</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">C_out</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">weight</span><span class="o">.</span><span class="n">shape</span>  <span class="c1"># K=kernel_size, C_out=out_channels</span>
+
+    <span class="c1"># Im2Col转换</span>
+    <span class="n">col</span><span class="p">,</span> <span class="p">(</span><span class="n">out_h</span><span class="p">,</span> <span class="n">out_w</span><span class="p">)</span> <span class="o">=</span> <span class="n">im2col</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">padding</span><span class="p">)</span>
+
+    <span class="c1"># weight形状变换: (C_out, C_in, K, K) -&gt; (C_out, C*K*K)</span>
+    <span class="n">weight_flat</span> <span class="o">=</span> <span class="n">weight</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">C_out</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># 矩阵乘法</span>
+    <span class="n">out_flat</span> <span class="o">=</span> <span class="n">col</span> <span class="o">@</span> <span class="n">weight_flat</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="c1"># Reshape输出: (N*out_h*out_w, C_out) -&gt; (N, C_out, out_h, out_w)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">out_flat</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">out_h</span><span class="p">,</span> <span class="n">out_w</span><span class="p">,</span> <span class="n">C_out</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># 添加偏置</span>
+    <span class="k">if</span> <span class="n">bias</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">out</span> <span class="o">+</span> <span class="n">bias</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="winograd">
+<h2>5.3 Winograd算法详解<a class="headerlink" href="#winograd" title="Link to this heading">#</a></h2>
+<section id="id10">
+<h3>5.3.1 Winograd算法原理<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>Winograd算法是另一种加速卷积计算的算法，由Shmuel Winograd在1980年提出，2015年被应用于深度学习卷积加速。</p>
+<p><strong>核心思想</strong></p>
+<p>Winograd算法的核心思想是：用更多的加法替代乘法，从而减少计算量。因为在硬件中，乘法比加法消耗更多的时钟周期和面积。</p>
+<p><strong>一维Winograd</strong></p>
+<p>设输入信号为<span class="math notranslate nohighlight">\(d = [d_0, d_1, d_2, d_3]^T\)</span>，卷积核为<span class="math notranslate nohighlight">\(g = [g_0, g_1, g_2]^T\)</span>，则F(2,3)表示2个输出点需要3个卷积核元素。</p>
+<p>普通卷积计算：
+$<span class="math notranslate nohighlight">\(y_0 = d_0 g_0 + d_1 g_1 + d_2 g_2\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(y_1 = d_1 g_0 + d_2 g_1 + d_3 g_2\)</span>$</p>
+<p>需要6次乘法和4次加法。</p>
+<p>Winograd优化后：
+$<span class="math notranslate nohighlight">\(m_1 = (d_0 - d_2) g_0\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(m_2 = (d_1 + d_2) \cdot \frac{g_0 + g_1 + g_2}{2}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(m_3 = (d_2 - d_1) \cdot \frac{g_0 - g_1 + g_2}{2}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(m_4 = (d_1 - d_3) g_2\)</span>$</p>
+<div class="math notranslate nohighlight">
+\[y_0 = m_1 + m_2 + m_3\]</div>
+<div class="math notranslate nohighlight">
+\[y_1 = m_2 - m_3 - m_4\]</div>
+<p>只需要4次乘法和8次加法。乘法减少2次！</p>
+<p><strong>Winograd的矩阵形式</strong></p>
+<p>Winograd算法可以用矩阵形式表示：</p>
+<div class="math notranslate nohighlight">
+\[Y = A^T [(Gg) \odot (B^T d)]\]</div>
+<p>其中：</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(G\)</span>：卷积核变换矩阵</p></li>
+<li><p><span class="math notranslate nohighlight">\(B^T\)</span>：输入变换矩阵</p></li>
+<li><p><span class="math notranslate nohighlight">\(A^T\)</span>：输出变换矩阵</p></li>
+<li><p><span class="math notranslate nohighlight">\(\odot\)</span>：逐元素乘法（Hadamard积）</p></li>
+</ul>
+</section>
+<section id="id11">
+<h3>5.3.2 二维Winograd<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p>将一维Winograd扩展到二维卷积。对于<span class="math notranslate nohighlight">\(F(2\times2, 3\times3)\)</span>的卷积：</p>
+<div class="math notranslate nohighlight">
+\[Y = A^T [[GgG^T] \odot [B^T d B]] A\]</div>
+<p>二维Winograd的实现步骤：</p>
+<ol class="arabic simple">
+<li><p><strong>输入变换</strong>：将输入分成<span class="math notranslate nohighlight">\(4\times4\)</span>的小块，通过<span class="math notranslate nohighlight">\(B^T\)</span>和<span class="math notranslate nohighlight">\(B\)</span>进行变换</p></li>
+<li><p><strong>卷积核变换</strong>：通过<span class="math notranslate nohighlight">\(G\)</span>和<span class="math notranslate nohighlight">\(G^T\)</span>对每个<span class="math notranslate nohighlight">\(3\times3\)</span>卷积核进行变换</p></li>
+<li><p><strong>元素级乘法</strong>：对应位置相乘</p></li>
+<li><p><strong>输出变换</strong>：通过<span class="math notranslate nohighlight">\(A^T\)</span>和<span class="math notranslate nohighlight">\(A\)</span>恢复输出</p></li>
+</ol>
+</section>
+<section id="id12">
+<h3>5.3.3 Winograd的变换矩阵<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>对于F(2,3)，常用的变换矩阵为：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span>   <span class="mi">0</span><span class="p">],</span>
+     <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span>
+     <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span>
+     <span class="p">[</span><span class="mi">0</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span>   <span class="mi">1</span><span class="p">]]</span>
+
+<span class="n">B</span><span class="o">^</span><span class="n">T</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+
+<span class="n">A</span><span class="o">^</span><span class="n">T</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+</pre></div>
+</div>
+<p>对于F(2x2, 3x3)，变换后的矩阵尺寸：</p>
+<ul class="simple">
+<li><p>输入：<span class="math notranslate nohighlight">\(4\times4\)</span></p></li>
+<li><p>卷积核：<span class="math notranslate nohighlight">\(4\times4\)</span></p></li>
+<li><p>输出：<span class="math notranslate nohighlight">\(2\times2\)</span></p></li>
+</ul>
+</section>
+<section id="id13">
+<h3>5.3.4 Winograd的优缺点<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p><strong>优点</strong></p>
+<ol class="arabic simple">
+<li><p>减少乘法次数：对于<span class="math notranslate nohighlight">\(3\times3\)</span>卷积核，理论上可以减少约2.25倍的乘法量</p></li>
+<li><p>适用于小卷积核：<span class="math notranslate nohighlight">\(3\times3\)</span>卷积核是CNN中最常用的，Winograd优化效果显著</p></li>
+<li><p>硬件友好：加法比乘法更快速、更节能</p></li>
+</ol>
+<p><strong>缺点</strong></p>
+<ol class="arabic simple">
+<li><p>需要额外的变换开销：输入和权重的变换需要计算</p></li>
+<li><p>精度损失：变换过程中的浮点运算可能引入误差</p></li>
+<li><p>仅适用于固定尺寸的卷积：不同尺寸需要不同的变换矩阵</p></li>
+<li><p>内存占用增加：需要存储中间变换结果</p></li>
+</ol>
+<p><strong>适用场景</strong></p>
+<p>Winograd算法最适合以下场景：</p>
+<ul class="simple">
+<li><p>卷积核尺寸为<span class="math notranslate nohighlight">\(3\times3\)</span>或更小</p></li>
+<li><p>输入输出通道数较大（充分利用并行性）</p></li>
+<li><p>批量大小较大（分摊变换开销）</p></li>
+</ul>
+</section>
+</section>
+<section id="qnnpack">
+<h2>5.4 QNNPACK算法详解<a class="headerlink" href="#qnnpack" title="Link to this heading">#</a></h2>
+<section id="id14">
+<h3>5.4.1 QNNPACK概述<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p>QNNPACK（Quantized Neural Networks PACKage）是Facebook于2018年开源的量化神经网络加速库，专门针对移动端ARM处理器优化。</p>
+<p>QNNPACK的核心创新是<strong>间接卷积算法（Indirect Convolution Algorithm）</strong>，它解决了传统Im2Col算法的两个主要问题：</p>
+<ol class="arabic simple">
+<li><p><strong>内存占用大</strong>：Im2Col需要额外的内存来存储重排后的矩阵</p></li>
+<li><p><strong>缓存效率低</strong>：大矩阵乘法难以充分利用L1缓存</p></li>
+</ol>
+</section>
+<section id="id15">
+<h3>5.4.2 间接卷积算法原理<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<p>间接卷积算法的核心思想是：<strong>不直接复制数据，而是通过间接寻址的方式访问输入数据</strong>。</p>
+<p>传统Im2Col：</p>
+<ul class="simple">
+<li><p>需要将输入复制到一个更大的连续内存区域</p></li>
+<li><p>然后使用标准的矩阵乘法计算</p></li>
+</ul>
+<p>间接卷积：</p>
+<ul class="simple">
+<li><p>预先建立一个”间接缓冲区”（Indirection Buffer）</p></li>
+<li><p>间接缓冲区存储指向实际输入数据的指针</p></li>
+<li><p>通过指针间接访问数据进行计算</p></li>
+</ul>
+</section>
+<section id="id16">
+<h3>5.4.3 间接缓冲区<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<p>间接缓冲区是间接卷积算法的核心数据结构。假设：</p>
+<ul class="simple">
+<li><p>输入形状：<span class="math notranslate nohighlight">\((C_{in}, H, W)\)</span></p></li>
+<li><p>卷积核形状：<span class="math notranslate nohighlight">\((C_{out}, C_{in}, K_H, K_W)\)</span></p></li>
+<li><p>输出形状：<span class="math notranslate nohighlight">\((C_{out}, H_{out}, W_{out})\)</span></p></li>
+</ul>
+<p>间接缓冲区是一个形状为<span class="math notranslate nohighlight">\((H_{out} \times W_{out}, K_H, K_W)\)</span>的指针数组。对于输出位置<span class="math notranslate nohighlight">\((h_{out}, w_{out})\)</span>，其对应的间接缓冲区条目指向输入中位置<span class="math notranslate nohighlight">\((h_{out} \times s + k_h, w_{out} \times s + k_w)\)</span>的元素，其中<span class="math notranslate nohighlight">\(s\)</span>是步长。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>间接缓冲区访问示意：
+
+输出位置(0,0)的计算：
+  使用间接缓冲区[0, 0, 0] -&gt; 输入[0, 0, 0]
+  使用间接缓冲区[0, 0, 1] -&gt; 输入[0, 0, 1]
+  使用间接缓冲区[0, 0, 2] -&gt; 输入[0, 0, 2]
+  ...
+
+输出位置(0,1)的计算：
+  使用间接缓冲区[0, 1, 0] -&gt; 输入[0, stride, 0]
+  ...
+</pre></div>
+</div>
+</section>
+<section id="id17">
+<h3>5.4.4 QNNPACK的优化技术<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
+<p><strong>1. 消除Im2Col数据拷贝</strong></p>
+<p>传统Im2Col需要将输入拷贝到连续内存，QNNPACK通过间接寻址避免了这个拷贝开销。</p>
+<p><strong>2. 提高缓存效率</strong></p>
+<p>QNNPACK将计算划分为小的tiles，使得每个tile的计算完全在L1缓存中进行。对于ARM Cortex-A75，每个tile的大小通常为<span class="math notranslate nohighlight">\(4\times4\)</span>或<span class="math notranslate nohighlight">\(8\times8\)</span>。</p>
+<p><strong>3. 充分利用INT8 SIMD</strong></p>
+<p>QNNPACK专为INT8量化设计，利用ARM NEON指令集的SIMD能力并行处理多个数据：</p>
+<div class="highlight-assembly notranslate"><div class="highlight"><pre><span></span># 伪代码：INT8矩阵乘法的一块计算
+# 假设 a 和 b 是 4x4 的 INT8 块
+# result 是 4x4 的 INT32 累加器
+
+mov     w0, #0
+dup     v0.4s, w0          # 初始化累加器为0
+dup     v1.4s, w0
+dup     v2.4s, w0
+dup     v3.4s, w0
+
+ld1     {v4.16b}, [x0], #16  # 加载输入a的4行
+ld1     {v5.16b}, [x1], #16  # 加载权重b的4行
+
+sdot    v0.4s, v4.4b, v5.4b[0]  # 点积
+sdot    v1.4s, v4.4b, v5.4b[1]
+sdot    v2.4s, v4.4b, v5.4b[2]
+sdot    v3.4s, v4.4b, v5.4b[3]
+</pre></div>
+</div>
+<p><strong>4. 内存复用</strong></p>
+<p>QNNPACK在计算过程中复用中间结果的内存，避免不必要的分配和释放。</p>
+</section>
+<section id="qnnpack-vs-im2col">
+<h3>5.4.5 QNNPACK vs Im2Col<a class="headerlink" href="#qnnpack-vs-im2col" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>特性</p></th>
+<th class="head"><p>Im2Col</p></th>
+<th class="head"><p>QNNPACK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>内存拷贝</p></td>
+<td><p>需要O(HWKKC)额外内存</p></td>
+<td><p>无额外拷贝</p></td>
+</tr>
+<tr class="row-odd"><td><p>缓存效率</p></td>
+<td><p>取决于GEMM实现</p></td>
+<td><p>优化到L1缓存级别</p></td>
+</tr>
+<tr class="row-even"><td><p>适用场景</p></td>
+<td><p>通用卷积</p></td>
+<td><p>量化神经网络</p></td>
+</tr>
+<tr class="row-odd"><td><p>移动端性能</p></td>
+<td><p>一般</p></td>
+<td><p>优秀</p></td>
+</tr>
+<tr class="row-even"><td><p>实现复杂度</p></td>
+<td><p>较低</p></td>
+<td><p>较高</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="id18">
+<h2>5.5 内存访问优化<a class="headerlink" href="#id18" title="Link to this heading">#</a></h2>
+<section id="id19">
+<h3>5.5.1 内存层级与访问成本<a class="headerlink" href="#id19" title="Link to this heading">#</a></h3>
+<p>在现代处理器中，内存访问存在明显的层级结构，不同层级的访问延迟差异巨大：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>层级</p></th>
+<th class="head"><p>典型延迟</p></th>
+<th class="head"><p>典型大小</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>寄存器</p></td>
+<td><p>1 cycle</p></td>
+<td><p>&lt; 1KB</p></td>
+</tr>
+<tr class="row-odd"><td><p>L1 Cache</p></td>
+<td><p>1-3 cycles</p></td>
+<td><p>32-64KB</p></td>
+</tr>
+<tr class="row-even"><td><p>L2 Cache</p></td>
+<td><p>10-15 cycles</p></td>
+<td><p>256KB-1MB</p></td>
+</tr>
+<tr class="row-odd"><td><p>L3 Cache</p></td>
+<td><p>40-60 cycles</p></td>
+<td><p>几MB-几十MB</p></td>
+</tr>
+<tr class="row-even"><td><p>主内存</p></td>
+<td><p>100-300 cycles</p></td>
+<td><p>几GB</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Kernel优化的核心原则是：<strong>尽量使用更高级别的内存，减少对低级内存的访问</strong>。</p>
+</section>
+<section id="blocking-tiling">
+<h3>5.5.2 数据分块（Blocking/Tiling）<a class="headerlink" href="#blocking-tiling" title="Link to this heading">#</a></h3>
+<p>数据分块是一种提高缓存命中率的优化技术。其核心思想是：将大数据结构划分为小块，使得每个小块可以完全放入缓存。</p>
+<p><strong>一维分块</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">matrix_vector_mul_blocked</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">block_size</span><span class="o">=</span><span class="mi">64</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;分块优化的矩阵向量乘法&quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">block_size</span><span class="p">):</span>
+        <span class="c1"># 外层循环加载一个数据块到缓存</span>
+        <span class="n">end_i</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">block_size</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="n">yi</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="c1"># 内层循环累加</span>
+            <span class="c1"># A[i:end_i, k]应该在缓存中</span>
+            <span class="n">yi</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">end_i</span><span class="p">,</span> <span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">end_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">yi</span>
+
+    <span class="k">return</span> <span class="n">y</span>
+</pre></div>
+</div>
+<p><strong>二维分块（用于矩阵乘法）</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">gemm_blocked</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">block_size</span><span class="o">=</span><span class="mi">64</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;分块优化的矩阵乘法&quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">block_size</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">block_size</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">kk</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">block_size</span><span class="p">):</span>
+                <span class="c1"># C[i:i+bs, j:j+bs] += A[i:i+bs, kk:kk+bs] @ B[kk:kk+bs, j:j+bs]</span>
+                <span class="n">A_block</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="nb">min</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="n">block_size</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">kk</span><span class="p">:</span><span class="nb">min</span><span class="p">(</span><span class="n">kk</span><span class="o">+</span><span class="n">block_size</span><span class="p">,</span> <span class="n">k</span><span class="p">)]</span>
+                <span class="n">B_block</span> <span class="o">=</span> <span class="n">B</span><span class="p">[</span><span class="n">kk</span><span class="p">:</span><span class="nb">min</span><span class="p">(</span><span class="n">kk</span><span class="o">+</span><span class="n">block_size</span><span class="p">,</span> <span class="n">k</span><span class="p">),</span> <span class="n">j</span><span class="p">:</span><span class="nb">min</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="n">block_size</span><span class="p">,</span> <span class="n">m</span><span class="p">)]</span>
+                <span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="nb">min</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="n">block_size</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">j</span><span class="p">:</span><span class="nb">min</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="n">block_size</span><span class="p">,</span> <span class="n">m</span><span class="p">)]</span> <span class="o">+=</span> <span class="n">A_block</span> <span class="o">@</span> <span class="n">B_block</span>
+
+    <span class="k">return</span> <span class="n">C</span>
+</pre></div>
+</div>
+</section>
+<section id="prefetching">
+<h3>5.5.3 数据预取（Prefetching）<a class="headerlink" href="#prefetching" title="Link to this heading">#</a></h3>
+<p>数据预取是一种隐藏内存访问延迟的技术。其核心思想是：在使用数据之前，预先将数据从内存加载到缓存。</p>
+<p><strong>软件预取</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 软件预取示例</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 预取下一个block的数据</span>
+<span class="w">    </span><span class="n">__builtin_prefetch</span><span class="p">(</span><span class="o">&amp;</span><span class="n">A</span><span class="p">[(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">BLOCK_SIZE</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">N</span><span class="p">]);</span>
+<span class="w">    </span><span class="n">__builtin_prefetch</span><span class="p">(</span><span class="o">&amp;</span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">BLOCK_SIZE</span><span class="p">]);</span>
+
+<span class="w">    </span><span class="c1">// 当前block的计算</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">BLOCK_SIZE</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">BLOCK_SIZE</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>硬件预取</strong></p>
+<p>现代CPU具有硬件预取器，可以根据程序的内存访问模式自动预测并预取数据。优化策略包括：</p>
+<ol class="arabic simple">
+<li><p>顺序访问：利用顺序预取器</p></li>
+<li><p>跨步访问：利用跨步预取器</p></li>
+<li><p>避免随机访问：随机访问模式会让预取器失效</p></li>
+</ol>
+</section>
+<section id="id20">
+<h3>5.5.4 数据复用<a class="headerlink" href="#id20" title="Link to this heading">#</a></h3>
+<p>数据复用是在不同计算之间重复使用同一份数据，减少内存访问。</p>
+<p><strong>寄存器复用</strong></p>
+<p>在计算过程中，将常用数据保持在寄存器中：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 寄存器复用示例</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">ai</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w">  </span><span class="c1">// 将A[i]保持在寄存器中</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">M</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">ai</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">M</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="p">];</span><span class="w">  </span><span class="c1">// 直接使用寄存器中的值</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>共享内存复用（GPU）</strong></p>
+<p>在GPU中，使用共享内存让同一线程块的线程共享数据：</p>
+<div class="highlight-cuda notranslate"><div class="highlight"><pre><span></span><span class="kr">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">conv_kernel</span><span class="p">(</span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">output</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">weight</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">__shared__</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">shared_input</span><span class="p">[</span><span class="n">TILE_SIZE</span><span class="p">][</span><span class="n">TILE_SIZE</span><span class="p">];</span>
+
+<span class="w">    </span><span class="c1">// 线程块内线程协作加载数据到共享内存</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">tx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">ty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// 协作加载</span>
+<span class="w">    </span><span class="n">shared_input</span><span class="p">[</span><span class="n">ty</span><span class="p">][</span><span class="n">tx</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">input</span><span class="p">[</span><span class="n">ty</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">tx</span><span class="p">];</span>
+<span class="w">    </span><span class="nf">__syncthreads</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// 使用共享内存中的数据</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">K</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">shared_input</span><span class="p">[</span><span class="n">ty</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">weight</span><span class="p">[</span><span class="n">k</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">K</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">tx</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">output</span><span class="p">[</span><span class="n">ty</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">tx</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id21">
+<h3>5.5.5 内存对齐与向量化<a class="headerlink" href="#id21" title="Link to this heading">#</a></h3>
+<p><strong>内存对齐</strong></p>
+<p>内存对齐可以确保数据从对齐的地址开始访问，CPU可以一次性读取完整的数据字：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 对齐的数据结构</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">alignas</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="n">Vector4</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span><span class="w">  </span><span class="c1">// 16字节对齐</span>
+<span class="p">};</span>
+
+<span class="c1">// 访问对齐的数据可以使用高效的SIMD指令</span>
+</pre></div>
+</div>
+<p><strong>向量化</strong></p>
+<p>向量化使用SIMD（Single Instruction Multiple Data）指令一次处理多个数据：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 标量版本</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">add_arrays</span><span class="p">(</span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// 向量化版本（使用AVX指令）</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">add_arrays_vectorized</span><span class="p">(</span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">__m256</span><span class="w"> </span><span class="n">va</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_mm256_loadu_ps</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="w">        </span><span class="n">__m256</span><span class="w"> </span><span class="n">vb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_mm256_loadu_ps</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="w">        </span><span class="n">__m256</span><span class="w"> </span><span class="n">vc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_mm256_add_ps</span><span class="p">(</span><span class="n">va</span><span class="p">,</span><span class="w"> </span><span class="n">vb</span><span class="p">);</span>
+<span class="w">        </span><span class="n">_mm256_storeu_ps</span><span class="p">(</span><span class="o">&amp;</span><span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="w"> </span><span class="n">vc</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="c1">// 处理剩余元素</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id22">
+<h2>5.6 Kernel优化实践<a class="headerlink" href="#id22" title="Link to this heading">#</a></h2>
+<section id="id23">
+<h3>5.6.1 卷积Kernel优化示例<a class="headerlink" href="#id23" title="Link to this heading">#</a></h3>
+<p>以下是一个针对CPU的卷积Kernel优化示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">conv_optimized</span><span class="p">(</span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">output</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">weight</span><span class="p">,</span>
+<span class="w">                    </span><span class="kt">int</span><span class="w"> </span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">H</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">W</span><span class="p">,</span>
+<span class="w">                    </span><span class="kt">int</span><span class="w"> </span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">out_C</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">out_H</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">out_W</span><span class="p">,</span>
+<span class="w">                    </span><span class="kt">int</span><span class="w"> </span><span class="n">stride</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">padding</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 预处理：计算指针偏移</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">H_pad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">H</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">padding</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">W_pad</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">W</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">padding</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cp">#pragma omp parallel for collapse(2)</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">oc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">oc</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">out_C</span><span class="p">;</span><span class="w"> </span><span class="n">oc</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">oh</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">oh</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">out_H</span><span class="p">;</span><span class="w"> </span><span class="n">oh</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">ow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">ow</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">out_W</span><span class="p">;</span><span class="w"> </span><span class="n">ow</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="kt">float</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+
+<span class="w">                    </span><span class="c1">// Kh循环展开</span>
+<span class="w">                    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">kh</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">kh</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">K</span><span class="p">;</span><span class="w"> </span><span class="n">kh</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="kt">int</span><span class="w"> </span><span class="n">ih</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">oh</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stride</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">kh</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">padding</span><span class="p">;</span>
+
+<span class="w">                        </span><span class="c1">// Kw循环展开</span>
+<span class="w">                        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">kw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">kw</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">K</span><span class="p">;</span><span class="w"> </span><span class="n">kw</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                            </span><span class="kt">int</span><span class="w"> </span><span class="n">iw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ow</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stride</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">kw</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">padding</span><span class="p">;</span>
+
+<span class="w">                            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ih</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ih</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">H_pad</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">iw</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">iw</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">W_pad</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                                </span><span class="c1">// 内层通道循环向量化</span>
+<span class="w">                                </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">input_ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">H_pad</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">W_pad</span>
+<span class="w">                                                 </span><span class="o">+</span><span class="w"> </span><span class="n">ih</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">W_pad</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">iw</span><span class="p">;</span>
+<span class="w">                                </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">weight_ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">oc</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">K</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">K</span>
+<span class="w">                                                 </span><span class="o">+</span><span class="w"> </span><span class="n">kh</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">K</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">kw</span><span class="p">;</span>
+
+<span class="w">                                </span><span class="c1">// SIMD向量化累加</span>
+<span class="w">                                </span><span class="n">__m256</span><span class="w"> </span><span class="n">vec_sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_mm256_setzero_ps</span><span class="p">();</span>
+<span class="w">                                </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">C</span><span class="p">;</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                                    </span><span class="n">__m256</span><span class="w"> </span><span class="n">vec_in</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_mm256_loadu_ps</span><span class="p">(</span><span class="n">input_ptr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+<span class="w">                                    </span><span class="n">__m256</span><span class="w"> </span><span class="n">vec_w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_mm256_loadu_ps</span><span class="p">(</span><span class="n">weight_ptr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">K</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">K</span><span class="p">);</span>
+<span class="w">                                    </span><span class="n">vec_sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_mm256_fmadd_ps</span><span class="p">(</span><span class="n">vec_in</span><span class="p">,</span><span class="w"> </span><span class="n">vec_w</span><span class="p">,</span><span class="w"> </span><span class="n">vec_sum</span><span class="p">);</span>
+<span class="w">                                </span><span class="p">}</span>
+<span class="w">                                </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">_mm256_reduce_add_ps</span><span class="p">(</span><span class="n">vec_sum</span><span class="p">);</span>
+<span class="w">                            </span><span class="p">}</span>
+<span class="w">                        </span><span class="p">}</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                    </span><span class="n">output</span><span class="p">[</span><span class="n">n</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">out_C</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">out_H</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">out_W</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">oc</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">out_H</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">out_W</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">oh</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">out_W</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ow</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id24">
+<h3>5.6.2 优化检查清单<a class="headerlink" href="#id24" title="Link to this heading">#</a></h3>
+<p>在实现和优化Kernel时，建议检查以下方面：</p>
+<p><strong>计算优化</strong></p>
+<ul class="simple">
+<li><p>[ ] 是否使用了算法优化（Im2Col、Winograd等）</p></li>
+<li><p>[ ] 是否消除了不必要的计算</p></li>
+<li><p>[ ] 是否利用了硬件的并行计算能力</p></li>
+<li><p>[ ] 是否启用了编译器优化（-O2/-O3）</p></li>
+</ul>
+<p><strong>内存访问优化</strong></p>
+<ul class="simple">
+<li><p>[ ] 数据是否对齐到缓存行边界</p></li>
+<li><p>[ ] 是否使用了分块/tiling提高缓存命中率</p></li>
+<li><p>[ ] 是否使用了预取隐藏内存延迟</p></li>
+<li><p>[ ] 是否最小化了内存带宽消耗</p></li>
+</ul>
+<p><strong>向量化优化</strong></p>
+<ul class="simple">
+<li><p>[ ] 是否使用了SIMD指令</p></li>
+<li><p>[ ] 循环是否对齐到向量化长度</p></li>
+<li><p>[ ] 是否避免了向量化不友好的代码模式</p></li>
+</ul>
+<p><strong>并行化优化</strong></p>
+<ul class="simple">
+<li><p>[ ] 是否利用了多核并行（OpenMP/MPI）</p></li>
+<li><p>[ ] 是否避免了伪共享（False Sharing）</p></li>
+<li><p>[ ] 线程数是否与物理核心数匹配</p></li>
+</ul>
+</section>
+<section id="id25">
+<h3>5.6.3 性能分析方法<a class="headerlink" href="#id25" title="Link to this heading">#</a></h3>
+<p><strong>Profiling工具</strong></p>
+<p>使用profiling工具分析Kernel性能：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Linux perf</span>
+perf<span class="w"> </span>stat<span class="w"> </span>-e<span class="w"> </span>cycles,instructions,cache-references,cache-misses<span class="w"> </span>./inference
+
+<span class="c1"># NVIDIA Nsight Compute</span>
+ncu<span class="w"> </span>--metrics<span class="w"> </span>sm__throughput.avg.pct_of_peak_sustained_elapsed<span class="w"> </span>./inference
+
+<span class="c1"># Intel VTune</span>
+vtune<span class="w"> </span>-collect<span class="w"> </span>gpu-hotspots<span class="w"> </span>./inference
+</pre></div>
+</div>
+<p><strong>roofline模型</strong></p>
+<p>Roofline模型用于分析Kernel的理论性能上限：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>        │
+FLOPS/s │     *
+        │    * │  内存_bound
+        │   *  │──────────
+        │  *   │
+        │ *    │
+        │*     │
+        │      │
+        └──────────────────
+              计算强度 (FLOPs/Byte)
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>如果Kernel在内存_bound区域，说明优化内存访问更重要</p></li>
+<li><p>如果Kernel在计算_bound区域，说明优化计算更重要</p></li>
+</ul>
+</section>
+</section>
+<section id="id26">
+<h2>本章小结<a class="headerlink" href="#id26" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Kernel概念</strong>：Kernel是算子在特定硬件上的具体实现，是推理引擎性能优化的最后一环。卷积Kernel占据了CNN推理的主要计算时间，其优化程度直接决定推理性能。</p></li>
+<li><p><strong>Im2Col算法</strong>：通过将卷积转换为矩阵乘法（GEMM）来加速计算。核心思想是将输入按卷积窗口展开成矩阵，然后利用成熟的BLAS库进行计算。空间组合优化可以进一步提高缓存效率。</p></li>
+<li><p><strong>Winograd算法</strong>：用更多的加法替代乘法来减少计算量。适用于<span class="math notranslate nohighlight">\(3\times3\)</span>等小卷积核，可以显著减少乘法次数。但需要额外的变换开销，且仅适用于固定尺寸的卷积。</p></li>
+<li><p><strong>QNNPACK算法</strong>：Facebook开源的移动端量化加速库，核心是间接卷积算法。通过建立间接缓冲区避免Im2Col的数据拷贝开销，优化到L1缓存级别，充分利用INT8 SIMD指令。</p></li>
+<li><p><strong>内存访问优化</strong>：核心是提高缓存命中率，包括数据分块（Blocking/Tiling）、数据预取（Prefetching）、数据复用和内存对齐与向量化等技术。</p></li>
+</ol>
+</section>
+<section id="id27">
+<h2>思考与练习<a class="headerlink" href="#id27" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>概念理解</strong>：解释Im2Col算法如何将卷积操作转换为矩阵乘法。这种转换带来的主要优势和潜在开销是什么？</p></li>
+<li><p><strong>原理分析</strong>：Winograd算法用加法替代乘法的核心思想是什么？为什么在硬件中这种替换可以提升性能？</p></li>
+<li><p><strong>对比分析</strong>：对比Im2Col和间接卷积算法（QNNPACK）的优缺点。在什么场景下你会选择使用哪种算法？</p></li>
+<li><p><strong>设计思考</strong>：假设你需要为一个新的AI加速器设计卷积Kernel，你会采用哪些优化策略？请从算法、内存访问、并行化三个层面进行分析。</p></li>
+<li><p><strong>实践应用</strong>：使用Roofline模型分析一个给定Kernel的性能瓶颈。如果一个Kernel的实测性能远低于Roofline上限，可能的原因有哪些？</p></li>
+<li><p><strong>扩展思考</strong>：随着Transformer架构的流行，传统的CNN优化技术（如Im2Col）是否仍然适用？请分析Transformer中矩阵乘法（MatMul）的优化策略。</p></li>
+</ol>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="04-Inference-Optimization.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">04 推理优化技术</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../Chap09/README.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Chap09 AI框架核心</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">5.1 Kernel优化概述</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">5.1.1 什么是Kernel</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">5.1.2 Kernel优化的重要性</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">5.1.3 Kernel优化策略</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#im2col">5.2 Im2Col算法详解</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">5.2.1 Im2Col算法原理</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">5.2.2 Im2Col实现过程</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">5.2.3 Im2Col的优化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">5.2.4 Im2Col的代码实现</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#winograd">5.3 Winograd算法详解</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">5.3.1 Winograd算法原理</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">5.3.2 二维Winograd</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">5.3.3 Winograd的变换矩阵</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">5.3.4 Winograd的优缺点</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#qnnpack">5.4 QNNPACK算法详解</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">5.4.1 QNNPACK概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">5.4.2 间接卷积算法原理</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">5.4.3 间接缓冲区</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">5.4.4 QNNPACK的优化技术</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qnnpack-vs-im2col">5.4.5 QNNPACK vs Im2Col</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">5.5 内存访问优化</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">5.5.1 内存层级与访问成本</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#blocking-tiling">5.5.2 数据分块（Blocking/Tiling）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prefetching">5.5.3 数据预取（Prefetching）</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">5.5.4 数据复用</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">5.5.5 内存对齐与向量化</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">5.6 Kernel优化实践</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">5.6.1 卷积Kernel优化示例</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">5.6.2 优化检查清单</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">5.6.3 性能分析方法</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">思考与练习</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Author name not set
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Apr 29, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>本教材仅供内部培训使用</p>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

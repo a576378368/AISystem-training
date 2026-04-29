@@ -1,0 +1,1731 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>第一章 进制与编码 &#8212; AI系统工程师培训教程</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Part1/Chap01/01-Binary';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="第二章 CPU与内存" href="02-CPU-Memory.html" />
+    <link rel="prev" title="Chap01 计算机基础" href="README.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Apr 29, 2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="AI系统工程师培训教程 - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="AI系统工程师培训教程 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    AI系统工程师培训教程
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">第一阶段：AI基础入门</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Chap01 计算机基础</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">第一章 进制与编码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-CPU-Memory.html">第二章 CPU与内存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-Program-Running.html">第三章 程序运行原理</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap02/README.html">Chap02 Python编程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap02/01-Python-Basic.html">Python基础语法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap02/02-NumPy.html">NumPy基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap02/03-PyTorch.html">PyTorch基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap03/README.html">Chap03 数学基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap03/01-Linear-Algebra.html">线性代数基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap03/02-Probability.html">概率与统计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap03/03-Optimization.html">优化基础</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二阶段：AI系统核心</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap04/README.html">Chap04 AI系统概述</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap04/01-Introduction.html">AI系统基本概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap04/02-Architecture.html">AI系统全栈架构</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap05/README.html">Chap05 神经网络基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap05/01-Neuron-Model.html">神经元与网络模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap05/02-CNN.html">卷积神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap05/03-RNN.html">循环神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap05/04-Transformer.html">Transformer与注意力机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap05/05-Quantization.html">模型量化基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap06/README.html">Chap06 AI芯片体系架构</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/01-Chip-Base.html">AI芯片基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/02-GPU-Base.html">GPU原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/03-NVIDIA.html">NVIDIA GPU架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/04-Abroad-Chips.html">国外AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/05-Domestic-Chips.html">国内AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap06/06-Programming-Model.html">芯片编程模式</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap07/README.html">Chap07 AI编译器原理</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap07/01-Traditional-Compiler.html">第一章 传统编译器基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap07/02-AI-Compiler.html">第二章 AI编译器架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap07/03-Frontend-Optimization.html">第三章 前端优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap07/04-Backend-Optimization.html">第四章 后端优化</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap08/README.html">Chap08 推理系统与引擎</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap08/01-Inference-System.html">01 推理系统概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap08/02-Model-Compression.html">02 模型压缩</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap08/03-Model-Converter.html">03 模型转换与优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap08/04-Inference-Optimization.html">04 推理优化技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap08/05-Kernel-Optimization.html">05 Kernel优化技术</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap09/README.html">Chap09 AI框架核心</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap09/01-Auto-Differentiation.html">自动微分</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap09/02-Computational-Graph.html">计算图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap09/03-Distributed-Training.html">分布式训练</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part2/Chap10/README.html">Chap10 大模型与集群</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap10/01-LLM-Architecture.html">大模型架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap10/02-AI-Cluster.html">AI集群</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part2/Chap10/03-Parallel-Strategy.html">并行策略</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三阶段：附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixA/README.html">附录A：AI系统术语表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixB/README.html">附录B：参考文献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixC/README.html">AppendixC 实践项目</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/your-org/AI-System-Training/blob/main/Part1/Chap01/01-Binary.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button"
+   title="Show source"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/Part1/Chap01/01-Binary.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>第一章 进制与编码</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.1 进制的概念</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1.1.1 什么是进制</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">1.1.2 进制的表示方法</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">1.1.3 进制的权值</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">1.1.4 二进制的特点</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">本节小结</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">1.2 进制转换</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">1.2.1 十进制转换为其他进制</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">1.2.2 其他进制转换为十进制</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">1.2.3 二进制与八进制、十六进制的转换</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">1.2.4 常见进制对照表</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">1.2.5 小数部分的转换</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">本节小结</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">1.3 二进制运算</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">1.3.1 二进制加法</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">1.3.2 二进制减法</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">1.3.3 二进制乘法</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">1.3.4 二进制除法</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">1.3.5 位运算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">1.3.6 移位运算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">本节小结</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">1.4 数据编码：整数表示</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">1.4.1 为什么需要原码、反码、补码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">1.4.2 原码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">1.4.3 反码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">1.4.4 补码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">1.4.5 补码的直观理解</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">1.4.6 整数溢出</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">本节小结</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ieee-754">1.5 浮点数编码：IEEE 754</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">1.5.1 浮点数的由来</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id33">1.5.2 IEEE 754标准概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id34">1.5.3 浮点数的结构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">1.5.4 规格化浮点数</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id36">1.5.5 特殊值</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id37">1.5.6 浮点数的取值范围和精度</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id38">1.5.7 浮点数的误差</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id39">本节小结</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id40">1.6 字符编码</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id41">1.6.1 为什么需要字符编码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ascii">1.6.2 ASCII码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id42">1.6.3 扩展编码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unicodeutf-8">1.6.4 Unicode与UTF-8</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id43">1.6.5 编码选择与转换</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id44">1.6.6 字符串与编码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id45">本节小结</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id46">1.7 布尔代数与逻辑门</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id47">1.7.1 布尔代数基础</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id48">1.7.2 基本逻辑运算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id49">1.7.3 复合逻辑运算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id50">1.7.4 布尔代数定律</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id51">1.7.5 逻辑门基础</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id52">1.7.6 组合逻辑电路</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id53">1.7.7 时序逻辑电路</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id54">本节小结</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id55">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id56">思考与练习</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>第一章 进制与编码<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="id2">
+<h2>学习目标<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>理解进制（Binary, Octal, Hexadecimal）的基本概念，掌握不同进制之间的转换方法</p></li>
+<li><p>掌握二进制算术运算和逻辑运算的基本规则</p></li>
+<li><p>理解计算机中整数的表示方式：原码、反码和补码</p></li>
+<li><p>理解浮点数的IEEE 754编码标准</p></li>
+<li><p>了解字符编码的发展历程，掌握ASCII码和UTF-8编码的基本原理</p></li>
+<li><p>理解布尔代数的基本运算和门电路基础</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id3">
+<h2>1.1 进制的概念<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<section id="id4">
+<h3>1.1.1 什么是进制<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>**进制（Numeral System）**是一种记数的方法，也称为进位计数法。在日常生活中，我们最熟悉的是十进制（Decimal），它使用0到9这十个数字来表示数值。为什么是十进制呢？有一种说法是人类天生有十根手指，当古人开始数数时，很自然地会用手指来辅助计数，十根手指用完后就需要”进位”，于是就产生了十进制。</p>
+<p>然而，在计算机科学中，<strong>二进制（Binary）<strong>是最重要的进制。计算机是由复杂的电子电路构成的，而电路只有两种基本状态：<strong>通电</strong>和</strong>断电</strong>。我们用”1”表示通电状态，用”0”表示断电状态，这就是计算机使用二进制的原因。每一个二进制位（bit）就是一次电路状态的选择。</p>
+<p>除了二进制之外，**八进制（Octal）<strong>和</strong>十六进制（Hexadecimal）**也是计算机领域常用的进制。八进制使用0到7这八个数字，十六进制则使用0到9以及字母A到F（代表10到15）共16个符号。选择十六进制的原因是它与二进制之间的转换非常方便——每4个二进制位恰好对应1个十六进制位。</p>
+</section>
+<section id="id5">
+<h3>1.1.2 进制的表示方法<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>当我们写一个数字时，不同进制会用不同的下标来区分。例如：</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(1011_2\)</span> 表示二进制数 1011</p></li>
+<li><p><span class="math notranslate nohighlight">\(273_8\)</span> 表示八进制数 273</p></li>
+<li><p><span class="math notranslate nohighlight">\(159_{10}\)</span> 或简单的 159 表示十进制数 159</p></li>
+<li><p><span class="math notranslate nohighlight">\(3FA_{16}\)</span> 表示十六进制数 3FA</p></li>
+</ul>
+<p>在计算机编程中，为了明确区分不同的进制，通常会有特殊的表示方法。以C语言为例：</p>
+<ul class="simple">
+<li><p>二进制数通常以 <code class="docutils literal notranslate"><span class="pre">0b</span></code> 或 <code class="docutils literal notranslate"><span class="pre">0B</span></code> 开头，例如 <code class="docutils literal notranslate"><span class="pre">0b1011</span></code></p></li>
+<li><p>八进制数以 <code class="docutils literal notranslate"><span class="pre">0</span></code> 开头，例如 <code class="docutils literal notranslate"><span class="pre">0273</span></code></p></li>
+<li><p>十六进制数以 <code class="docutils literal notranslate"><span class="pre">0x</span></code> 或 <code class="docutils literal notranslate"><span class="pre">0X</span></code> 开头，例如 <code class="docutils literal notranslate"><span class="pre">0x3FA</span></code></p></li>
+</ul>
+</section>
+<section id="id6">
+<h3>1.1.3 进制的权值<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>理解进制的关键是**权值（Weight）**的概念。在十进制中，每个位上的数字都有不同的权值，从右到左依次是个位、十位、百位、千位……也就是说，每向左移动一位，权值就扩大10倍。个位的权值是 <span class="math notranslate nohighlight">\(10^0 = 1\)</span>，十位的权值是 <span class="math notranslate nohighlight">\(10^1 = 10\)</span>，百位的权值是 <span class="math notranslate nohighlight">\(10^2 = 100\)</span>，以此类推。</p>
+<p>类似地，在二进制中，每一位的权值是2的幂次方，从右到左依次是 <span class="math notranslate nohighlight">\(2^0, 2^1, 2^2, 2^3, \ldots\)</span>。因此，二进制数 <span class="math notranslate nohighlight">\(1011_2\)</span> 转换为十进制就是：</p>
+<div class="math notranslate nohighlight">
+\[1 \times 2^3 + 0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 = 8 + 0 + 2 + 1 = 11\]</div>
+<p>在八进制中，每一位的权值是8的幂次方。所以八进制数 <span class="math notranslate nohighlight">\(273_8\)</span> 转换为十进制是：</p>
+<div class="math notranslate nohighlight">
+\[2 \times 8^2 + 7 \times 8^1 + 3 \times 8^0 = 2 \times 64 + 7 \times 8 + 3 \times 1 = 128 + 56 + 3 = 187\]</div>
+<p>十六进制的权值是16的幂次方。十六进制数 <span class="math notranslate nohighlight">\(3FA_{16}\)</span> 转换为十进制是：</p>
+<div class="math notranslate nohighlight">
+\[3 \times 16^2 + 15 \times 16^1 + 10 \times 16^0 = 3 \times 256 + 15 \times 16 + 10 \times 1 = 768 + 240 + 10 = 1018\]</div>
+</section>
+<section id="id7">
+<h3>1.1.4 二进制的特点<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>二进制在计算机中的广泛应用不是偶然的，而是由其物理特性决定的：</p>
+<p><strong>简单性</strong>：二进制只需要表示两种状态，这使得电路设计大大简化。在实际电路中，”通电”和”断电”很容易实现和区分，而要电路表示十种状态就非常困难了。</p>
+<p><strong>可靠性</strong>：两种状态之间的区分非常清晰，不容易受到干扰。即使有轻微的电压波动，也能可靠地区分”高电平”和”低电平”。</p>
+<p><strong>运算简单</strong>：二进制的运算规则比十进制简单得多。加法规则只有四条：0+0=0，0+1=1，1+0=1，1+1=10（进位）。乘法规则也只有四条：0×0=0，0×1=0，1×0=0，1×1=1。</p>
+<p><strong>逻辑基础</strong>：二进制与布尔代数（Boolean Algebra）完美契合，可以方便地实现各种逻辑运算，为计算机的逻辑判断能力奠定了基础。</p>
+</section>
+<section id="id8">
+<h3>本节小结<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>进制是进位计数法，二进制是计算机的基础，因为它只有两种状态</p></li>
+<li><p>八进制和十六进制在计算机中也常用，它们与二进制转换方便</p></li>
+<li><p>每一位的权值等于基数的幂次方，从右到左依次增大</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id9">
+<h2>1.2 进制转换<a class="headerlink" href="#id9" title="Link to this heading">#</a></h2>
+<section id="id10">
+<h3>1.2.1 十进制转换为其他进制<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>将十进制数转换为其他进制，<strong>除基取余法</strong>是最常用的方法。具体步骤是：用目标进制的基数连续去除十进制数，每次取余数，直到商为0，然后将所有余数逆序排列。</p>
+<p><strong>十进制转二进制</strong>：将十进制数除以2，记录余数，直到商为0。</p>
+<p>例如，将十进制数13转换为二进制：</p>
+<div class="math notranslate nohighlight">
+\[13 \div 2 = 6 \cdots\cdots 1 \quad \text{（余数1）}\]</div>
+<div class="math notranslate nohighlight">
+\[6 \div 2 = 3 \cdots\cdots 0 \quad \text{（余数0）}\]</div>
+<div class="math notranslate nohighlight">
+\[3 \div 2 = 1 \cdots\cdots 1 \quad \text{（余数1）}\]</div>
+<div class="math notranslate nohighlight">
+\[1 \div 2 = 0 \cdots\cdots 1 \quad \text{（余数1）}\]</div>
+<p>将余数逆序排列，得到 <span class="math notranslate nohighlight">\(1101_2\)</span>。验证：<span class="math notranslate nohighlight">\(1 \times 2^3 + 1 \times 2^2 + 0 \times 2^1 + 1 \times 2^0 = 8 + 4 + 0 + 1 = 13\)</span>，正确。</p>
+<p><strong>十进制转十六进制</strong>：将十进制数除以16，记录余数。</p>
+<p>例如，将十进制数423转换为十六进制：</p>
+<div class="math notranslate nohighlight">
+\[423 \div 16 = 26 \cdots\cdots 7 \quad \text{（余数7）}\]</div>
+<div class="math notranslate nohighlight">
+\[26 \div 16 = 1 \cdots\cdots 10 \quad \text{（余数A）}\]</div>
+<div class="math notranslate nohighlight">
+\[1 \div 16 = 0 \cdots\cdots 1 \quad \text{（余数1）}\]</div>
+<p>逆序排列得到 <span class="math notranslate nohighlight">\(1A7_{16}\)</span>。</p>
+</section>
+<section id="id11">
+<h3>1.2.2 其他进制转换为十进制<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p>将其他进制转换为十进制的方法是<strong>按权展开求和法</strong>。将每一位数字乘以该位的权值，然后求和。</p>
+<p><strong>二进制转十进制</strong>：将二进制数的每一位乘以对应的2的幂次方，然后求和。</p>
+<p>例如，<span class="math notranslate nohighlight">\(101101_2\)</span> 转换为十进制：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>位位置</p></th>
+<th class="head"><p>5</p></th>
+<th class="head"><p>4</p></th>
+<th class="head"><p>3</p></th>
+<th class="head"><p>2</p></th>
+<th class="head"><p>1</p></th>
+<th class="head"><p>0</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>位值</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>权值</p></td>
+<td><p><span class="math notranslate nohighlight">\(2^5\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(2^4\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(2^3\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(2^2\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(2^1\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(2^0\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>贡献</p></td>
+<td><p>32</p></td>
+<td><p>0</p></td>
+<td><p>8</p></td>
+<td><p>4</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>总和：<span class="math notranslate nohighlight">\(32 + 0 + 8 + 4 + 0 + 1 = 45\)</span></p>
+<p><strong>十六进制转十进制</strong>：将十六进制数的每一位乘以16的幂次方。</p>
+<p>例如，<span class="math notranslate nohighlight">\(2AF_{16}\)</span> 转换为十进制：</p>
+<div class="math notranslate nohighlight">
+\[2 \times 16^2 + 10 \times 16^1 + 15 \times 16^0 = 2 \times 256 + 10 \times 16 + 15 \times 1 = 512 + 160 + 15 = 687\]</div>
+</section>
+<section id="id12">
+<h3>1.2.3 二进制与八进制、十六进制的转换<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>由于8和16都是2的幂次方，二进制与八进制、十六进制之间的转换非常容易。</p>
+<p><strong>二进制转八进制</strong>：将二进制数从右到左每3位分成一组（不足三位时在左边补0），然后将每组转换为对应的八进制数。</p>
+<p>例如，<span class="math notranslate nohighlight">\(1101011_2\)</span> 转换为八进制：</p>
+<p>分组：110 | 101 | 1（补0后为001）</p>
+<ul class="simple">
+<li><p>110 → 6</p></li>
+<li><p>101 → 5</p></li>
+<li><p>001 → 1</p></li>
+</ul>
+<p>结果：<span class="math notranslate nohighlight">\(155_8\)</span></p>
+<p><strong>八进制转二进制</strong>：将每位八进制数转换为3位二进制数。</p>
+<p>例如，<span class="math notranslate nohighlight">\(72_8\)</span> 转换为二进制：</p>
+<ul class="simple">
+<li><p>7 → 111</p></li>
+<li><p>2 → 010</p></li>
+</ul>
+<p>结果：<span class="math notranslate nohighlight">\(111010_2\)</span></p>
+<p><strong>二进制转十六进制</strong>：将二进制数从右到左每4位分成一组（不足四位时在左边补0），然后将每组转换为对应的十六进制数。</p>
+<p>例如，<span class="math notranslate nohighlight">\(110101101_2\)</span> 转换为十六进制：</p>
+<p>分组：1 | 1010 | 1101（注意第一组补0变成0001）</p>
+<ul class="simple">
+<li><p>0001 → 1</p></li>
+<li><p>1010 → A</p></li>
+<li><p>1101 → D</p></li>
+</ul>
+<p>结果：<span class="math notranslate nohighlight">\(1AD_{16}\)</span></p>
+<p><strong>十六进制转二进制</strong>：将每位十六进制数转换为4位二进制数。</p>
+<p>例如，<span class="math notranslate nohighlight">\(3B_{16}\)</span> 转换为二进制：</p>
+<ul class="simple">
+<li><p>3 → 0011</p></li>
+<li><p>B(11) → 1011</p></li>
+</ul>
+<p>结果：<span class="math notranslate nohighlight">\(00111011_2\)</span></p>
+</section>
+<section id="id13">
+<h3>1.2.4 常见进制对照表<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p>下面是一些常见的十进制、二进制、八进制、十六进制数值的对照表：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>十进制</p></th>
+<th class="head"><p>二进制</p></th>
+<th class="head"><p>八进制</p></th>
+<th class="head"><p>十六进制</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>10</p></td>
+<td><p>2</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>11</p></td>
+<td><p>3</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>111</p></td>
+<td><p>7</p></td>
+<td><p>7</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>1000</p></td>
+<td><p>10</p></td>
+<td><p>8</p></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p>1001</p></td>
+<td><p>11</p></td>
+<td><p>9</p></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p>1010</p></td>
+<td><p>12</p></td>
+<td><p>A</p></td>
+</tr>
+<tr class="row-even"><td><p>15</p></td>
+<td><p>1111</p></td>
+<td><p>17</p></td>
+<td><p>F</p></td>
+</tr>
+<tr class="row-odd"><td><p>16</p></td>
+<td><p>10000</p></td>
+<td><p>20</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-even"><td><p>31</p></td>
+<td><p>11111</p></td>
+<td><p>37</p></td>
+<td><p>1F</p></td>
+</tr>
+<tr class="row-odd"><td><p>32</p></td>
+<td><p>100000</p></td>
+<td><p>40</p></td>
+<td><p>20</p></td>
+</tr>
+<tr class="row-even"><td><p>63</p></td>
+<td><p>111111</p></td>
+<td><p>77</p></td>
+<td><p>3F</p></td>
+</tr>
+<tr class="row-odd"><td><p>64</p></td>
+<td><p>1000000</p></td>
+<td><p>100</p></td>
+<td><p>40</p></td>
+</tr>
+<tr class="row-even"><td><p>127</p></td>
+<td><p>1111111</p></td>
+<td><p>177</p></td>
+<td><p>7F</p></td>
+</tr>
+<tr class="row-odd"><td><p>128</p></td>
+<td><p>10000000</p></td>
+<td><p>200</p></td>
+<td><p>80</p></td>
+</tr>
+<tr class="row-even"><td><p>255</p></td>
+<td><p>11111111</p></td>
+<td><p>377</p></td>
+<td><p>FF</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id14">
+<h3>1.2.5 小数部分的转换<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p>带小数的进制转换稍微复杂一些。对于小数部分，转换方法是将小数部分连续乘以目标基数，每次取整数部分作为新的小数部分，直到小数部分为0（或达到精度要求）。</p>
+<p><strong>十进制小数转二进制</strong>：将小数部分乘以2，取整数部分，然后继续处理小数部分。</p>
+<p>例如，将十进制小数 <span class="math notranslate nohighlight">\(0.625\)</span> 转换为二进制：</p>
+<div class="math notranslate nohighlight">
+\[0.625 \times 2 = 1.25 \quad \text{（整数部分1）}\]</div>
+<div class="math notranslate nohighlight">
+\[0.25 \times 2 = 0.5 \quad \text{（整数部分0）}\]</div>
+<div class="math notranslate nohighlight">
+\[0.5 \times 2 = 1.0 \quad \text{（整数部分1）}\]</div>
+<p>得到 <span class="math notranslate nohighlight">\(0.101_2\)</span>。</p>
+<p>如果十进制小数无法用二进制精确表示（如0.1），则需要按精度要求截断。例如，<span class="math notranslate nohighlight">\(0.1\)</span> 转换为二进制是无限循环的：<span class="math notranslate nohighlight">\(0.0001100110011..._2\)</span></p>
+</section>
+<section id="id15">
+<h3>本节小结<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>十进制转其他进制使用”除基取余法”，商为0时逆序取余数</p></li>
+<li><p>其他进制转十进制使用”按权展开求和法”</p></li>
+<li><p>二进制与八进制转换：每3位二进制对应1位八进制</p></li>
+<li><p>二进制与十六进制转换：每4位二进制对应1位十六进制</p></li>
+<li><p>小数部分转换使用”乘基取整法”</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id16">
+<h2>1.3 二进制运算<a class="headerlink" href="#id16" title="Link to this heading">#</a></h2>
+<section id="id17">
+<h3>1.3.1 二进制加法<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
+<p>二进制加法是计算机最基本的运算之一，它遵循以下四条规则：</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(0 + 0 = 0\)</span>，进位为0</p></li>
+<li><p><span class="math notranslate nohighlight">\(0 + 1 = 1\)</span>，进位为0</p></li>
+<li><p><span class="math notranslate nohighlight">\(1 + 0 = 1\)</span>，进位为0</p></li>
+<li><p><span class="math notranslate nohighlight">\(1 + 1 = 10\)</span>，进位为1</p></li>
+</ul>
+<p>这与十进制加法类似，只不过当结果大于等于2时就要进位。在十进制中，<span class="math notranslate nohighlight">\(9 + 9 = 18\)</span> 产生进位1；在二进制中，<span class="math notranslate nohighlight">\(1 + 1 = 10\)</span> 也产生进位1。</p>
+<p><strong>竖式计算示例</strong>：计算 <span class="math notranslate nohighlight">\(1101_2 + 1011_2\)</span></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mi">1101</span>
+  <span class="o">+</span> <span class="mi">1011</span>
+  <span class="o">------</span>
+   <span class="mi">11000</span>
+</pre></div>
+</div>
+<p>计算过程（从右到左）：</p>
+<ul class="simple">
+<li><p>第0位：<span class="math notranslate nohighlight">\(1 + 1 = 10\)</span>，写0进1</p></li>
+<li><p>第1位：<span class="math notranslate nohighlight">\(0 + 1 + 1\)</span>(进位) <span class="math notranslate nohighlight">\(= 10\)</span>，写0进1</p></li>
+<li><p>第2位：<span class="math notranslate nohighlight">\(1 + 0 + 1\)</span>(进位) <span class="math notranslate nohighlight">\(= 10\)</span>，写0进1</p></li>
+<li><p>第3位：<span class="math notranslate nohighlight">\(1 + 1 + 1\)</span>(进位) <span class="math notranslate nohighlight">\(= 11\)</span>，写1进1</p></li>
+<li><p>第4位：进位1，写1</p></li>
+</ul>
+<p>结果：<span class="math notranslate nohighlight">\(11000_2\)</span>（等于十进制24）</p>
+</section>
+<section id="id18">
+<h3>1.3.2 二进制减法<a class="headerlink" href="#id18" title="Link to this heading">#</a></h3>
+<p>二进制减法可以看作是加法的逆运算，但计算机通常不直接做减法，而是通过<strong>补码</strong>运算来实现。为了完整性，我们先介绍直接的减法运算规则：</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(0 - 0 = 0\)</span>，借位为0</p></li>
+<li><p><span class="math notranslate nohighlight">\(1 - 0 = 1\)</span>，借位为0</p></li>
+<li><p><span class="math notranslate nohighlight">\(1 - 1 = 0\)</span>，借位为0</p></li>
+<li><p><span class="math notranslate nohighlight">\(0 - 1 = 1\)</span>，借位为1（在二进制中，0减1需要从高位借1）</p></li>
+</ul>
+<p><strong>借位示例</strong>：计算 <span class="math notranslate nohighlight">\(1100_2 - 0101_2\)</span></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="mi">1100</span>
+  <span class="o">-</span> <span class="mi">0101</span>
+  <span class="o">------</span>
+     <span class="mi">111</span>
+</pre></div>
+</div>
+<p>计算过程：</p>
+<ul class="simple">
+<li><p>第0位：<span class="math notranslate nohighlight">\(0 - 1\)</span>，不够，向高位借1，<span class="math notranslate nohighlight">\(2 + 0 - 1 = 1\)</span>，借位1</p></li>
+<li><p>第1位：原本是0，减去借位1后不够，向高位借1，<span class="math notranslate nohighlight">\(2 + 0 - 1 = 1\)</span>，借位1</p></li>
+<li><p>第2位：原本是1，减去借位1后是0</p></li>
+<li><p>第3位：1减去0还是1</p></li>
+</ul>
+<p>结果：<span class="math notranslate nohighlight">\(0111_2\)</span>（等于十进制7）</p>
+</section>
+<section id="id19">
+<h3>1.3.3 二进制乘法<a class="headerlink" href="#id19" title="Link to this heading">#</a></h3>
+<p>二进制乘法的规则也很简单：</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(0 \times 0 = 0\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(0 \times 1 = 0\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(1 \times 0 = 0\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(1 \times 1 = 1\)</span></p></li>
+</ul>
+<p>乘法过程实际上是被乘数与乘数各位的<strong>与运算</strong>，然后错位相加。</p>
+<p><strong>竖式计算示例</strong>：计算 <span class="math notranslate nohighlight">\(1101_2 \times 1011_2\)</span></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>        1101
+      × 1011
+      ------
+        1101    （1101 × 1）
+       1101     （1101 × 1，但左移一位）
+      0000      （1101 × 0）
+     1101       （1101 × 1，但左移三位）
+    --------
+     10001111
+</pre></div>
+</div>
+<p>验证：<span class="math notranslate nohighlight">\(1101_2 = 13_{10}\)</span>，<span class="math notranslate nohighlight">\(1011_2 = 11_{10}\)</span>，<span class="math notranslate nohighlight">\(13 \times 11 = 143_{10}\)</span>，<span class="math notranslate nohighlight">\(10001111_2 = 143_{10}\)</span>，正确。</p>
+</section>
+<section id="id20">
+<h3>1.3.4 二进制除法<a class="headerlink" href="#id20" title="Link to this heading">#</a></h3>
+<p>二进制除法与十进制除法类似，是乘法的逆运算。我们通过一个例子来说明：</p>
+<p>计算 <span class="math notranslate nohighlight">\(10011_2 \div 11_2\)</span>（即 <span class="math notranslate nohighlight">\(19_{10} \div 3_{10}\)</span>）</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>      <span class="mi">111</span>
+    <span class="o">------</span>
+<span class="mi">11</span> <span class="p">)</span> <span class="mi">10011</span>
+      <span class="mi">11</span>
+      <span class="o">--</span>
+       <span class="mi">101</span>
+        <span class="mi">11</span>
+        <span class="o">--</span>
+         <span class="mi">11</span>
+         <span class="mi">11</span>
+         <span class="o">--</span>
+          <span class="mi">0</span>
+</pre></div>
+</div>
+<p>结果：商为 <span class="math notranslate nohighlight">\(111_2\)</span>（7），余数为0。</p>
+</section>
+<section id="id21">
+<h3>1.3.5 位运算<a class="headerlink" href="#id21" title="Link to this heading">#</a></h3>
+<p>位运算（Bitwise Operations）是对二进制数的每一位分别进行操作的运算，这是计算机中非常重要的一类运算。</p>
+<p><strong>按位与（AND，&amp;）</strong>：对应位都为1时结果为1，否则为0。</p>
+<p>例如，<span class="math notranslate nohighlight">\(1101_2 \&amp; 1011_2\)</span>：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1101</span>
+<span class="o">&amp;</span> <span class="mi">1011</span>
+<span class="o">------</span>
+<span class="mi">1001</span>
+</pre></div>
+</div>
+<p><strong>按位或（OR，|）</strong>：对应位只要有一个为1结果就为1，否则为0。</p>
+<p>例如，<span class="math notranslate nohighlight">\(1101_2 | 1011_2\)</span>：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1101</span>
+<span class="o">|</span> <span class="mi">1011</span>
+<span class="o">------</span>
+<span class="mi">1111</span>
+</pre></div>
+</div>
+<p><strong>按位异或（XOR，^）</strong>：对应位相异时结果为1，相同则为0。</p>
+<p>例如，<span class="math notranslate nohighlight">\(1101_2 ^ 1011_2\)</span>：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1101</span>
+<span class="o">^</span> <span class="mi">1011</span>
+<span class="o">------</span>
+<span class="mi">0110</span>
+</pre></div>
+</div>
+<p><strong>按位取反（NOT，~）</strong>：将每一位由0变1，由1变0。</p>
+<p>例如，<span class="math notranslate nohighlight">\(\sim 1101_2 = 0010_2\)</span></p>
+</section>
+<section id="id22">
+<h3>1.3.6 移位运算<a class="headerlink" href="#id22" title="Link to this heading">#</a></h3>
+<p>移位运算包括左移和右移，是二进制运算中非常高效的操作。</p>
+<p><strong>左移（&lt;&lt;）</strong>：将二进制数的所有位向左移动指定位数，低位补0，高位丢弃。</p>
+<p>例如，<span class="math notranslate nohighlight">\(0001_2 &lt;&lt; 2 = 0100_2\)</span>（即 <span class="math notranslate nohighlight">\(1 \times 4 = 4\)</span>）。左移n位相当于乘以 <span class="math notranslate nohighlight">\(2^n\)</span>。</p>
+<p><strong>右移（&gt;&gt;）</strong>：将二进制数的所有位向右移动指定位数，高位补0（或符号位），低位丢弃。</p>
+<p>例如，<span class="math notranslate nohighlight">\(0100_2 &gt;&gt; 2 = 0001_2\)</span>（即 <span class="math notranslate nohighlight">\(4 \div 4 = 1\)</span>）。右移n位相当于除以 <span class="math notranslate nohighlight">\(2^n\)</span>（向下取整）。</p>
+</section>
+<section id="id23">
+<h3>本节小结<a class="headerlink" href="#id23" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>二进制加法遵循”逢二进一”的规则，减法遵循”借一当二”</p></li>
+<li><p>二进制乘法的本质是被乘数与乘数各位的与运算，然后错位相加</p></li>
+<li><p>位运算包括与（&amp;）、或（|）、异或（^）、取反（~）</p></li>
+<li><p>左移n位相当于乘以 <span class="math notranslate nohighlight">\(2^n\)</span>，右移n位相当于除以 <span class="math notranslate nohighlight">\(2^n\)</span></p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id24">
+<h2>1.4 数据编码：整数表示<a class="headerlink" href="#id24" title="Link to this heading">#</a></h2>
+<section id="id25">
+<h3>1.4.1 为什么需要原码、反码、补码<a class="headerlink" href="#id25" title="Link to this heading">#</a></h3>
+<p>在人类的日常计数中，负数通常用”-“符号来表示，比如”-5”。但在计算机中，由于二进制只能表示0和1，我们需要用特殊的方式来表示正数和负数。</p>
+<p>**原码（Sign-Magnitude）**是最简单的表示方法：用一个专门的位（通常是最高位）来表示符号，0表示正数，1表示负数，其余位表示数值的绝对值。例如，8位原码中，+5表示为 00000101，-5表示为 10000101。</p>
+<p>原码的优点是直观，人类容易理解。但它有一个致命的问题：<strong>0的表示不唯一</strong>。在8位原码中，00000000 和 10000000 都表示0，分别代表 +0 和 -0。这种不唯一性会给运算带来麻烦。</p>
+<p>更重要的是，原码的加减运算非常复杂。如果用原码计算 1 + (-1)，需要判断符号、比较绝对值、决定是做加法还是减法……这与计算机”简单高效”的设计理念相悖。</p>
+<p>**补码（Two’s Complement）**的引入完美解决了这些问题。在补码系统中，0只有一种表示，符号位可以直接参与运算，而且减法可以用加法来实现。因此，现代计算机普遍采用补码来表示有符号整数。</p>
+</section>
+<section id="id26">
+<h3>1.4.2 原码<a class="headerlink" href="#id26" title="Link to this heading">#</a></h3>
+<p>原码的定义很直接：最高位为符号位，0表示正，1表示负，其余位表示数值的绝对值。</p>
+<p>以8位二进制为例：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>数值</p></th>
+<th class="head"><p>原码表示</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>+0</p></td>
+<td><p>00000000</p></td>
+</tr>
+<tr class="row-odd"><td><p>-0</p></td>
+<td><p>10000000</p></td>
+</tr>
+<tr class="row-even"><td><p>+1</p></td>
+<td><p>00000001</p></td>
+</tr>
+<tr class="row-odd"><td><p>-1</p></td>
+<td><p>10000001</p></td>
+</tr>
+<tr class="row-even"><td><p>+127</p></td>
+<td><p>01111111</p></td>
+</tr>
+<tr class="row-odd"><td><p>-127</p></td>
+<td><p>11111111</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>原码的优点：</p>
+<ul class="simple">
+<li><p>直观，人类容易理解和阅读</p></li>
+<li><p>符合我们对正负数的直觉认识</p></li>
+</ul>
+<p>原码的缺点：</p>
+<ul class="simple">
+<li><p>0有两种表示，造成资源浪费和逻辑混乱</p></li>
+<li><p>加减运算复杂，需要分别处理符号和绝对值</p></li>
+<li><p>电路实现困难，需要比较绝对值大小来决定是做加法还是减法</p></li>
+</ul>
+</section>
+<section id="id27">
+<h3>1.4.3 反码<a class="headerlink" href="#id27" title="Link to this heading">#</a></h3>
+<p>**反码（One’s Complement）**是对原码的一种改进。对于正数，反码与原码相同；对于负数，反码是符号位保持不变，数值位按位取反。</p>
+<p>例如（8位）：</p>
+<ul class="simple">
+<li><p>+5 的反码：00000101（与原码相同）</p></li>
+<li><p>-5 的反码：11111010（符号位1不变，数值位取反：00000101 → 11111010）</p></li>
+</ul>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>数值</p></th>
+<th class="head"><p>原码</p></th>
+<th class="head"><p>反码</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>+0</p></td>
+<td><p>00000000</p></td>
+<td><p>00000000</p></td>
+</tr>
+<tr class="row-odd"><td><p>-0</p></td>
+<td><p>10000000</p></td>
+<td><p>11111111</p></td>
+</tr>
+<tr class="row-even"><td><p>+1</p></td>
+<td><p>00000001</p></td>
+<td><p>00000001</p></td>
+</tr>
+<tr class="row-odd"><td><p>-1</p></td>
+<td><p>10000001</p></td>
+<td><p>11111110</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>反码在一定程度上简化了运算（特别是减法可以通过加反码来实现），但仍然没有解决0有两种表示的问题。</p>
+</section>
+<section id="id28">
+<h3>1.4.4 补码<a class="headerlink" href="#id28" title="Link to this heading">#</a></h3>
+<p>**补码（Two’s Complement）**是目前计算机中普遍采用的有符号数表示方法。补码的定义为：</p>
+<ul class="simple">
+<li><p>正数的补码 = 原码</p></li>
+<li><p>负数的补码 = 反码 + 1（或者说，对原码除符号位外按位取反，然后加1）</p></li>
+</ul>
+<p>例如（8位）：</p>
+<ul class="simple">
+<li><p>+5 的补码：00000101</p></li>
+<li><p>-5 的补码：11111010 + 1 = 11111011</p></li>
+</ul>
+<p>让我们验证一下：-5 的补码 11111011，加上 +5 的补码 00000101：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="mi">11111011</span>
+<span class="o">+</span> <span class="mi">00000101</span>
+<span class="o">---------</span>
+ <span class="mi">100000000</span>
+</pre></div>
+</div>
+<p>结果是9位，最高位1溢出丢弃，得到 00000000，结果正确（-5 + 5 = 0）。这说明补码的加法可以直接进行，不需要考虑符号。</p>
+<p><strong>补码的关键特性</strong>：</p>
+<ol class="arabic simple">
+<li><p><strong>0的唯一表示</strong>：在8位补码中，00000000 表示0，而10000000 不再表示-0，而是-128。这使得补码能够表示-128到127的整数范围（共256个值），而原码和反码只能表示-127到127（因为有+0和-0）。</p></li>
+<li><p><strong>符号位参与运算</strong>：补码的符号位可以参与正常的加减运算，简化了电路设计。</p></li>
+<li><p><strong>减法变加法</strong>：a - b = a + (-b)，而 -b 的补码可以通过取反加一得到。</p></li>
+<li><p><strong>模运算性质</strong>：补码本质上是模运算。以8位为例，模为256。-1 的补码是255（11111111），所以 1 + (-1) = 1 + 255 = 256 ≡ 0 (mod 256)。</p></li>
+</ol>
+<p><strong>补码的取值范围</strong>：</p>
+<p>对于n位补码：</p>
+<ul class="simple">
+<li><p>能表示的最大正数：<span class="math notranslate nohighlight">\(2^{n-1} - 1\)</span>（如8位时为127）</p></li>
+<li><p>能表示的最小负数：<span class="math notranslate nohighlight">\(-2^{n-1}\)</span>（如8位时为-128）</p></li>
+<li><p>总共能表示 <span class="math notranslate nohighlight">\(2^n\)</span> 个不同的值</p></li>
+</ul>
+</section>
+<section id="id29">
+<h3>1.4.5 补码的直观理解<a class="headerlink" href="#id29" title="Link to this heading">#</a></h3>
+<p>理解补码有一个很好的比喻：<strong>钟表模型</strong>。</p>
+<p>想象一个12小时的钟表，当前时间是11点，如果要减掉3小时，可以：</p>
+<ul class="simple">
+<li><p>直接往回拨：11 - 3 = 8</p></li>
+<li><p>或者往前拨（因为12 - 3 = 9）：11 + 9 = 20 = 8（超过12的部分溢出丢弃）</p></li>
+</ul>
+<p>在这个例子中，”往前拨”的操作就是”加补数”。如果我们把钟表看作12进制的补码系统，那么-3的补码就是12 - 3 = 9。</p>
+<p>对于8位二进制，模是256，-1 的补码就是 256 - 1 = 255（二进制11111111）。这就像在一个模256的循环中，-1 和 255 是”等价”的。</p>
+</section>
+<section id="id30">
+<h3>1.4.6 整数溢出<a class="headerlink" href="#id30" title="Link to this heading">#</a></h3>
+<p>当运算结果超出数据类型的表示范围时，就会发生<strong>溢出（Overflow）</strong>。</p>
+<p>以8位有符号整数为例：</p>
+<ul class="simple">
+<li><p>最大值是127（01111111）</p></li>
+<li><p>最小值是-128（10000000）</p></li>
+</ul>
+<p>如果计算 127 + 1：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  01111111  (+127)
++ 00000001  (+1)
+---------
+  10000000  (-128！)
+</pre></div>
+</div>
+<p>结果变成了-128，而不是128。这就是<strong>上溢（Overflow）</strong>。</p>
+<p>如果计算 -128 - 1：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  10000000  (-128)
++ 11111111  (-1的补码)
+---------
+  01111111  (+127！)
+</pre></div>
+</div>
+<p>结果变成了+127，这就是<strong>下溢（Underflow）</strong>。</p>
+<p>对于无符号整数，溢出后同样会”回绕”：255 + 1 = 0，0 - 1 = 255。</p>
+<p><strong>溢出检测</strong>：在计算机体系结构中，溢出标志位（Overflow Flag）用于指示最近一次算术运算是否发生了溢出。</p>
+</section>
+<section id="id31">
+<h3>本节小结<a class="headerlink" href="#id31" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>原码是最直观的表示法，但0有两种表示，加减运算复杂</p></li>
+<li><p>反码改进了负数表示，但仍有+0和-0的问题</p></li>
+<li><p>补码是现代计算机的标准表示法：正数不变，负数是反码加1</p></li>
+<li><p>补码的优势：0表示唯一，符号位可参与运算，减法变加法</p></li>
+<li><p>n位补码的范围是 <span class="math notranslate nohighlight">\(-2^{n-1}\)</span> 到 <span class="math notranslate nohighlight">\(2^{n-1} - 1\)</span></p></li>
+<li><p>运算结果超出范围会发生溢出</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="ieee-754">
+<h2>1.5 浮点数编码：IEEE 754<a class="headerlink" href="#ieee-754" title="Link to this heading">#</a></h2>
+<section id="id32">
+<h3>1.5.1 浮点数的由来<a class="headerlink" href="#id32" title="Link to this heading">#</a></h3>
+<p>整数可以精确表示，但现实世界中还有很多需要表示小数。比如圆的周长是直径的 <span class="math notranslate nohighlight">\(\pi\)</span> 倍（<span class="math notranslate nohighlight">\(\pi \approx 3.14159...\)</span>），或者计算复利时需要的指数运算。这些都不能用整数来精确表达。</p>
+<p>**定点数（Fixed-Point Number）**是最早的小数表示方法。假设我们用8位表示小数，约定前4位是整数部分，后4位是小数部分。那么二进制数 00010010 就表示 <span class="math notranslate nohighlight">\(1.010_2 = 1.625_{10}\)</span>。</p>
+<p>但定点数的问题是<strong>范围和精度固定</strong>。如果用前4后4的约定，最大值只能是 11111111 = <span class="math notranslate nohighlight">\(15.9375_{10}\)</span>，最小精度是 <span class="math notranslate nohighlight">\(1/16 = 0.0625\)</span>。对于科学计算来说，这个范围和精度往往不够用。</p>
+<p>**浮点数（Floating-Point Number）**借鉴了科学计数法（Scientific Notation）的思想。科学计数法中，一个数可以表示为：</p>
+<div class="math notranslate nohighlight">
+\[\pm M \times 10^E\]</div>
+<p>其中，M是尾数（Mantissa），E是指数（Exponent）。例如，光速 <span class="math notranslate nohighlight">\(299792458 \text{ m/s}\)</span> 可以写成 <span class="math notranslate nohighlight">\(2.99792458 \times 10^8\)</span>。</p>
+<p>类似地，浮点数表示为：</p>
+<div class="math notranslate nohighlight">
+\[\pm M \times 2^E\]</div>
+<p>这样既可以表示很大范围的数，也可以表示很小的数。</p>
+</section>
+<section id="id33">
+<h3>1.5.2 IEEE 754标准概述<a class="headerlink" href="#id33" title="Link to this heading">#</a></h3>
+<p>IEEE 754是美国电气电子工程师协会制定的浮点数运算标准，是目前几乎所有现代计算机采用的浮点数表示法。</p>
+<p>IEEE 754定义了两种精度的浮点数：</p>
+<ol class="arabic simple">
+<li><p><strong>单精度（Single Precision）</strong>：32位，也称为float</p>
+<ul class="simple">
+<li><p>1位符号位（Sign）</p></li>
+<li><p>8位指数位（Exponent）</p></li>
+<li><p>23位尾数位（Fraction/Mantissa）</p></li>
+</ul>
+</li>
+<li><p><strong>双精度（Double Precision）</strong>：64位，也称为double</p>
+<ul class="simple">
+<li><p>1位符号位</p></li>
+<li><p>11位指数位</p></li>
+<li><p>52位尾数位</p></li>
+</ul>
+</li>
+</ol>
+<p>此外还有16位的半精度（用于深度学习等场景）和128位的四精度（用于高精度计算）。</p>
+</section>
+<section id="id34">
+<h3>1.5.3 浮点数的结构<a class="headerlink" href="#id34" title="Link to this heading">#</a></h3>
+<p>IEEE 754浮点数的结构如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>符号位 S  |  指数部分 E  |  尾数部分 M（隐藏位）
+   1位         k位           n位
+</pre></div>
+</div>
+<p><strong>符号位（S）</strong>：0表示正数，1表示负数。注意，符号位与尾数、指数都独立，单独决定正负。</p>
+<p><strong>指数部分（E）</strong>：用于表示2的幂次方。采用**偏移码（Biased Exponent）**表示，即指数的真实值 = 指数位表示的值 - 偏移量。对于单精度，偏移量是127；对于双精度，偏移量是1023。</p>
+<p><strong>尾数部分（M）</strong>：也称为小数部分或有效数字。IEEE 754的尾数部分采用**隐藏位（Hidden Bit）**技术：对于规格化数，尾数实际上有24位（单精度），但最高位1是隐藏的，不存储在浮点数中。这相当于二进制科学计数法中尾数的整数部分总是1（如 <span class="math notranslate nohighlight">\(1.011_2 \times 2^E\)</span>），所以这个1不需要存储。</p>
+</section>
+<section id="id35">
+<h3>1.5.4 规格化浮点数<a class="headerlink" href="#id35" title="Link to this heading">#</a></h3>
+<p>**规格化（Normalized）**浮点数是IEEE 754的”正常”表示形式，其特点是：尾数的最高位（即隐藏位）为1，所以尾数的值在 <span class="math notranslate nohighlight">\([1, 2)\)</span> 范围内。</p>
+<p>规格化浮点数的指数部分不能是全0或全1（全0和大全1有特殊含义，见下文）。</p>
+<p>以32位单精度为例：</p>
+<div class="math notranslate nohighlight">
+\[(-1)^S \times 1.\text{尾数} \times 2^{(E - 127)}\]</div>
+<p>例如，十进制数 <span class="math notranslate nohighlight">\(6.5\)</span> 的二进制是 <span class="math notranslate nohighlight">\(110.1 = 1.101 \times 2^2\)</span>：</p>
+<ul class="simple">
+<li><p>符号位S = 0（正数）</p></li>
+<li><p>指数 = 2 + 127 = 129 = 10000001</p></li>
+<li><p>尾数 = 101（后续补0）</p></li>
+</ul>
+<p>所以 <span class="math notranslate nohighlight">\(6.5\)</span> 的浮点表示为：0 10000001 10100000000000000000000</p>
+<p>验证：<span class="math notranslate nohighlight">\((-1)^0 \times 1.101 \times 2^{(129-127)} = 1.101_2 \times 2^2 = 110.1_2 = 6.5_{10}\)</span></p>
+</section>
+<section id="id36">
+<h3>1.5.5 特殊值<a class="headerlink" href="#id36" title="Link to this heading">#</a></h3>
+<p>IEEE 754定义了一些特殊的浮点值：</p>
+<p><strong>1. 零（Zero）</strong>
+指数部分全0，尾数部分全0。注意，+0和-0是不同的：符号位分别为0和1。</p>
+<p><strong>2. 非规格化数（Denormalized Number）</strong>
+指数部分全0，但尾数部分非0。这些数的指数是固定的 <span class="math notranslate nohighlight">\(-126\)</span>（单精度），可以表示非常接近0的数，但精度会降低。它们的出现是为了让浮点数能够<strong>渐进下溢（Gradual Underflow）</strong>，而不是突然从最小正数跳到零。</p>
+<p><strong>3. 无穷大（Infinity）</strong>
+指数部分全1，尾数部分全0。符号位决定是正无穷还是负无穷。当除以零或运算结果超出表示范围时，会得到无穷大。</p>
+<p><strong>4. NaN（Not a Number）</strong>
+指数部分全1，尾数部分非0。表示未定义或无法表示的结果，如 <span class="math notranslate nohighlight">\(0/0\)</span>、<span class="math notranslate nohighlight">\(\sqrt{-1}\)</span>、<span class="math notranslate nohighlight">\(\infty - \infty\)</span> 等。</p>
+</section>
+<section id="id37">
+<h3>1.5.6 浮点数的取值范围和精度<a class="headerlink" href="#id37" title="Link to this heading">#</a></h3>
+<p>以32位单精度为例：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>类别</p></th>
+<th class="head"><p>最小值</p></th>
+<th class="head"><p>最大值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>规格化正数</p></td>
+<td><p><span class="math notranslate nohighlight">\(2^{-126} \approx 1.18 \times 10^{-38}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((2 - 2^{-23}) \times 2^{127} \approx 3.4 \times 10^{38}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>非规格化正数</p></td>
+<td><p><span class="math notranslate nohighlight">\(2^{-149} \approx 1.4 \times 10^{-45}\)</span></p></td>
+<td><p>略小于最小规格化正数</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>精度</strong>：单精度浮点数的尾数有23位，但加上隐藏的1位，实际有24位精度，约等于6到7位十进制数字。双精度有53位精度，约等于15到16位十进制数字。</p>
+<p>这意味着：</p>
+<ul class="simple">
+<li><p>浮点数不能精确表示所有小数，很多是近似值</p></li>
+<li><p>浮点数运算不满足结合律：如 <span class="math notranslate nohighlight">\((a + b) - b\)</span> 不一定等于 <span class="math notranslate nohighlight">\(a\)</span></p></li>
+<li><p>比较浮点数是否相等要格外小心</p></li>
+</ul>
+</section>
+<section id="id38">
+<h3>1.5.7 浮点数的误差<a class="headerlink" href="#id38" title="Link to this heading">#</a></h3>
+<p>浮点数的误差是一个重要且容易被忽视的问题。</p>
+<p><strong>舍入误差（Rounding Error）</strong>：由于尾数位数有限，很多小数无法精确表示，必须舍入到最近的可表示值。例如，十进制0.1在二进制中是无限循环的：<span class="math notranslate nohighlight">\(0.000110011001100..._2\)</span>，必须截断。</p>
+<p><strong>抵消误差（Cancellation Error）</strong>：当两个相近的数相减时，有效数字会大大减少。例如，<span class="math notranslate nohighlight">\(1.0000001 - 1.0000000 = 0.0000001\)</span>，原本有7位有效数字，结果可能只剩下1位。</p>
+<p><strong>实例分析</strong>：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Python代码演示浮点数误差</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="o">+</span> <span class="mf">0.2</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>  <span class="c1"># 输出 0.30000000000000004，而不是精确的 0.3</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span> <span class="o">==</span> <span class="mf">0.3</span><span class="p">)</span>  <span class="c1"># 输出 False</span>
+</pre></div>
+</div>
+<p>这是因为 0.1、0.2 和 0.3 在二进制浮点数中都无法精确表示。</p>
+</section>
+<section id="id39">
+<h3>本节小结<a class="headerlink" href="#id39" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>浮点数借鉴了科学计数法的思想，用尾数和指数来表示很大或很小的数</p></li>
+<li><p>IEEE 754是浮点数表示的国际标准，规定了32位单精度和64位双精度格式</p></li>
+<li><p>单精度浮点数由1位符号、8位指数、23位尾数组成，采用偏移码和隐藏位技术</p></li>
+<li><p>指数全0和全1有特殊含义，分别表示非规格化数和特殊值（无穷大、NaN）</p></li>
+<li><p>浮点数精度有限，存在舍入误差，进行浮点运算时要格外小心</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id40">
+<h2>1.6 字符编码<a class="headerlink" href="#id40" title="Link to this heading">#</a></h2>
+<section id="id41">
+<h3>1.6.1 为什么需要字符编码<a class="headerlink" href="#id41" title="Link to this heading">#</a></h3>
+<p>计算机内部只有0和1，那么文字、符号是如何存储的呢？这就需要<strong>字符编码（Character Encoding）</strong>——将字符映射为数字，再将数字映射为二进制。</p>
+<p>如果字符编码不统一，就会出现<strong>乱码</strong>问题。例如，一段用UTF-8编码的中文文本，如果用GBK编码来解析，就会显示为乱码。这是因为同一种字符（如”中”字）在不同编码中对应不同的数字。</p>
+</section>
+<section id="ascii">
+<h3>1.6.2 ASCII码<a class="headerlink" href="#ascii" title="Link to this heading">#</a></h3>
+<p>**ASCII（American Standard Code for Information Interchange，美国信息交换标准代码）**是最早的字符编码标准，诞生于1963年。</p>
+<p>ASCII使用7位（后来扩展为8位）来表示128个字符，包括：</p>
+<ul class="simple">
+<li><p><strong>控制字符</strong>（0-31和127）：如换行（LF）、回车（CR）、制表符（Tab）等，不可打印</p></li>
+<li><p><strong>可打印字符</strong>（32-126）：包括空格、英文大小写字母（A-Z: 65-90, a-z: 97-122）、数字0-9（48-57）、标点符号等</p></li>
+</ul>
+<p>常用ASCII码对照：</p>
+<ul class="simple">
+<li><p>字符’0’的ASCII码是48，二进制是 00110000</p></li>
+<li><p>字符’A’的ASCII码是65，二进制是 01000001</p></li>
+<li><p>字符’a’的ASCII码是97，二进制是 01100001</p></li>
+</ul>
+<p>ASCII码的特点：</p>
+<ul class="simple">
+<li><p>只用了7位，最高位为0</p></li>
+<li><p>只包含英文字母、数字和少量符号</p></li>
+<li><p>足以支持英文，但无法表示中文等其他语言</p></li>
+</ul>
+</section>
+<section id="id42">
+<h3>1.6.3 扩展编码<a class="headerlink" href="#id42" title="Link to this heading">#</a></h3>
+<p>由于ASCII只能表示128个字符，对于需要更多字符的语言（如欧洲语言使用的带重音字母）来说不够用。</p>
+<p>**ISO-8859-1（Latin-1）**将ASCII的最高位利用起来，用8位表示256个字符。它覆盖了大多数西欧语言，但仍然无法表示中文、日文等。</p>
+<p><strong>GB2312/GBK/GB18030</strong>是中国制定的汉字编码标准：</p>
+<ul class="simple">
+<li><p>GB2312：1980年发布，收录6763个汉字和682个图形符号</p></li>
+<li><p>GBK：GB2312的扩展，收录21003个汉字</p></li>
+<li><p>GB18030：最新标准，收录70000多个汉字，还包含了藏文、蒙文等少数民族文字</p></li>
+</ul>
+<p><strong>BIG5</strong>是繁体中文编码，主要在台湾、香港、澳门使用。</p>
+</section>
+<section id="unicodeutf-8">
+<h3>1.6.4 Unicode与UTF-8<a class="headerlink" href="#unicodeutf-8" title="Link to this heading">#</a></h3>
+<p>随着互联网的普及，需要一种能够表示世界上所有文字的编码系统。<strong>Unicode</strong>应运而生。</p>
+<p>Unicode的目标是为每一个文字符号分配一个唯一的编码（称为<strong>码点，Code Point</strong>），无论是什么语言、什么平台。Unicode目前已经收录超过14万个字符。</p>
+<p>Unicode的表示方式：<code class="docutils literal notranslate"><span class="pre">U+XXXX</span></code>，其中XXXX是4到6位的十六进制数。例如：</p>
+<ul class="simple">
+<li><p>‘A’ 的码点是 U+0041</p></li>
+<li><p>‘中’ 的码点是 U+4E2D</p></li>
+<li><p>‘😀’ 的码点是 U+1F600</p></li>
+</ul>
+<p>但Unicode只定义了码点到数值的映射，没有规定如何在计算机中存储这些数值。这就是**UTF（Unicode Transformation Format）**的作用。</p>
+<p><strong>UTF-8</strong>是目前互联网上最常用的Unicode编码方式，它是一种<strong>变长编码</strong>：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>码点范围</p></th>
+<th class="head"><p>字节数</p></th>
+<th class="head"><p>编码格式</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>U+0000 ~ U+007F</p></td>
+<td><p>1字节</p></td>
+<td><p>0xxxxxxx</p></td>
+</tr>
+<tr class="row-odd"><td><p>U+0080 ~ U+07FF</p></td>
+<td><p>2字节</p></td>
+<td><p>110xxxxx 10xxxxxx</p></td>
+</tr>
+<tr class="row-even"><td><p>U+0800 ~ U+FFFF</p></td>
+<td><p>3字节</p></td>
+<td><p>1110xxxx 10xxxxxx 10xxxxxx</p></td>
+</tr>
+<tr class="row-odd"><td><p>U+10000 ~ U+10FFFF</p></td>
+<td><p>4字节</p></td>
+<td><p>11110xxx 10xxxxxx 10xxxxxx 10xxxxxx</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>UTF-8的设计非常巧妙：</p>
+<ul class="simple">
+<li><p>与ASCII完全兼容：ASCII字符在UTF-8中只需1字节，与ASCII编码完全相同</p></li>
+<li><p>自同步：任何字节的开始位置都可以被识别，不会因为中间某字节损坏而影响后续字符</p></li>
+<li><p>节省空间：英文字母只占1字节，中文字符占3字节（比UTF-16的2字节稍大，但考虑到英文文本的空间节省，总体效率更高）</p></li>
+</ul>
+<p><strong>示例</strong>：</p>
+<ul class="simple">
+<li><p>‘A’ (U+0041)：在第一范围内，编码为 01000001（1字节）</p></li>
+<li><p>‘中’ (U+4E2D)：在第三范围内</p>
+<ul>
+<li><p>4E2D 的二进制：0100 1110 0010 1101</p></li>
+<li><p>去掉U+的前缀得到：100 111000 101101（补齐12位）</p></li>
+<li><p>按3字节格式填充：1110<strong>0100</strong> 10<strong>111000</strong> 10<strong>101101</strong></p></li>
+<li><p>十六进制：E4 B8 AD</p></li>
+</ul>
+</li>
+</ul>
+<p>验证：”中”字的UTF-8编码是 E4B8AD，在浏览器开发者工具中可以看到。</p>
+</section>
+<section id="id43">
+<h3>1.6.5 编码选择与转换<a class="headerlink" href="#id43" title="Link to this heading">#</a></h3>
+<p>不同的编码适用于不同的场景：</p>
+<ul class="simple">
+<li><p><strong>ASCII</strong>：英文为主的文档，不需要中文字符时</p></li>
+<li><p><strong>GBK/GB18030</strong>：中文Windows系统的默认编码</p></li>
+<li><p><strong>UTF-8</strong>：互联网内容（网页、邮件等）的标准编码，跨平台、跨语言的首选</p></li>
+<li><p><strong>UTF-16</strong>：Java、JavaScript、C#等语言内部使用的编码（Windows的API也常用UTF-16）</p></li>
+</ul>
+<p><strong>编码转换的注意事项</strong>：</p>
+<ol class="arabic simple">
+<li><p>转换时需要知道源编码是什么，否则会乱码</p></li>
+<li><p>某些字符在目标编码中可能不存在（如将GBK的中文转成ASCII），通常会用’?’或’□’替代</p></li>
+<li><p>文本文件开头可能有<strong>BOM（Byte Order Mark）</strong>，用于指示是大端序还是小端序，以及编码类型</p></li>
+</ol>
+</section>
+<section id="id44">
+<h3>1.6.6 字符串与编码<a class="headerlink" href="#id44" title="Link to this heading">#</a></h3>
+<p>在编程中处理字符串时，编码问题经常是bug的来源。</p>
+<p>以Python为例：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Python 3默认使用UTF-8</span>
+<span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;你好，世界&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>  <span class="c1"># 输出 6（字符数，不是字节数）</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>  <span class="c1"># 输出 b&#39;\xe4\xbd\xa0\xe5\xa5\xbd\xef\xbc\x8c\xe4\xb8\x96\xe7\x95\x8c&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)))</span>  <span class="c1"># 输出 18（UTF-8编码占18字节）</span>
+</pre></div>
+</div>
+<p>以JavaScript为例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// JavaScript字符串是UTF-16编码</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;你好，世界&quot;</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">s</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span><span class="w">  </span><span class="c1">// 输出 6</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="ow">new</span><span class="w"> </span><span class="nx">TextEncoder</span><span class="p">().</span><span class="nx">encode</span><span class="p">(</span><span class="nx">s</span><span class="p">));</span><span class="w">  </span><span class="c1">// 输出 Uint8Array [230, 151, 165, 229, 155, 189, 239, 188, 140, 228, 188, 155, 231, 149, 140]</span>
+</pre></div>
+</div>
+</section>
+<section id="id45">
+<h3>本节小结<a class="headerlink" href="#id45" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>字符编码将字符映射为数字，再存储为二进制</p></li>
+<li><p>ASCII是最早的编码，用7位表示128个字符，只适用于英文</p></li>
+<li><p>为了支持其他语言，出现了GBK、Big5等地区性编码</p></li>
+<li><p>Unicode为世界上所有文字分配了唯一的码点</p></li>
+<li><p>UTF-8是互联网的主要编码，变长设计，与ASCII兼容，节省空间</p></li>
+<li><p>处理文本时要注意编码一致性，避免乱码</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id46">
+<h2>1.7 布尔代数与逻辑门<a class="headerlink" href="#id46" title="Link to this heading">#</a></h2>
+<section id="id47">
+<h3>1.7.1 布尔代数基础<a class="headerlink" href="#id47" title="Link to this heading">#</a></h3>
+<p>**布尔代数（Boolean Algebra）**由英国数学家乔治·布尔（George Boole）在19世纪中叶创立，是计算机科学的数学基础。</p>
+<p>与普通代数使用实数不同，布尔代数使用<strong>布尔值</strong>（也称为逻辑值）：只有两个可能的值，通常记为<strong>真（True）<strong>和</strong>假（False）</strong>，在计算机中常用1和0表示。</p>
+</section>
+<section id="id48">
+<h3>1.7.2 基本逻辑运算<a class="headerlink" href="#id48" title="Link to this heading">#</a></h3>
+<p>布尔代数有三种最基本的运算：</p>
+<p><strong>1. 与运算（AND，合取）</strong></p>
+<p>也称为逻辑乘，用符号 <span class="math notranslate nohighlight">\(\cdot\)</span> 或 <span class="math notranslate nohighlight">\(\land\)</span> 表示。运算规则是：只有当所有操作数都为真时，结果才为真。</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}A \land B = \begin{cases} 1 &amp; \text{如果 } A = 1 \text{ 且 } B = 1 \\ 0 &amp; \text{其他情况} \end{cases}\end{split}\]</div>
+<p><strong>2. 或运算（OR，析取）</strong></p>
+<p>用符号 <span class="math notranslate nohighlight">\(+\)</span> 或 <span class="math notranslate nohighlight">\(\lor\)</span> 表示。运算规则是：只要有一个操作数为真，结果就为真。</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}A \lor B = \begin{cases} 1 &amp; \text{如果 } A = 1 \text{ 或 } B = 1 \\ 0 &amp; \text{其他情况} \end{cases}\end{split}\]</div>
+<p><strong>3. 非运算（NOT，否定）</strong></p>
+<p>用符号 <span class="math notranslate nohighlight">\(\neg\)</span> 或 <span class="math notranslate nohighlight">\(\bar{A}\)</span> 表示。运算是取反：真变假，假变真。</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\neg A = \begin{cases} 1 &amp; \text{如果 } A = 0 \\ 0 &amp; \text{如果 } A = 1 \end{cases}\end{split}\]</div>
+</section>
+<section id="id49">
+<h3>1.7.3 复合逻辑运算<a class="headerlink" href="#id49" title="Link to this heading">#</a></h3>
+<p>除了三种基本运算，还有几种常见的复合运算：</p>
+<p><strong>异或（XOR，排他或）</strong>：当两个操作数不同时结果为真，相同时为假。</p>
+<div class="math notranslate nohighlight">
+\[A \oplus B = A \cdot \bar{B} + \bar{A} \cdot B\]</div>
+<p><strong>同或（XNOR，等价）</strong>：当两个操作数相同时结果为真，不同则为假，是异或的反。</p>
+<div class="math notranslate nohighlight">
+\[A \odot B = \overline{A \oplus B} = A \cdot B + \bar{A} \cdot \bar{B}\]</div>
+</section>
+<section id="id50">
+<h3>1.7.4 布尔代数定律<a class="headerlink" href="#id50" title="Link to this heading">#</a></h3>
+<p>布尔代数遵循一些重要的定律，这些定律可以直接用于逻辑电路的化简：</p>
+<p><strong>交换律</strong>：
+$<span class="math notranslate nohighlight">\(A + B = B + A\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(A \cdot B = B \cdot A\)</span>$</p>
+<p><strong>结合律</strong>：
+$<span class="math notranslate nohighlight">\((A + B) + C = A + (B + C)\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\((A \cdot B) \cdot C = A \cdot (B \cdot C)\)</span>$</p>
+<p><strong>分配律</strong>：
+$<span class="math notranslate nohighlight">\(A \cdot (B + C) = A \cdot B + A \cdot C\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(A + (B \cdot C) = (A + B) \cdot (A + C)\)</span>$</p>
+<p><strong>吸收律</strong>：
+$<span class="math notranslate nohighlight">\(A + A \cdot B = A\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(A \cdot (A + B) = A\)</span>$</p>
+<p><strong>德·摩根定律（De Morgan’s Laws）</strong>：
+$<span class="math notranslate nohighlight">\(\overline{A + B} = \bar{A} \cdot \bar{B}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(\overline{A \cdot B} = \bar{A} + \bar{B}\)</span>$</p>
+<p>德·摩根定律是布尔代数中特别重要的定律，它表明”与”和”或”在取反时可以相互转换。</p>
+</section>
+<section id="id51">
+<h3>1.7.5 逻辑门基础<a class="headerlink" href="#id51" title="Link to this heading">#</a></h3>
+<p>**逻辑门（Logic Gate）**是实现布尔运算的电子元件，是数字电路的基本构建单元。</p>
+<p><strong>与门（AND Gate）</strong>：实现与运算。符号是一个平顶三角形后面跟着一个圆（表示”与”）。有多个输入，一个输出，只有所有输入都为高电平时，输出才为高电平。</p>
+<p><strong>或门（OR Gate）</strong>：实现或运算。符号是一个圆弧后面跟着一个平顶三角形。有多个输入，一个输出，只要有一个输入为高电平，输出就为高电平。</p>
+<p><strong>非门（NOT Gate）</strong>：实现非运算，也称为反相器（Inverter）。符号是一个三角形后面跟着一个小圆圈。一个输入，一个输出，输出是输入的反。</p>
+<p><strong>与非门（NAND Gate）<strong>和</strong>或非门（NOR Gate）</strong>：分别是与门和非门、或门和非门的组合，输出是AND或OR结果的取反。</p>
+<p><strong>异或门（XOR Gate）</strong>：实现异或运算。符号与或门相似，但在输入侧多了一条曲线。</p>
+</section>
+<section id="id52">
+<h3>1.7.6 组合逻辑电路<a class="headerlink" href="#id52" title="Link to this heading">#</a></h3>
+<p>由多个逻辑门组成的电路称为<strong>组合逻辑电路（Combinational Logic Circuit）</strong>，其输出仅取决于当前的输入。</p>
+<p>**加法器（Adder）**是组合逻辑电路的典型例子。</p>
+<p><strong>半加器（Half Adder）</strong>：实现两个一位二进制数相加，产生和（Sum）和进位（Carry）。电路由一个异或门和一个与门组成：</p>
+<ul class="simple">
+<li><p>和 = A XOR B</p></li>
+<li><p>进位 = A AND B</p></li>
+</ul>
+<p><strong>全加器（Full Adder）</strong>：实现三个一位二进制数相加（包含来自低位的进位）。它由两个半加器和一个或门组成。</p>
+<p><strong>多位数加法器</strong>由多个全加器级联而成，可以实现任意位数的二进制加法。</p>
+</section>
+<section id="id53">
+<h3>1.7.7 时序逻辑电路<a class="headerlink" href="#id53" title="Link to this heading">#</a></h3>
+<p>与组合逻辑电路不同，**时序逻辑电路（Sequential Logic Circuit）**的输出不仅取决于当前输入，还取决于之前的输入（即电路的”记忆”功能）。</p>
+<p>**触发器（Flip-Flop）**是时序逻辑电路的基本存储单元。最基本的RS触发器由两个与非门或两个或非门交叉连接而成，可以存储1位数据。</p>
+<p>**寄存器（Register）**由多个触发器组成，可以存储多个位的数据。</p>
+<p>**计数器（Counter）**是一种特殊的时序逻辑电路，可以对输入脉冲进行计数。</p>
+</section>
+<section id="id54">
+<h3>本节小结<a class="headerlink" href="#id54" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>布尔代数使用真/假（1/0）两种值，有与、或、非三种基本运算</p></li>
+<li><p>异或、同或等复合运算可以由基本运算组合而成</p></li>
+<li><p>布尔代数定律包括交换律、结合律、分配律、吸收律和德·摩根定律</p></li>
+<li><p>逻辑门是实现布尔运算的电子元件，包括与门、或门、非门等</p></li>
+<li><p>组合逻辑电路的输出只取决于当前输入，加法器是其典型应用</p></li>
+<li><p>时序逻辑电路具有记忆功能，触发器是其基本存储单元</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id55">
+<h2>本章小结<a class="headerlink" href="#id55" title="Link to this heading">#</a></h2>
+<p>本章介绍了计算机中数据表示和处理的基础知识，主要包括以下几个部分：</p>
+<ol class="arabic simple">
+<li><p><strong>进制与转换</strong>：计算机使用二进制（0和1），八进制和十六进制是为了方便表示二进制而引入的。不同进制之间可以相互转换，理解权值概念是进行进制转换的关键。</p></li>
+<li><p><strong>二进制运算</strong>：包括算术运算（加、减、乘、除）和位运算（与、或、异或、取反、移位）。计算机通过补码实现减法变加法。</p></li>
+<li><p><strong>整数编码</strong>：原码、反码、补码是三种有符号数的表示方法。现代计算机采用补码表示有符号整数，因为它解决了0的表示不唯一的问题，并使得加减运算可以直接进行。</p></li>
+<li><p><strong>浮点数编码</strong>：IEEE 754标准规定了浮点数的表示方法。单精度浮点数由1位符号、8位指数、23位尾数组成，采用偏移码和隐藏位技术。浮点数精度有限，运算存在误差。</p></li>
+<li><p><strong>字符编码</strong>：ASCII是最初的字符编码，只支持英文字母。Unicode为世界上所有文字分配了唯一码点，UTF-8是互联网最常用的编码，采用变长设计，与ASCII兼容。</p></li>
+<li><p><strong>布尔代数与逻辑门</strong>：布尔代数是数字电路的数学基础，与、或、非三种基本运算可以组合成任意复杂的逻辑功能。逻辑门是实现布尔运算的电子元件，由它们组成加法器等组合逻辑电路和触发器等时序逻辑电路。</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="id56">
+<h2>思考与练习<a class="headerlink" href="#id56" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>进制转换</strong></p>
+<ul class="simple">
+<li><p>将二进制数 <span class="math notranslate nohighlight">\(1101011_2\)</span> 转换为十进制、八进制和十六进制。</p></li>
+<li><p>将十进制数 <span class="math notranslate nohighlight">\(1023_{10}\)</span> 转换为二进制。</p></li>
+</ul>
+</li>
+<li><p><strong>补码运算</strong></p>
+<ul class="simple">
+<li><p>8位补码能表示的整数范围是多少？</p></li>
+<li><p>计算8位补码 <span class="math notranslate nohighlight">\(11111111 + 00000001\)</span> 的结果（用补码解释），并说明发生了什么。</p></li>
+</ul>
+</li>
+<li><p><strong>浮点数理解</strong></p>
+<ul class="simple">
+<li><p>用IEEE 754单精度表示法表示十进制数 <span class="math notranslate nohighlight">\(3.14159\)</span>（约等于圆周率）。</p></li>
+<li><p>解释为什么 <code class="docutils literal notranslate"><span class="pre">0.1</span> <span class="pre">+</span> <span class="pre">0.2</span> <span class="pre">!=</span> <span class="pre">0.3</span></code> 在大多数编程语言中成立。</p></li>
+</ul>
+</li>
+<li><p><strong>字符编码</strong></p>
+<ul class="simple">
+<li><p>‘A’ 和 ‘a’ 的ASCII码分别是65和97，计算它们的二进制表示，并解释为什么小写字母的ASCII码比对应的大写字母大32。</p></li>
+<li><p>UTF-8编码中，中文字符通常占3个字节，请说明为什么需要多个字节来表示中文。</p></li>
+</ul>
+</li>
+<li><p><strong>逻辑化简</strong></p>
+<ul class="simple">
+<li><p>使用布尔代数定律化简表达式：<span class="math notranslate nohighlight">\(F = A \cdot B + \bar{A} \cdot C + B \cdot C\)</span></p></li>
+<li><p>给出化简后的结果，并用真值表验证。</p></li>
+</ul>
+</li>
+<li><p><strong>溢出分析</strong></p>
+<ul class="simple">
+<li><p>用8位有符号整数计算 <span class="math notranslate nohighlight">\(100 + 50\)</span>，判断是否溢出；如果溢出，说明原因。</p></li>
+<li><p>如果改用8位无符号整数计算同样的表达式，结果是多少？</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="README.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Chap01 计算机基础</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02-CPU-Memory.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">第二章 CPU与内存</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.1 进制的概念</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1.1.1 什么是进制</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">1.1.2 进制的表示方法</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">1.1.3 进制的权值</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">1.1.4 二进制的特点</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">本节小结</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">1.2 进制转换</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">1.2.1 十进制转换为其他进制</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">1.2.2 其他进制转换为十进制</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">1.2.3 二进制与八进制、十六进制的转换</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">1.2.4 常见进制对照表</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">1.2.5 小数部分的转换</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">本节小结</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">1.3 二进制运算</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">1.3.1 二进制加法</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">1.3.2 二进制减法</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">1.3.3 二进制乘法</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">1.3.4 二进制除法</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">1.3.5 位运算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">1.3.6 移位运算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">本节小结</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">1.4 数据编码：整数表示</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">1.4.1 为什么需要原码、反码、补码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">1.4.2 原码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">1.4.3 反码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">1.4.4 补码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">1.4.5 补码的直观理解</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">1.4.6 整数溢出</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">本节小结</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ieee-754">1.5 浮点数编码：IEEE 754</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">1.5.1 浮点数的由来</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id33">1.5.2 IEEE 754标准概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id34">1.5.3 浮点数的结构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">1.5.4 规格化浮点数</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id36">1.5.5 特殊值</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id37">1.5.6 浮点数的取值范围和精度</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id38">1.5.7 浮点数的误差</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id39">本节小结</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id40">1.6 字符编码</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id41">1.6.1 为什么需要字符编码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ascii">1.6.2 ASCII码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id42">1.6.3 扩展编码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unicodeutf-8">1.6.4 Unicode与UTF-8</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id43">1.6.5 编码选择与转换</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id44">1.6.6 字符串与编码</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id45">本节小结</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id46">1.7 布尔代数与逻辑门</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id47">1.7.1 布尔代数基础</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id48">1.7.2 基本逻辑运算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id49">1.7.3 复合逻辑运算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id50">1.7.4 布尔代数定律</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id51">1.7.5 逻辑门基础</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id52">1.7.6 组合逻辑电路</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id53">1.7.7 时序逻辑电路</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id54">本节小结</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id55">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id56">思考与练习</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Author name not set
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Apr 29, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>本教材仅供内部培训使用</p>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

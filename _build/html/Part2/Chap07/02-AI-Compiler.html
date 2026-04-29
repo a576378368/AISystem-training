@@ -1,0 +1,1335 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>第二章 AI编译器架构 &#8212; AI系统工程师培训教程</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Part2/Chap07/02-AI-Compiler';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="第三章 前端优化" href="03-Frontend-Optimization.html" />
+    <link rel="prev" title="第一章 传统编译器基础" href="01-Traditional-Compiler.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Apr 29, 2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="AI系统工程师培训教程 - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="AI系统工程师培训教程 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    AI系统工程师培训教程
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">第一阶段：AI基础入门</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap01/README.html">Chap01 计算机基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/01-Binary.html">第一章 进制与编码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/02-CPU-Memory.html">第二章 CPU与内存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/03-Program-Running.html">第三章 程序运行原理</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap02/README.html">Chap02 Python编程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/01-Python-Basic.html">Python基础语法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/02-NumPy.html">NumPy基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/03-PyTorch.html">PyTorch基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap03/README.html">Chap03 数学基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/01-Linear-Algebra.html">线性代数基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/02-Probability.html">概率与统计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/03-Optimization.html">优化基础</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二阶段：AI系统核心</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap04/README.html">Chap04 AI系统概述</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap04/01-Introduction.html">AI系统基本概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap04/02-Architecture.html">AI系统全栈架构</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap05/README.html">Chap05 神经网络基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/01-Neuron-Model.html">神经元与网络模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/02-CNN.html">卷积神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/03-RNN.html">循环神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/04-Transformer.html">Transformer与注意力机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/05-Quantization.html">模型量化基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap06/README.html">Chap06 AI芯片体系架构</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/01-Chip-Base.html">AI芯片基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/02-GPU-Base.html">GPU原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/03-NVIDIA.html">NVIDIA GPU架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/04-Abroad-Chips.html">国外AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/05-Domestic-Chips.html">国内AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/06-Programming-Model.html">芯片编程模式</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Chap07 AI编译器原理</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-Traditional-Compiler.html">第一章 传统编译器基础</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">第二章 AI编译器架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-Frontend-Optimization.html">第三章 前端优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-Backend-Optimization.html">第四章 后端优化</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap08/README.html">Chap08 推理系统与引擎</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/01-Inference-System.html">01 推理系统概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/02-Model-Compression.html">02 模型压缩</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/03-Model-Converter.html">03 模型转换与优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/04-Inference-Optimization.html">04 推理优化技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/05-Kernel-Optimization.html">05 Kernel优化技术</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap09/README.html">Chap09 AI框架核心</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/01-Auto-Differentiation.html">自动微分</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/02-Computational-Graph.html">计算图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/03-Distributed-Training.html">分布式训练</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap10/README.html">Chap10 大模型与集群</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/01-LLM-Architecture.html">大模型架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/02-AI-Cluster.html">AI集群</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/03-Parallel-Strategy.html">并行策略</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三阶段：附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixA/README.html">附录A：AI系统术语表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixB/README.html">附录B：参考文献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixC/README.html">AppendixC 实践项目</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/your-org/AI-System-Training/blob/main/Part2/Chap07/02-AI-Compiler.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button"
+   title="Show source"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/Part2/Chap07/02-AI-Compiler.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>第二章 AI编译器架构</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">引言</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.1 AI编译器出现的背景</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2.1.1 深度学习框架的崛起与挑战</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.1.2 传统编译器的局限性</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">2.1.3 硬件碎片化与软件栈问题</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">2.1.4 AI编译器的设计目标</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2.1.5 AI编译器的黄金时代</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">2.2 AI编译器架构</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">2.2.1 AI编译器整体架构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ir">2.2.2 多层IR设计</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">2.2.3 前端与后端分离</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">2.2.4 表达层面的演进</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">2.2.5 优化层面的演进</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">2.2.6 与传统编译器的关系</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">2.3 主流AI编译器介绍</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tvm">2.3.1 TVM</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">2.3.1.1 TVM的设计理念</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">2.3.1.2 TVM的架构</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#auto-tuning">2.3.1.3 Auto Tuning</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">2.3.1.4 TVM的应用场景</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xla">2.3.2 XLA</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">2.3.2.1 XLA的设计特点</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">2.3.2.2 XLA的优化技术</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xlatensorflow">2.3.2.3 XLA与TensorFlow的集成</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#glow">2.3.3 Glow</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">2.3.3.1 Glow的设计理念</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">2.3.3.2 Glow的架构</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">2.3.3.3 Glow的应用</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlir">2.3.4 MLIR</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">2.3.4.1 MLIR的设计理念</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">2.3.4.2 MLIR的架构</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">2.3.4.3 MLIR的应用</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mlirtvm">2.3.4.4 MLIR与TVM的比较</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">2.3.5 其他AI编译器</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">2.4 AI编译器与深度学习框架的关系</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">2.4.1 框架与编译器的协作</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorch-2-0">2.4.2 PyTorch 2.0与编译器</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tensorflowxla">2.4.3 TensorFlow与XLA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx">2.4.4 ONNX作为桥梁</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">2.5 AI编译器的发展阶段与未来</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">2.5.1 AI编译器的发展阶段</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">2.5.2 当前技术挑战</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id33">2.5.3 未来发展趋势</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id34">2.6 小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">2.7 参考文献与扩展阅读</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="ai">
+<h1>第二章 AI编译器架构<a class="headerlink" href="#ai" title="Link to this heading">#</a></h1>
+<section id="id1">
+<h2>学习目标<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>理解AI编译器出现的背景和时代需求</p></li>
+<li><p>掌握AI编译器的整体架构和核心设计思想</p></li>
+<li><p>了解主流AI编译器（TVM、XLA、Glow、MLIR）的设计特点和适用场景</p></li>
+<li><p>理解AI编译器与传统编译器的关系和区别</p></li>
+<li><p>了解AI编译器的发展阶段和未来趋势</p></li>
+</ol>
+</section>
+<section id="id2">
+<h2>引言<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>在第一章中，我们深入学习了传统编译器的基础知识，包括编译器的基本工作流程、 GCC 和 LLVM 的架构设计、以及常量折叠、死代码消除等经典优化技术。这些知识为我们理解AI编译器奠定了坚实的理论基础。</p>
+<p>本章我们将目光转向AI编译器——近年来在人工智能领域快速发展的一项重要技术。AI编译器是为了解决深度学习模型在多样化硬件上高效运行而诞生的，它的出现标志着编译器技术在人工智能时代的新发展。</p>
+<p>随着深度学习技术的广泛应用，AI系统面临着前所未有的挑战：AI模型结构在快速演化，底层计算硬件技术层出不穷，开发者不仅要考虑如何在复杂多变的场景下有效地将算力发挥出来，还要应对AI框架的持续迭代。AI编译器正是为了应对这些问题而广受关注的技术方向。</p>
+<p>通过本章的学习，读者将系统地理解AI编译器的出现背景、架构设计和主流实现，为后续深入学习AI编译器的前端优化和后端优化打下基础。</p>
+</section>
+<section id="id3">
+<h2>2.1 AI编译器出现的背景<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<section id="id4">
+<h3>2.1.1 深度学习框架的崛起与挑战<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>深度学习在过去的十年间取得了突飞猛进的发展。从2012年AlexNet在ImageNet竞赛中取得突破性成绩开始，深度学习迅速渗透到计算机视觉、自然语言处理、语音识别、推荐系统等各个领域，推动了人工智能技术的广泛应用。</p>
+<p>随着深度学习技术的快速发展，各种深度学习框架应运而生。<strong>TensorFlow</strong>由谷歌开发维护，是最早也是最流行的深度学习框架之一；<strong>PyTorch</strong>由Facebook（现Meta）开发，以其动态计算图和易用性迅速获得了广泛的用户基础；<strong>MindSpore</strong>由华为开发，采用了静态图和动态图融合的设计；<strong>PaddlePaddle</strong>由百度开发，是国内较早的开源深度学习平台；<strong>OneFlow</strong>、<strong>MegEngine</strong>等框架也各有特色。</p>
+<p>这些框架的出现极大地降低了深度学习开发的门槛，使得研究者和工程师可以更专注于模型设计和算法创新，而不必过多关注底层的计算细节。然而，深度学习框架的繁荣也带来了新的问题：</p>
+<p><strong>模型部署的碎片化</strong>：不同的框架使用不同的模型格式和计算图表示。一个在PyTorch中训练的模型，想要部署到不同的硬件平台，可能需要经过复杂的转换过程。</p>
+<p><strong>硬件多样性的挑战</strong>：深度学习硬件加速器种类繁多，包括GPU（NVIDIA、AMD）、NPU（华为昇腾、Cambricon）、TPU（谷歌）、DPU（DeepWave）等。每种硬件都有其独特的编程模型和执行方式，为模型部署带来了巨大的复杂性。</p>
+<p><strong>性能优化的困难</strong>：深度学习模型通常包含大量的计算操作，如何将这些操作高效地映射到目标硬件上，是一个极具挑战性的问题。手工优化虽然可以获得最佳性能，但需要大量的人力和专业知识。</p>
+</section>
+<section id="id5">
+<h3>2.1.2 传统编译器的局限性<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>在第一章中，我们学习了传统编译器（如GCC、LLVM）的基本原理。传统编译器在通用程序的编译方面已经非常成熟，但面对深度学习这一特定领域，传统编译器显现出明显的局限性：</p>
+<p><strong>缺乏对张量运算的支持</strong>：传统编译器主要面向标量运算设计，而深度学习中的核心操作是张量（多维数组）运算，如矩阵乘法、卷积等。传统编译器无法有效表达和优化这些张量操作。</p>
+<p><strong>缺乏对神经网络特定优化的理解</strong>：深度学习编译器需要进行一些领域特定的优化，如算子融合、批量归一化融合、激活函数融合等。传统编译器不了解这些优化的语义，无法自动进行。</p>
+<p><strong>计算图层面的优化缺失</strong>：传统编译器的优化主要在函数或基本块级别进行，而深度学习模型的计算图可以在更高层面进行优化，如公共子表达式消除、死算子消除等。传统编译器无法获取计算图的整体信息。</p>
+<p><strong>硬件映射的困难</strong>：不同的深度学习硬件有不同的特性和编程接口。传统编译器无法理解这些硬件特有的调度策略和内存层次结构，难以生成高效的硬件代码。</p>
+<p><strong>自动微分支持的缺失</strong>：深度学习训练依赖于反向传播算法，需要自动计算梯度。传统编译器没有这方面的支持，需要借助深度学习框架自身的自动微分机制。</p>
+<p>这些局限性促使了AI编译器的诞生和发展。AI编译器专门为深度学习领域设计，能够理解神经网络的计算图结构，进行领域特定的优化，并支持多种硬件平台的代码生成。</p>
+</section>
+<section id="id6">
+<h3>2.1.3 硬件碎片化与软件栈问题<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>近年来，AI硬件呈现出爆发式增长的态势。不同的芯片厂商推出了各种各样的AI加速器，这些硬件在架构设计、性能特性、编程接口等方面都有很大的差异。</p>
+<p>从硬件类型来看，主要包括以下几类：</p>
+<p><strong>GPU</strong>：以NVIDIA的CUDA生态为主导，AMD的ROCm也在持续发展。GPU拥有大量的并行计算单元，适合深度学习的大规模矩阵运算。</p>
+<p><strong>NPU（神经网络处理器）</strong>：专门为神经网络设计的ASIC芯片，如华为昇腾系列、寒武纪MLU系列等。NPU在特定任务上能提供极高的能效比。</p>
+<p><strong>TPU（张量处理器）</strong>：谷歌开发的专用AI加速器，采用脉动阵列架构，在大规模推理任务中表现出色。</p>
+<p><strong>FPGA</strong>：可编程逻辑器件，可以通过硬件描述语言或高层综合工具实现定制的神经网络加速器。</p>
+<p><strong>DSP</strong>：数字信号处理器，适合某些特定的信号处理任务。</p>
+<p>这种硬件碎片化带来了严重的软件碎片化问题。每个硬件厂商都需要开发自己的软件栈，包括运行时库、编译器、调度器等。这导致了几个严重的问题：</p>
+<p><strong>重复开发</strong>：类似的优化技术（如算子融合、内存优化）被不同厂商重复实现，造成了巨大的人力浪费。</p>
+<p><strong>互不兼容</strong>：不同厂商的编译器和运行时互不兼容，开发者在一个平台上开发的模型无法直接移植到另一个平台。</p>
+<p><strong>质量参差不齐</strong>：一些小众硬件平台的软件质量可能不如主流平台，影响用户体验和AI应用的稳定性。</p>
+<p><strong>学习成本高</strong>：开发者需要学习多个平台的软件工具，增加了学习成本和开发复杂度。</p>
+<p>正如编译器领域在个人电脑时代有GCC统一编译生态，在AI时代也需要一个类似的统一编译基础设施来解决碎片化问题。AI编译器正是朝着这个方向迈出的重要一步。</p>
+</section>
+<section id="id7">
+<h3>2.1.4 AI编译器的设计目标<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>针对上述挑战，AI编译器应运而生。AI编译器的设计目标主要包括：</p>
+<p><strong>提供统一的模型表示</strong>：AI编译器定义了一种或多种标准化的中间表示（IR），用于表示神经网络模型的计算图。这种表示独立于源框架和目标硬件，成为各方共同的”交流语言”。</p>
+<p><strong>实现跨平台部署</strong>：通过将模型转换为统一的中间表示，AI编译器可以支持将一个框架训练的模型部署到不同的硬件平台，大大简化了部署工作。</p>
+<p><strong>自动化性能优化</strong>：AI编译器通过一系列自动化的优化技术，如算子融合、内存优化、调度优化等，提升模型在目标硬件上的执行效率。</p>
+<p><strong>降低开发门槛</strong>：AI编译器使得开发者可以使用高层API进行开发，而不必深入了解底层硬件细节。同时，编译器工程师可以专注于编译优化，而不必为每个硬件平台单独开发优化代码。</p>
+<p><strong>支持自动化调优</strong>：AI编译器可以通过自动调优技术，自动寻找最佳的优化参数配置，降低手工优化的工作量。</p>
+</section>
+<section id="id8">
+<h3>2.1.5 AI编译器的黄金时代<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p>2019年，图灵奖获得者David Patterson发表了”计算机架构新的黄金年代”演讲，指出随着摩尔定律的放缓，领域特定架构（DSA）将成为未来计算发展的主要趋势。2021年，LLVM之父Chris Lattner发表了”编译器的黄金年代”演讲，指出随着AI硬件的爆发式增长，AI编译器将迎来前所未有的发展机遇。</p>
+<p>这些观点得到了业界的广泛认同。当前，AI编译器领域正处于快速发展的阶段，各种技术路线百家争鸣，新的研究成果不断涌现。可以预见，在未来十年，AI编译器将成为计算机系统领域最重要的发展方向之一。</p>
+</section>
+</section>
+<section id="id9">
+<h2>2.2 AI编译器架构<a class="headerlink" href="#id9" title="Link to this heading">#</a></h2>
+<section id="id10">
+<h3>2.2.1 AI编译器整体架构<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>AI编译器的架构设计借鉴了传统编译器的分层思想，但在具体实现上有其独特之处。一个典型的AI编译器通常包括以下几个主要组成部分：</p>
+<p><strong>前端（Frontend）</strong>：负责接收来自不同深度学习框架的模型，将模型转换为AI编译器内部的中间表示（IR）。前端还需要处理模型的验证、类型推导等工作。</p>
+<p><strong>图优化器（Graph Optimizer）</strong>：对计算图进行高层优化，包括算子融合、常量折叠、死代码消除、公共子表达式消除等。这些优化不依赖于具体的硬件，是平台无关的优化。</p>
+<p><strong>后端（Backend）</strong>：负责将优化后的计算图Lowering（降级）到特定硬件的低层次IR，并进行硬件相关的优化，如内存布局转换、指令调度、寄存器分配等。</p>
+<p><strong>代码生成器（Code Generator）</strong>：将优化后的IR转换为目标硬件的可执行代码，可能直接生成硬件指令，也可能生成调用硬件SDK的代码。</p>
+<p><strong>运行时（Runtime）</strong>：负责管理模型执行时的资源调度、内存分配、算子调度等。运行时是模型真正执行时发挥作用的部分。</p>
+<p>这种分层架构的优势在于：</p>
+<ul class="simple">
+<li><p><strong>模块化</strong>：各层之间通过清晰的接口交互，可以独立开发和测试</p></li>
+<li><p><strong>可扩展性</strong>：可以方便地添加新的优化Pass、新的硬件支持、新的框架支持</p></li>
+<li><p><strong>可复用性</strong>：优化层可以被不同的前端和后端复用</p></li>
+</ul>
+</section>
+<section id="ir">
+<h3>2.2.2 多层IR设计<a class="headerlink" href="#ir" title="Link to this heading">#</a></h3>
+<p>AI编译器的一个核心设计是多层IR（中间表示）。与第一章介绍的LLVM IR不同，AI编译器通常使用多层IR来在不同抽象层次上表示模型。</p>
+<p><strong>高层IR（图IR）</strong>：这一层IR关注的是神经网络的整体结构，用节点表示算子，用边表示张量的依赖关系。高层IR不关注算子的具体实现，只关注算子之间的数据流和控制流。</p>
+<p><strong>中层IR（算子IR）</strong>：这一层IR关注的是单个算子的内部实现。它将高层IR中的算子节点展开为更细粒度的操作，如循环、分支、内存访问等。</p>
+<p><strong>低层IR（硬件IR）</strong>：这一层IR非常接近硬件的编程模型，描述了具体的指令序列、寄存器使用、内存访问模式等。低层IR与目标硬件紧密相关。</p>
+<p>使用多层IR的优势在于：</p>
+<ul class="simple">
+<li><p><strong>分离关注点</strong>：不同层次的优化可以独立进行，每层优化关注其特有的问题</p></li>
+<li><p><strong>渐进式Lowering</strong>：通过逐层Lowering，可以更容易地实现渐进式的优化和调试</p></li>
+<li><p><strong>多目标支持</strong>：同一套高层IR可以Lowering到不同的低层IR，支持多硬件目标</p></li>
+</ul>
+<p>以TVM为例，TVM使用了多层IR：</p>
+<ol class="arabic simple">
+<li><p><strong>Relay IR</strong>（高层IR）：用于表示神经网络的完整计算图</p></li>
+<li><p><strong>Tensor IR（TIR）</strong>（低层IR）：用于表示算子的循环嵌套执行</p></li>
+</ol>
+<p>从Relay IR到TIR的过程，就是一个逐步Lowering、逐步具体化的过程。</p>
+</section>
+<section id="id11">
+<h3>2.2.3 前端与后端分离<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p>与LLVM的设计思想类似，AI编译器也强调前端与后端的分离。这种设计使得：</p>
+<ul class="simple">
+<li><p><strong>多框架支持</strong>：可以编写不同的前端来支持不同的深度学习框架</p></li>
+<li><p><strong>多硬件支持</strong>：可以编写不同的后端来支持不同的硬件平台</p></li>
+<li><p><strong>优化复用</strong>：优化Pass可以在不同的前端和后端组合中复用</p></li>
+</ul>
+<p>一个理想的多框架、多硬件AI编译器架构如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>框架1（PyTorch） ──┐
+框架2（TF）    ────┼──► 前端 ──► 图IR ──► 优化器 ──► 算子IR ──► 后端1（NVIDIA GPU）
+框架3（ONNX）  ────┤                                        └──► 后端2（华为NPU）
+框架N（其他） ────┘                                        └──► 后端3（AMD GPU）
+                                                                └──► 后端N（其他）
+</pre></div>
+</div>
+</section>
+<section id="id12">
+<h3>2.2.4 表达层面的演进<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>AI编译器在表达层面经历了从朴素表达到灵活表达的发展过程。</p>
+<p><strong>朴素AI编译器阶段</strong>的代表是TensorFlow 1.x。这一阶段的编译器主要处理静态计算图，开发者需要预先定义完整的计算图结构。计算图在执行前被完整地定义和优化，这种方式有利于编译器进行全局优化，但缺乏灵活性。</p>
+<p>主要特点：</p>
+<ul class="simple">
+<li><p>静态图执行模式：计算图在运行前完全定义</p></li>
+<li><p>算子粒度固定：算子的边界由框架预先定义</p></li>
+<li><p>优化相对简单：主要是图级别的优化</p></li>
+<li><p>对动态控制流支持较弱</p></li>
+</ul>
+<p><strong>专用AI编译器阶段</strong>的代表是TVM、XLA等。这一阶段的编译器开始支持更灵活的表达，能够处理动态形状、控制流等复杂情况。同时，编译器开始提供更丰富的优化手段。</p>
+<p>主要特点：</p>
+<ul class="simple">
+<li><p>支持更灵活的表达：如动态形状、动态控制流</p></li>
+<li><p>打开图算边界：可以进行细粒度的算子融合</p></li>
+<li><p>更丰富的优化：如自动调度、多级并行</p></li>
+<li><p>开始支持自动调优</p></li>
+</ul>
+<p><strong>通用AI编译器阶段</strong>是未来发展的目标。这一阶段的AI编译器将实现真正的多框架、多硬件统一表示，以及全自动的优化。</p>
+<p>主要特点：</p>
+<ul class="simple">
+<li><p>统一表达层：图和算子的统一表示</p></li>
+<li><p>全自动优化：自动调度、自动分块、自动代码生成</p></li>
+<li><p>动静统一：动态图和静态图的统一处理</p></li>
+<li><p>高度可扩展：便于添加新的优化和新的硬件支持</p></li>
+</ul>
+</section>
+<section id="id13">
+<h3>2.2.5 优化层面的演进<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p>AI编译器的优化也经历了从简单到复杂的发展过程。</p>
+<p><strong>图级别优化（前端优化）</strong>：这一层次的优化关注计算图的整体结构，包括：</p>
+<ul class="simple">
+<li><p><strong>算子融合（Operator Fusion）</strong>：将多个连续的算子合并为一个，减少内存访问和Kernel调度开销</p></li>
+<li><p><strong>常量折叠（Constant Folding）</strong>：在编译时计算只包含常量输入的算子</p></li>
+<li><p><strong>死代码消除（Dead Code Elimination）</strong>：删除不会影响最终结果的算子</p></li>
+<li><p><strong>公共子表达式消除（Common Subexpression Elimination）</strong>：消除重复的计算子图</p></li>
+</ul>
+<p><strong>算子级别优化（后端优化）</strong>：这一层次的优化关注单个算子的执行效率，包括：</p>
+<ul class="simple">
+<li><p><strong>循环优化</strong>：循环展开、循环分块、循环重排等</p></li>
+<li><p><strong>向量化</strong>：利用SIMD指令进行数据级并行</p></li>
+<li><p><strong>并行化</strong>：利用多核进行线程级并行</p></li>
+<li><p><strong>内存优化</strong>：数据布局优化、存储层次优化</p></li>
+</ul>
+<p><strong>调度优化</strong>：这一层次的优化关注算子在硬件上的执行策略，包括：</p>
+<ul class="simple">
+<li><p><strong>静态调度</strong>：在编译时确定算子的执行顺序和线程分配</p></li>
+<li><p><strong>动态调度</strong>：在运行时根据实际情况动态调整执行策略</p></li>
+</ul>
+</section>
+<section id="id14">
+<h3>2.2.6 与传统编译器的关系<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p>AI编译器并非凭空出现，而是建立在传统编译器数十年技术积累的基础之上。两者的关系可以概括为：</p>
+<p><strong>技术传承</strong>：AI编译器大量借鉴了传统编译器的技术，包括：</p>
+<ul class="simple">
+<li><p>IR设计和Pass机制</p></li>
+<li><p>优化算法（如常量折叠、死代码消除）</p></li>
+<li><p>代码生成技术</p></li>
+</ul>
+<p><strong>互补关系</strong>：AI编译器在传统编译器的基础上进行了领域特定的扩展：</p>
+<ul class="simple">
+<li><p>计算图抽象：处理神经网络特有的计算图表示</p></li>
+<li><p>张量运算优化：针对大规模矩阵运算的特殊优化</p></li>
+<li><p>硬件映射：支持专用AI加速器的代码生成</p></li>
+</ul>
+<p><strong>依赖关系</strong>：某些AI编译器在实际代码生成时会调用传统编译器：</p>
+<ul class="simple">
+<li><p>TVM可以Lowering到LLVM IR，调用LLVM进行最终的代码生成</p></li>
+<li><p>MLIR可以Lowering到LLVM IR，利用LLVM的支持生成CPU/GPU代码</p></li>
+</ul>
+<p><strong>独立发展</strong>：AI编译器也发展出自己独特的技术，如：</p>
+<ul class="simple">
+<li><p>自动调度（Auto Tuning）</p></li>
+<li><p>算子融合的优化规则</p></li>
+<li><p>针对AI硬件的专用优化</p></li>
+</ul>
+</section>
+</section>
+<section id="id15">
+<h2>2.3 主流AI编译器介绍<a class="headerlink" href="#id15" title="Link to this heading">#</a></h2>
+<section id="tvm">
+<h3>2.3.1 TVM<a class="headerlink" href="#tvm" title="Link to this heading">#</a></h3>
+<p><strong>TVM（Tensor Virtual Machine）</strong> 是由华盛顿大学周有志博士等人发起的一个端到端的深度学习编译器项目，现在是Apache软件基金会的顶级项目。TVM的目标是优化深度学习模型在各种硬件平台上的执行效率。</p>
+<section id="id16">
+<h4>2.3.1.1 TVM的设计理念<a class="headerlink" href="#id16" title="Link to this heading">#</a></h4>
+<p>TVM的设计理念可以概括为”<strong>分离计算与调度</strong>”。在TVM中，算子的**计算（Compute）**描述了”做什么”，即算子的数学定义；**调度（Schedule）**描述了”怎么做”，即算子在硬件上的具体执行方式。</p>
+<p>这种设计的优势在于：</p>
+<ul class="simple">
+<li><p><strong>灵活性</strong>：同一计算可以有多种不同的调度实现</p></li>
+<li><p><strong>可优化性</strong>：通过调整调度可以方便地进行性能优化</p></li>
+<li><p><strong>可自动化</strong>：可以编写搜索算法自动寻找最优调度</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># TVM中的计算定义</span>
+<span class="n">N</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">runtime</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">te</span><span class="o">.</span><span class="n">placeholder</span><span class="p">((</span><span class="n">N</span><span class="p">,),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">te</span><span class="o">.</span><span class="n">placeholder</span><span class="p">((</span><span class="n">N</span><span class="p">,),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;B&#39;</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">te</span><span class="o">.</span><span class="n">compute</span><span class="p">((</span><span class="n">N</span><span class="p">,),</span> <span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;C&#39;</span><span class="p">)</span>
+
+<span class="c1"># 默认调度</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">te</span><span class="o">.</span><span class="n">create_schedule</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">op</span><span class="p">)</span>
+
+<span class="c1"># 自定义调度：分块</span>
+<span class="n">xo</span><span class="p">,</span> <span class="n">xi</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">C</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">C</span><span class="p">]</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">factor</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id17">
+<h4>2.3.1.2 TVM的架构<a class="headerlink" href="#id17" title="Link to this heading">#</a></h4>
+<p>TVM的整体架构可以分为几个主要部分：</p>
+<p><strong>Relay</strong>：TVM的图级别IR，用于表示神经网络的完整计算图。Relay支持：</p>
+<ul class="simple">
+<li><p>静态和动态形状</p></li>
+<li><p>控制流操作（如if、while）</p></li>
+<li><p>自动微分（用于训练）</p></li>
+<li><p>丰富的算子库</p></li>
+</ul>
+<p><strong>Tensor IR（TIR）</strong>：TVM的张量级别IR，用于表示算子的循环执行。TIR是Lowering的目标，也是进行细粒度优化的基础。</p>
+<p><strong>优化Pass</strong>：TVM实现了丰富的优化Pass，包括：</p>
+<ul class="simple">
+<li><p>图优化：算子融合、常量折叠、死代码消除等</p></li>
+<li><p>TIR优化：循环变换、指令调度、内存优化等</p></li>
+</ul>
+<p><strong>后端支持</strong>：TVM支持多种后端目标：</p>
+<ul class="simple">
+<li><p>CPU：X86、ARM、RISC-V</p></li>
+<li><p>GPU：NVIDIA CUDA、AMD ROCm</p></li>
+<li><p>专用加速器：通过插件支持</p></li>
+</ul>
+</section>
+<section id="auto-tuning">
+<h4>2.3.1.3 Auto Tuning<a class="headerlink" href="#auto-tuning" title="Link to this heading">#</a></h4>
+<p>TVM的一个重要特性是其自动调优（Auto Tuning）功能。由于调度空间的巨大，手工寻找最优调度几乎是不可能的。TVM提供了自动调优工具，可以自动搜索最优的调度配置。</p>
+<p>TVM的自动调优经历了多代发展：</p>
+<p><strong>AutoTVM</strong>：第一代自动调优系统，基于模板。开发者需要为每个算子编写调度模板，定义可调参数的空间。AutoTVM使用统计学习方法（XGBoost）作为代价模型，预测不同配置的性能。</p>
+<p><strong>Ansor（Auto Scheduler）</strong>：第二代自动调优系统，无需手工编写模板。Ansor自动生成覆盖广泛的搜索空间，并使用进化搜索进行优化。</p>
+<p><strong>Meta Schedule</strong>：第三代自动调优系统，提供了统一的API，支持手动调度、AutoTVM风格和Auto Scheduler风格的调度。</p>
+</section>
+<section id="id18">
+<h4>2.3.1.4 TVM的应用场景<a class="headerlink" href="#id18" title="Link to this heading">#</a></h4>
+<p>TVM被广泛应用于：</p>
+<ul class="simple">
+<li><p>模型部署：将训练好的模型部署到各种硬件</p></li>
+<li><p>性能优化：优化模型在特定硬件上的执行效率</p></li>
+<li><p>硬件设计空间探索：评估不同硬件配置的性能</p></li>
+<li><p>研究平台：作为深度学习编译器研究的实验平台</p></li>
+</ul>
+<p>TVM也被多家厂商采用进行定制开发，如希姆计算基于TVM支持了其AI芯片，华为的TBE（Tensor Boost Engine）也基于TVM框架开发。</p>
+</section>
+</section>
+<section id="xla">
+<h3>2.3.2 XLA<a class="headerlink" href="#xla" title="Link to this heading">#</a></h3>
+<p><strong>XLA（Accelerated Linear Algebra）</strong> 是谷歌开发的深度学习编译器，最初作为TensorFlow的一部分开发，现在也被其他框架使用。XLA的名字来自”加速线性代数”，反映了其核心优化目标。</p>
+<section id="id19">
+<h4>2.3.2.1 XLA的设计特点<a class="headerlink" href="#id19" title="Link to this heading">#</a></h4>
+<p>XLA的设计特点是<strong>简单、高效、与TensorFlow紧密集成</strong>。作为TensorFlow的默认编译器，XLA的主要目标是在不显著增加编译时间的情况下，提升TensorFlow模型的执行效率。</p>
+<p>XLA的核心思想包括：</p>
+<p><strong>HLO（High Level Optimizer）</strong>：XLA使用HLO作为其中间表示。HLO是一种平台无关的IR，描述了算子的高层计算逻辑。XLA的优化主要在HLO层面进行。</p>
+<p><strong>依赖分析</strong>：XLA通过依赖分析理解算子之间的数据流关系，为优化提供基础。</p>
+<p><strong>内存规划</strong>：XLA在编译时进行内存规划，预分配所有中间缓冲区的内存，减少运行时的内存分配开销。</p>
+<p><strong>代码生成</strong>：XLA针对不同的硬件后端生成优化代码，包括CPU（通过LLVM）、GPU（通过CUDA或ROCm）。</p>
+</section>
+<section id="id20">
+<h4>2.3.2.2 XLA的优化技术<a class="headerlink" href="#id20" title="Link to this heading">#</a></h4>
+<p>XLA实现了多种优化技术：</p>
+<p><strong>算子融合</strong>：XLA的核心优化之一。XLA能够自动识别可以融合的算子模式，将多个算子融合为一个 fused kernel，减少内存访问。</p>
+<p><strong>常量折叠</strong>：在编译时计算常量表达式，减少运行时的计算量。</p>
+<p><strong>指令调度</strong>：优化指令的执行顺序，减少GPU上的寄存器冲突和内存访问延迟。</p>
+<p><strong>内存优化</strong>：通过缓冲区共享减少内存占用，优化数据布局提高缓存命中率。</p>
+</section>
+<section id="xlatensorflow">
+<h4>2.3.2.3 XLA与TensorFlow的集成<a class="headerlink" href="#xlatensorflow" title="Link to this heading">#</a></h4>
+<p>在TensorFlow中，XLA可以通过以下方式启用：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 启用XLA JIT编译</span>
+<span class="c1"># 方法1：在session配置中启用</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">ConfigProto</span><span class="p">()</span>
+<span class="n">config</span><span class="o">.</span><span class="n">graph_options</span><span class="o">.</span><span class="n">optimizer_options</span><span class="o">.</span><span class="n">global_jit_level</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">OptimizerOptions</span><span class="o">.</span><span class="n">ON_1</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">compat</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+
+<span class="c1"># 方法2：使用 tf.function 的 JIT 编译</span>
+<span class="nd">@tf</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">jit_compile</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">train_step</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="c1"># 启用XLA编译</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>XLA支持多种执行模式：</p>
+<ul class="simple">
+<li><p><strong>JIT编译</strong>：实时编译执行的算子，适合交互式使用</p></li>
+<li><p><strong>AOT编译</strong>：提前编译整个计算图，生成可执行文件，适合部署场景</p></li>
+</ul>
+</section>
+</section>
+<section id="glow">
+<h3>2.3.3 Glow<a class="headerlink" href="#glow" title="Link to this heading">#</a></h3>
+<p><strong>Glow</strong> 是Facebook（现Meta）开发的深度学习编译器，最初作为PyTorch的一部分，现已发展为独立的开源项目。Glow的名字来自”Graph Lowering”，反映了其核心技术特点。</p>
+<section id="id21">
+<h4>2.3.3.1 Glow的设计理念<a class="headerlink" href="#id21" title="Link to this heading">#</a></h4>
+<p>Glow的设计理念是**”图Lowering + 内存计划 + 代码生成”**。Glow认为，深度学习编译器的主要任务是将高层次的图表示Lowering到低层次的、可以直接执行的指令。</p>
+<p>Glow的关键技术特点包括：</p>
+<p><strong>两阶段Lowering</strong>：Glow将Lowering过程分为两个主要阶段：</p>
+<ul class="simple">
+<li><p><strong>高期望Lowering</strong>：将神经网络算子Lowering到 Glow 的内部节点表示</p></li>
+<li><p><strong>低期望Lowering</strong>：将内部节点Lowering到具体的硬件指令</p></li>
+</ul>
+<p><strong>内存计划</strong>：Glow在编译时进行完整的内存计划，计算所有中间张量的存储位置。这使得Glow可以：</p>
+<ul class="simple">
+<li><p>复用临时缓冲区</p></li>
+<li><p>将活跃张量映射到更快的存储层次</p></li>
+<li><p>减少内存分配开销</p></li>
+</ul>
+<p><strong>量化支持</strong>：Glow提供了优秀的量化（Quantization）支持，可以将float32模型转换为int8等低精度格式，在支持的硬件上大幅提升性能。</p>
+</section>
+<section id="id22">
+<h4>2.3.3.2 Glow的架构<a class="headerlink" href="#id22" title="Link to this heading">#</a></h4>
+<p>Glow的架构可以分为几个主要层次：</p>
+<p><strong>图表示层</strong>：处理神经网络计算图的输入和高层优化。</p>
+<p><strong>节点表示层</strong>：定义了各种节点类型，如、张量操作、神经网络特定操作等。</p>
+<p><strong>降低层</strong>：将高层节点Lowering到低层节点，进行设备无关和设备相关的优化。</p>
+<p><strong>代码生成层</strong>：针对特定硬件生成可执行代码。</p>
+<p>Glow支持的硬件后端包括：</p>
+<ul class="simple">
+<li><p>CPU：X86、ARM</p></li>
+<li><p>GPU：NVIDIA GPU（通过CUDA）</p></li>
+<li><p>专用加速器：Glow提供了插件机制支持新的硬件</p></li>
+</ul>
+</section>
+<section id="id23">
+<h4>2.3.3.3 Glow的应用<a class="headerlink" href="#id23" title="Link to this heading">#</a></h4>
+<p>Glow主要应用在：</p>
+<ul class="simple">
+<li><p>PyTorch Mobile：Glow是PyTorch Mobile模型量化和优化的核心组件</p></li>
+<li><p>PyTorch Live：用于移动端和边缘设备的AI应用</p></li>
+<li><p>ONNX支持：Glow支持ONNX模型的加载和优化</p></li>
+</ul>
+</section>
+</section>
+<section id="mlir">
+<h3>2.3.4 MLIR<a class="headerlink" href="#mlir" title="Link to this heading">#</a></h3>
+<p><strong>MLIR（Multi-Level Intermediate Representation）</strong> 是谷歌在2019年开源的编译器基础设施。MLIR不仅仅是一个AI编译器，而是一个通用的编译器框架，旨在构建连接不同抽象层次的编译器生态。</p>
+<section id="id24">
+<h4>2.3.4.1 MLIR的设计理念<a class="headerlink" href="#id24" title="Link to this heading">#</a></h4>
+<p>MLIR的设计理念是**”可扩展的、可组合的中间表示框架”**。MLIR认为，理想的编译器基础设施应该能够：</p>
+<ul class="simple">
+<li><p>支持多种抽象层次：从高级语言到硬件指令</p></li>
+<li><p>允许多个IR共存并相互转换</p></li>
+<li><p>提供共享的优化基础设施</p></li>
+</ul>
+<p>MLIR的核心概念包括：</p>
+<p><strong>Dialect（方言）</strong>：MLIR允许定义多个”方言”，每个方言代表一个特定抽象层次或领域的IR。例如：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">std</span></code> 方言：标准的算术和内存操作</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">linalg</span></code> 方言：用于线性代数的操作</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gpu</span></code> 方言：GPU特定的操作</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tensor</span></code> 方言：张量操作</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">air</span></code> 方言：用于AI加速器的操作</p></li>
+</ul>
+<p>方言的设计使得MLIR可以灵活地表示不同层次和领域的概念。</p>
+<p><strong>Operation（操作）</strong>：MLIR中的基本计算单元。每个操作可以有输入、输出、属性，可以附加rewrite规则。</p>
+<p><strong>Type（类型）</strong>：MLIR支持丰富的类型系统，包括整数、浮点数、向量、张量等。</p>
+</section>
+<section id="id25">
+<h4>2.3.4.2 MLIR的架构<a class="headerlink" href="#id25" title="Link to this heading">#</a></h4>
+<p>MLIR的架构包括：</p>
+<p><strong>框架层</strong>：MLIR核心框架，包括：</p>
+<ul class="simple">
+<li><p>Dialect定义机制</p></li>
+<li><p>Pass管理机制</p></li>
+<li><p>Pattern rewrite机制</p></li>
+<li><p>模式匹配和转换工具</p></li>
+</ul>
+<p><strong>标准方言</strong>：MLIR提供了一组标准方言，如：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">builtin</span></code>：内置的基本类型和操作</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cf</span></code>：控制流操作</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">arith</span></code>：算术操作</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">func</span></code>：函数操作</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scf</span></code>：结构化控制流操作</p></li>
+</ul>
+<p><strong>工具链</strong>：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mlir-opt</span></code>：MLIR的优化工具，运行各种Pass</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mlir-translate</span></code>：MLIR的转换工具，进行格式转换</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mlir-cpu-runner</span></code>：CPU执行器</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mlir-reduce</span></code>：测试用例简化工具</p></li>
+</ul>
+<p><strong>硬件支持</strong>：</p>
+<ul class="simple">
+<li><p>CPU后端：通过LLVM生成代码</p></li>
+<li><p>GPU后端：通过NVCC或ROCm生成CUDA/HIP代码</p></li>
+<li><p>其他：通过插件支持</p></li>
+</ul>
+</section>
+<section id="id26">
+<h4>2.3.4.3 MLIR的应用<a class="headerlink" href="#id26" title="Link to this heading">#</a></h4>
+<p>MLIR的应用场景非常广泛：</p>
+<p><strong>TensorFlow</strong>：TensorFlow 2.x使用MLIR进行图优化和XLA代码生成。</p>
+<p><strong>PyTorch</strong>：PyTorch的TorchMLIR项目使用MLIR作为其中间表示。</p>
+<p><strong>AI加速器</strong>：多家AI芯片公司使用MLIR作为编译器框架，如：</p>
+<ul class="simple">
+<li><p>华为的CANN使用MLIR</p></li>
+<li><p>Graphcore的编译器基于MLIR</p></li>
+<li><p>英特尔的多款产品使用MLIR</p></li>
+</ul>
+<p><strong>通用编译器</strong>：MLIR也被用于构建其他领域的编译器，如：</p>
+<ul class="simple">
+<li><p>SPIRV-Tools用于Vulkan图形API</p></li>
+<li><p>Flang用于Fortran编译器</p></li>
+</ul>
+</section>
+<section id="mlirtvm">
+<h4>2.3.4.4 MLIR与TVM的比较<a class="headerlink" href="#mlirtvm" title="Link to this heading">#</a></h4>
+<p>MLIR和TVM都是深度学习编译器领域的重要项目，但它们的设计目标和侧重点不同：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>特性</p></th>
+<th class="head text-center"><p>MLIR</p></th>
+<th class="head text-center"><p>TVM</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>设计目标</p></td>
+<td class="text-center"><p>通用的编译器框架</p></td>
+<td class="text-center"><p>专用的深度学习编译器</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>核心特点</p></td>
+<td class="text-center"><p>多层次IR、可扩展方言</p></td>
+<td class="text-center"><p>计算与调度分离、自动调优</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>方言支持</p></td>
+<td class="text-center"><p>内置多种方言，支持自定义</p></td>
+<td class="text-center"><p>主要关注Relay和TIR</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>硬件支持</p></td>
+<td class="text-center"><p>CPU、GPU、AI加速器</p></td>
+<td class="text-center"><p>CPU、GPU、AI加速器</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>自动优化</p></td>
+<td class="text-center"><p>有限的自动优化</p></td>
+<td class="text-center"><p>强大的Auto Tuning</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>学习曲线</p></td>
+<td class="text-center"><p>较陡（概念多、API复杂）</p></td>
+<td class="text-center"><p>较平缓（概念清晰）</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>生态</p></td>
+<td class="text-center"><p>快速增长中</p></td>
+<td class="text-center"><p>成熟稳定</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>两者的关系不是竞争而是互补。TVM可以作为MLIR的一个硬件后端，MLIR的计算图可以Lowering到TVM的算子表示。</p>
+</section>
+</section>
+<section id="id27">
+<h3>2.3.5 其他AI编译器<a class="headerlink" href="#id27" title="Link to this heading">#</a></h3>
+<p>除了上述四个主流AI编译器，还有一些值得关注的项目：</p>
+<p><strong>Apache MXNet（启蒙）</strong>：虽然主要是一个深度学习框架，但MXNet也包含了自己的图优化引擎（IR）。MXNet的NDC（NNVM Digital Compiler）是其图优化和代码生成的核心。</p>
+<p><strong>Tensor Comprehensions（TC）</strong>：由Facebook开发的工具，可以从高级数学表达式自动生成高效的GPU代码。TC使用 polyhedral 模型进行优化。</p>
+<p><strong>GEEP</strong>：微软开发的深度学习编译器，作为Windows ML的一部分提供。</p>
+<p><strong>PaddlePaddle Lite</strong>：百度飞桨的端侧推理引擎，提供了模型优化和硬件适配能力。</p>
+<p><strong>MindSpore Lite</strong>：华为昇腾的推理引擎，提供了模型优化和硬件加速能力。</p>
+</section>
+</section>
+<section id="id28">
+<h2>2.4 AI编译器与深度学习框架的关系<a class="headerlink" href="#id28" title="Link to this heading">#</a></h2>
+<section id="id29">
+<h3>2.4.1 框架与编译器的协作<a class="headerlink" href="#id29" title="Link to this heading">#</a></h3>
+<p>AI编译器与深度学习框架之间存在着紧密的协作关系。深度学习框架负责模型的构建和训练，而AI编译器负责模型的优化和部署。</p>
+<p>一个典型的协作流程如下：</p>
+<ol class="arabic simple">
+<li><p><strong>模型定义</strong>：开发者使用深度学习框架（如PyTorch、TensorFlow）定义和训练模型</p></li>
+<li><p><strong>模型导出</strong>：将训练好的模型导出为中间格式（如ONNX、 SavedModel）</p></li>
+<li><p><strong>编译器前端处理</strong>：AI编译器的前端加载模型表示，进行模型验证和转换</p></li>
+<li><p><strong>图优化</strong>：AI编译器的优化器对计算图进行各种优化</p></li>
+<li><p><strong>后端代码生成</strong>：AI编译器的后端生成目标硬件的可执行代码</p></li>
+<li><p><strong>部署执行</strong>：优化后的模型在目标硬件上执行推理</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 典型的框架+编译器工作流程（以PyTorch + TVM为例）</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torchvision</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tvm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tvm</span><span class="w"> </span><span class="kn">import</span> <span class="n">relay</span>
+
+<span class="c1"># 1. 定义和训练模型</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">resnet50</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+<span class="c1"># 2. 准备输入</span>
+<span class="n">input_shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">)</span>
+<span class="n">input_data</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">input_shape</span><span class="p">)</span>
+
+<span class="c1"># 3. 导出为TorchScript</span>
+<span class="n">scripted_model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">input_data</span><span class="p">)</span>
+<span class="n">scripted_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;resnet50.pt&quot;</span><span class="p">)</span>
+
+<span class="c1"># 4. 加载到TVM</span>
+<span class="n">mod</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">relay</span><span class="o">.</span><span class="n">frontend</span><span class="o">.</span><span class="n">from_pytorch</span><span class="p">(</span><span class="n">scripted_model</span><span class="p">,</span> <span class="n">input_info</span><span class="p">)</span>
+
+<span class="c1"># 5. 优化</span>
+<span class="k">with</span> <span class="n">tvm</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">PassContext</span><span class="p">(</span><span class="n">opt_level</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">lib</span> <span class="o">=</span> <span class="n">relay</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;cuda&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+<span class="c1"># 6. 部署</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tvm.contrib</span><span class="w"> </span><span class="kn">import</span> <span class="n">graph_executor</span>
+<span class="n">dev</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">cuda</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">module</span> <span class="o">=</span> <span class="n">graph_executor</span><span class="o">.</span><span class="n">GraphModule</span><span class="p">(</span><span class="n">lib</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">](</span><span class="n">dev</span><span class="p">))</span>
+<span class="n">module</span><span class="o">.</span><span class="n">set_input</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">tvm</span><span class="o">.</span><span class="n">nd</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">dev</span><span class="p">))</span>
+<span class="n">module</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">get_output</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="pytorch-2-0">
+<h3>2.4.2 PyTorch 2.0与编译器<a class="headerlink" href="#pytorch-2-0" title="Link to this heading">#</a></h3>
+<p>PyTorch 2.0的发布标志着深度学习框架开始全面拥抱编译器技术。PyTorch 2.0引入了几个重要的组件：</p>
+<p><strong>TorchDynamo</strong>：PyTorch 2.0的核心创新。TorchDynamo是一个Python级别的即时编译器，能够在运行时捕获PyTorch代码并将其转换为优化的计算图。TorchDynamo使用了多种技术来确保可靠地捕获各种Python代码模式。</p>
+<p><strong>torch.compile</strong>：用户使用torch.compile来启用PyTorch 2.0的编译功能：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@torch</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;reduce-overhead&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">train_step</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">loss</span>
+</pre></div>
+</div>
+<p><strong>Inductor</strong>：torch.compile的后端之一，使用Triton生成优化的GPU代码。</p>
+<p><strong>TorchDynamo + XLA</strong>：PyTorch也可以通过TorchDynamo与XLA集成，生成XLA格式的优化代码。</p>
+<p>PyTorch 2.0的目标是让”PyTorch代码运行得更快”，同时保持PyTorch的易用性和动态性。</p>
+</section>
+<section id="tensorflowxla">
+<h3>2.4.3 TensorFlow与XLA<a class="headerlink" href="#tensorflowxla" title="Link to this heading">#</a></h3>
+<p>TensorFlow从1.x到2.x的演进中，XLA始终是其编译器技术的核心。</p>
+<p>TensorFlow 1.x时期，XLA作为可选的JIT编译器使用，主要用于加速静态计算图的执行。</p>
+<p>TensorFlow 2.x时期，TF Lite和TF Serving等部署工具都大量依赖XLA进行模型优化。</p>
+<p>TensorFlow 2.x还引入了<code class="docutils literal notranslate"><span class="pre">tf.function</span></code>装饰器，允许用户用Python代码定义计算图，然后由XLA进行JIT编译：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@tf</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">jit_compile</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">train_step</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">GradientTape</span><span class="p">()</span> <span class="k">as</span> <span class="n">tape</span><span class="p">:</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">gradients</span> <span class="o">=</span> <span class="n">tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">trainable_variables</span><span class="p">)</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">apply_gradients</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">gradients</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">trainable_variables</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">loss</span>
+</pre></div>
+</div>
+</section>
+<section id="onnx">
+<h3>2.4.4 ONNX作为桥梁<a class="headerlink" href="#onnx" title="Link to this heading">#</a></h3>
+<p><strong>ONNX（Open Neural Network Exchange）</strong> 是微软、Facebook等公司共同推动的神经网络模型交换格式。ONNX定义了一组标准的算子和数据类型，使得不同框架训练的模型可以相互转换。</p>
+<p>ONNX在AI编译器生态中扮演着”桥梁”的角色：</p>
+<ul class="simple">
+<li><p>PyTorch → ONNX：PyTorch可以导出ONNX格式的模型</p></li>
+<li><p>TensorFlow → ONNX：TensorFlow可以通过转换工具导出ONNX格式</p></li>
+<li><p>ONNX → AI编译器：各种AI编译器（如TVM、ONNX Runtime）可以加载和优化ONNX模型</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># PyTorch导出ONNX</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">onnx</span><span class="o">.</span><span class="n">export</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="n">input_data</span><span class="p">,</span>
+    <span class="s2">&quot;model.onnx&quot;</span><span class="p">,</span>
+    <span class="n">export_params</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">opset_version</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+    <span class="n">do_constant_folding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">input_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">],</span>
+    <span class="n">output_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;output&#39;</span><span class="p">],</span>
+    <span class="n">dynamic_axes</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;batch_size&#39;</span><span class="p">},</span> <span class="s1">&#39;output&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;batch_size&#39;</span><span class="p">}}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>ONNX Runtime是微软开发的ONNX模型推理引擎，它也集成了AI编译器的优化技术，可以对ONNX模型进行图优化和硬件加速。</p>
+</section>
+</section>
+<section id="id30">
+<h2>2.5 AI编译器的发展阶段与未来<a class="headerlink" href="#id30" title="Link to this heading">#</a></h2>
+<section id="id31">
+<h3>2.5.1 AI编译器的发展阶段<a class="headerlink" href="#id31" title="Link to this heading">#</a></h3>
+<p>AI编译器的发展可以划分为三个主要阶段：</p>
+<p><strong>第一阶段：朴素AI编译器</strong></p>
+<p>这一阶段的代表是TensorFlow 1.x。朴素AI编译器的主要特点是：</p>
+<ul class="simple">
+<li><p>采用静态图执行模式，计算图在运行前完整定义</p></li>
+<li><p>算子粒度和边界预先固定，优化空间有限</p></li>
+<li><p>主要依赖硬件厂商提供的算子库（如cuDNN、MKL-DNN）</p></li>
+<li><p>缺乏自动化的性能优化能力</p></li>
+</ul>
+<p><strong>第二阶段：专用AI编译器</strong></p>
+<p>这一阶段的代表是TVM、XLA、Glow等。专用AI编译器的主要特点是：</p>
+<ul class="simple">
+<li><p>支持更灵活的表达，包括动态形状和控制流</p></li>
+<li><p>打开图算边界，进行细粒度的算子融合优化</p></li>
+<li><p>提供自动调度和自动调优能力</p></li>
+<li><p>开始支持多种硬件后端</p></li>
+</ul>
+<p><strong>第三阶段：通用AI编译器</strong></p>
+<p>这是AI编译器发展的未来目标。通用AI编译器追求：</p>
+<ul class="simple">
+<li><p>统一表达：图和算子的统一表示</p></li>
+<li><p>全自动优化：自动调度、自动分块、自动代码生成</p></li>
+<li><p>动静统一：动态图和静态图的统一处理</p></li>
+<li><p>高度可扩展：便于添加新的优化和新的硬件支持</p></li>
+<li><p>跨平台部署：一次编译，多平台运行</p></li>
+</ul>
+</section>
+<section id="id32">
+<h3>2.5.2 当前技术挑战<a class="headerlink" href="#id32" title="Link to this heading">#</a></h3>
+<p>尽管AI编译器取得了显著进展，但仍面临诸多技术挑战：</p>
+<p><strong>动态形状处理</strong>：动态形状（如变长序列、不规则张量）在实际应用中很常见，但对编译优化提出了挑战。静态分析难以获取准确的形状信息，影响优化的有效性。</p>
+<p><strong>复杂控制流</strong>：包含循环、条件分支的控制流使得计算图的分析和优化更加复杂。</p>
+<p><strong>自动调优的效率</strong>：自动调优可以找到最优配置，但搜索空间巨大，调优时间可能很长。如何加速调优过程是一个重要问题。</p>
+<p><strong>多硬件协同</strong>：在异构计算环境中，算子可能分布在不同的硬件上执行。如何优化跨硬件的数据传输和同步是一个挑战。</p>
+<p><strong>稀疏性优化</strong>：稀疏神经网络在实际应用中很常见，但现有编译器对稀疏性的利用还不够充分。</p>
+</section>
+<section id="id33">
+<h3>2.5.3 未来发展趋势<a class="headerlink" href="#id33" title="Link to this heading">#</a></h3>
+<p>展望未来，AI编译器的发展趋势包括：</p>
+<p><strong>更高的自动化程度</strong>：通过机器学习技术，自动学习最优的优化策略和调度配置，减少人工干预。</p>
+<p><strong>更广泛的硬件支持</strong>：随着AI芯片的发展，编译器需要支持越来越多的硬件平台和新的执行单元。</p>
+<p><strong>编译时与运行时的融合</strong>：静态编译和动态编译的结合，在编译时进行尽可能多的优化，同时保留运行时动态调度的灵活性。</p>
+<p><strong>统一的技术生态</strong>：不同的AI编译器之间可能出现更多的技术融合和标准统一，形成更健康的技术生态。</p>
+<p><strong>与传统编译器的深度结合</strong>：AI编译器将更深入地利用传统编译器的技术，如LLVM的代码生成、Polly的循环优化等。</p>
+</section>
+</section>
+<section id="id34">
+<h2>2.6 小结<a class="headerlink" href="#id34" title="Link to this heading">#</a></h2>
+<p>本章系统地介绍了AI编译器的架构和主流实现。核心要点回顾：</p>
+<ol class="arabic simple">
+<li><p><strong>AI编译器出现的背景</strong>：深度学习框架的崛起带来了模型部署的碎片化挑战，传统编译器的局限性无法满足AI领域的特定需求，硬件的多样性催生了对统一编译基础设施的迫切需求。</p></li>
+<li><p><strong>AI编译器的架构</strong>：典型的AI编译器采用多层IR设计，包括图IR、算子IR和硬件IR，通过前后端分离实现多框架多硬件的支持。优化分为图级别优化和算子级别优化两个层次。</p></li>
+<li><p><strong>主流AI编译器</strong>：TVM以计算与调度分离和Auto Tuning为特色；XLA与TensorFlow紧密集成；Glow强调图Lowering和内存计划；MLIR提供通用的可扩展编译器框架。</p></li>
+<li><p><strong>与深度学习框架的关系</strong>：AI编译器与深度学习框架协作完成从模型训练到部署的完整流程，ONNX作为桥梁促进不同框架之间的模型转换。</p></li>
+<li><p><strong>发展趋势</strong>：AI编译器正在从朴素阶段向专用阶段发展，未来将向通用AI编译器的目标迈进，实现更高的自动化、更广泛的硬件支持和更智能的优化。</p></li>
+</ol>
+<p><strong>思考与练习</strong>：</p>
+<ol class="arabic simple">
+<li><p>请解释为什么传统编译器难以满足深度学习领域的特殊需求。</p></li>
+<li><p>AI编译器的多层IR设计有什么优势？请以TVM为例说明Relay IR和Tensor IR的作用。</p></li>
+<li><p>请比较TVM和XLA的设计理念和优化策略，指出它们的主要区别。</p></li>
+<li><p>MLIR的Dialect机制是什么？为什么说MLIR不仅仅是一个AI编译器？</p></li>
+<li><p>请描述AI编译器在PyTorch 2.0中所扮演的角色，以及torch.compile的工作方式。</p></li>
+<li><p>AI编译器当前面临哪些技术挑战？未来可能的发展方向是什么？</p></li>
+</ol>
+</section>
+<section id="id35">
+<h2>2.7 参考文献与扩展阅读<a class="headerlink" href="#id35" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Chen, T., Moreau, T., Jiang, Z., et al. (2018). TVM: An Automated End-to-End Optimizing Compiler for Deep Learning. <em>OSDI</em>. — TVM的原始论文。</p></li>
+<li><p>TensorFlow XLA Documentation. https://www.tensorflow.org/xla — XLA官方文档。</p></li>
+<li><p>Rotem, N. (2019). Glow: Graph Lowering Compiler for Neural Networks. <em>SysML</em>. — Glow的原始论文。</p></li>
+<li><p>Lattner, C., Amini, M., Bondhugula, U., et al. (2020). MLIR: A Compiler Infrastructure for the End of Moore’s Law. <em>arXiv</em>. — MLIR的原始论文。</p></li>
+<li><p>The Deep Learning Compiler: A Comprehensive Survey. https://arxiv.org/abs/2002.03794 — 深度学习编译器的综述论文。</p></li>
+<li><p>PyTorch 2.0 Documentation. https://pytorch.org/tutorials/intermediate/torch_compile_tutorial.html — PyTorch 2.0编译功能的官方教程。</p></li>
+<li><p>ONNX Documentation. https://onnx.ai/ — ONNX官方网站，包含规范和使用指南。</p></li>
+</ol>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01-Traditional-Compiler.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">第一章 传统编译器基础</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03-Frontend-Optimization.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">第三章 前端优化</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">引言</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.1 AI编译器出现的背景</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2.1.1 深度学习框架的崛起与挑战</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2.1.2 传统编译器的局限性</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">2.1.3 硬件碎片化与软件栈问题</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">2.1.4 AI编译器的设计目标</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">2.1.5 AI编译器的黄金时代</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">2.2 AI编译器架构</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">2.2.1 AI编译器整体架构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ir">2.2.2 多层IR设计</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">2.2.3 前端与后端分离</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">2.2.4 表达层面的演进</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">2.2.5 优化层面的演进</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">2.2.6 与传统编译器的关系</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">2.3 主流AI编译器介绍</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tvm">2.3.1 TVM</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">2.3.1.1 TVM的设计理念</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">2.3.1.2 TVM的架构</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#auto-tuning">2.3.1.3 Auto Tuning</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">2.3.1.4 TVM的应用场景</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xla">2.3.2 XLA</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">2.3.2.1 XLA的设计特点</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">2.3.2.2 XLA的优化技术</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xlatensorflow">2.3.2.3 XLA与TensorFlow的集成</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#glow">2.3.3 Glow</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">2.3.3.1 Glow的设计理念</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">2.3.3.2 Glow的架构</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">2.3.3.3 Glow的应用</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlir">2.3.4 MLIR</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">2.3.4.1 MLIR的设计理念</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">2.3.4.2 MLIR的架构</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">2.3.4.3 MLIR的应用</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mlirtvm">2.3.4.4 MLIR与TVM的比较</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">2.3.5 其他AI编译器</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">2.4 AI编译器与深度学习框架的关系</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">2.4.1 框架与编译器的协作</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorch-2-0">2.4.2 PyTorch 2.0与编译器</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tensorflowxla">2.4.3 TensorFlow与XLA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx">2.4.4 ONNX作为桥梁</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">2.5 AI编译器的发展阶段与未来</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">2.5.1 AI编译器的发展阶段</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">2.5.2 当前技术挑战</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id33">2.5.3 未来发展趋势</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id34">2.6 小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">2.7 参考文献与扩展阅读</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Author name not set
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Apr 29, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>本教材仅供内部培训使用</p>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

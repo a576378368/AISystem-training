@@ -1,0 +1,1023 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Transformer与注意力机制 &#8212; AI系统工程师培训教程</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Part2/Chap05/04-Transformer';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="模型量化基础" href="05-Quantization.html" />
+    <link rel="prev" title="循环神经网络" href="03-RNN.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Apr 29, 2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="AI系统工程师培训教程 - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="AI系统工程师培训教程 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    AI系统工程师培训教程
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">第一阶段：AI基础入门</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap01/README.html">Chap01 计算机基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/01-Binary.html">第一章 进制与编码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/02-CPU-Memory.html">第二章 CPU与内存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/03-Program-Running.html">第三章 程序运行原理</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap02/README.html">Chap02 Python编程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/01-Python-Basic.html">Python基础语法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/02-NumPy.html">NumPy基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/03-PyTorch.html">PyTorch基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap03/README.html">Chap03 数学基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/01-Linear-Algebra.html">线性代数基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/02-Probability.html">概率与统计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/03-Optimization.html">优化基础</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二阶段：AI系统核心</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap04/README.html">Chap04 AI系统概述</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap04/01-Introduction.html">AI系统基本概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap04/02-Architecture.html">AI系统全栈架构</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Chap05 神经网络基础</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-Neuron-Model.html">神经元与网络模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-CNN.html">卷积神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-RNN.html">循环神经网络</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Transformer与注意力机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-Quantization.html">模型量化基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap06/README.html">Chap06 AI芯片体系架构</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/01-Chip-Base.html">AI芯片基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/02-GPU-Base.html">GPU原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/03-NVIDIA.html">NVIDIA GPU架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/04-Abroad-Chips.html">国外AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/05-Domestic-Chips.html">国内AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/06-Programming-Model.html">芯片编程模式</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap07/README.html">Chap07 AI编译器原理</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/01-Traditional-Compiler.html">第一章 传统编译器基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/02-AI-Compiler.html">第二章 AI编译器架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/03-Frontend-Optimization.html">第三章 前端优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/04-Backend-Optimization.html">第四章 后端优化</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap08/README.html">Chap08 推理系统与引擎</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/01-Inference-System.html">01 推理系统概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/02-Model-Compression.html">02 模型压缩</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/03-Model-Converter.html">03 模型转换与优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/04-Inference-Optimization.html">04 推理优化技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/05-Kernel-Optimization.html">05 Kernel优化技术</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap09/README.html">Chap09 AI框架核心</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/01-Auto-Differentiation.html">自动微分</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/02-Computational-Graph.html">计算图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/03-Distributed-Training.html">分布式训练</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap10/README.html">Chap10 大模型与集群</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/01-LLM-Architecture.html">大模型架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/02-AI-Cluster.html">AI集群</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/03-Parallel-Strategy.html">并行策略</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三阶段：附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixA/README.html">附录A：AI系统术语表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixB/README.html">附录B：参考文献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixC/README.html">AppendixC 实践项目</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/your-org/AI-System-Training/blob/main/Part2/Chap05/04-Transformer.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button"
+   title="Show source"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/Part2/Chap05/04-Transformer.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Transformer与注意力机制</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">4.1 注意力机制的诞生</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rnntransformer">4.1.1 从RNN到Transformer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">4.1.2 Transformer的核心创新</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">4.2 自注意力机制详解</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scaled-dot-product-attention">4.2.1 Scaled Dot-Product Attention</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">4.2.2 自注意力的计算过程</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">4.2.3 自注意力的矩阵形式</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">4.3 多头注意力机制</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">4.3.1 多头注意力的原理</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">4.3.2 多头注意力的计算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">4.3.3 多头注意力的代码实现</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">4.4 Transformer架构</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">4.4.1 编码器结构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">4.4.2 解码器结构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">4.4.3 位置编码</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">4.5 Transformer的计算特性</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">4.5.1 自注意力的计算复杂度</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">4.5.2 多头注意力的并行性</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">4.5.3 长距离依赖的路径长度</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">4.6 Transformer的变体与应用</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bert-transformer">4.6.1 BERT - 双向Transformer编码器</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-transformer">4.6.2 GPT系列 - 生成式预训练Transformer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vision-transformer-vit">4.6.3 Vision Transformer (ViT)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">4.6.4 大语言模型中的Transformer</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformerai">4.7 Transformer对AI芯片的影响</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">4.7.1 计算模式的变化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ai">4.7.2 AI芯片设计的新要求</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">4.7.3 硬件优化策略</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">4.8 注意力机制的深入理解</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">4.8.1 注意力机制的可视化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">4.8.2 注意力机制的物理意义</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">4.8.3 注意力机制与其他机制的关系</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">4.9 未来展望</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">4.9.1 高效注意力机制</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">4.9.2 多模态融合</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">4.9.3 持续演进</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">思考与练习</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="transformer">
+<h1>Transformer与注意力机制<a class="headerlink" href="#transformer" title="Link to this heading">#</a></h1>
+<section id="id1">
+<h2>4.1 注意力机制的诞生<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<section id="rnntransformer">
+<h3>4.1.1 从RNN到Transformer<a class="headerlink" href="#rnntransformer" title="Link to this heading">#</a></h3>
+<p>深度学习中的注意力机制（Attention Mechanism）是一种模仿人类视觉和认知系统的方法，它允许神经网络在处理输入数据时集中注意力于相关的部分。通过引入注意力机制，神经网络能够自动地学习并选择性地关注输入中的重要信息，提高模型的性能和泛化能力。</p>
+<p>在Transformer出现之前，RNN及其变体（LSTM、GRU）是处理序列数据的主流方法。然而，RNN存在两个主要问题：</p>
+<ol class="arabic simple">
+<li><p><strong>难以并行化</strong>：时序依赖性导致计算必须按顺序进行</p></li>
+<li><p><strong>长距离依赖问题</strong>：即使使用LSTM，在处理非常长的序列时仍然困难</p></li>
+</ol>
+<p>2017年，谷歌团队在论文《Attention is All Your Need》中提出了Transformer架构，创新性地使用纯注意力机制替代了RNN，完全并行化处理序列数据。</p>
+</section>
+<section id="id2">
+<h3>4.1.2 Transformer的核心创新<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>Transformer架构的核心创新包括：</p>
+<ol class="arabic simple">
+<li><p><strong>自注意力机制（Self-Attention）</strong>：允许序列内部元素直接交互，不需通过循环连接</p></li>
+<li><p><strong>多头注意力（Multi-Head Attention）</strong>：并行运行多个注意力机制，捕捉不同类型的依赖关系</p></li>
+<li><p><strong>位置编码（Positional Encoding）</strong>：由于没有循环结构，需要显式注入位置信息</p></li>
+<li><p><strong>编码器-解码器结构</strong>：Encoder处理输入序列，Decoder生成输出序列</p></li>
+</ol>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id3">
+<h2>4.2 自注意力机制详解<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<section id="scaled-dot-product-attention">
+<h3>4.2.1 Scaled Dot-Product Attention<a class="headerlink" href="#scaled-dot-product-attention" title="Link to this heading">#</a></h3>
+<p>Dot-Product Attention也称为自注意力，是Transformer的基础组件。给定查询（Query）、键（Key）和值（Value）向量，自注意力的计算如下：</p>
+<div class="math notranslate nohighlight">
+\[
+Attention(Q, K, V) = softmax\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+\]</div>
+<p>其中：</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Q \in \mathbb{R}^{n \times d_k}\)</span>：查询矩阵</p></li>
+<li><p><span class="math notranslate nohighlight">\(K \in \mathbb{R}^{m \times d_k}\)</span>：键矩阵</p></li>
+<li><p><span class="math notranslate nohighlight">\(V \in \mathbb{R}^{m \times d_v}\)</span>：值矩阵</p></li>
+<li><p><span class="math notranslate nohighlight">\(d_k\)</span>是键向量的维度</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sqrt{d_k}\)</span>是缩放因子，防止点积值过大导致梯度消失</p></li>
+</ul>
+<p><strong>为什么需要缩放因子？</strong></p>
+<p>当<span class="math notranslate nohighlight">\(d_k\)</span>较大时，<span class="math notranslate nohighlight">\(QK^T\)</span>的点积值方差会变大，可能使Softmax函数进入饱和区域（梯度接近0）。缩放因子<span class="math notranslate nohighlight">\(\sqrt{d_k}\)</span>使点积的方差回归到1，保证梯度稳定。</p>
+<p><img alt="注意力机制结构" src="../../_images/02ArchSlim07.png" /></p>
+</section>
+<section id="id4">
+<h3>4.2.2 自注意力的计算过程<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>自注意力的计算过程可以分解为以下步骤：</p>
+<ol class="arabic simple">
+<li><p><strong>线性变换</strong>：对输入<span class="math notranslate nohighlight">\(X\)</span>分别进行三个线性变换得到<span class="math notranslate nohighlight">\(Q\)</span>、<span class="math notranslate nohighlight">\(K\)</span>、<span class="math notranslate nohighlight">\(V\)</span>：
+$<span class="math notranslate nohighlight">\(Q = XW_Q, \quad K = XW_K, \quad V = XW_V\)</span>$</p></li>
+<li><p><strong>计算注意力分数</strong>：<span class="math notranslate nohighlight">\(QK^T\)</span>衡量Query和Key之间的相关性</p></li>
+<li><p><strong>缩放</strong>：除以<span class="math notranslate nohighlight">\(\sqrt{d_k}\)</span></p></li>
+<li><p><strong>Softmax</strong>：获得注意力权重</p></li>
+<li><p><strong>加权求和</strong>：用注意力权重对<span class="math notranslate nohighlight">\(V\)</span>加权求和</p></li>
+</ol>
+</section>
+<section id="id5">
+<h3>4.2.3 自注意力的矩阵形式<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>用Python代码实现的自注意力网络：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">optim</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torchvision</span><span class="w"> </span><span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span>
+
+<span class="c1"># 定义自注意力模块</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SelfAttention</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">embed_dim</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SelfAttention</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">embed_dim</span><span class="p">,</span> <span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">embed_dim</span><span class="p">,</span> <span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">embed_dim</span><span class="p">,</span> <span class="n">embed_dim</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">attn_weights</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">k</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">attn_weights</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">attn_weights</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">attended_values</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">attn_weights</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">attended_values</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id6">
+<h2>4.3 多头注意力机制<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+<section id="id7">
+<h3>4.3.1 多头注意力的原理<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>多头注意力机制是在自注意力机制的基础上发展起来的，是自注意力机制的变体，旨在增强模型的表达能力和泛化能力。它通过使用多个独立的注意力头，分别计算注意力权重，并将它们的结果进行拼接或加权求和，从而获得更丰富的表示。</p>
+<p>每个注意力头有独立的<span class="math notranslate nohighlight">\(W_Q^i, W_K^i, W_V^i\)</span>参数，允许模型在不同的子空间学习不同的注意力模式。</p>
+</section>
+<section id="id8">
+<h3>4.3.2 多头注意力的计算<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+MultiHead(Q, K, V) &amp;= Concat(head_1, head_2, ..., head_h)W^O \\
+head_i &amp;= Attention(QW_Q^i, KW_K^i, VW_V^i)
+\end{align}
+\end{split}\]</div>
+<p>其中：</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(h\)</span>是注意力头的数量</p></li>
+<li><p><span class="math notranslate nohighlight">\(d_k = d_{model}/h\)</span>是每个头的维度</p></li>
+<li><p><span class="math notranslate nohighlight">\(W^O \in \mathbb{R}^{hd_v \times d_{model}}\)</span>是输出投影矩阵</p></li>
+</ul>
+</section>
+<section id="id9">
+<h3>4.3.3 多头注意力的代码实现<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">optim</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torchvision</span><span class="w"> </span><span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span>
+
+<span class="c1"># 定义多头自注意力模块</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MultiHeadSelfAttention</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">embed_dim</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MultiHeadSelfAttention</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span> <span class="o">=</span> <span class="n">num_heads</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span> <span class="o">=</span> <span class="n">embed_dim</span> <span class="o">//</span> <span class="n">num_heads</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">embed_dim</span><span class="p">,</span> <span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">embed_dim</span><span class="p">,</span> <span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">embed_dim</span><span class="p">,</span> <span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">embed_dim</span><span class="p">,</span> <span class="n">embed_dim</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">batch_size</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="n">embed_dim</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+
+        <span class="c1"># 将输入向量拆分为多个头</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_heads</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># 计算注意力权重</span>
+        <span class="n">attn_weights</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">k</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">head_dim</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">))</span>
+        <span class="n">attn_weights</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">attn_weights</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># 注意力加权求和</span>
+        <span class="n">attended_values</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">attn_weights</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="n">embed_dim</span><span class="p">)</span>
+
+        <span class="c1"># 经过线性变换和残差连接</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="n">attended_values</span><span class="p">)</span> <span class="o">+</span> <span class="n">x</span>
+
+        <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id10">
+<h2>4.4 Transformer架构<a class="headerlink" href="#id10" title="Link to this heading">#</a></h2>
+<section id="id11">
+<h3>4.4.1 编码器结构<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p>Transformer的编码器（Encoder）由<span class="math notranslate nohighlight">\(N\)</span>个相同的层堆叠而成，每层包含两个子层：</p>
+<ol class="arabic simple">
+<li><p><strong>多头自注意力层</strong>：对输入序列进行自注意力计算</p></li>
+<li><p><strong>前馈神经网络</strong>：包含两个线性变换和ReLU激活</p></li>
+</ol>
+<p>每个子层都使用残差连接（Skip Connection）和层归一化（Layer Normalization）：
+$<span class="math notranslate nohighlight">\(Output = LayerNorm(x + Sublayer(x))\)</span>$</p>
+</section>
+<section id="id12">
+<h3>4.4.2 解码器结构<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>Transformer的解码器（Decoder）同样由<span class="math notranslate nohighlight">\(N\)</span>个相同的层堆叠而成，每层包含三个子层：</p>
+<ol class="arabic simple">
+<li><p><strong>掩码多头自注意力层</strong>：确保预测时只能看到之前的输出</p></li>
+<li><p><strong>编码器-解码器注意力层</strong>：Query来自解码器，Key和Value来自编码器</p></li>
+<li><p><strong>前馈神经网络</strong></p></li>
+</ol>
+</section>
+<section id="id13">
+<h3>4.4.3 位置编码<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p>由于Transformer没有循环结构，无法直接获取序列的位置信息，因此需要显式添加位置编码：</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+PE_{(pos, 2i)} &amp;= \sin\left(\frac{pos}{10000^{2i/d_{model}}}\right) \\
+PE_{(pos, 2i+1)} &amp;= \cos\left(\frac{pos}{10000^{2i/d_{model}}}\right)
+\end{align}
+\end{split}\]</div>
+<p>位置编码可以采用正弦/余弦形式，也可以采用可学习的位置嵌入。</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id14">
+<h2>4.5 Transformer的计算特性<a class="headerlink" href="#id14" title="Link to this heading">#</a></h2>
+<section id="id15">
+<h3>4.5.1 自注意力的计算复杂度<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<p>自注意力的计算复杂度为<span class="math notranslate nohighlight">\(O(n^2 \cdot d)\)</span>，其中：</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(n\)</span>是序列长度</p></li>
+<li><p><span class="math notranslate nohighlight">\(d\)</span>是模型的维度</p></li>
+</ul>
+<p>这意味着：</p>
+<ul class="simple">
+<li><p>对于短序列，自注意力高效且能捕捉全局依赖</p></li>
+<li><p>对于长序列（如长文档或视频），计算量和内存需求爆炸性增长</p></li>
+</ul>
+</section>
+<section id="id16">
+<h3>4.5.2 多头注意力的并行性<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<p>与RNN不同，自注意力可以完全并行计算：</p>
+<ul class="simple">
+<li><p>序列中所有位置的表示可以同时计算</p></li>
+<li><p>不需要沿时间轴顺序传递隐藏状态</p></li>
+<li><p>大大加速了训练过程</p></li>
+</ul>
+</section>
+<section id="id17">
+<h3>4.5.3 长距离依赖的路径长度<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
+<p>Transformer中任意两个位置之间的依赖路径长度是<span class="math notranslate nohighlight">\(O(1)\)</span>，而RNN中是<span class="math notranslate nohighlight">\(O(n)\)</span>。这使得Transformer能够更高效地学习长距离依赖。</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id18">
+<h2>4.6 Transformer的变体与应用<a class="headerlink" href="#id18" title="Link to this heading">#</a></h2>
+<section id="bert-transformer">
+<h3>4.6.1 BERT - 双向Transformer编码器<a class="headerlink" href="#bert-transformer" title="Link to this heading">#</a></h3>
+<p>BERT（Bidirectional Encoder Representations from Transformers）使用双向Transformer编码器，通过掩码语言模型（MLM）和下一句预测（NSP）进行预训练。</p>
+<p>BERT的核心创新：</p>
+<ul class="simple">
+<li><p>双向语境理解</p></li>
+<li><p>预训练-微调范式</p></li>
+<li><p>在11项NLP任务上刷新记录</p></li>
+</ul>
+</section>
+<section id="gpt-transformer">
+<h3>4.6.2 GPT系列 - 生成式预训练Transformer<a class="headerlink" href="#gpt-transformer" title="Link to this heading">#</a></h3>
+<p>GPT（Generative Pre-trained Transformer）系列采用单向Transformer解码器，通过语言建模进行预训练。</p>
+<p>GPT的发展历程：</p>
+<ul class="simple">
+<li><p>GPT-1：首发开创性的预训练-微调范式</p></li>
+<li><p>GPT-2：扩大模型规模，尝试通用任务</p></li>
+<li><p>GPT-3：大规模few-shot学习</p></li>
+<li><p>GPT-4：多模态能力大幅提升</p></li>
+</ul>
+</section>
+<section id="vision-transformer-vit">
+<h3>4.6.3 Vision Transformer (ViT)<a class="headerlink" href="#vision-transformer-vit" title="Link to this heading">#</a></h3>
+<p>ViT将Transformer应用于图像识别：</p>
+<ul class="simple">
+<li><p>将图像分割为固定大小的patch</p></li>
+<li><p>将patch序列作为Transformer输入</p></li>
+<li><p>在ImageNet上取得与CNN相当的成绩</p></li>
+</ul>
+</section>
+<section id="id19">
+<h3>4.6.4 大语言模型中的Transformer<a class="headerlink" href="#id19" title="Link to this heading">#</a></h3>
+<p>现代大语言模型（LLM）大多基于Transformer架构：</p>
+<ul class="simple">
+<li><p><strong>ChatGPT</strong>：基于GPT-3.5/GPT-4，强化学习人类反馈（RLHF）</p></li>
+<li><p><strong>Llama</strong>：Meta开源的大语言模型</p></li>
+<li><p><strong>PaLM</strong>：Google的大规模语言模型</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="transformerai">
+<h2>4.7 Transformer对AI芯片的影响<a class="headerlink" href="#transformerai" title="Link to this heading">#</a></h2>
+<section id="id20">
+<h3>4.7.1 计算模式的变化<a class="headerlink" href="#id20" title="Link to this heading">#</a></h3>
+<p>Transformer的出现改变了AI的计算模式：</p>
+<ol class="arabic simple">
+<li><p><strong>从卷积到注意力</strong>：从局部连接到全局注意力</p></li>
+<li><p><strong>从循环到并行</strong>：从时序计算到完全并行</p></li>
+<li><p><strong>矩阵运算主导</strong>：大量矩阵乘法运算</p></li>
+</ol>
+</section>
+<section id="ai">
+<h3>4.7.2 AI芯片设计的新要求<a class="headerlink" href="#ai" title="Link to this heading">#</a></h3>
+<p>Transformer对AI芯片提出了新的要求：</p>
+<ol class="arabic simple">
+<li><p><strong>高带宽存储</strong>：注意力机制需要频繁读写大型矩阵</p></li>
+<li><p><strong>灵活的稀疏支持</strong>：如FlashAttention等稀疏注意力算法</p></li>
+<li><p><strong>高精度混合计算</strong>：支持FP16、BF16、FP8等多种精度</p></li>
+<li><p><strong>专用Transformer引擎</strong>：如NVIDIA的Transformer Engine</p></li>
+</ol>
+</section>
+<section id="id21">
+<h3>4.7.3 硬件优化策略<a class="headerlink" href="#id21" title="Link to this heading">#</a></h3>
+<p>针对Transformer的硬件优化：</p>
+<ol class="arabic simple">
+<li><p><strong>算子融合</strong>：将多个小算子融合为一个大算子，减少内存访问</p></li>
+<li><p><strong>内存层次优化</strong>：利用高速缓存提高数据复用率</p></li>
+<li><p><strong>低精度推理</strong>：使用FP8等低精度加速推理</p></li>
+<li><p><strong>稀疏计算</strong>：支持注意力矩阵的稀疏计算</p></li>
+</ol>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id22">
+<h2>4.8 注意力机制的深入理解<a class="headerlink" href="#id22" title="Link to this heading">#</a></h2>
+<section id="id23">
+<h3>4.8.1 注意力机制的可视化<a class="headerlink" href="#id23" title="Link to this heading">#</a></h3>
+<p>注意力权重可以直观地展示输入序列中各元素之间的相关性：</p>
+<ul class="simple">
+<li><p>在机器翻译中，注意力权重显示了源语言词与目标语言词的对齐</p></li>
+<li><p>在图像描述中，注意力权重显示了生成每个词时关注的图像区域</p></li>
+<li><p>在文档分类中，自注意力显示了词与词之间的语义关联</p></li>
+</ul>
+</section>
+<section id="id24">
+<h3>4.8.2 注意力机制的物理意义<a class="headerlink" href="#id24" title="Link to this heading">#</a></h3>
+<p>注意力机制可以被理解为一种”软寻址”方式：</p>
+<ul class="simple">
+<li><p><strong>Query</strong>：当前位置的内容</p></li>
+<li><p><strong>Key</strong>：可访问位置的内容</p></li>
+<li><p><strong>Value</strong>：从可访问位置获取的信息</p></li>
+</ul>
+<p>注意力权重表示当前位置对各可访问位置的”关注程度”。</p>
+</section>
+<section id="id25">
+<h3>4.8.3 注意力机制与其他机制的关系<a class="headerlink" href="#id25" title="Link to this heading">#</a></h3>
+<p>注意力机制与其他机制有密切关系：</p>
+<ol class="arabic simple">
+<li><p><strong>与LSTM门控的关系</strong>：注意力可以看作是一种动态的”门控”机制</p></li>
+<li><p><strong>与全连接层的关系</strong>：当注意力权重全为1时，注意力退化为全连接</p></li>
+<li><p><strong>与卷积的关系</strong>：局部注意力可以看作是一种受限的卷积</p></li>
+</ol>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id26">
+<h2>4.9 未来展望<a class="headerlink" href="#id26" title="Link to this heading">#</a></h2>
+<section id="id27">
+<h3>4.9.1 高效注意力机制<a class="headerlink" href="#id27" title="Link to this heading">#</a></h3>
+<p>为了解决自注意力的<span class="math notranslate nohighlight">\(O(n^2)\)</span>复杂度问题，研究者提出了多种高效注意力机制：</p>
+<ol class="arabic simple">
+<li><p><strong>Sparse Attention</strong>：如Longformer、BigBird，使用稀疏模式近似全注意力</p></li>
+<li><p><strong>Linear Attention</strong>：如Performer、Linear Transformer，将复杂度降为<span class="math notranslate nohighlight">\(O(n)\)</span></p></li>
+<li><p><strong>FlashAttention</strong>：利用GPU内存层次优化，减少内存读写</p></li>
+</ol>
+</section>
+<section id="id28">
+<h3>4.9.2 多模态融合<a class="headerlink" href="#id28" title="Link to this heading">#</a></h3>
+<p>Transformer统一了多模态建模：</p>
+<ul class="simple">
+<li><p>文本、图像、音频统一表示</p></li>
+<li><p>跨模态注意力机制</p></li>
+<li><p>多模态大模型（如GPT-4V）</p></li>
+</ul>
+</section>
+<section id="id29">
+<h3>4.9.3 持续演进<a class="headerlink" href="#id29" title="Link to this heading">#</a></h3>
+<p>Transformer架构仍在不断演进：</p>
+<ul class="simple">
+<li><p>更高效的结构设计</p></li>
+<li><p>更强的长上下文能力</p></li>
+<li><p>与其他机制的结合</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id30">
+<h2>本章小结<a class="headerlink" href="#id30" title="Link to this heading">#</a></h2>
+<p>本章系统介绍了Transformer与注意力机制的核心内容：</p>
+<ol class="arabic simple">
+<li><p><strong>注意力机制原理</strong>：通过Query-Key-Value架构实现”软寻址”，允许模型动态关注输入的相关部分。</p></li>
+<li><p><strong>自注意力机制</strong>：通过缩放点积注意力计算序列内部元素之间的相关性，完全并行化处理。</p></li>
+<li><p><strong>多头注意力</strong>：并行运行多个注意力头，捕捉不同类型的依赖关系，增强模型表达能力。</p></li>
+<li><p><strong>Transformer架构</strong>：编码器-解码器结构，配合残差连接、层归一化、位置编码等组件。</p></li>
+<li><p><strong>计算特性</strong>：<span class="math notranslate nohighlight">\(O(n^2)\)</span>复杂度、全并行计算、<span class="math notranslate nohighlight">\(O(1)\)</span>长距离依赖路径，对AI芯片设计有重要影响。</p></li>
+<li><p><strong>应用领域</strong>：从NLP扩展到计算机视觉、多模态等领域，成为现代AI的基础架构。</p></li>
+<li><p><strong>硬件优化</strong>：针对Transformer特点的专用硬件设计，如Transformer引擎、稀疏计算支持等。</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="id31">
+<h2>思考与练习<a class="headerlink" href="#id31" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>注意力计算</strong>：假设输入序列长度为512，模型维度<span class="math notranslate nohighlight">\(d_{model}=768\)</span>，注意力头数<span class="math notranslate nohighlight">\(h=12\)</span>。计算单层自注意力的计算量（MACs）和参数量。</p></li>
+<li><p><strong>与RNN对比</strong>：比较RNN和Transformer在处理长序列时的优缺点。讨论为什么Transformer在长序列任务中表现更好。</p></li>
+<li><p><strong>缩放因子</strong>：解释为什么注意力机制需要除以<span class="math notranslate nohighlight">\(\sqrt{d_k}\)</span>。如果不做缩放会产生什么问题？</p></li>
+<li><p><strong>多头注意力的作用</strong>：分析多头注意力相比单头注意力的优势。为什么需要多个注意力头而不是一个维度更高的单头注意力？</p></li>
+<li><p><strong>硬件设计</strong>：讨论AI芯片应该如何优化以更好地支持Transformer推理。重点考虑注意力机制的计算特点。</p></li>
+</ol>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03-RNN.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">循环神经网络</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="05-Quantization.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">模型量化基础</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">4.1 注意力机制的诞生</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rnntransformer">4.1.1 从RNN到Transformer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">4.1.2 Transformer的核心创新</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">4.2 自注意力机制详解</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scaled-dot-product-attention">4.2.1 Scaled Dot-Product Attention</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">4.2.2 自注意力的计算过程</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">4.2.3 自注意力的矩阵形式</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">4.3 多头注意力机制</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">4.3.1 多头注意力的原理</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">4.3.2 多头注意力的计算</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">4.3.3 多头注意力的代码实现</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">4.4 Transformer架构</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">4.4.1 编码器结构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">4.4.2 解码器结构</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">4.4.3 位置编码</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">4.5 Transformer的计算特性</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">4.5.1 自注意力的计算复杂度</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">4.5.2 多头注意力的并行性</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">4.5.3 长距离依赖的路径长度</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">4.6 Transformer的变体与应用</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bert-transformer">4.6.1 BERT - 双向Transformer编码器</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-transformer">4.6.2 GPT系列 - 生成式预训练Transformer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vision-transformer-vit">4.6.3 Vision Transformer (ViT)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">4.6.4 大语言模型中的Transformer</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformerai">4.7 Transformer对AI芯片的影响</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">4.7.1 计算模式的变化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ai">4.7.2 AI芯片设计的新要求</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">4.7.3 硬件优化策略</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">4.8 注意力机制的深入理解</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">4.8.1 注意力机制的可视化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">4.8.2 注意力机制的物理意义</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">4.8.3 注意力机制与其他机制的关系</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">4.9 未来展望</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">4.9.1 高效注意力机制</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">4.9.2 多模态融合</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">4.9.3 持续演进</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">思考与练习</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Author name not set
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Apr 29, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>本教材仅供内部培训使用</p>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

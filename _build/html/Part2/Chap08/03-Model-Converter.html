@@ -1,0 +1,1408 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>03 模型转换与优化 &#8212; AI系统工程师培训教程</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Part2/Chap08/03-Model-Converter';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="04 推理优化技术" href="04-Inference-Optimization.html" />
+    <link rel="prev" title="02 模型压缩" href="02-Model-Compression.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Apr 29, 2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="AI系统工程师培训教程 - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="AI系统工程师培训教程 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    AI系统工程师培训教程
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">第一阶段：AI基础入门</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap01/README.html">Chap01 计算机基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/01-Binary.html">第一章 进制与编码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/02-CPU-Memory.html">第二章 CPU与内存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/03-Program-Running.html">第三章 程序运行原理</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap02/README.html">Chap02 Python编程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/01-Python-Basic.html">Python基础语法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/02-NumPy.html">NumPy基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/03-PyTorch.html">PyTorch基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap03/README.html">Chap03 数学基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/01-Linear-Algebra.html">线性代数基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/02-Probability.html">概率与统计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/03-Optimization.html">优化基础</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二阶段：AI系统核心</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap04/README.html">Chap04 AI系统概述</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap04/01-Introduction.html">AI系统基本概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap04/02-Architecture.html">AI系统全栈架构</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap05/README.html">Chap05 神经网络基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/01-Neuron-Model.html">神经元与网络模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/02-CNN.html">卷积神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/03-RNN.html">循环神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/04-Transformer.html">Transformer与注意力机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/05-Quantization.html">模型量化基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap06/README.html">Chap06 AI芯片体系架构</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/01-Chip-Base.html">AI芯片基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/02-GPU-Base.html">GPU原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/03-NVIDIA.html">NVIDIA GPU架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/04-Abroad-Chips.html">国外AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/05-Domestic-Chips.html">国内AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap06/06-Programming-Model.html">芯片编程模式</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap07/README.html">Chap07 AI编译器原理</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/01-Traditional-Compiler.html">第一章 传统编译器基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/02-AI-Compiler.html">第二章 AI编译器架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/03-Frontend-Optimization.html">第三章 前端优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/04-Backend-Optimization.html">第四章 后端优化</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Chap08 推理系统与引擎</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-Inference-System.html">01 推理系统概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-Model-Compression.html">02 模型压缩</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">03 模型转换与优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-Inference-Optimization.html">04 推理优化技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-Kernel-Optimization.html">05 Kernel优化技术</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap09/README.html">Chap09 AI框架核心</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/01-Auto-Differentiation.html">自动微分</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/02-Computational-Graph.html">计算图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/03-Distributed-Training.html">分布式训练</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap10/README.html">Chap10 大模型与集群</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/01-LLM-Architecture.html">大模型架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/02-AI-Cluster.html">AI集群</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/03-Parallel-Strategy.html">并行策略</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三阶段：附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixA/README.html">附录A：AI系统术语表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixB/README.html">附录B：参考文献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixC/README.html">AppendixC 实践项目</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/your-org/AI-System-Training/blob/main/Part2/Chap08/03-Model-Converter.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button"
+   title="Show source"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/Part2/Chap08/03-Model-Converter.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>03 模型转换与优化</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3.1 模型转换概述</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3.1.1 什么是模型转换</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.1.2 模型转换的挑战</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">3.1.3 模型转换流程</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">3.2 主流模型格式</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx">3.2.1 ONNX</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchscript">3.2.2 TorchScript</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#safetensors">3.2.3 SafeTensors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">3.2.4 其他模型格式</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">3.3 计算图基础</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">3.3.1 什么是计算图</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">3.3.2 静态图与动态图</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">3.3.3 计算图与自动求导</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">3.4 图优化技术</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">3.4.1 图优化的层次</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">3.4.2 算子融合</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">3.4.3 算子替换</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">3.4.4 布局转换</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">3.4.5 常量折叠</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">3.4.6 冗余消除</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">3.5 中间表示</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">3.5.1 什么是中间表示</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ir">3.5.2 常见IR格式</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">3.5.3 IR的组成部分</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">3.5.4 基于IR的优化流程</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">3.6 模型转换实践</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorchonnx">3.6.1 PyTorch转ONNX实践</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnxtensorrt">3.6.2 ONNX转TensorRT实践</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">3.6.3 转换工具链</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">思考与练习</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>03 模型转换与优化<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="id2">
+<h2>学习目标<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>理解模型转换的概念和必要性</p></li>
+<li><p>掌握主流模型格式（ONNX、TorchScript、SafeTensors等）的特点和使用场景</p></li>
+<li><p>了解计算图的基本概念和表示方法</p></li>
+<li><p>掌握图优化的主要技术（算子融合、布局转换、算子替换等）</p></li>
+<li><p>理解中间表示（IR）的设计和作用</p></li>
+</ol>
+</section>
+<section id="id3">
+<h2>3.1 模型转换概述<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<section id="id4">
+<h3>3.1.1 什么是模型转换<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>**模型转换（Model Conversion/Export）**是将训练好的模型从一种格式转换为另一种格式的过程。在深度学习应用中，模型训练和模型部署通常在不同的环境和平台上进行，模型转换就是连接训练与部署的桥梁。</p>
+<p><strong>为什么需要模型转换？</strong></p>
+<ol class="arabic simple">
+<li><p><strong>训练框架多样性</strong>：目前存在多种深度学习训练框架，如PyTorch、TensorFlow、MindSpore、PaddlePaddle等。每个框架有自己独特的模型格式和API。训练时通常选择研究友好的框架（如PyTorch），但部署时可能需要转换到其他框架。</p></li>
+<li><p><strong>部署环境差异</strong>：训练环境和推理环境往往不同。训练可能在高性能GPU集群上进行，使用Python接口；但部署可能在不同的硬件平台（如移动端CPU、嵌入式设备、专用AI芯片）上，需要不同的运行时环境。</p></li>
+<li><p><strong>优化需求</strong>：训练框架的模型表示通常包含训练相关的操作（如梯度计算、优化器状态等），这些在推理时不需要。转换过程可以清理这些冗余，生成更高效的推理模型。</p></li>
+<li><p><strong>跨平台支持</strong>：同一个模型可能需要部署到多种平台。通过统一的中间格式，可以一次转换，多次部署。</p></li>
+</ol>
+</section>
+<section id="id5">
+<h3>3.1.2 模型转换的挑战<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>模型转换面临多方面的技术挑战：</p>
+<p><strong>算子语义差异</strong></p>
+<p>不同框架对同一算子的定义可能不完全一致。例如：</p>
+<ul class="simple">
+<li><p>PyTorch的<code class="docutils literal notranslate"><span class="pre">nn.Conv2d</span></code>的padding参数直接指定填充像素数</p></li>
+<li><p>TensorFlow的<code class="docutils literal notranslate"><span class="pre">tf.keras.layers.Conv2D</span></code>的padding参数是”valid”或”same”，语义不同</p></li>
+</ul>
+<p>转换时需要正确处理这些语义差异，确保转换后模型的输出与原始模型一致。</p>
+<p><strong>动态控制流</strong></p>
+<p>PyTorch等框架支持动态控制流（如<code class="docutils literal notranslate"><span class="pre">if</span></code>语句、循环等），这些在转换为静态计算图时需要特殊处理。一些部署平台可能不支持动态控制流。</p>
+<p><strong>自定义算子</strong></p>
+<p>训练框架允许用户定义自定义算子（Custom Operator）。如果目标平台没有对应的实现，转换可能失败或需要额外适配工作。</p>
+<p><strong>数值精度差异</strong></p>
+<p>不同框架对默认数值精度可能有不同规定（如某些操作默认使用FP16 vs FP32）。转换时需要确保精度符合预期。</p>
+</section>
+<section id="id6">
+<h3>3.1.3 模型转换流程<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>典型的模型转换流程包括：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>原始模型 → 格式解析 → 计算图构建 → 图优化 → 格式生成 → 目标模型
+</pre></div>
+</div>
+<p><strong>1. 格式解析</strong></p>
+<p>读取原始模型文件，解析其中的模型结构和参数。不同格式有不同的解析逻辑：</p>
+<ul class="simple">
+<li><p>对于ONNX，使用protobuf定义的数据结构</p></li>
+<li><p>对于TensorFlow SavedModel，使用SavedModel API</p></li>
+<li><p>对于PyTorch，使用pickle加载state_dict</p></li>
+</ul>
+<p><strong>2. 计算图构建</strong></p>
+<p>将解析结果构建为推理引擎内部的计算图表示。计算图包含节点（算子）和边（张量），描述了各操作的依赖关系。</p>
+<p><strong>3. 图优化</strong></p>
+<p>对计算图进行各种优化：</p>
+<ul class="simple">
+<li><p>删除训练相关的冗余操作</p></li>
+<li><p>融合连续的计算操作</p></li>
+<li><p>简化计算图结构</p></li>
+<li><p>转换数据布局</p></li>
+</ul>
+<p><strong>4. 格式生成</strong></p>
+<p>将优化后的计算图转换为目标格式。这可能涉及序列化、编码等操作。</p>
+<p><strong>5. 目标模型输出</strong></p>
+<p>输出转换后的模型文件，以及可能的一些元数据（如输入输出形状、算子列表等）。</p>
+</section>
+</section>
+<section id="id7">
+<h2>3.2 主流模型格式<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
+<section id="onnx">
+<h3>3.2.1 ONNX<a class="headerlink" href="#onnx" title="Link to this heading">#</a></h3>
+<p>**ONNX（Open Neural Network Exchange）**是一个开放的模型格式标准，旨在实现不同AI框架之间的互操作性。ONNX由微软和Facebook在2017年联合推出，目前已成为模型转换的事实标准。</p>
+<p><strong>ONNX的核心概念</strong></p>
+<ol class="arabic simple">
+<li><p><strong>计算图表示</strong>：ONNX使用protobuf格式定义计算图，包含节点（NodeProto）、张量（TensorProto）等数据结构。</p></li>
+<li><p><strong>标准化算子集</strong>：ONNX定义了一套标准的算子（Operator），如卷积、池化、全连接等。每个算子有明确的输入输出语义。</p></li>
+<li><p><strong>IR版本管理</strong>：ONNX有明确的IR（Intermediate Representation）版本，不同版本可能有不同的算子定义或语义。</p></li>
+</ol>
+<p><strong>ONNX算子示例</strong></p>
+<p>ONNX中的一个卷积节点定义为：</p>
+<div class="highlight-protobuf notranslate"><div class="highlight"><pre><span></span><span class="n">node</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">input</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;input&quot;</span><span class="w">      </span><span class="c1">// 输入张量名</span>
+<span class="w">  </span><span class="n">input</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;weight&quot;</span><span class="w">    </span><span class="c1">// 权重张量名</span>
+<span class="w">  </span><span class="n">output</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;output&quot;</span><span class="w">   </span><span class="c1">// 输出张量名</span>
+<span class="w">  </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;conv1&quot;</span><span class="w">       </span><span class="c1">// 节点名</span>
+<span class="w">  </span><span class="n">op_type</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Conv&quot;</span><span class="w">      </span><span class="c1">// 算子类型</span>
+<span class="w">  </span><span class="n">attribute</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;kernel_shape&quot;</span>
+<span class="w">    </span><span class="n">ints</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">attribute</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;strides&quot;</span>
+<span class="w">    </span><span class="n">ints</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="n">attribute</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;pads&quot;</span>
+<span class="w">    </span><span class="n">ints</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>PyTorch转ONNX</strong></p>
+<p>PyTorch提供内置的ONNX导出功能：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.onnx</span>
+
+<span class="c1"># 定义模型</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">MyModel</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+<span class="c1"># 准备示例输入</span>
+<span class="n">dummy_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">)</span>
+
+<span class="c1"># 导出为ONNX</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">onnx</span><span class="o">.</span><span class="n">export</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="n">dummy_input</span><span class="p">,</span>
+    <span class="s2">&quot;model.onnx&quot;</span><span class="p">,</span>
+    <span class="n">export_params</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">opset_version</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+    <span class="n">input_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">],</span>
+    <span class="n">output_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;output&#39;</span><span class="p">],</span>
+    <span class="n">dynamic_axes</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;batch_size&#39;</span><span class="p">},</span>
+        <span class="s1">&#39;output&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;batch_size&#39;</span><span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>ONNX的使用场景</strong></p>
+<ul class="simple">
+<li><p>框架间模型转换（如PyTorch→TensorRT）</p></li>
+<li><p>模型部署到不同平台（如服务器、移动端）</p></li>
+<li><p>模型性能分析工具（如Netron可视化）</p></li>
+</ul>
+</section>
+<section id="torchscript">
+<h3>3.2.2 TorchScript<a class="headerlink" href="#torchscript" title="Link to this heading">#</a></h3>
+<p><strong>TorchScript</strong>是PyTorch的序列化格式，可以将PyTorch模型导出为可以独立于Python环境运行的格式。TorchScript有两种主要形式：</p>
+<ol class="arabic simple">
+<li><p><strong>TorchScript代码</strong>：通过<code class="docutils literal notranslate"><span class="pre">torch.jit.script</span></code>装饰器或函数将模型代码显式编译为TorchScript</p></li>
+<li><p><strong>TorchScript追踪（Tracing）</strong>：通过<code class="docutils literal notranslate"><span class="pre">torch.jit.trace</span></code>用示例输入”追踪”模型的执行路径生成TorchScript</p></li>
+</ol>
+<p><strong>追踪模式（Tracing）</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">MyModel</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+<span class="c1"># 用示例输入追踪模型</span>
+<span class="n">traced_model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">))</span>
+
+<span class="c1"># 保存追踪后的模型</span>
+<span class="n">traced_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;model_traced.pt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>追踪的优点是简单，不需要修改模型代码；缺点是只能捕获静态执行路径，动态控制流会”凝固”。</p>
+<p><strong>脚本模式（Scripting）</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+
+<span class="nd">@torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">script</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">my_function</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">/</span> <span class="mi">2</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyModule</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">my_function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">MyModule</span><span class="p">()</span>
+<span class="n">scripted_model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">script</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="n">scripted_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;model_scripted.pt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>脚本模式支持完整的Python语法，包括动态控制流；缺点是有些Python语法可能不被支持。</p>
+<p><strong>TorchScript的用途</strong></p>
+<ul class="simple">
+<li><p>模型部署到生产环境</p></li>
+<li><p>模型优化（如通过TorchScript进行图优化）</p></li>
+<li><p>与C++ API集成（libtorch）</p></li>
+</ul>
+</section>
+<section id="safetensors">
+<h3>3.2.3 SafeTensors<a class="headerlink" href="#safetensors" title="Link to this heading">#</a></h3>
+<p><strong>SafeTensors</strong>是由Hugging Face推出的一种安全的模型序列化格式，专门用于大模型（LLM）的权重存储和传输。</p>
+<p><strong>SafeTensors的设计目标</strong></p>
+<ol class="arabic simple">
+<li><p><strong>安全性</strong>：不执行任意代码，避免pickle等格式的安全风险</p></li>
+<li><p><strong>零拷贝加载</strong>：mmap机制支持大模型的高效加载，无需将整个模型加载到内存</p></li>
+<li><p><strong>快速保存</strong>：可以只保存部分张量（如只保存更新部分）</p></li>
+<li><p><strong>内存映射</strong>：支持GPU直接通过PCIe访问</p></li>
+</ol>
+<p><strong>SafeTensors格式</strong></p>
+<p>SafeTensors文件是一个包含元数据和实际张量数据的结构：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;total_size&quot;</span><span class="p">:</span> <span class="mi">135291469824</span><span class="p">,</span>
+        <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;pt&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot; tensors&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;model.embed_tokens.weight&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;dtype&quot;</span><span class="p">:</span> <span class="s2">&quot;float16&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">50257</span><span class="p">,</span> <span class="mi">4096</span><span class="p">],</span>
+            <span class="s2">&quot;offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;data_file&quot;</span><span class="p">:</span> <span class="s2">&quot;model.safetensors&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;model.layers.0.self_attn.q_proj.weight&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;dtype&quot;</span><span class="p">:</span> <span class="s2">&quot;float16&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4096</span><span class="p">,</span> <span class="mi">4096</span><span class="p">],</span>
+            <span class="s2">&quot;offset&quot;</span><span class="p">:</span> <span class="mi">412789760</span><span class="p">,</span>
+            <span class="s2">&quot;data_file&quot;</span><span class="p">:</span> <span class="s2">&quot;model.safetensors&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>SafeTensors vs Pickle</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>特性</p></th>
+<th class="head"><p>SafeTensors</p></th>
+<th class="head"><p>Pickle</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>安全性</p></td>
+<td><p>无代码执行风险</p></td>
+<td><p>可能执行任意代码</p></td>
+</tr>
+<tr class="row-odd"><td><p>加载速度</p></td>
+<td><p>mmap快速加载</p></td>
+<td><p>需要反序列化</p></td>
+</tr>
+<tr class="row-even"><td><p>内存效率</p></td>
+<td><p>支持零拷贝</p></td>
+<td><p>全量加载到内存</p></td>
+</tr>
+<tr class="row-odd"><td><p>适用场景</p></td>
+<td><p>大模型权重存储</p></td>
+<td><p>任意Python对象</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id8">
+<h3>3.2.4 其他模型格式<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p><strong>TensorFlow SavedModel</strong></p>
+<p>TensorFlow的推荐部署格式，包含计算图和权重：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tf</span>
+
+<span class="c1"># 保存模型</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="s1">&#39;my_model&#39;</span><span class="p">)</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">saved_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;saved_model&#39;</span><span class="p">)</span>
+
+<span class="c1"># 加载模型</span>
+<span class="n">loaded</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">saved_model</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;saved_model&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>SavedModel包含：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">saved_model.pb</span></code>：计算图定义（protobuf格式）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">variables/</span></code>：变量（权重）目录</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">assets/</span></code>：额外资源文件</p></li>
+</ul>
+<p><strong>Caffe模型格式</strong></p>
+<p>Caffe使用<code class="docutils literal notranslate"><span class="pre">*.caffemodel</span></code>存储权重，<code class="docutils literal notranslate"><span class="pre">deploy.prototxt</span></code>定义网络结构。虽然Caffe本身已较少使用，但其模型格式仍被一些推理引擎（如NCNN）支持。</p>
+<p><strong>MindSpore MindIR</strong></p>
+<p>华为MindSpore的中间表示格式，用于端云协同部署。</p>
+</section>
+</section>
+<section id="id9">
+<h2>3.3 计算图基础<a class="headerlink" href="#id9" title="Link to this heading">#</a></h2>
+<section id="id10">
+<h3>3.3.1 什么是计算图<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>**计算图（Computational Graph）**是表示数学运算的有向无环图（DAG）。在深度学习中，计算图描述了神经网络从输入到输出的完整计算流程。</p>
+<p><strong>计算图的构成</strong></p>
+<ul class="simple">
+<li><p><strong>节点（Node/Operator）</strong>：表示具体的数学运算，如卷积、矩阵乘法、ReLU等</p></li>
+<li><p><strong>边（Edge/Tensor）</strong>：表示节点之间的数据流，即张量（多维数组）</p></li>
+</ul>
+<p><strong>计算图示例</strong></p>
+<p>对于神经网络<code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">ReLU(Conv(x,</span> <span class="pre">W)</span> <span class="pre">+</span> <span class="pre">b)</span></code>：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>x ──┐
+    ├──→ Conv ──┐
+W ──┘         ├──→ Add ──┐
+               b ──────→──┘
+                         │
+                         ↓
+                       ReLU
+                         │
+                         ↓
+                         y
+</pre></div>
+</div>
+</section>
+<section id="id11">
+<h3>3.3.2 静态图与动态图<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p><strong>静态计算图（Static Computational Graph）</strong></p>
+<p>静态图在执行前就完全定义好了。代表框架：TensorFlow 1.x、ONNX。</p>
+<p>特点：</p>
+<ul class="simple">
+<li><p>构建和执行分开：先定义图，后执行</p></li>
+<li><p>运行时开销小（图结构已知，可以高度优化）</p></li>
+<li><p>对动态控制流支持有限</p></li>
+</ul>
+<p>缺点：</p>
+<ul class="simple">
+<li><p>调试困难（错误在图构建时而非运行时）</p></li>
+<li><p>Python语法受限（需要使用框架特定的API）</p></li>
+</ul>
+<p><strong>动态计算图（Dynamic Computational Graph）</strong></p>
+<p>动态图在执行过程中实时构建。代表框架：PyTorch、TensorFlow 2.x（默认）。</p>
+<p>特点：</p>
+<ul class="simple">
+<li><p>执行即构建：每个样本可能触发不同的图结构</p></li>
+<li><p>调试友好（标准Python调试器可用）</p></li>
+<li><p>自然支持动态控制流</p></li>
+</ul>
+<p>缺点：</p>
+<ul class="simple">
+<li><p>运行时开销（图构建开销分摊到每次执行）</p></li>
+<li><p>优化空间有限（图结构在运行时才能确定）</p></li>
+</ul>
+<p><strong>JIT编译的折中方案</strong></p>
+<p>PyTorch的TorchScript和TensorFlow的XLA（Accelerated Linear Algebra）尝试结合两者优点：通过JIT编译在运行时生成优化的静态图。</p>
+</section>
+<section id="id12">
+<h3>3.3.3 计算图与自动求导<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>计算图的一个重要应用是<strong>自动求导（Automatic Differentiation）</strong>。通过构建计算图，可以自动计算梯度。</p>
+<p><strong>前向传播 vs 反向传播</strong></p>
+<ul class="simple">
+<li><p>前向传播：从输入计算输出</p></li>
+<li><p>反向传播：从输出反向计算梯度</p></li>
+</ul>
+<p>计算图使得梯度计算变得系统化和自动化。每个节点记录其前向操作和梯度函数，反向传播时自动链式求导。</p>
+<p><strong>计算图在推理引擎中的简化</strong></p>
+<p>推理时只需要前向传播，不需要反向传播。因此，推理引擎的计算图可以简化：</p>
+<ul class="simple">
+<li><p>删除梯度计算相关的节点</p></li>
+<li><p>合并连续操作（如Conv+BN+ReLU）</p></li>
+<li><p>预计算常量表达式</p></li>
+<li><p>优化内存布局</p></li>
+</ul>
+</section>
+</section>
+<section id="id13">
+<h2>3.4 图优化技术<a class="headerlink" href="#id13" title="Link to this heading">#</a></h2>
+<section id="id14">
+<h3>3.4.1 图优化的层次<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p>图优化可以在多个层次进行：</p>
+<p><strong>算子级别优化（Operator-level Optimization）</strong></p>
+<p>单个算子的内部实现优化，如矩阵乘法的Strassen算法、卷积的Winograd算法等。这些优化通常在Kernel层实现。</p>
+<p><strong>局部优化（Local Optimization）</strong></p>
+<p>相邻算子组合的优化，如算子融合（Conv+BN→ConvBN）。这类优化在计算图层面进行。</p>
+<p><strong>全局优化（Global Optimization）</strong></p>
+<p>整个计算图的优化，如公共子图消除、死代码删除、常量折叠等。</p>
+</section>
+<section id="id15">
+<h3>3.4.2 算子融合<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<p>**算子融合（Operator Fusion）**是将多个连续的算子合并为一个复合算子的优化技术。</p>
+<p><strong>为什么融合能提升性能？</strong></p>
+<ol class="arabic simple">
+<li><p><strong>减少内存访问</strong>：中间结果不需要写回内存再读出</p></li>
+<li><p><strong>减少Kernel调用开销</strong>：一次Kernel执行替代多次</p></li>
+<li><p><strong>增加计算密度</strong>：更好地利用硬件的并行计算能力</p></li>
+</ol>
+<p><strong>常见的融合模式</strong></p>
+<p><strong>卷积+批量归一化+激活</strong></p>
+<p>原始计算：<code class="docutils literal notranslate"><span class="pre">output</span> <span class="pre">=</span> <span class="pre">ReLU(BN(Conv(input,</span> <span class="pre">weight)))</span></code></p>
+<p>融合后等价于一个新的卷积操作，权重和偏置被融合：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 融合后的等效卷积</span>
+<span class="n">new_weight</span> <span class="o">=</span> <span class="n">gamma</span> <span class="o">/</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">var</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span> <span class="o">*</span> <span class="n">weight</span>
+<span class="n">new_bias</span> <span class="o">=</span> <span class="n">beta</span> <span class="o">-</span> <span class="n">gamma</span> <span class="o">/</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">var</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span> <span class="o">*</span> <span class="n">mean</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">Conv</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">new_weight</span><span class="p">)</span> <span class="o">+</span> <span class="n">new_bias</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">ReLU</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>融合后的计算只需要一次卷积操作和一次ReLU操作。</p>
+<p><strong>矩阵乘+偏置+激活</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 原始</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">Activation</span><span class="p">(</span><span class="n">MatMul</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span> <span class="o">+</span> <span class="n">bias</span><span class="p">)</span>
+
+<span class="c1"># 融合后</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">ActivationWithBias</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">bias</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>多分支融合</strong></p>
+<p>ResNet中的残差连接可以被融合为一个算子：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 原始</span>
+<span class="n">branch1</span> <span class="o">=</span> <span class="n">conv1</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+<span class="n">branch2</span> <span class="o">=</span> <span class="n">conv2</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="n">branch1</span><span class="p">,</span> <span class="n">branch2</span><span class="p">)</span>
+
+<span class="c1"># 融合后</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">residual_conv</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">conv1_weight</span><span class="p">,</span> <span class="n">conv2_weight</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id16">
+<h3>3.4.3 算子替换<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<p>**算子替换（Operator Replacement）**是用语义等价但更高效的算子替换原有算子的优化。</p>
+<p><strong>常见的替换场景</strong></p>
+<p><strong>1×1卷积替代全连接</strong></p>
+<p>在全局池化后的分类层，FC层实际上是对每个通道做了加权求和，可以等价替换为1×1卷积：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 原始</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">global_avg_pool</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>  <span class="c1"># [B, C, 1, 1]</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>               <span class="c1"># [B, C]</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">fc</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>         <span class="c1"># [B, num_classes]</span>
+
+<span class="c1"># 替换后</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">conv1x1</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>  <span class="c1"># [B, num_classes, 1, 1]</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>深度可分离卷积替代标准卷积</strong></p>
+<p>Depthwise Separable Convolution是MobileNet的核心，可以大幅减少计算量：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 标准卷积</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">conv2d</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>  <span class="c1"># 计算量: H*W*C_in*C_out*K*K</span>
+
+<span class="c1"># 深度可分离卷积</span>
+<span class="n">depthwise</span> <span class="o">=</span> <span class="n">conv2d</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">depthwise_weight</span><span class="p">)</span>  <span class="c1"># 逐通道卷积</span>
+<span class="n">pointwise</span> <span class="o">=</span> <span class="n">conv2d</span><span class="p">(</span><span class="n">depthwise</span><span class="p">,</span> <span class="n">pointwise_weight</span><span class="p">)</span>  <span class="c1"># 1x1卷积</span>
+<span class="c1"># 总计算量: H*W*C_in*K*K + H*W*C_in*C_out</span>
+</pre></div>
+</div>
+</section>
+<section id="id17">
+<h3>3.4.4 布局转换<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
+<p>**布局转换（Layout Transformation）**是调整张量内存排列方式的优化。</p>
+<p><strong>常见的内存布局</strong></p>
+<ul class="simple">
+<li><p><strong>NCHW</strong>：Batch-Channels-Height-Width，GPU常用，通道在前</p></li>
+<li><p><strong>NHWC</strong>：Batch-Height-Width-Channels，CPU/TensorFlow常用</p></li>
+<li><p><strong>NC4HW4/NCHW4</strong>：通道拆分为4的倍数，适合SIMD向量化</p></li>
+</ul>
+<p><strong>布局转换的时机</strong></p>
+<ol class="arabic simple">
+<li><p><strong>算子间布局对齐</strong>：不同算子可能偏好不同的数据布局</p></li>
+<li><p><strong>硬件特性适配</strong>：GPU可能偏好NCHW，CPU可能偏好NHWC</p></li>
+<li><p><strong>融合准备</strong>：某些融合模式要求特定的输入布局</p></li>
+</ol>
+<p><strong>转换的代价</strong></p>
+<p>布局转换涉及数据拷贝，可能成为性能瓶颈。因此，优化策略应：</p>
+<ul class="simple">
+<li><p>尽量减少不必要的布局转换</p></li>
+<li><p>将转换融入融合算子中（如在Kernel中处理多种布局）</p></li>
+<li><p>使用更高效的拷贝方法（如异步拷贝）</p></li>
+</ul>
+</section>
+<section id="id18">
+<h3>3.4.5 常量折叠<a class="headerlink" href="#id18" title="Link to this heading">#</a></h3>
+<p>**常量折叠（Constant Folding）**是在编译时预先计算结果已知表达式的优化。</p>
+<p><strong>示例</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 原始</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">constant</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">constant</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>  <span class="c1"># 在运行时计算</span>
+
+<span class="c1"># 折叠后</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">constant</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>  <span class="c1"># 编译时直接计算得到</span>
+</pre></div>
+</div>
+<p>在神经网络中，很多计算是常量（如图像归一化的均值、标准差），可以在转换阶段预先计算。</p>
+<p><strong>常量折叠的益处</strong></p>
+<ul class="simple">
+<li><p>减少运行时计算量</p></li>
+<li><p>简化计算图，删除冗余节点</p></li>
+<li><p>可能触发更多优化（如常量节点删除后，两个相邻算子可能可以融合）</p></li>
+</ul>
+</section>
+<section id="id19">
+<h3>3.4.6 冗余消除<a class="headerlink" href="#id19" title="Link to this heading">#</a></h3>
+<p>**冗余消除（Redundancy Elimination）**删除不影响最终结果的计算。</p>
+<p><strong>死代码删除（Dead Code Elimination）</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 原始</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">compute</span><span class="p">()</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">y</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="c1"># x的结果未被使用（只有z被使用）</span>
+
+<span class="c1"># 删除后</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">compute</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">*</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>在推理时，梯度计算、训练相关的操作都是”死代码”。</p>
+<p><strong>公共子图消除（Common Subexpression Elimination）</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 原始</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="mi">2</span>
+
+<span class="c1"># 消除后</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">a</span>  <span class="c1"># 复用a的结果</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id20">
+<h2>3.5 中间表示<a class="headerlink" href="#id20" title="Link to this heading">#</a></h2>
+<section id="id21">
+<h3>3.5.1 什么是中间表示<a class="headerlink" href="#id21" title="Link to this heading">#</a></h3>
+<p>**中间表示（Intermediate Representation，IR）**是模型在不同格式之间转换时的桥梁。IR定义了模型的结构化描述方式，使得转换逻辑可以统一处理。</p>
+<p><strong>为什么需要IR？</strong></p>
+<p>假设有N种模型格式，如果两两之间直接转换，需要N×(N-1)种转换器。但如果都先转换为统一的IR，再从IR转换到目标格式，只需要2N种转换器。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>格式A ──┐
+        ├──→ IR ──┬──→ 格式X
+格式B ──┘         │
+        └──→ 格式Y
+</pre></div>
+</div>
+<p><strong>IR的设计要求</strong></p>
+<ol class="arabic simple">
+<li><p><strong>表达能力</strong>：能够描述各种神经网络的结构和操作</p></li>
+<li><p><strong>可优化性</strong>：便于进行各种图优化</p></li>
+<li><p><strong>可序列化</strong>：能够保存和加载</p></li>
+<li><p><strong>跨平台</strong>：不依赖特定框架或硬件</p></li>
+</ol>
+</section>
+<section id="ir">
+<h3>3.5.2 常见IR格式<a class="headerlink" href="#ir" title="Link to this heading">#</a></h3>
+<p><strong>ONNX作为IR</strong></p>
+<p>ONNX本身就可以作为IR使用。很多推理引擎将ONNX作为导入格式，然后在内部进行进一步优化。</p>
+<p>优点：</p>
+<ul class="simple">
+<li><p>生态完善，工具链成熟</p></li>
+<li><p>很多框架直接支持导出ONNX</p></li>
+</ul>
+<p>缺点：</p>
+<ul class="simple">
+<li><p>ONNX算子集有限，可能无法表达某些自定义操作</p></li>
+<li><p>版本兼容性有时是问题</p></li>
+</ul>
+<p><strong>厂商自定义IR</strong></p>
+<p>大型AI公司通常有自己的IR格式：</p>
+<ul class="simple">
+<li><p>TensorRT的IGPU/Plan格式</p></li>
+<li><p>OpenVINO的IR格式（XML+Bin）</p></li>
+<li><p>MNN的自定义格式</p></li>
+<li><p>MindSpore的MindIR</p></li>
+</ul>
+<p>这些IR通常针对自家硬件优化，支持更多专属算子。</p>
+</section>
+<section id="id22">
+<h3>3.5.3 IR的组成部分<a class="headerlink" href="#id22" title="Link to this heading">#</a></h3>
+<p>典型的IR包含以下组成部分：</p>
+<p><strong>模型元信息</strong></p>
+<div class="highlight-protobuf notranslate"><div class="highlight"><pre><span></span><span class="kd">message</span><span class="w"> </span><span class="nc">ModelProto</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">string</span><span class="w"> </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">           </span><span class="c1">// 模型名称</span>
+<span class="w">    </span><span class="kt">int64</span><span class="w"> </span><span class="na">ir_version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">       </span><span class="c1">// IR版本</span>
+<span class="w">    </span><span class="k">repeated</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="na">producer_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="w">    </span><span class="k">repeated</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="na">producer_version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="w">    </span><span class="k">repeated</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="na">inputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w">   </span><span class="c1">// 输入张量信息</span>
+<span class="w">    </span><span class="k">repeated</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="na">outputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span><span class="p">;</span><span class="w">   </span><span class="c1">// 输出张量信息</span>
+<span class="w">    </span><span class="k">repeated</span><span class="w"> </span><span class="n">OperatorSetIdProto</span><span class="w"> </span><span class="na">opset_import</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>计算图</strong></p>
+<div class="highlight-protobuf notranslate"><div class="highlight"><pre><span></span><span class="kd">message</span><span class="w"> </span><span class="nc">GraphProto</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">repeated</span><span class="w"> </span><span class="n">NodeProto</span><span class="w"> </span><span class="na">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">  </span><span class="c1">// 节点列表</span>
+<span class="w">    </span><span class="k">repeated</span><span class="w"> </span><span class="n">TensorProto</span><span class="w"> </span><span class="na">initializer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">  </span><span class="c1">// 权重常量</span>
+<span class="w">    </span><span class="kt">string</span><span class="w"> </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>节点定义</strong></p>
+<div class="highlight-protobuf notranslate"><div class="highlight"><pre><span></span><span class="kd">message</span><span class="w"> </span><span class="nc">NodeProto</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">string</span><span class="w"> </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">           </span><span class="c1">// 节点名称</span>
+<span class="w">    </span><span class="kt">string</span><span class="w"> </span><span class="na">op_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">         </span><span class="c1">// 算子类型</span>
+<span class="w">    </span><span class="k">repeated</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="na">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w">  </span><span class="c1">// 输入张量</span>
+<span class="w">    </span><span class="k">repeated</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="na">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="c1">// 输出张量</span>
+<span class="w">    </span><span class="n">map</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="n">AttributeProto</span><span class="p">&gt;</span><span class="w"> </span><span class="na">attribute</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w">  </span><span class="c1">// 算子属性</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>张量定义</strong></p>
+<div class="highlight-protobuf notranslate"><div class="highlight"><pre><span></span><span class="kd">message</span><span class="w"> </span><span class="nc">TensorProto</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">repeated</span><span class="w"> </span><span class="kt">int64</span><span class="w"> </span><span class="na">dims</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">     </span><span class="c1">// 形状</span>
+<span class="w">    </span><span class="n">DataType</span><span class="w"> </span><span class="na">data_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">    </span><span class="c1">// 数据类型</span>
+<span class="w">    </span><span class="k">repeated</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="na">float_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w">  </span><span class="c1">// 权重数据</span>
+<span class="w">    </span><span class="kt">string</span><span class="w"> </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id23">
+<h3>3.5.4 基于IR的优化流程<a class="headerlink" href="#id23" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>导入模型 → 解析为IR → 图优化 → IR优化后 → 生成目标格式
+</pre></div>
+</div>
+<p><strong>1. 导入模型</strong></p>
+<p>解析各种格式的模型文件，转换为统一的IR表示。这个过程需要处理：</p>
+<ul class="simple">
+<li><p>框架特定的API到标准算子的映射</p></li>
+<li><p>非标准操作的分解或适配</p></li>
+<li><p>模型版本的兼容处理</p></li>
+</ul>
+<p><strong>2. 图级别优化</strong></p>
+<p>在IR上进行与硬件无关的优化：</p>
+<ul class="simple">
+<li><p>常量折叠</p></li>
+<li><p>死代码删除</p></li>
+<li><p>公共子图消除</p></li>
+<li><p>算子简化</p></li>
+</ul>
+<p><strong>3. 硬件适配优化</strong></p>
+<p>针对目标硬件的优化：</p>
+<ul class="simple">
+<li><p>布局转换</p></li>
+<li><p>算子融合</p></li>
+<li><p>Kernel选择</p></li>
+</ul>
+<p><strong>4. 代码生成</strong></p>
+<p>将优化后的IR生成为目标格式：</p>
+<ul class="simple">
+<li><p>序列化为protobuf（如ONNX）</p></li>
+<li><p>生成硬件相关的执行计划（如TensorRT Engine）</p></li>
+<li><p>生成特定平台的代码（如移动端的C++代码）</p></li>
+</ul>
+</section>
+</section>
+<section id="id24">
+<h2>3.6 模型转换实践<a class="headerlink" href="#id24" title="Link to this heading">#</a></h2>
+<section id="pytorchonnx">
+<h3>3.6.1 PyTorch转ONNX实践<a class="headerlink" href="#pytorchonnx" title="Link to this heading">#</a></h3>
+<p><strong>基本转换步骤</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.onnx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torchvision.models</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">models</span>
+
+<span class="c1"># 1. 加载预训练模型</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet50</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+<span class="c1"># 2. 准备示例输入</span>
+<span class="n">dummy_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">)</span>
+
+<span class="c1"># 3. 执行转换</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">onnx</span><span class="o">.</span><span class="n">export</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="n">dummy_input</span><span class="p">,</span>
+    <span class="s2">&quot;resnet50.onnx&quot;</span><span class="p">,</span>
+    <span class="n">export_params</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">opset_version</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+    <span class="n">do_constant_folding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">input_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">],</span>
+    <span class="n">output_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;output&#39;</span><span class="p">],</span>
+    <span class="n">dynamic_axes</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;batch_size&#39;</span><span class="p">},</span>
+        <span class="s1">&#39;output&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;batch_size&#39;</span><span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># 4. 验证模型</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnx</span>
+<span class="n">model_onnx</span> <span class="o">=</span> <span class="n">onnx</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;resnet50.onnx&quot;</span><span class="p">)</span>
+<span class="n">onnx</span><span class="o">.</span><span class="n">checker</span><span class="o">.</span><span class="n">check_model</span><span class="p">(</span><span class="n">model_onnx</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ONNX模型验证通过！&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>常见问题和解决方案</strong></p>
+<ol class="arabic simple">
+<li><p><strong>动态shape支持</strong></p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 使用dynamic_axes参数</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">onnx</span><span class="o">.</span><span class="n">export</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span> <span class="n">dummy_input</span><span class="p">,</span> <span class="s2">&quot;model.onnx&quot;</span><span class="p">,</span>
+    <span class="n">dynamic_axes</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;batch_size&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">&#39;width&#39;</span><span class="p">},</span>
+        <span class="s1">&#39;output&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;batch_size&#39;</span><span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p><strong>算子不支持</strong></p></li>
+</ol>
+<p>某些PyTorch算子在ONNX中没有直接对应，需要自定义：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@torch</span><span class="o">.</span><span class="n">onnx</span><span class="o">.</span><span class="n">symbolic_helper</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;i&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">my_custom_op</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">input1</span><span class="p">,</span> <span class="n">input2</span><span class="p">,</span> <span class="n">alpha</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">op</span><span class="p">(</span><span class="s2">&quot;CustomOp&quot;</span><span class="p">,</span> <span class="n">input1</span><span class="p">,</span> <span class="n">input2</span><span class="p">,</span> <span class="n">alpha_s</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+
+<span class="c1"># 注册自定义算子</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">onnx</span><span class="o">.</span><span class="n">register_custom_op_symbolic</span><span class="p">(</span><span class="s1">&#39;::my_custom_op&#39;</span><span class="p">,</span> <span class="n">my_custom_op</span><span class="p">,</span> <span class="n">opset_version</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="onnxtensorrt">
+<h3>3.6.2 ONNX转TensorRT实践<a class="headerlink" href="#onnxtensorrt" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tensorrt</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">trt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pycuda.driver</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cuda</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># 1. 创建Logger</span>
+<span class="n">TRT_LOGGER</span> <span class="o">=</span> <span class="n">trt</span><span class="o">.</span><span class="n">Logger</span><span class="p">(</span><span class="n">trt</span><span class="o">.</span><span class="n">Logger</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+
+<span class="c1"># 2. 创建Builder</span>
+<span class="n">builder</span> <span class="o">=</span> <span class="n">trt</span><span class="o">.</span><span class="n">Builder</span><span class="p">(</span><span class="n">TRT_LOGGER</span><span class="p">)</span>
+<span class="n">network</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">create_network</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="nb">int</span><span class="p">(</span><span class="n">trt</span><span class="o">.</span><span class="n">NetworkDefinitionCreationFlag</span><span class="o">.</span><span class="n">EXPLICIT_BATCH</span><span class="p">))</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">create_builder_config</span><span class="p">()</span>
+<span class="n">config</span><span class="o">.</span><span class="n">max_workspace_size</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">30</span>  <span class="c1"># 1GB</span>
+
+<span class="c1"># 3. 解析ONNX模型</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">trt</span><span class="o">.</span><span class="n">OnnxParser</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">TRT_LOGGER</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;resnet50.onnx&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+<span class="c1"># 4. 配置优化</span>
+<span class="n">builder</span><span class="o">.</span><span class="n">max_batch_size</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">config</span><span class="o">.</span><span class="n">set_flag</span><span class="p">(</span><span class="n">trt</span><span class="o">.</span><span class="n">BuilderFlag</span><span class="o">.</span><span class="n">FP16</span><span class="p">)</span>  <span class="c1"># 启用FP16优化</span>
+
+<span class="c1"># 5. 生成Engine</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">build_serialized_network</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+
+<span class="c1"># 6. 保存Engine</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;resnet50.trt&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TensorRT Engine生成成功！&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>TensorRT优化策略</strong></p>
+<ul class="simple">
+<li><p><strong>FP16/INT8量化</strong>：减少计算精度需求，加速推理</p></li>
+<li><p><strong>张量融合</strong>：减少内存访问</p></li>
+<li><p><strong>内核自动调优</strong>：为特定输入shape选择最优算法</p></li>
+<li><p><strong>内存优化</strong>：复用中间结果内存</p></li>
+</ul>
+</section>
+<section id="id25">
+<h3>3.6.3 转换工具链<a class="headerlink" href="#id25" title="Link to this heading">#</a></h3>
+<p><strong>MMDeploy</strong></p>
+<p>OpenMMLab的模型部署工具，支持PyTorch→ONNX→推理引擎的完整流程：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 安装</span>
+pip<span class="w"> </span>install<span class="w"> </span>mmdeploy
+
+<span class="c1"># 转换模型</span>
+python<span class="w"> </span>tools/deploy.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>configs/mmdetection/onnx-sdk/onnx2sdk.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>mmdetection/configs/faster_rcnn/faster-rcnn_r50_fpn.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>mmdetection/checkpoints/faster-rcnn_r50_fpn_1x_coco_20200130-3c540c11.pth<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--deploy-cfg<span class="w"> </span>configs/mmdetection/onnx-sdk/onnx2sdk.py
+</pre></div>
+</div>
+<p><strong>TVM Relay</strong></p>
+<p>TVM的图IR，支持从多种框架导入模型并进行优化：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tvm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tvm</span><span class="w"> </span><span class="kn">import</span> <span class="n">relay</span>
+
+<span class="c1"># 从ONNX导入</span>
+<span class="n">mod</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">relay</span><span class="o">.</span><span class="n">frontend</span><span class="o">.</span><span class="n">from_onnx</span><span class="p">(</span><span class="n">onnx_model</span><span class="p">)</span>
+
+<span class="c1"># 应用优化</span>
+<span class="k">with</span> <span class="n">tvm</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">PassContext</span><span class="p">(</span><span class="n">opt_level</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">mod</span> <span class="o">=</span> <span class="n">relay</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;llvm&quot;</span><span class="p">)</span>
+
+<span class="c1"># 编译</span>
+<span class="k">with</span> <span class="n">tvm</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">PassContext</span><span class="p">(</span><span class="n">opt_level</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">lib</span> <span class="o">=</span> <span class="n">relay</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;llvm&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id26">
+<h2>本章小结<a class="headerlink" href="#id26" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>模型转换必要性</strong>：训练框架多样性、部署环境差异、优化需求和跨平台支持都需要模型转换。转换面临算子语义差异、动态控制流、自定义算子等挑战。</p></li>
+<li><p><strong>主流模型格式</strong>：ONNX是开放的互操作性标准；TorchScript是PyTorch的序列化格式支持追踪和脚本两种模式；SafeTensors是Hugging Face推出的安全高效的大模型格式。</p></li>
+<li><p><strong>计算图基础</strong>：计算图是表示数学运算的有向无环图，由节点（算子）和边（张量）构成。分为静态图（先定义后执行）和动态图（执行即构建）两种。</p></li>
+<li><p><strong>图优化技术</strong>：算子融合减少内存访问和Kernel调用；算子替换用高效算子替代低效算子；布局转换适配硬件；常量折叠预计算常量；冗余消除删除无用计算。</p></li>
+<li><p><strong>中间表示IR</strong>：IR是模型转换的桥梁，使N种格式两两转换变成2N种转换器。ONNX本身即可作为IR使用，大厂商也有自己的IR格式。</p></li>
+</ol>
+</section>
+<section id="id27">
+<h2>思考与练习<a class="headerlink" href="#id27" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>概念理解</strong>：解释为什么模型转换需要”中间表示”这个概念？如果没有IR，直接在任意两种格式之间转换会有什么问题？</p></li>
+<li><p><strong>原理分析</strong>：ONNX的算子集是标准化的，但不同推理引擎对ONNX的支持程度不同。请分析可能的原因，以及在实际部署中应该如何处理这种不一致性。</p></li>
+<li><p><strong>设计思考</strong>：假设你需要为一个新的AI芯片开发模型转换工具，该芯片有自己的模型格式和算子定义。请说明你会如何设计转换工具的架构，需要考虑哪些关键问题？</p></li>
+<li><p><strong>实践应用</strong>：对比TorchScript的追踪模式（trace）和脚本模式（script）的优缺点。什么场景下应该选择哪种模式？</p></li>
+<li><p><strong>优化分析</strong>：分析算子融合为什么能够提升推理性能。如果融合Conv+BN+ReLU为一个算子，可能面临哪些技术挑战？</p></li>
+<li><p><strong>扩展调研</strong>：调研SafeTensors格式相比传统的pickle/h5格式在LLM场景下的优势，并分析其实现原理（内存映射、零拷贝加载等）。</p></li>
+</ol>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="02-Model-Compression.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">02 模型压缩</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="04-Inference-Optimization.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">04 推理优化技术</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3.1 模型转换概述</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3.1.1 什么是模型转换</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.1.2 模型转换的挑战</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">3.1.3 模型转换流程</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">3.2 主流模型格式</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnx">3.2.1 ONNX</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchscript">3.2.2 TorchScript</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#safetensors">3.2.3 SafeTensors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">3.2.4 其他模型格式</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">3.3 计算图基础</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">3.3.1 什么是计算图</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">3.3.2 静态图与动态图</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">3.3.3 计算图与自动求导</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">3.4 图优化技术</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">3.4.1 图优化的层次</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">3.4.2 算子融合</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">3.4.3 算子替换</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">3.4.4 布局转换</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">3.4.5 常量折叠</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">3.4.6 冗余消除</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">3.5 中间表示</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">3.5.1 什么是中间表示</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ir">3.5.2 常见IR格式</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">3.5.3 IR的组成部分</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">3.5.4 基于IR的优化流程</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">3.6 模型转换实践</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorchonnx">3.6.1 PyTorch转ONNX实践</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onnxtensorrt">3.6.2 ONNX转TensorRT实践</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">3.6.3 转换工具链</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">思考与练习</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Author name not set
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Apr 29, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>本教材仅供内部培训使用</p>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

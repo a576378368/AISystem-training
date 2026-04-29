@@ -1,0 +1,1789 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>NVIDIA GPU架构 &#8212; AI系统工程师培训教程</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Part2/Chap06/03-NVIDIA';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="国外AI芯片" href="04-Abroad-Chips.html" />
+    <link rel="prev" title="GPU原理" href="02-GPU-Base.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Apr 29, 2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="AI系统工程师培训教程 - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="AI系统工程师培训教程 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    AI系统工程师培训教程
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">第一阶段：AI基础入门</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap01/README.html">Chap01 计算机基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/01-Binary.html">第一章 进制与编码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/02-CPU-Memory.html">第二章 CPU与内存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap01/03-Program-Running.html">第三章 程序运行原理</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap02/README.html">Chap02 Python编程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/01-Python-Basic.html">Python基础语法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/02-NumPy.html">NumPy基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap02/03-PyTorch.html">PyTorch基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Part1/Chap03/README.html">Chap03 数学基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/01-Linear-Algebra.html">线性代数基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/02-Probability.html">概率与统计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Part1/Chap03/03-Optimization.html">优化基础</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第二阶段：AI系统核心</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap04/README.html">Chap04 AI系统概述</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap04/01-Introduction.html">AI系统基本概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap04/02-Architecture.html">AI系统全栈架构</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap05/README.html">Chap05 神经网络基础</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/01-Neuron-Model.html">神经元与网络模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/02-CNN.html">卷积神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/03-RNN.html">循环神经网络</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/04-Transformer.html">Transformer与注意力机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap05/05-Quantization.html">模型量化基础</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Chap06 AI芯片体系架构</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-Chip-Base.html">AI芯片基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-GPU-Base.html">GPU原理</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">NVIDIA GPU架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-Abroad-Chips.html">国外AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-Domestic-Chips.html">国内AI芯片</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06-Programming-Model.html">芯片编程模式</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap07/README.html">Chap07 AI编译器原理</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/01-Traditional-Compiler.html">第一章 传统编译器基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/02-AI-Compiler.html">第二章 AI编译器架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/03-Frontend-Optimization.html">第三章 前端优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap07/04-Backend-Optimization.html">第四章 后端优化</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap08/README.html">Chap08 推理系统与引擎</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/01-Inference-System.html">01 推理系统概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/02-Model-Compression.html">02 模型压缩</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/03-Model-Converter.html">03 模型转换与优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/04-Inference-Optimization.html">04 推理优化技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap08/05-Kernel-Optimization.html">05 Kernel优化技术</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap09/README.html">Chap09 AI框架核心</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/01-Auto-Differentiation.html">自动微分</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/02-Computational-Graph.html">计算图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap09/03-Distributed-Training.html">分布式训练</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chap10/README.html">Chap10 大模型与集群</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/01-LLM-Architecture.html">大模型架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/02-AI-Cluster.html">AI集群</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chap10/03-Parallel-Strategy.html">并行策略</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">第三阶段：附录</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixA/README.html">附录A：AI系统术语表</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixB/README.html">附录B：参考文献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part3/AppendixC/README.html">AppendixC 实践项目</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/your-org/AI-System-Training/blob/main/Part2/Chap06/03-NVIDIA.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button"
+   title="Show source"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/Part2/Chap06/03-NVIDIA.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>NVIDIA GPU架构</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">章节导言</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3.1 NVIDIA GPU架构演进概述</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3.1.1 九代架构一览</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.1.2 命名渊源</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fermi-2010">3.2 Fermi架构（2010）</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fermi">3.2.1 Fermi架构概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">3.2.2 Fermi架构创新</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">3.2.3 Fermi的局限性</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kepler-2012">3.3 Kepler架构（2012）</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kepler">3.3.1 Kepler架构概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">3.3.2 Kepler关键创新</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maxwell-2014">3.4 Maxwell架构（2014）</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#maxwell">3.4.1 Maxwell架构概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">3.4.2 Maxwell技术特点</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pascal-2016">3.5 Pascal架构（2016）</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pascal">3.5.1 Pascal架构概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">3.5.2 Pascal关键创新</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pascalsm">3.5.3 Pascal的SM设计</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#volta-2017">3.6 Volta架构（2017）</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#volta">3.6.1 Volta架构概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">3.6.2 Volta关键创新</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#volta-sm">3.6.3 Volta SM结构</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#turing-2018">3.7 Turing架构（2018）</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#turing">3.7.1 Turing架构概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">3.7.2 Turing关键创新</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#turing-rt-core">3.7.3 Turing RT Core原理</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ampere-2020">3.8 Ampere架构（2020）</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ampere">3.8.1 Ampere架构概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">3.8.2 Ampere关键创新</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ampere-sm">3.8.3 Ampere SM结构</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hopper-2022">3.9 Hopper架构（2022）</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hopper">3.9.1 Hopper架构概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">3.9.2 Hopper关键创新</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nvlink-4-0">3.9.3 NVLink 4.0</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#h100">3.9.4 H100规格</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#blackwell-2024">3.10 Blackwell架构（2024）</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#blackwell">3.10.1 Blackwell架构概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">3.10.2 Blackwell关键创新</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">3.10.3 性能对比</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cuda">3.11 CUDA编程详解</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">3.11.1 CUDA编程模型</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">3.11.2 CUDA内存模型</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">3.11.3 CUDA编程示例</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">3.11.4 CUDA线程层次</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">3.11.5 CUDA内存管理</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvlinknvswitch">3.12 NVLink与NVSwitch</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nvlink">3.12.1 NVLink发展历程</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nvswitch">3.12.2 NVSwitch</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">3.12.3 NVLink拓扑设计</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nvlink-vs-pcie">3.12.4 NVLink vs PCIe</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">思考与练习</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <!--Copyright © 适用于[License](https://github.com/chenzomi12/AISystem)版权许可-->
+<section class="tex2jax_ignore mathjax_ignore" id="nvidia-gpu">
+<h1>NVIDIA GPU架构<a class="headerlink" href="#nvidia-gpu" title="Link to this heading">#</a></h1>
+<section id="id1">
+<h2>学习目标<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>了解NVIDIA GPU从Fermi到Blackwell九代架构的发展历程</p></li>
+<li><p>掌握NVIDIA各代架构的关键创新和技术特点</p></li>
+<li><p>深入理解Tensor Core的演进和各代架构的性能提升</p></li>
+<li><p>掌握CUDA编程模型及其与硬件架构的对应关系</p></li>
+<li><p>理解NVLink与NVSwitch的技术演进和带宽发展</p></li>
+</ol>
+</section>
+<section id="id2">
+<h2>章节导言<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>NVIDIA是全球领先的GPU制造商，其GPU架构演进代表了GPU技术的发展方向。从2010年Fermi架构到2024年Blackwell架构，NVIDIA GPU经历了9代重大演进，在AI计算领域建立了难以撼动的技术领先地位。</p>
+<p>本章将系统梳理NVIDIA GPU架构的发展脉络，深入分析每一代架构的关键技术创新。从Fermi确立GPU计算基础架构，到Pascal引入NVLink互联技术，再到Volta开创Tensor Core时代，NVIDIA不断推动GPU计算能力的边界。</p>
+<p>本章还将详细介绍CUDA编程模型与硬件架构的对应关系，帮助读者理解软件如何映射到硬件执行。同时，NVLink和NVSwitch作为多GPU互联的关键技术，其演进历程也是理解现代AI计算集群的重要基础。</p>
+<p>通过本章学习，读者将对NVIDIA GPU架构有全面深入的认识，理解其技术领先的原因，并为实际开发工作提供理论指导。</p>
+</section>
+<section id="id3">
+<h2>3.1 NVIDIA GPU架构演进概述<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<section id="id4">
+<h3>3.1.1 九代架构一览<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>NVIDIA GPU架构经历了9代重要演进：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>架构名称</p></th>
+<th class="head"><p>中文名</p></th>
+<th class="head"><p>发布年份</p></th>
+<th class="head"><p>核心技术突破</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Fermi</p></td>
+<td><p>费米</p></td>
+<td><p>2010</p></td>
+<td><p>完整GPU计算架构</p></td>
+</tr>
+<tr class="row-odd"><td><p>Kepler</p></td>
+<td><p>开普勒</p></td>
+<td><p>2012</p></td>
+<td><p>多核并行优化</p></td>
+</tr>
+<tr class="row-even"><td><p>Maxwell</p></td>
+<td><p>麦克斯韦</p></td>
+<td><p>2014</p></td>
+<td><p>能效大幅提升</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pascal</p></td>
+<td><p>帕斯卡</p></td>
+<td><p>2016</p></td>
+<td><p>NVLink、HBM2</p></td>
+</tr>
+<tr class="row-even"><td><p>Volta</p></td>
+<td><p>伏特</p></td>
+<td><p>2017</p></td>
+<td><p>Tensor Core</p></td>
+</tr>
+<tr class="row-odd"><td><p>Turing</p></td>
+<td><p>图灵</p></td>
+<td><p>2018</p></td>
+<td><p>RT Core、Tensor Core 2.0</p></td>
+</tr>
+<tr class="row-even"><td><p>Ampere</p></td>
+<td><p>安培</p></td>
+<td><p>2020</p></td>
+<td><p>Tensor Core 3.0、MIG</p></td>
+</tr>
+<tr class="row-odd"><td><p>Hopper</p></td>
+<td><p>赫柏</p></td>
+<td><p>2022</p></td>
+<td><p>异构CPU+GPU、HBM3</p></td>
+</tr>
+<tr class="row-even"><td><p>Blackwell</p></td>
+<td><p>布莱克韦尔</p></td>
+<td><p>2024</p></td>
+<td><p>第二代Transformer Engine</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id5">
+<h3>3.1.2 命名渊源<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>NVIDIA GPU架构以著名科学家命名：</p>
+<ul class="simple">
+<li><p><strong>费米（Enrico Fermi）</strong>：意大利物理学家，量子力学和统计力学先驱</p></li>
+<li><p><strong>开普勒（Johannes Kepler）</strong>：德国天文学家，行星运动定律</p></li>
+<li><p><strong>麦克斯韦（James Clerk Maxwell）</strong>：电磁理论之父</p></li>
+<li><p><strong>帕斯卡（Blaise Pascal）</strong>：法国数学家，概率论奠基人</p></li>
+<li><p><strong>伏特（Alessandro Volta）</strong>：意大利物理学家，电池之父</p></li>
+<li><p><strong>图灵（Alan Turing）</strong>：计算机科学之父</p></li>
+<li><p><strong>安培（André-Marie Ampère）</strong>：电磁学之父</p></li>
+<li><p><strong>赫柏（Grace Hopper）</strong>：计算机编程先驱</p></li>
+<li><p><strong>布莱克韦尔（David Blackwell）</strong>：统计学家</p></li>
+</ul>
+</section>
+</section>
+<section id="fermi-2010">
+<h2>3.2 Fermi架构（2010）<a class="headerlink" href="#fermi-2010" title="Link to this heading">#</a></h2>
+<section id="fermi">
+<h3>3.2.1 Fermi架构概述<a class="headerlink" href="#fermi" title="Link to this heading">#</a></h3>
+<p>Fermi是NVIDIA第一个完整的GPU计算架构，标志着GPU从图形处理向通用计算的全面转型。</p>
+<p><strong>核心参数</strong>：</p>
+<ul class="simple">
+<li><p>16个SM（流式多处理器）</p></li>
+<li><p>每个SM 32个CUDA Core</p></li>
+<li><p>共512个CUDA Core</p></li>
+<li><p>6个64位内存控制器（共384位）</p></li>
+<li><p>最大6GB GDDR5显存</p></li>
+<li><p>支持ECC内存</p></li>
+<li><p>40亿晶体管（40nm/28nm）</p></li>
+</ul>
+</section>
+<section id="id6">
+<h3>3.2.2 Fermi架构创新<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p><strong>完整的GPU计算架构</strong></p>
+<p>Fermi首次真正从硬件层面支持GPU计算：</p>
+<ul class="simple">
+<li><p><strong>CUDA Core</strong>：完整的IEEE 754-2008浮点运算单元</p></li>
+<li><p><strong>双精度支持</strong>：满足科学计算需求</p></li>
+<li><p><strong>L1/L2缓存</strong>：首次在GPU上支持缓存层次</p></li>
+<li><p><strong>ECC支持</strong>：提高计算可靠性</p></li>
+<li><p><strong>统一虚拟地址空间</strong>：简化编程模型</p></li>
+</ul>
+<p><strong>流式多处理器（SM）结构</strong></p>
+<p>每个SM包含：</p>
+<ul class="simple">
+<li><p>32个CUDA Core（FP32）</p></li>
+<li><p>16个LD/ST单元</p></li>
+<li><p>4个SFU（特殊函数单元）</p></li>
+<li><p>1个Warp调度器</p></li>
+<li><p>64KB共享内存/L1缓存</p></li>
+</ul>
+</section>
+<section id="id7">
+<h3>3.2.3 Fermi的局限性<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>Fermi架构也存在一些局限：</p>
+<ul class="simple">
+<li><p>功耗较高</p></li>
+<li><p>共享内存和L1缓存竞争</p></li>
+<li><p>双精度性能相对较弱</p></li>
+<li><p>架构仍在图形和计算之间平衡</p></li>
+</ul>
+</section>
+</section>
+<section id="kepler-2012">
+<h2>3.3 Kepler架构（2012）<a class="headerlink" href="#kepler-2012" title="Link to this heading">#</a></h2>
+<section id="kepler">
+<h3>3.3.1 Kepler架构概述<a class="headerlink" href="#kepler" title="Link to this heading">#</a></h3>
+<p>Kepler架构在Fermi基础上大幅提升能效，专为Tesla计算卡设计。</p>
+<p><strong>核心参数</strong>：</p>
+<ul class="simple">
+<li><p>15个SMX</p></li>
+<li><p>每个SMX 192个FP32 + 64个FP64 CUDA Core</p></li>
+<li><p>共2880个FP32 Core</p></li>
+<li><p>GPU Boost技术</p></li>
+<li><p>动态并行支持</p></li>
+<li><p>71亿晶体管（28nm）</p></li>
+</ul>
+</section>
+<section id="id8">
+<h3>3.3.2 Kepler关键创新<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p><strong>SMX设计</strong></p>
+<p>Kepler将SM升级为SMX，一个SMX包含：</p>
+<ul class="simple">
+<li><p>192个FP32 CUDA Core</p></li>
+<li><p>64个FP64 CUDA Core</p></li>
+<li><p>32个LD/ST单元</p></li>
+<li><p>32个SFU</p></li>
+<li><p>4个Warp调度器</p></li>
+</ul>
+<p><strong>能效提升</strong></p>
+<p>相比Fermi：</p>
+<ul class="simple">
+<li><p>每瓦性能提升3倍</p></li>
+<li><p>通过减少控制单元比例，增加计算单元</p></li>
+<li><p>GPU Boost动态超频</p></li>
+</ul>
+<p><strong>新技术支持</strong></p>
+<ul class="simple">
+<li><p><strong>动态并行</strong>：GPU可自行启动新内核</p></li>
+<li><p><strong>Hyper-Q</strong>：多个CPU核心同时使用GPU</p></li>
+<li><p><strong>Grid Management Unit</strong>：管理网格调度</p></li>
+</ul>
+</section>
+</section>
+<section id="maxwell-2014">
+<h2>3.4 Maxwell架构（2014）<a class="headerlink" href="#maxwell-2014" title="Link to this heading">#</a></h2>
+<section id="maxwell">
+<h3>3.4.1 Maxwell架构概述<a class="headerlink" href="#maxwell" title="Link to this heading">#</a></h3>
+<p>Maxwell是NVIDIA历史上能效提升最显著的架构之一。</p>
+<p><strong>核心参数</strong>：</p>
+<ul class="simple">
+<li><p>16个SMM</p></li>
+<li><p>每个SMM 128个CUDA Core</p></li>
+<li><p>共2048个CUDA Core</p></li>
+<li><p>动态负载均衡</p></li>
+<li><p>80亿晶体管（28nm）</p></li>
+</ul>
+</section>
+<section id="id9">
+<h3>3.4.2 Maxwell技术特点<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p><strong>SMM（Maxwell流式多处理器）</strong></p>
+<p>每个SMM包含：</p>
+<ul class="simple">
+<li><p>4个逻辑处理块</p></li>
+<li><p>每块32个CUDA Core</p></li>
+<li><p>8个LD/ST + 8个SFU</p></li>
+<li><p>独立Warp调度器</p></li>
+</ul>
+<p><strong>能效优化策略</strong></p>
+<ul class="simple">
+<li><p>减少每组Core数量，降低复杂度</p></li>
+<li><p>增加每SM的线程数量</p></li>
+<li><p>更大的共享内存（64KB vs 48KB）</p></li>
+<li><p>更大的L2缓存（2MB vs 768KB）</p></li>
+</ul>
+<p><strong>与Kepler对比</strong>：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>指标</p></th>
+<th class="head"><p>Kepler GK104</p></th>
+<th class="head"><p>Maxwell GM204</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CUDA Core</p></td>
+<td><p>1536</p></td>
+<td><p>2048</p></td>
+</tr>
+<tr class="row-odd"><td><p>核心频率</p></td>
+<td><p>1006 MHz</p></td>
+<td><p>1126 MHz</p></td>
+</tr>
+<tr class="row-even"><td><p>浮点性能</p></td>
+<td><p>3090 GFLOPS</p></td>
+<td><p>4612 GFLOPS</p></td>
+</tr>
+<tr class="row-odd"><td><p>共享内存/SM</p></td>
+<td><p>48KB</p></td>
+<td><p>96KB</p></td>
+</tr>
+<tr class="row-even"><td><p>L2缓存</p></td>
+<td><p>512KB</p></td>
+<td><p>2048KB</p></td>
+</tr>
+<tr class="row-odd"><td><p>TDP</p></td>
+<td><p>195W</p></td>
+<td><p>165W</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="pascal-2016">
+<h2>3.5 Pascal架构（2016）<a class="headerlink" href="#pascal-2016" title="Link to this heading">#</a></h2>
+<section id="pascal">
+<h3>3.5.1 Pascal架构概述<a class="headerlink" href="#pascal" title="Link to this heading">#</a></h3>
+<p>Pascal是NVIDIA历史上最具创新性的架构之一，引入了多项革命性技术。</p>
+<p><strong>核心参数</strong>：</p>
+<ul class="simple">
+<li><p>60个SM</p></li>
+<li><p>每个SM 64个FP32 + 32个FP64 CUDA Core</p></li>
+<li><p>16nm FinFET工艺</p></li>
+<li><p>HBM2显存</p></li>
+<li><p>NVLink高速互联</p></li>
+<li><p>153亿晶体管</p></li>
+</ul>
+</section>
+<section id="id10">
+<h3>3.5.2 Pascal关键创新<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p><strong>HBM2显存</strong></p>
+<p>Pascal首次在GPU中使用HBM2：</p>
+<ul class="simple">
+<li><p>带宽：720 GB/s（vs 336 GB/s）</p></li>
+<li><p>效率：每比特能耗降低4倍</p></li>
+<li><p>面积：GPU + 封装集成</p></li>
+</ul>
+<p><strong>NVLink 1.0</strong></p>
+<p>革命性的GPU互联技术：</p>
+<ul class="simple">
+<li><p>双向带宽：160 GB/s</p></li>
+<li><p>是PCIe 3.0 x16的5倍</p></li>
+<li><p>支持GPU直接内存访问</p></li>
+</ul>
+<p><strong>统一内存</strong></p>
+<ul class="simple">
+<li><p>GPU和CPU共享虚拟地址空间</p></li>
+<li><p>支持内存页面迁移</p></li>
+<li><p>简化异构编程</p></li>
+</ul>
+</section>
+<section id="pascalsm">
+<h3>3.5.3 Pascal的SM设计<a class="headerlink" href="#pascalsm" title="Link to this heading">#</a></h3>
+<p>Pascal的SM进行了精简优化：</p>
+<ul class="simple">
+<li><p>每SM 64个FP32 Core（分成两组各32）</p></li>
+<li><p>每SM 32个FP64 Core</p></li>
+<li><p>更大寄存器文件</p></li>
+<li><p>支持更多并发Block</p></li>
+</ul>
+</section>
+</section>
+<section id="volta-2017">
+<h2>3.6 Volta架构（2017）<a class="headerlink" href="#volta-2017" title="Link to this heading">#</a></h2>
+<section id="volta">
+<h3>3.6.1 Volta架构概述<a class="headerlink" href="#volta" title="Link to this heading">#</a></h3>
+<p>Volta是NVIDIA第一个专门为深度学习设计的架构，引入了革命性的Tensor Core。</p>
+<p><strong>核心参数</strong>：</p>
+<ul class="simple">
+<li><p>80个SM</p></li>
+<li><p>每个SM 64个FP32 + 64个INT32 + 8个Tensor Core</p></li>
+<li><p>12nm FFN工艺</p></li>
+<li><p>HBM2显存</p></li>
+<li><p>NVLink 2.0</p></li>
+<li><p>NVSwitch 1.0</p></li>
+<li><p>211亿晶体管</p></li>
+</ul>
+</section>
+<section id="id11">
+<h3>3.6.2 Volta关键创新<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p><strong>Tensor Core 1.0</strong></p>
+<p>革命性深度学习加速单元：</p>
+<ul class="simple">
+<li><p>4×4矩阵运算单元</p></li>
+<li><p>混合精度：FP16输入，FP32累加</p></li>
+<li><p>每SM 8个Tensor Core</p></li>
+<li><p>每周期：1024 FMA（2048 FLOPS）</p></li>
+</ul>
+<p><strong>独立线程调度</strong></p>
+<p>改进SIMT模型：</p>
+<ul class="simple">
+<li><p>每个线程独立PC和Stack</p></li>
+<li><p>细粒度同步和协作</p></li>
+<li><p>解决Warp内分支效率问题</p></li>
+</ul>
+<p><strong>FP32/INT32并发执行</strong></p>
+<p>Volta可同时执行FP32和INT32：</p>
+<ul class="simple">
+<li><p>深度学习：FP32用于计算</p></li>
+<li><p>图形处理：INT32用于索引</p></li>
+<li><p>效率提升</p></li>
+</ul>
+</section>
+<section id="volta-sm">
+<h3>3.6.3 Volta SM结构<a class="headerlink" href="#volta-sm" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>每个SM包含：
+├── 64个FP32 Core
+├── 64个INT32 Core
+├── 32个FP64 Core
+├── 8个Tensor Core
+├── 32个LD/ST Unit
+├── 16个SFU
+├── 4个Warp调度器
+├── 256 KB 寄存器文件
+└── 96 KB 共享内存/L1
+</pre></div>
+</div>
+</section>
+</section>
+<section id="turing-2018">
+<h2>3.7 Turing架构（2018）<a class="headerlink" href="#turing-2018" title="Link to this heading">#</a></h2>
+<section id="turing">
+<h3>3.7.1 Turing架构概述<a class="headerlink" href="#turing" title="Link to this heading">#</a></h3>
+<p>Turing是NVIDIA第一个支持光线追踪的消费级GPU架构。</p>
+<p><strong>核心参数</strong>：</p>
+<ul class="simple">
+<li><p>72个SM</p></li>
+<li><p>每SM 64个FP32 + 64个INT32 + 8个Tensor Core</p></li>
+<li><p>RT Core光线追踪单元</p></li>
+<li><p>16nm TSMC工艺</p></li>
+<li><p>GDDR6显存</p></li>
+<li><p>186亿晶体管</p></li>
+</ul>
+</section>
+<section id="id12">
+<h3>3.7.2 Turing关键创新<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p><strong>RT Core 1.0</strong></p>
+<p>专为光线追踪设计的硬件单元：</p>
+<ul class="simple">
+<li><p>加速光线-三角形求交</p></li>
+<li><p>BVH边界体层次遍历</p></li>
+<li><p>与传统光栅化混合使用</p></li>
+</ul>
+<p><strong>Tensor Core 2.0</strong></p>
+<p>新增INT8/INT4/Binary精度支持：</p>
+<ul class="simple">
+<li><p>INT8：256 OPS/Clock</p></li>
+<li><p>INT4：512 OPS/Clock</p></li>
+<li><p>加速推理推理</p></li>
+</ul>
+<p><strong>GDDR6显存</strong></p>
+<p>相比GDDR5X：</p>
+<ul class="simple">
+<li><p>14 Gbps传输速率</p></li>
+<li><p>20%能效提升</p></li>
+<li><p>更大容量支持</p></li>
+</ul>
+</section>
+<section id="turing-rt-core">
+<h3>3.7.3 Turing RT Core原理<a class="headerlink" href="#turing-rt-core" title="Link to this heading">#</a></h3>
+<p><strong>光线追踪原理</strong></p>
+<ol class="arabic simple">
+<li><p>光线从摄像机射出</p></li>
+<li><p>光线与场景物体求交</p></li>
+<li><p>计算交点处 shading</p></li>
+<li><p>递归处理反射、折射</p></li>
+</ol>
+<p><strong>RT Core加速</strong></p>
+<p>传统GPU使用ALU计算光线求交，RT Core使用专用硬件：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>RT Core执行：
+1. 测试包围盒（Box Test）
+2. 遍历BVH层次结构
+3. 光线-三角形求交
+4. 返回交点信息
+</pre></div>
+</div>
+</section>
+</section>
+<section id="ampere-2020">
+<h2>3.8 Ampere架构（2020）<a class="headerlink" href="#ampere-2020" title="Link to this heading">#</a></h2>
+<section id="ampere">
+<h3>3.8.1 Ampere架构概述<a class="headerlink" href="#ampere" title="Link to this heading">#</a></h3>
+<p>Ampere是NVIDIA数据中心的旗舰架构，在AI和HPC领域实现突破性性能。</p>
+<p><strong>核心参数</strong>：</p>
+<ul class="simple">
+<li><p>108个SM</p></li>
+<li><p>每SM 64个FP32 + 64个INT32 + 4个Tensor Core</p></li>
+<li><p>7nm TSMC工艺</p></li>
+<li><p>HBM2e显存</p></li>
+<li><p>NVLink 3.0</p></li>
+<li><p>MIG多实例GPU</p></li>
+<li><p>542亿晶体管</p></li>
+</ul>
+</section>
+<section id="id13">
+<h3>3.8.2 Ampere关键创新<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p><strong>Tensor Core 3.0</strong></p>
+<p>全新第三代Tensor Core：</p>
+<ul class="simple">
+<li><p>新增TF32、BF16精度</p></li>
+<li><p>结构稀疏性支持</p></li>
+<li><p>每SM 4个Tensor Core</p></li>
+</ul>
+<p><strong>TF32精度</strong></p>
+<p>专为AI设计的新精度：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>精度</p></th>
+<th class="head"><p>指数位</p></th>
+<th class="head"><p>尾数位</p></th>
+<th class="head"><p>AI适用性</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>FP32</p></td>
+<td><p>8</p></td>
+<td><p>23</p></td>
+<td><p>基准</p></td>
+</tr>
+<tr class="row-odd"><td><p>FP16</p></td>
+<td><p>5</p></td>
+<td><p>10</p></td>
+<td><p>好（动态范围不足）</p></td>
+</tr>
+<tr class="row-even"><td><p>BF16</p></td>
+<td><p>8</p></td>
+<td><p>7</p></td>
+<td><p>优秀</p></td>
+</tr>
+<tr class="row-odd"><td><p>TF32</p></td>
+<td><p>8</p></td>
+<td><p>10</p></td>
+<td><p>最优</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>TF32保持FP32的指数位和FP16的尾数位，兼顾动态范围和精度。</p>
+<p><strong>多实例GPU（MIG）</strong></p>
+<p>将单个A100划分为多个独立GPU：</p>
+<ul class="simple">
+<li><p>最多7个实例</p></li>
+<li><p>每个实例独立内存和计算资源</p></li>
+<li><p>适用于云服务多用户场景</p></li>
+</ul>
+<p><strong>结构稀疏性</strong></p>
+<p>2:4结构稀疏支持：</p>
+<ul class="simple">
+<li><p>训练后剪枝</p></li>
+<li><p>压缩稀疏矩阵</p></li>
+<li><p>2倍加速</p></li>
+</ul>
+</section>
+<section id="ampere-sm">
+<h3>3.8.3 Ampere SM结构<a class="headerlink" href="#ampere-sm" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>每个SM包含：
+├── 64个FP32 Core
+├── 64个INT32 Core
+├── 32个FP64 Core
+├── 4个Tensor Core
+├── 32个LD/ST Unit
+├── 16个SFU
+├── 4个Warp调度器
+├── 192 KB L1/共享内存
+└── 256 KB 寄存器文件
+</pre></div>
+</div>
+<p><strong>A100 vs V100性能对比</strong>：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>指标</p></th>
+<th class="head"><p>V100</p></th>
+<th class="head"><p>A100</p></th>
+<th class="head"><p>提升</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>FP32</p></td>
+<td><p>15.7 TFLOPS</p></td>
+<td><p>19.5 TFLOPS</p></td>
+<td><p>1.2x</p></td>
+</tr>
+<tr class="row-odd"><td><p>FP16</p></td>
+<td><p>125 TFLOPS</p></td>
+<td><p>312 TFLOPS</p></td>
+<td><p>2.5x</p></td>
+</tr>
+<tr class="row-even"><td><p>BF16</p></td>
+<td><p>-</p></td>
+<td><p>312 TFLOPS</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>TF32</p></td>
+<td><p>-</p></td>
+<td><p>156 TFLOPS</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-even"><td><p>INT8</p></td>
+<td><p>-</p></td>
+<td><p>1248 TOPS</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>显存带宽</p></td>
+<td><p>900 GB/s</p></td>
+<td><p>2039 GB/s</p></td>
+<td><p>2.3x</p></td>
+</tr>
+<tr class="row-even"><td><p>HBM容量</p></td>
+<td><p>32 GB</p></td>
+<td><p>80 GB</p></td>
+<td><p>2.5x</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="hopper-2022">
+<h2>3.9 Hopper架构（2022）<a class="headerlink" href="#hopper-2022" title="Link to this heading">#</a></h2>
+<section id="hopper">
+<h3>3.9.1 Hopper架构概述<a class="headerlink" href="#hopper" title="Link to this heading">#</a></h3>
+<p>Hopper是NVIDIA第一个真正的异构计算平台，集成CPU和GPU。</p>
+<p><strong>核心参数</strong>：</p>
+<ul class="simple">
+<li><p>144个SM</p></li>
+<li><p>4nm TSMC工艺</p></li>
+<li><p>HBM3显存</p></li>
+<li><p>NVLink 4.0</p></li>
+<li><p>NVLink-C2C CPU-GPU互联</p></li>
+<li><p>800亿晶体管</p></li>
+</ul>
+</section>
+<section id="id14">
+<h3>3.9.2 Hopper关键创新<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p><strong>Grace CPU集成</strong></p>
+<p>NVIDIA首次集成CPU：</p>
+<ul class="simple">
+<li><p>72核ARM Neoverse V2</p></li>
+<li><p>512GB LPDDR5X</p></li>
+<li><p>900 GB/s NVLink-C2C带宽</p></li>
+<li><p>1+1&gt;2的协同效应</p></li>
+</ul>
+<p><strong>Tensor Core 4.0</strong></p>
+<p>第四代Tensor Core：</p>
+<ul class="simple">
+<li><p>新增FP8精度</p></li>
+<li><p>Transformer Engine 2.0</p></li>
+<li><p>动态范围自适应</p></li>
+</ul>
+<p><strong>FP8精度</strong></p>
+<p>专为Transformer设计：</p>
+<ul class="simple">
+<li><p>1.25倍加速（vs FP16）</p></li>
+<li><p>保持模型精度</p></li>
+<li><p>特别适合LLM训练</p></li>
+</ul>
+<p><strong>Transformer Engine 2.0</strong></p>
+<p>专门优化Transformer：</p>
+<ul class="simple">
+<li><p>自动精度选择</p></li>
+<li><p>动态Tiling</p></li>
+<li><p>重计算策略</p></li>
+</ul>
+</section>
+<section id="nvlink-4-0">
+<h3>3.9.3 NVLink 4.0<a class="headerlink" href="#nvlink-4-0" title="Link to this heading">#</a></h3>
+<p>第四代NVLink：</p>
+<ul class="simple">
+<li><p>900 GB/s双向带宽</p></li>
+<li><p>18链路/GPU</p></li>
+<li><p>支持256 GPU互联</p></li>
+</ul>
+</section>
+<section id="h100">
+<h3>3.9.4 H100规格<a class="headerlink" href="#h100" title="Link to this heading">#</a></h3>
+<p><strong>单芯片H100</strong>：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>规格</p></th>
+<th class="head"><p>H100 SXM</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SM</p></td>
+<td><p>132 (实际使用)</p></td>
+</tr>
+<tr class="row-odd"><td><p>CUDA Core</p></td>
+<td><p>16896</p></td>
+</tr>
+<tr class="row-even"><td><p>Tensor Core</p></td>
+<td><p>528</p></td>
+</tr>
+<tr class="row-odd"><td><p>FP32</p></td>
+<td><p>67 TFLOPS</p></td>
+</tr>
+<tr class="row-even"><td><p>FP64</p></td>
+<td><p>34 TFLOPS</p></td>
+</tr>
+<tr class="row-odd"><td><p>FP16</p></td>
+<td><p>1981 TFLOPS</p></td>
+</tr>
+<tr class="row-even"><td><p>FP8</p></td>
+<td><p>3959 TFLOPS</p></td>
+</tr>
+<tr class="row-odd"><td><p>HBM3容量</p></td>
+<td><p>80 GB</p></td>
+</tr>
+<tr class="row-even"><td><p>HBM3带宽</p></td>
+<td><p>3.35 TB/s</p></td>
+</tr>
+<tr class="row-odd"><td><p>TDP</p></td>
+<td><p>700W</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>DGX H100系统</strong>：</p>
+<ul class="simple">
+<li><p>8×H100 SXM5</p></li>
+<li><p>1.6 TB HBM3</p></li>
+<li><p>3.2 TB/s聚合带宽</p></li>
+</ul>
+</section>
+</section>
+<section id="blackwell-2024">
+<h2>3.10 Blackwell架构（2024）<a class="headerlink" href="#blackwell-2024" title="Link to this heading">#</a></h2>
+<section id="blackwell">
+<h3>3.10.1 Blackwell架构概述<a class="headerlink" href="#blackwell" title="Link to this heading">#</a></h3>
+<p>Blackwell是NVIDIA最新的数据中心GPU架构，为生成式AI和大模型时代设计。</p>
+<p><strong>核心参数</strong>：</p>
+<ul class="simple">
+<li><p>2080亿晶体管</p></li>
+<li><p>4NP工艺（定制TSMC）</p></li>
+<li><p>第二代Transformer Engine</p></li>
+<li><p>NVLink 5.0</p></li>
+<li><p>RAS引擎</p></li>
+<li><p>安全AI</p></li>
+</ul>
+</section>
+<section id="id15">
+<h3>3.10.2 Blackwell关键创新<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<p><strong>双芯片设计</strong></p>
+<p>突破光刻极限：</p>
+<ul class="simple">
+<li><p>两个GPU die通过10 TB/s互联</p></li>
+<li><p>统一内存寻址</p></li>
+<li><p>接近单芯片性能</p></li>
+</ul>
+<p><strong>第二代Transformer Engine</strong></p>
+<ul class="simple">
+<li><p>FP4精度支持</p></li>
+<li><p>动态范围增强</p></li>
+<li><p>更优的大模型训练</p></li>
+</ul>
+<p><strong>NVLink 5.0</strong></p>
+<ul class="simple">
+<li><p>1.8 TB/s双向带宽</p></li>
+<li><p>576 GPU互联</p></li>
+<li><p>支持万亿参数模型</p></li>
+</ul>
+<p><strong>GB200 NVL72</strong></p>
+<ul class="simple">
+<li><p>72 GPU + 36 CPU</p></li>
+<li><p>液冷机架设计</p></li>
+<li><p>1.44 EFLOPS FP4</p></li>
+</ul>
+</section>
+<section id="id16">
+<h3>3.10.3 性能对比<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<p><strong>B200 vs H100</strong>：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>指标</p></th>
+<th class="head"><p>H100</p></th>
+<th class="head"><p>B200</p></th>
+<th class="head"><p>提升</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>FP4 Tensor</p></td>
+<td><p>-</p></td>
+<td><p>18 EFLOPS</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>FP8 Tensor</p></td>
+<td><p>3959 TFLOPS</p></td>
+<td><p>9000 TFLOPS</p></td>
+<td><p>2.3x</p></td>
+</tr>
+<tr class="row-even"><td><p>FP16/BF16</p></td>
+<td><p>1981 TFLOPS</p></td>
+<td><p>4500 TFLOPS</p></td>
+<td><p>2.3x</p></td>
+</tr>
+<tr class="row-odd"><td><p>显存带宽</p></td>
+<td><p>3.35 TB/s</p></td>
+<td><p>8 TB/s</p></td>
+<td><p>2.4x</p></td>
+</tr>
+<tr class="row-even"><td><p>GPU互联</p></td>
+<td><p>900 GB/s</p></td>
+<td><p>1.8 TB/s</p></td>
+<td><p>2x</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>AI计算性能演进</strong>：</p>
+<p>2016年Pascal P100 → 2024年Blackwell B200：
+8年提升1000倍！</p>
+</section>
+</section>
+<section id="cuda">
+<h2>3.11 CUDA编程详解<a class="headerlink" href="#cuda" title="Link to this heading">#</a></h2>
+<section id="id17">
+<h3>3.11.1 CUDA编程模型<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
+<p>CUDA是NVIDIA的并行计算平台和编程模型。</p>
+<p><strong>基本概念</strong>：</p>
+<ul class="simple">
+<li><p><strong>Host</strong>：CPU及其内存</p></li>
+<li><p><strong>Device</strong>：GPU及其内存</p></li>
+<li><p><strong>Kernel</strong>：在GPU上执行的并行函数</p></li>
+<li><p><strong>Grid</strong>：整个内核执行的所有线程</p></li>
+<li><p><strong>Block</strong>：协作线程组</p></li>
+<li><p><strong>Thread</strong>：最小执行单元</p></li>
+</ul>
+</section>
+<section id="id18">
+<h3>3.11.2 CUDA内存模型<a class="headerlink" href="#id18" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────────┐
+│         Global Memory (GPU)          │
+│              ~80 GB                  │
+├─────────────────────────────────────┤
+│            L2 Cache (40 MB)          │
+├─────────────────────────────────────┤
+│      L1 Cache + Shared Memory        │
+│            (192 KB/SM)                │
+├─────────────────────────────────────┤
+│           Register File              │
+│            (256 KB/SM)               │
+└─────────────────────────────────────┘
+</pre></div>
+</div>
+<p><strong>内存类型</strong>：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>内存</p></th>
+<th class="head"><p>位置</p></th>
+<th class="head"><p>访问</p></th>
+<th class="head"><p>作用域</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>寄存器</p></td>
+<td><p>SM</p></td>
+<td><p>R/W</p></td>
+<td><p>线程私有</p></td>
+</tr>
+<tr class="row-odd"><td><p>本地内存</p></td>
+<td><p>Global</p></td>
+<td><p>R/W</p></td>
+<td><p>线程私有</p></td>
+</tr>
+<tr class="row-even"><td><p>共享内存</p></td>
+<td><p>SM</p></td>
+<td><p>R/W</p></td>
+<td><p>Block内</p></td>
+</tr>
+<tr class="row-odd"><td><p>全局内存</p></td>
+<td><p>Device</p></td>
+<td><p>R/W</p></td>
+<td><p>全局</p></td>
+</tr>
+<tr class="row-even"><td><p>常量内存</p></td>
+<td><p>Global</p></td>
+<td><p>R</p></td>
+<td><p>全局</p></td>
+</tr>
+<tr class="row-odd"><td><p>纹理内存</p></td>
+<td><p>Global</p></td>
+<td><p>R</p></td>
+<td><p>全局</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id19">
+<h3>3.11.3 CUDA编程示例<a class="headerlink" href="#id19" title="Link to this heading">#</a></h3>
+<p><strong>向量加法</strong>：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// CUDA内核：向量加法</span>
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">vectorAdd</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">B</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">N</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">idx</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">C</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">idx</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Host代码</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span><span class="w">  </span><span class="c1">// 100万元素</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c1">// 分配GPU内存</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">d_A</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">d_B</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">d_C</span><span class="p">;</span>
+<span class="w">    </span><span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_A</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">));</span>
+<span class="w">    </span><span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_B</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">));</span>
+<span class="w">    </span><span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_C</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">));</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c1">// 拷贝数据到GPU</span>
+<span class="w">    </span><span class="n">cudaMemcpy</span><span class="p">(</span><span class="n">d_A</span><span class="p">,</span><span class="w"> </span><span class="n">h_A</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">),</span><span class="w"> </span><span class="n">cudaMemcpyHostToDevice</span><span class="p">);</span>
+<span class="w">    </span><span class="n">cudaMemcpy</span><span class="p">(</span><span class="n">d_B</span><span class="p">,</span><span class="w"> </span><span class="n">h_B</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">),</span><span class="w"> </span><span class="n">cudaMemcpyHostToDevice</span><span class="p">);</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c1">// 启动内核</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">blockSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">256</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">gridSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">N</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">blockSize</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">blockSize</span><span class="p">;</span>
+<span class="w">    </span><span class="n">vectorAdd</span><span class="o">&lt;&lt;&lt;</span><span class="n">gridSize</span><span class="p">,</span><span class="w"> </span><span class="n">blockSize</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">d_A</span><span class="p">,</span><span class="w"> </span><span class="n">d_B</span><span class="p">,</span><span class="w"> </span><span class="n">d_C</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="p">);</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c1">// 拷贝结果回CPU</span>
+<span class="w">    </span><span class="n">cudaMemcpy</span><span class="p">(</span><span class="n">h_C</span><span class="p">,</span><span class="w"> </span><span class="n">d_C</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">),</span><span class="w"> </span><span class="n">cudaMemcpyDeviceToHost</span><span class="p">);</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c1">// 释放内存</span>
+<span class="w">    </span><span class="n">cudaFree</span><span class="p">(</span><span class="n">d_A</span><span class="p">);</span>
+<span class="w">    </span><span class="n">cudaFree</span><span class="p">(</span><span class="n">d_B</span><span class="p">);</span>
+<span class="w">    </span><span class="n">cudaFree</span><span class="p">(</span><span class="n">d_C</span><span class="p">);</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>矩阵乘法</strong>：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">matrixMul</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">B</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">N</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 使用共享内存优化</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">sA</span><span class="p">[</span><span class="mi">16</span><span class="p">][</span><span class="mi">16</span><span class="p">];</span>
+<span class="w">    </span><span class="n">__shared__</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">sB</span><span class="p">[</span><span class="mi">16</span><span class="p">][</span><span class="mi">16</span><span class="p">];</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">row</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 协作加载到共享内存</span>
+<span class="w">        </span><span class="n">sA</span><span class="p">[</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">][</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">row</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">];</span>
+<span class="w">        </span><span class="n">sB</span><span class="p">[</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">][</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">B</span><span class="p">[(</span><span class="n">k</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">col</span><span class="p">];</span>
+<span class="w">        </span><span class="n">__syncthreads</span><span class="p">();</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="c1">// 计算</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">sA</span><span class="p">[</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">y</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">sB</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">];</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">__syncthreads</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="n">C</span><span class="p">[</span><span class="n">row</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">col</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id20">
+<h3>3.11.4 CUDA线程层次<a class="headerlink" href="#id20" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Grid
+│
+├── Block (0,0)
+│   ├── Warp 0: Thread 0-31
+│   ├── Warp 1: Thread 32-63
+│   └── ...
+│
+├── Block (1,0)
+│   ├── Warp 0: Thread 0-31
+│   └── ...
+│
+└── Block (m,n)
+    └── ...
+</pre></div>
+</div>
+<p><strong>线程束（Warp）</strong>：</p>
+<ul class="simple">
+<li><p>32个线程为一组</p></li>
+<li><p>同一Warp执行相同指令</p></li>
+<li><p>分支分化会降低效率</p></li>
+</ul>
+</section>
+<section id="id21">
+<h3>3.11.5 CUDA内存管理<a class="headerlink" href="#id21" title="Link to this heading">#</a></h3>
+<p><strong>统一内存（Unified Memory）</strong>：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 分配统一内存</span>
+<span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">;</span>
+<span class="n">cudaMallocManaged</span><span class="p">(</span><span class="o">&amp;</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">);</span>
+
+<span class="c1">// 访问无需拷贝</span>
+<span class="c1">// GPU和CPU自动迁移数据</span>
+<span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">;</span>
+<span class="n">cudaDeviceSynchronize</span><span class="p">();</span>
+
+<span class="c1">// 自动回收</span>
+<span class="n">cudaFree</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>内存拷贝类型</strong>：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">cudaMemcpy</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">cudaMemcpyHostToHost</span><span class="p">);</span><span class="w">    </span><span class="c1">// CPU→CPU</span>
+<span class="n">cudaMemcpy</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">cudaMemcpyHostToDevice</span><span class="p">);</span><span class="w">  </span><span class="c1">// CPU→GPU</span>
+<span class="n">cudaMemcpy</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">cudaMemcpyDeviceToHost</span><span class="p">);</span><span class="w">  </span><span class="c1">// GPU→CPU</span>
+<span class="n">cudaMemcpy</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">cudaMemcpyDeviceToDevice</span><span class="p">);</span><span class="w"> </span><span class="c1">// GPU→GPU</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="nvlinknvswitch">
+<h2>3.12 NVLink与NVSwitch<a class="headerlink" href="#nvlinknvswitch" title="Link to this heading">#</a></h2>
+<section id="nvlink">
+<h3>3.12.1 NVLink发展历程<a class="headerlink" href="#nvlink" title="Link to this heading">#</a></h3>
+<p>NVLink是NVIDIA开发的高速GPU互联技术。</p>
+<p><strong>NVLink 1.0 (Pascal)</strong></p>
+<ul class="simple">
+<li><p>2014年发布</p></li>
+<li><p>双向带宽：80 GB/s/链路</p></li>
+<li><p>4链路/GPU</p></li>
+<li><p>320 GB/s总带宽</p></li>
+</ul>
+<p><strong>NVLink 2.0 (Volta)</strong></p>
+<ul class="simple">
+<li><p>2017年发布</p></li>
+<li><p>双向带宽：100 GB/s/链路</p></li>
+<li><p>6链路/GPU</p></li>
+<li><p>600 GB/s总带宽</p></li>
+</ul>
+<p><strong>NVLink 3.0 (Ampere)</strong></p>
+<ul class="simple">
+<li><p>2020年发布</p></li>
+<li><p>双向带宽：150 GB/s/链路</p></li>
+<li><p>12链路/GPU</p></li>
+<li><p>1.8 TB/s总带宽</p></li>
+</ul>
+<p><strong>NVLink 4.0 (Hopper)</strong></p>
+<ul class="simple">
+<li><p>2022年发布</p></li>
+<li><p>双向带宽：200 GB/s/链路</p></li>
+<li><p>18链路/GPU</p></li>
+<li><p>3.6 TB/s总带宽</p></li>
+</ul>
+<p><strong>NVLink 5.0 (Blackwell)</strong></p>
+<ul class="simple">
+<li><p>2024年发布</p></li>
+<li><p>双向带宽：200 GB/s/链路</p></li>
+<li><p>18链路/GPU</p></li>
+<li><p>1.8 TB/s双向带宽/GPU</p></li>
+</ul>
+</section>
+<section id="nvswitch">
+<h3>3.12.2 NVSwitch<a class="headerlink" href="#nvswitch" title="Link to this heading">#</a></h3>
+<p>NVSwitch是NVLink交换系统，实现多GPU全互联。</p>
+<p><strong>功能</strong>：</p>
+<ul class="simple">
+<li><p>GPU间高速点对点通信</p></li>
+<li><p>全互联拓扑</p></li>
+<li><p>GPU共享内存寻址</p></li>
+</ul>
+<p><strong>历代NVSwitch</strong>：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>代数</p></th>
+<th class="head"><p>支持GPU数</p></th>
+<th class="head"><p>带宽</p></th>
+<th class="head"><p>引入</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NVSwitch 1.0</p></td>
+<td><p>16</p></td>
+<td><p>2.4 TB/s</p></td>
+<td><p>Volta</p></td>
+</tr>
+<tr class="row-odd"><td><p>NVSwitch 2.0</p></td>
+<td><p>16</p></td>
+<td><p>4.8 TB/s</p></td>
+<td><p>Ampere</p></td>
+</tr>
+<tr class="row-even"><td><p>NVSwitch 3.0</p></td>
+<td><p>16</p></td>
+<td><p>7.2 TB/s</p></td>
+<td><p>Hopper</p></td>
+</tr>
+<tr class="row-odd"><td><p>NVLink Switch</p></td>
+<td><p>576</p></td>
+<td><p>1 PB/s</p></td>
+<td><p>Blackwell</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id22">
+<h3>3.12.3 NVLink拓扑设计<a class="headerlink" href="#id22" title="Link to this heading">#</a></h3>
+<p><strong>DGX A100拓扑</strong>：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>8 × A100
+│
+├── NVSwitch 1 ←──→ GPU 0, 1, 2, 3, 4, 5, 6, 7
+├── NVSwitch 2 ←──→ GPU 0, 1, 2, 3, 4, 5, 6, 7
+└── NVSwitch 3 ←──→ GPU 0, 1, 2, 3, 4, 5, 6, 7
+
+每个GPU 12链路
+│ NVSwitch 1: 4链路
+│ NVSwitch 2: 4链路
+│ NVSwitch 3: 4链路
+</pre></div>
+</div>
+</section>
+<section id="nvlink-vs-pcie">
+<h3>3.12.4 NVLink vs PCIe<a class="headerlink" href="#nvlink-vs-pcie" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>特性</p></th>
+<th class="head"><p>NVLink</p></th>
+<th class="head"><p>PCIe 4.0 x16</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>带宽</p></td>
+<td><p>600 GB/s (A100)</p></td>
+<td><p>32 GB/s</p></td>
+</tr>
+<tr class="row-odd"><td><p>延迟</p></td>
+<td><p>极低</p></td>
+<td><p>较高</p></td>
+</tr>
+<tr class="row-even"><td><p>扩展性</p></td>
+<td><p>多GPU</p></td>
+<td><p>有限</p></td>
+</tr>
+<tr class="row-odd"><td><p>适用场景</p></td>
+<td><p>GPU-GPU</p></td>
+<td><p>GPU-CPU</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="id23">
+<h2>本章小结<a class="headerlink" href="#id23" title="Link to this heading">#</a></h2>
+<p>本章系统介绍了NVIDIA GPU架构的发展历程和关键技术：</p>
+<ol class="arabic simple">
+<li><p><strong>九代架构演进</strong>：从Fermi到Blackwell，每代架构都有重大技术创新</p></li>
+<li><p><strong>Tensor Core演进</strong>：从Volta首次引入到Blackwell第五代，性能不断提升</p></li>
+<li><p><strong>CUDA编程模型</strong>：Grid/Block/Thread层次，内存层次结构</p></li>
+<li><p><strong>NVLink与NVSwitch</strong>：从点对点互联到全互联集群</p></li>
+</ol>
+<p>NVIDIA的技术领先地位来自：</p>
+<ul class="simple">
+<li><p>持续架构创新</p></li>
+<li><p>完整软件生态</p></li>
+<li><p>统一编程模型</p></li>
+<li><p>规模化部署验证</p></li>
+</ul>
+</section>
+<section id="id24">
+<h2>思考与练习<a class="headerlink" href="#id24" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>架构演进</strong>：比较Fermi和Blackwell架构的核心差异，分析这9代架构演进的驱动力是什么？</p></li>
+<li><p><strong>Tensor Core分析</strong>：分析Tensor Core从Volta到Blackwell的演进历程，每代新增了哪些特性和精度支持？</p></li>
+<li><p><strong>CUDA理解</strong>：解释CUDA编程中Grid、Block、Thread的层次关系，以及如何确定线程索引与数据的映射？</p></li>
+<li><p><strong>性能优化思考</strong>：如果一个CUDA程序性能不佳，请列举至少3个可能的优化方向（从内存访问、线程调度、计算模式等角度）。</p></li>
+<li><p><strong>NVLink分析</strong>：分析NVLink与PCIe的区别，为什么在多GPU系统中NVLink比PCIe更重要？</p></li>
+<li><p><strong>架构选型思考</strong>：假设你要构建一个大规模AI训练集群，请分析如何选择GPU架构和互联方案，考虑哪些因素？</p></li>
+</ol>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="02-GPU-Base.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">GPU原理</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="04-Abroad-Chips.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">国外AI芯片</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">学习目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">章节导言</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3.1 NVIDIA GPU架构演进概述</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3.1.1 九代架构一览</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.1.2 命名渊源</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fermi-2010">3.2 Fermi架构（2010）</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fermi">3.2.1 Fermi架构概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">3.2.2 Fermi架构创新</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">3.2.3 Fermi的局限性</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kepler-2012">3.3 Kepler架构（2012）</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kepler">3.3.1 Kepler架构概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">3.3.2 Kepler关键创新</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maxwell-2014">3.4 Maxwell架构（2014）</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#maxwell">3.4.1 Maxwell架构概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">3.4.2 Maxwell技术特点</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pascal-2016">3.5 Pascal架构（2016）</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pascal">3.5.1 Pascal架构概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">3.5.2 Pascal关键创新</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pascalsm">3.5.3 Pascal的SM设计</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#volta-2017">3.6 Volta架构（2017）</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#volta">3.6.1 Volta架构概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">3.6.2 Volta关键创新</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#volta-sm">3.6.3 Volta SM结构</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#turing-2018">3.7 Turing架构（2018）</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#turing">3.7.1 Turing架构概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">3.7.2 Turing关键创新</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#turing-rt-core">3.7.3 Turing RT Core原理</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ampere-2020">3.8 Ampere架构（2020）</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ampere">3.8.1 Ampere架构概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">3.8.2 Ampere关键创新</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ampere-sm">3.8.3 Ampere SM结构</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hopper-2022">3.9 Hopper架构（2022）</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hopper">3.9.1 Hopper架构概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">3.9.2 Hopper关键创新</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nvlink-4-0">3.9.3 NVLink 4.0</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#h100">3.9.4 H100规格</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#blackwell-2024">3.10 Blackwell架构（2024）</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#blackwell">3.10.1 Blackwell架构概述</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">3.10.2 Blackwell关键创新</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">3.10.3 性能对比</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cuda">3.11 CUDA编程详解</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">3.11.1 CUDA编程模型</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">3.11.2 CUDA内存模型</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">3.11.3 CUDA编程示例</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">3.11.4 CUDA线程层次</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">3.11.5 CUDA内存管理</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvlinknvswitch">3.12 NVLink与NVSwitch</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nvlink">3.12.1 NVLink发展历程</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nvswitch">3.12.2 NVSwitch</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">3.12.3 NVLink拓扑设计</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nvlink-vs-pcie">3.12.4 NVLink vs PCIe</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">本章小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">思考与练习</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Author name not set
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Apr 29, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>本教材仅供内部培训使用</p>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
