@@ -1,0 +1,20 @@
+# macOS
+._*
+.!*
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Build
+_build/
+__pycache__/
+
+# IDE
+.vscode/
+.idea/
+
+# Local
+*.local

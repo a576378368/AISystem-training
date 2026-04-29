@@ -1,0 +1,10 @@
+# AI System Training - Sphinx dependencies
+sphinx-book-theme
+myst-parser
+myst-nb
+numpydoc
+sphinx-copybutton
+sphinx-design
+sphinx-tabs
+sphinx-togglebutton
+sphinx-ext-viewcode
