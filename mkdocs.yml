@@ -3,7 +3,6 @@ site_description: 专为零基础新人设计的AI系统培训教程
 site_url: https://a576378368.github.io/AISystem-training
 
 docs_dir: docs
-site_dir: site
 
 theme:
   name: material
@@ -12,21 +11,58 @@ theme:
 nav:
   - 首页: index.md
   - 第一阶段：AI基础入门:
-    - Chap01 计算机基础: Part1/Chap01/README.md
-    - Chap02 Python编程: Part1/Chap02/README.md
-    - Chap03 数学基础: Part1/Chap03/README.md
+    - Chap01 计算机基础:
+      - 进制编码: Part1/Chap01/01-Binary.md
+      - CPU与内存: Part1/Chap01/02-CPU-Memory.md
+      - 程序运行原理: Part1/Chap01/03-Program-Running.md
+    - Chap02 Python编程:
+      - Python基础: Part1/Chap02/01-Python-Basic.md
+      - NumPy: Part1/Chap02/02-NumPy.md
+      - PyTorch: Part1/Chap02/03-PyTorch.md
+    - Chap03 数学基础:
+      - 线性代数: Part1/Chap03/01-Linear-Algebra.md
+      - 概率统计: Part1/Chap03/02-Probability.md
+      - 优化基础: Part1/Chap03/03-Optimization.md
   - 第二阶段：AI系统核心:
-    - Chap04 AI系统概述: Part2/Chap04/README.md
-    - Chap05 神经网络基础: Part2/Chap05/README.md
-    - Chap06 AI芯片体系架构: Part2/Chap06/README.md
-    - Chap07 AI编译器原理: Part2/Chap07/README.md
-    - Chap08 推理系统与引擎: Part2/Chap08/README.md
-    - Chap09 AI框架核心: Part2/Chap09/README.md
-    - Chap10 大模型与集群: Part2/Chap10/README.md
+    - Chap04 AI系统概述:
+      - AI系统全栈: Part2/Chap04/01-Introduction.md
+      - 系统架构: Part2/Chap04/02-Architecture.md
+    - Chap05 神经网络基础:
+      - 神经元模型: Part2/Chap05/01-Neuron-Model.md
+      - CNN: Part2/Chap05/02-CNN.md
+      - RNN: Part2/Chap05/03-RNN.md
+      - Transformer: Part2/Chap05/04-Transformer.md
+      - 量化: Part2/Chap05/05-Quantization.md
+    - Chap06 AI芯片体系架构:
+      - AI芯片基础: Part2/Chap06/01-Chip-Base.md
+      - GPU架构: Part2/Chap06/02-GPU-Base.md
+      - NVIDIA: Part2/Chap06/03-NVIDIA.md
+      - 国外芯片: Part2/Chap06/04-Abroad-Chips.md
+      - 国产芯片: Part2/Chap06/05-Domestic-Chips.md
+      - 编程模式: Part2/Chap06/06-Programming-Model.md
+    - Chap07 AI编译器原理:
+      - 传统编译器: Part2/Chap07/01-Traditional-Compiler.md
+      - AI编译器: Part2/Chap07/02-AI-Compiler.md
+      - 前端优化: Part2/Chap07/03-Frontend-Optimization.md
+      - 后端优化: Part2/Chap07/04-Backend-Optimization.md
+    - Chap08 推理系统与引擎:
+      - 推理系统: Part2/Chap08/01-Inference-System.md
+      - 模型压缩: Part2/Chap08/02-Model-Compression.md
+      - 模型转换: Part2/Chap08/03-Model-Converter.md
+      - 推理优化: Part2/Chap08/04-Inference-Optimization.md
+      - Kernel优化: Part2/Chap08/05-Kernel-Optimization.md
+    - Chap09 AI框架核心:
+      - 自动微分: Part2/Chap09/01-Auto-Differentiation.md
+      - 计算图: Part2/Chap09/02-Computational-Graph.md
+      - 分布式训练: Part2/Chap09/03-Distributed-Training.md
+    - Chap10 大模型与集群:
+      - LLM架构: Part2/Chap10/01-LLM-Architecture.md
+      - AI集群: Part2/Chap10/02-AI-Cluster.md
+      - 并行策略: Part2/Chap10/03-Parallel-Strategy.md
   - 第三阶段：附录:
-    - 附录A：术语表: Part3/AppendixA/README.md
-    - 附录B：参考文献: Part3/AppendixB/README.md
-    - 附录C：实践项目: Part3/AppendixC/README.md
+    - 术语表: Part3/AppendixA/01-Glossary.md
+    - 参考文献: Part3/AppendixB/01-Reference.md
+    - 实践项目: Part3/AppendixC/01-Projects.md
 
 markdown_extensions:
   - pymdownx.highlight
