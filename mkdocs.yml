@@ -1,0 +1,35 @@
+site_name: AI系统工程师培训教程
+site_description: 专为零基础新人设计的AI系统培训教程
+site_url: https://a576378368.github.io/AISystem-training
+
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+  language: zh
+
+nav:
+  - 首页: index.md
+  - 第一阶段：AI基础入门:
+    - Chap01 计算机基础: Part1/Chap01/README.md
+    - Chap02 Python编程: Part1/Chap02/README.md
+    - Chap03 数学基础: Part1/Chap03/README.md
+  - 第二阶段：AI系统核心:
+    - Chap04 AI系统概述: Part2/Chap04/README.md
+    - Chap05 神经网络基础: Part2/Chap05/README.md
+    - Chap06 AI芯片体系架构: Part2/Chap06/README.md
+    - Chap07 AI编译器原理: Part2/Chap07/README.md
+    - Chap08 推理系统与引擎: Part2/Chap08/README.md
+    - Chap09 AI框架核心: Part2/Chap09/README.md
+    - Chap10 大模型与集群: Part2/Chap10/README.md
+  - 第三阶段：附录:
+    - 附录A：术语表: Part3/AppendixA/README.md
+    - 附录B：参考文献: Part3/AppendixB/README.md
+    - 附录C：实践项目: Part3/AppendixC/README.md
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - admonition
+  - tables
