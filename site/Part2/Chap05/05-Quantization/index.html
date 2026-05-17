@@ -1350,31 +1350,31 @@
 <hr />
 <h2 id="52">5.2 量化基本概念</h2>
 <h3 id="521">5.2.1 量化数学原理</h3>
-<p>量化的本质是在高精度数值和低精度数值之间建立一种映射关系。设$R$表示浮点数，$Q$表示量化后的整数，$S$表示缩放因子（Scale），$Z$表示零值（Zero Point）。量化的基本公式为：</p>
-<p>$$
+<p>量化的本质是在高精度数值和低精度数值之间建立一种映射关系。设<span class="arithmatex">\(R\)</span>表示浮点数，<span class="arithmatex">\(Q\)</span>表示量化后的整数，<span class="arithmatex">\(S\)</span>表示缩放因子（Scale），<span class="arithmatex">\(Z\)</span>表示零值（Zero Point）。量化的基本公式为：</p>
+<div class="arithmatex">\[
 Q = R/S + Z
-$$</p>
+\]</div>
 <p>对于反向过程（反量化）：</p>
-<p>$$
+<div class="arithmatex">\[
 R = (Q - Z) \times S
-$$</p>
+\]</div>
 <p>其中：
-- $S = (R_{max} - R_{min})/(Q_{max} - Q_{min})$
-- $Z = Q_{max} - R_{max}/S$</p>
+- <span class="arithmatex">\(S = (R_{max} - R_{min})/(Q_{max} - Q_{min})\)</span>
+- <span class="arithmatex">\(Z = Q_{max} - R_{max}/S\)</span></p>
 <h3 id="522">5.2.2 对称量化和非对称量化</h3>
 <p>量化策略分为对称量化和非对称量化两种。</p>
 <p><strong>对称量化（Symmetric Quantization）</strong></p>
-<p>对称量化中，浮点数的最大值和最小值关于0对称，即$R_{max} = -R_{min}$。这意味着只需要找到浮点区间的绝对值最大的那个值即可。</p>
+<p>对称量化中，浮点数的最大值和最小值关于0对称，即<span class="arithmatex">\(R_{max} = -R_{min}\)</span>。这意味着只需要找到浮点区间的绝对值最大的那个值即可。</p>
 <p>对称量化的特点：
 - 零点固定为0
-- 量化范围是$[-127, 127]$（对于INT8）
+- 量化范围是<span class="arithmatex">\([-127, 127]\)</span>（对于INT8）
 - 实现简单，计算效率高
 - 对于正负数均匀分布的数据效果好</p>
 <p>对称量化的问题：当数据分布不均匀时，如浮点数X全部是正数，进行8bit非对称量化后的数据全部在[0, 127]一侧，那么[-128, 0]的区间就浪费了。</p>
 <p><strong>非对称量化（Asymmetric Quantization）</strong></p>
-<p>非对称量化允许浮点数据分布在任意范围，不需要关于0对称。零点$Z$可以是任意值，不一定是0。</p>
+<p>非对称量化允许浮点数据分布在任意范围，不需要关于0对称。零点<span class="arithmatex">\(Z\)</span>可以是任意值，不一定是0。</p>
 <p>非对称量化的特点：
-- 零点$Z$可以是任意值
+- 零点<span class="arithmatex">\(Z\)</span>可以是任意值
 - 量化范围充分利用[0, 255]（对于INT8）
 - 对于数据分布偏斜的情况更友好
 - 计算复杂度稍高</p>
@@ -1396,17 +1396,17 @@ $$</p>
 <h2 id="53">5.3 量化方法</h2>
 <h3 id="531-minmax">5.3.1 MinMax量化</h3>
 <p>MinMax量化是最简单也最通用的量化算法。基本思想是将浮点数的最小值映射到量化类型的最小值，最大值映射到量化类型的最大值。</p>
-<p>设原始浮点数据范围为$[R_{min}, R_{max}]$，量化后的整数范围为$[Q_{min}, Q_{max}]$（对于INT8为[-128, 127]或[0, 255]）。</p>
+<p>设原始浮点数据范围为<span class="arithmatex">\([R_{min}, R_{max}]\)</span>，量化后的整数范围为<span class="arithmatex">\([Q_{min}, Q_{max}]\)</span>（对于INT8为[-128, 127]或[0, 255]）。</p>
 <p><strong>缩放因子计算</strong>：
-$$S = \frac{R_{max} - R_{min}}{Q_{max} - Q_{min}}$$</p>
+$<span class="arithmatex">\(S = \frac{R_{max} - R_{min}}{Q_{max} - Q_{min}}\)</span>$</p>
 <p><strong>零点计算</strong>：
-$$Z = Q_{min} - \frac{R_{min}}{S}$$</p>
+$<span class="arithmatex">\(Z = Q_{min} - \frac{R_{min}}{S}\)</span>$</p>
 <p><strong>量化过程</strong>：
-$$Q = round\left(\frac{R}{S}\right) + Z$$</p>
+$<span class="arithmatex">\(Q = round\left(\frac{R}{S}\right) + Z\)</span>$</p>
 <h3 id="532-kl">5.3.2 KL散度量化</h3>
 <p>KL散度量化是一种更精确的量化方法，它通过最小化原始浮点分布和量化后分布之间的KL散度来确定量化参数。</p>
 <p>KL散度（也称为相对熵）衡量两个概率分布之间的差异：
-$$D_{KL}(P | Q) = \sum_i P(i) \log\frac{P(i)}{Q(i)}$$</p>
+$<span class="arithmatex">\(D_{KL}(P \| Q) = \sum_i P(i) \log\frac{P(i)}{Q(i)}\)</span>$</p>
 <p>KL散度量化的步骤：
 1. 收集原始浮点数据的直方图分布
 2. 对不同的缩放因子候选值，计算量化后的分布
@@ -1414,8 +1414,8 @@ $$D_{KL}(P | Q) = \sum_i P(i) \log\frac{P(i)}{Q(i)}$$</p>
 <p>KL散度量化相比MinMax量化能更好地保留原始数据的分布信息，但计算复杂度更高。</p>
 <h3 id="533-percentile-quantization">5.3.3 百分位量化（Percentile Quantization）</h3>
 <p>百分位量化使用数据的百分位数来确定量化范围，而不是使用最大值和最小值。这种方法对异常值更鲁棒。</p>
-<p>设使用$p$百分位，则：
-$$R_{min} = percentile(X, 100-p), \quad R_{max} = percentile(X, p)$$</p>
+<p>设使用<span class="arithmatex">\(p\)</span>百分位，则：
+$<span class="arithmatex">\(R_{min} = percentile(X, 100-p), \quad R_{max} = percentile(X, p)\)</span>$</p>
 <h3 id="534-power-law-quantization">5.3.4 幂律量化（Power-Law Quantization）</h3>
 <p>幂律量化根据数据的幂律分布特性进行量化设计，适用于某些特定分布的数据。</p>
 <hr />
@@ -1428,8 +1428,8 @@ $$R_{min} = percentile(X, 100-p), \quad R_{max} = percentile(X, p)$$</p>
 <li><strong>尾数部分（M）</strong>：决定数值精度</li>
 </ul>
 <p>对于规格化浮点数，其真实值为：
-$$(-1)^S \times 2^{E-B} \times (1+M)$$</p>
-<p>其中$B = 2^{E_{bw}-1} - 1$是指数偏移量，$E_{bw}$是指数位宽。</p>
+$<span class="arithmatex">\((-1)^S \times 2^{E-B} \times (1+M)\)</span>$</p>
+<p>其中<span class="arithmatex">\(B = 2^{E_{bw}-1} - 1\)</span>是指数偏移量，<span class="arithmatex">\(E_{bw}\)</span>是指数位宽。</p>
 <h3 id="542-ai">5.4.2 AI中的浮点数据类型</h3>
 <p>目前神经网络中的常用的类型有FP32, TF32, FP16, BF16这四种类型。</p>
 <p><img alt="浮点数据类型格式" src="../../images/02Hardware/01Foundation/images/02ArchSlim10.png" /></p>
@@ -1763,6 +1763,10 @@ $$(-1)^S \times 2^{E-B} \times (1+M)$$</p>
     
     
       <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

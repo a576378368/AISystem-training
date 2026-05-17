@@ -2106,8 +2106,8 @@ AllGather阶段（3步）：
 </code></pre></div>
 <h3 id="25">2.5 数据并行的通信分析</h3>
 <h4 id="251">2.5.1 通信量</h4>
-<p>对于参数量为 $\Psi$ 的模型，一个AllReduce的通信量：
-- 数据并行度为 $N$ 时，每个设备通信量约为 $2\Psi$（使用Ring AllReduce）
+<p>对于参数量为 <span class="arithmatex">\(\Psi\)</span> 的模型，一个AllReduce的通信量：
+- 数据并行度为 <span class="arithmatex">\(N\)</span> 时，每个设备通信量约为 <span class="arithmatex">\(2\Psi\)</span>（使用Ring AllReduce）
 - 通信量与模型参数量成正比</p>
 <h4 id="252">2.5.2 通信与计算重叠</h4>
 <p>DDP通过钩子函数实现通信与计算重叠：</p>
@@ -2121,9 +2121,9 @@ AllGather阶段（3步）：
 <h3 id="26">2.6 数据并行的挑战</h3>
 <h4 id="261">2.6.1 内存挑战</h4>
 <p>每个设备需要存储：
-- 模型参数：$\Psi$
-- 梯度：$\Psi$
-- 优化器状态：$2\Psi$ (Adam)
+- 模型参数：<span class="arithmatex">\(\Psi\)</span>
+- 梯度：<span class="arithmatex">\(\Psi\)</span>
+- 优化器状态：<span class="arithmatex">\(2\Psi\)</span> (Adam)
 - 激活值：取决于模型深度和批次大小</p>
 <p>使用混合精度训练（FP16）可减少约一半内存。</p>
 <h4 id="262">2.6.2 通信挑战</h4>
@@ -2353,12 +2353,12 @@ After:  [GPU0: G_1/4, GPU1: G_2/4, GPU2: G_3/4, GPU3: G_4/4]
 <tr>
 <td>AllGather (输入)</td>
 <td>集合通信</td>
-<td>$O(seq \times hidden)$</td>
+<td><span class="arithmatex">\(O(seq \times hidden)\)</span></td>
 </tr>
 <tr>
 <td>AllReduce (输出)</td>
 <td>集合通信</td>
-<td>$O(seq \times hidden)$</td>
+<td><span class="arithmatex">\(O(seq \times hidden)\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -3079,6 +3079,10 @@ torchrun<span class="w"> </span>--nnodes<span class="o">=</span><span class="m">
     
     
       <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

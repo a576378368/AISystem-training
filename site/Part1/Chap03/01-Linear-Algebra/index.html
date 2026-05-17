@@ -1710,155 +1710,155 @@
 <h3 id="11">1.1 向量的概念与表示</h3>
 <p><strong>向量（Vector）</strong> 是线性代数中最基本的研究对象。从几何角度来看，向量是有大小和方向的量，可以用空间中带有箭头的有向线段来表示。在计算机科学和数据分析中，向量通常被理解为一维数组有序排列而成的数据对象。</p>
 <p><strong>向量的定义</strong>：一个 n 维向量是由 n 个实数（或其他数域中的数）组成的有序数组，通常记作：</p>
-<p>$$\vec{a} = (a_1, a_2, \ldots, a_n)$$</p>
+<div class="arithmatex">\[\vec{a} = (a_1, a_2, \ldots, a_n)\]</div>
 <p>或者用列形式表示为：</p>
-<p>$$\vec{a} = \begin{bmatrix} a_1 \ a_2 \ \vdots \ a_n \end{bmatrix}$$</p>
-<p>其中 $a_i$ 称为向量的第 i 个分量（Component）或元素（Element）。在本书中，我们默认使用列向量表示，但有时为了节省空间也会使用行向量形式。</p>
-<p>向量的维度（Dimension）是指它包含的分量个数。一个 n 维向量被称为 n 维向量空间 $\mathbb{R}^n$ 中的元素。向量的转置（Transpose）是指将行向量变为列向量或将列向量变为行向量的操作，记作 $\vec{a}^T$ 或 $\vec{a}^\top$。</p>
+<div class="arithmatex">\[\vec{a} = \begin{bmatrix} a_1 \\ a_2 \\ \vdots \\ a_n \end{bmatrix}\]</div>
+<p>其中 <span class="arithmatex">\(a_i\)</span> 称为向量的第 i 个分量（Component）或元素（Element）。在本书中，我们默认使用列向量表示，但有时为了节省空间也会使用行向量形式。</p>
+<p>向量的维度（Dimension）是指它包含的分量个数。一个 n 维向量被称为 n 维向量空间 <span class="arithmatex">\(\mathbb{R}^n\)</span> 中的元素。向量的转置（Transpose）是指将行向量变为列向量或将列向量变为行向量的操作，记作 <span class="arithmatex">\(\vec{a}^T\)</span> 或 <span class="arithmatex">\(\vec{a}^\top\)</span>。</p>
 <p><strong>向量相等的定义</strong>：两个向量相等当且仅当它们的维度相同，且对应位置上的所有分量都相等。这意味着即使两个向量在几何上是相同的箭头，但如果它们位于不同的坐标系中表示，我们也可以认为它们是不同的向量（除非通过坐标变换可以证明它们等价）。</p>
 <h3 id="12">1.2 向量运算</h3>
 <h4 id="121">1.2.1 向量加法</h4>
-<p>向量加法（Vector Addition）是将两个维度相同的向量的对应分量相加，得到一个新的同维度向量。设 $\vec{a} = (a_1, a_2, \ldots, a_n)$ 和 $\vec{b} = (b_1, b_2, \ldots, b_n)$，则：</p>
-<p>$$\vec{a} + \vec{b} = (a_1 + b_1, a_2 + b_2, \ldots, a_n + b_n)$$</p>
-<p>向量加法的几何意义是平移。如果我们将向量 $\vec{b}$ 的起点平移到向量 $\vec{a}$ 的终点，则 $\vec{a} + \vec{b}$ 就是从 $\vec{a}$ 的起点指向 $\vec{b}$ 的终点的向量。这在物理上对应力的合成，或者在空间中对应点的平移。</p>
+<p>向量加法（Vector Addition）是将两个维度相同的向量的对应分量相加，得到一个新的同维度向量。设 <span class="arithmatex">\(\vec{a} = (a_1, a_2, \ldots, a_n)\)</span> 和 <span class="arithmatex">\(\vec{b} = (b_1, b_2, \ldots, b_n)\)</span>，则：</p>
+<div class="arithmatex">\[\vec{a} + \vec{b} = (a_1 + b_1, a_2 + b_2, \ldots, a_n + b_n)\]</div>
+<p>向量加法的几何意义是平移。如果我们将向量 <span class="arithmatex">\(\vec{b}\)</span> 的起点平移到向量 <span class="arithmatex">\(\vec{a}\)</span> 的终点，则 <span class="arithmatex">\(\vec{a} + \vec{b}\)</span> 就是从 <span class="arithmatex">\(\vec{a}\)</span> 的起点指向 <span class="arithmatex">\(\vec{b}\)</span> 的终点的向量。这在物理上对应力的合成，或者在空间中对应点的平移。</p>
 <p>向量加法满足以下运算规律：</p>
 <ul>
-<li><strong>交换律（Commutative Law）</strong>：$\vec{a} + \vec{b} = \vec{b} + \vec{a}$</li>
-<li><strong>结合律（Associative Law）</strong>：$(\vec{a} + \vec{b}) + \vec{c} = \vec{a} + (\vec{b} + \vec{c})$</li>
-<li><strong>存在零向量（Zero Vector）</strong>：$\vec{a} + \vec{0} = \vec{a}$，其中 $\vec{0} = (0, 0, \ldots, 0)$</li>
-<li><strong>存在相反向量</strong>：对于任意向量 $\vec{a}$，存在向量 $-\vec{a}$ 使得 $\vec{a} + (-\vec{a}) = \vec{0}$</li>
+<li><strong>交换律（Commutative Law）</strong>：<span class="arithmatex">\(\vec{a} + \vec{b} = \vec{b} + \vec{a}\)</span></li>
+<li><strong>结合律（Associative Law）</strong>：<span class="arithmatex">\((\vec{a} + \vec{b}) + \vec{c} = \vec{a} + (\vec{b} + \vec{c})\)</span></li>
+<li><strong>存在零向量（Zero Vector）</strong>：<span class="arithmatex">\(\vec{a} + \vec{0} = \vec{a}\)</span>，其中 <span class="arithmatex">\(\vec{0} = (0, 0, \ldots, 0)\)</span></li>
+<li><strong>存在相反向量</strong>：对于任意向量 <span class="arithmatex">\(\vec{a}\)</span>，存在向量 <span class="arithmatex">\(-\vec{a}\)</span> 使得 <span class="arithmatex">\(\vec{a} + (-\vec{a}) = \vec{0}\)</span></li>
 </ul>
 <h4 id="122">1.2.2 标量乘法</h4>
-<p>标量乘法（Scalar Multiplication）是将一个向量与一个标量（实数）相乘，结果是向量的每个分量都与该标量相乘。设标量 $k \in \mathbb{R}$，向量 $\vec{a} = (a_1, a_2, \ldots, a_n)$，则：</p>
-<p>$$k\vec{a} = (ka_1, ka_2, \ldots, ka_n)$$</p>
-<p>标量乘法的几何意义是缩放。当 $k &gt; 1$ 时，向量被拉伸；当 $0 &lt; k &lt; 1$ 时，向量被压缩；当 $k &lt; 0$ 时，向量的方向会反转；当 $k = 0$ 时，结果是零向量。</p>
+<p>标量乘法（Scalar Multiplication）是将一个向量与一个标量（实数）相乘，结果是向量的每个分量都与该标量相乘。设标量 <span class="arithmatex">\(k \in \mathbb{R}\)</span>，向量 <span class="arithmatex">\(\vec{a} = (a_1, a_2, \ldots, a_n)\)</span>，则：</p>
+<div class="arithmatex">\[k\vec{a} = (ka_1, ka_2, \ldots, ka_n)\]</div>
+<p>标量乘法的几何意义是缩放。当 <span class="arithmatex">\(k &gt; 1\)</span> 时，向量被拉伸；当 <span class="arithmatex">\(0 &lt; k &lt; 1\)</span> 时，向量被压缩；当 <span class="arithmatex">\(k &lt; 0\)</span> 时，向量的方向会反转；当 <span class="arithmatex">\(k = 0\)</span> 时，结果是零向量。</p>
 <p>标量乘法满足以下运算规律：</p>
 <ul>
-<li><strong>结合律</strong>：$(kl)\vec{a} = k(l\vec{a})$</li>
-<li><strong>分配律（关于标量）</strong>：$(k + l)\vec{a} = k\vec{a} + l\vec{a}$</li>
-<li><strong>分配律（关于向量）</strong>：$k(\vec{a} + \vec{b}) = k\vec{a} + k\vec{b}$</li>
-<li><strong>单位标量</strong>：$1\vec{a} = \vec{a}$</li>
+<li><strong>结合律</strong>：<span class="arithmatex">\((kl)\vec{a} = k(l\vec{a})\)</span></li>
+<li><strong>分配律（关于标量）</strong>：<span class="arithmatex">\((k + l)\vec{a} = k\vec{a} + l\vec{a}\)</span></li>
+<li><strong>分配律（关于向量）</strong>：<span class="arithmatex">\(k(\vec{a} + \vec{b}) = k\vec{a} + k\vec{b}\)</span></li>
+<li><strong>单位标量</strong>：<span class="arithmatex">\(1\vec{a} = \vec{a}\)</span></li>
 </ul>
 <h4 id="123">1.2.3 向量内积</h4>
-<p>向量内积（Inner Product），也称为点积（Dot Product） 或数量积，是两个维度相同的向量的一种重要运算。设 $\vec{a} = (a_1, a_2, \ldots, a_n)$ 和 $\vec{b} = (b_1, b_2, \ldots, b_n)$，则它们的内积定义为：</p>
-<p>$$\vec{a} \cdot \vec{b} = \sum_{i=1}^{n} a_i b_i = a_1 b_1 + a_2 b_2 + \cdots + a_n b_n$$</p>
+<p>向量内积（Inner Product），也称为点积（Dot Product） 或数量积，是两个维度相同的向量的一种重要运算。设 <span class="arithmatex">\(\vec{a} = (a_1, a_2, \ldots, a_n)\)</span> 和 <span class="arithmatex">\(\vec{b} = (b_1, b_2, \ldots, b_n)\)</span>，则它们的内积定义为：</p>
+<div class="arithmatex">\[\vec{a} \cdot \vec{b} = \sum_{i=1}^{n} a_i b_i = a_1 b_1 + a_2 b_2 + \cdots + a_n b_n\]</div>
 <p>内积的结果是一个标量（数量），而不是向量。这是它与后面将介绍的向量外积（结果仍是向量）的关键区别。</p>
-<p>从几何角度来看，向量内积与夹角密切相关。设 $\theta$ 为向量 $\vec{a}$ 和 $\vec{b}$ 之间的夹角（$0 \leq \theta \leq \pi$），则：</p>
-<p>$$\vec{a} \cdot \vec{b} = |\vec{a}| |\vec{b}| \cos\theta$$</p>
-<p>其中 $|\vec{a}|$ 和 $|\vec{b}|$ 分别是两个向量的模（长度），将在后面范数一节详细讨论。这个公式给出了内积的几何解释：当两个向量垂直（$\theta = 90^\circ$ 或 $\pi/2$ 弧度）时，$\cos\theta = 0$，内积为零；当两个向量同向（$\theta = 0$）时，内积取得最大值 $|\vec{a}| |\vec{b}|$；当两个向量反向（$\theta = \pi$）时，内积取得最小值 $-|\vec{a}| |\vec{b}|$。</p>
+<p>从几何角度来看，向量内积与夹角密切相关。设 <span class="arithmatex">\(\theta\)</span> 为向量 <span class="arithmatex">\(\vec{a}\)</span> 和 <span class="arithmatex">\(\vec{b}\)</span> 之间的夹角（<span class="arithmatex">\(0 \leq \theta \leq \pi\)</span>），则：</p>
+<div class="arithmatex">\[\vec{a} \cdot \vec{b} = \|\vec{a}\| \|\vec{b}\| \cos\theta\]</div>
+<p>其中 <span class="arithmatex">\(\|\vec{a}\|\)</span> 和 <span class="arithmatex">\(\|\vec{b}\|\)</span> 分别是两个向量的模（长度），将在后面范数一节详细讨论。这个公式给出了内积的几何解释：当两个向量垂直（<span class="arithmatex">\(\theta = 90^\circ\)</span> 或 <span class="arithmatex">\(\pi/2\)</span> 弧度）时，<span class="arithmatex">\(\cos\theta = 0\)</span>，内积为零；当两个向量同向（<span class="arithmatex">\(\theta = 0\)</span>）时，内积取得最大值 <span class="arithmatex">\(\|\vec{a}\| \|\vec{b}\|\)</span>；当两个向量反向（<span class="arithmatex">\(\theta = \pi\)</span>）时，内积取得最小值 <span class="arithmatex">\(-\|\vec{a}\| \|\vec{b}\|\)</span>。</p>
 <p><strong>内积的性质</strong>：</p>
 <ul>
-<li><strong>交换律</strong>：$\vec{a} \cdot \vec{b} = \vec{b} \cdot \vec{a}$</li>
-<li><strong>分配律</strong>：$\vec{a} \cdot (\vec{b} + \vec{c}) = \vec{a} \cdot \vec{b} + \vec{a} \cdot \vec{c}$</li>
-<li><strong>标量结合</strong>：$(k\vec{a}) \cdot \vec{b} = k(\vec{a} \cdot \vec{b})$</li>
-<li><strong>正定性</strong>：$\vec{a} \cdot \vec{a} \geq 0$，且 $\vec{a} \cdot \vec{a} = 0$ 当且仅当 $\vec{a} = \vec{0}$</li>
+<li><strong>交换律</strong>：<span class="arithmatex">\(\vec{a} \cdot \vec{b} = \vec{b} \cdot \vec{a}\)</span></li>
+<li><strong>分配律</strong>：<span class="arithmatex">\(\vec{a} \cdot (\vec{b} + \vec{c}) = \vec{a} \cdot \vec{b} + \vec{a} \cdot \vec{c}\)</span></li>
+<li><strong>标量结合</strong>：<span class="arithmatex">\((k\vec{a}) \cdot \vec{b} = k(\vec{a} \cdot \vec{b})\)</span></li>
+<li><strong>正定性</strong>：<span class="arithmatex">\(\vec{a} \cdot \vec{a} \geq 0\)</span>，且 <span class="arithmatex">\(\vec{a} \cdot \vec{a} = 0\)</span> 当且仅当 <span class="arithmatex">\(\vec{a} = \vec{0}\)</span></li>
 </ul>
 <p>在机器学习中，内积有广泛的应用。例如，在支持向量机中，需要计算输入向量与权向量的内积来判断分类边界；在神经网络的线性层中，输入向量与权重矩阵的行向量进行内积运算，得到输出特征。</p>
 <h4 id="124">1.2.4 向量外积</h4>
-<p>向量外积（Outer Product），也称为叉积（Cross Product）或向量积，是另一种向量运算，但仅在三维空间中定义。设 $\vec{a} = (a_1, a_2, a_3)$ 和 $\vec{b} = (b_1, b_2, b_3)$ 是三维向量，则它们的叉积为：</p>
-<p>$$\vec{a} \times \vec{b} = \begin{bmatrix} a_2 b_3 - a_3 b_2 \ a_3 b_1 - a_1 b_3 \ a_1 b_2 - a_2 b_1 \end{bmatrix}$$</p>
-<p>叉积的结果是一个向量，其方向垂直于 $\vec{a}$ 和 $\vec{b}$ 所在的平面，遵循右手定则：右手四指从 $\vec{a}$ 指向 $\vec{b}$，拇指所指的方向即为 $\vec{a} \times \vec{b}$ 的方向。</p>
+<p>向量外积（Outer Product），也称为叉积（Cross Product）或向量积，是另一种向量运算，但仅在三维空间中定义。设 <span class="arithmatex">\(\vec{a} = (a_1, a_2, a_3)\)</span> 和 <span class="arithmatex">\(\vec{b} = (b_1, b_2, b_3)\)</span> 是三维向量，则它们的叉积为：</p>
+<div class="arithmatex">\[\vec{a} \times \vec{b} = \begin{bmatrix} a_2 b_3 - a_3 b_2 \\ a_3 b_1 - a_1 b_3 \\ a_1 b_2 - a_2 b_1 \end{bmatrix}\]</div>
+<p>叉积的结果是一个向量，其方向垂直于 <span class="arithmatex">\(\vec{a}\)</span> 和 <span class="arithmatex">\(\vec{b}\)</span> 所在的平面，遵循右手定则：右手四指从 <span class="arithmatex">\(\vec{a}\)</span> 指向 <span class="arithmatex">\(\vec{b}\)</span>，拇指所指的方向即为 <span class="arithmatex">\(\vec{a} \times \vec{b}\)</span> 的方向。</p>
 <p>外积的模与两向量的夹角关系为：</p>
-<p>$$|\vec{a} \times \vec{b}| = |\vec{a}| |\vec{b}| \sin\theta$$</p>
-<p>这意味着当两向量平行（$\theta = 0$ 或 $\pi$）时，外积为零；当两向量垂直（$\theta = \pi/2$）时，外积的模取得最大值。</p>
+<div class="arithmatex">\[\|\vec{a} \times \vec{b}\| = \|\vec{a}\| \|\vec{b}\| \sin\theta\]</div>
+<p>这意味着当两向量平行（<span class="arithmatex">\(\theta = 0\)</span> 或 <span class="arithmatex">\(\pi\)</span>）时，外积为零；当两向量垂直（<span class="arithmatex">\(\theta = \pi/2\)</span>）时，外积的模取得最大值。</p>
 <p>外积在计算机图形学、机器人学和物理模拟中有重要应用，例如计算力矩、判断旋转方向等。</p>
 <h3 id="13">1.3 矩阵的概念与表示</h3>
 <p><strong>矩阵（Matrix）</strong> 是由 mn 个数排成 m 行 n 列的有序数组，是向量概念的自然推广。矩阵通常用大写字母表示，例如：</p>
-<p>$$A = \begin{bmatrix} a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1n} \ a_{21} &amp; a_{22} &amp; \cdots &amp; a_{2n} \ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \ a_{m1} &amp; a_{m2} &amp; \cdots &amp; a_{mn} \end{bmatrix}$$</p>
-<p>其中 $a_{ij}$ 表示矩阵 A 第 i 行第 j 列的元素。矩阵 A 可以记作 $A \in \mathbb{R}^{m \times n}$，表示它是一个 m 行 n 列的实数矩阵。</p>
+<div class="arithmatex">\[A = \begin{bmatrix} a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1n} \\ a_{21} &amp; a_{22} &amp; \cdots &amp; a_{2n} \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ a_{m1} &amp; a_{m2} &amp; \cdots &amp; a_{mn} \end{bmatrix}\]</div>
+<p>其中 <span class="arithmatex">\(a_{ij}\)</span> 表示矩阵 A 第 i 行第 j 列的元素。矩阵 A 可以记作 <span class="arithmatex">\(A \in \mathbb{R}^{m \times n}\)</span>，表示它是一个 m 行 n 列的实数矩阵。</p>
 <p>矩阵的行数 m 和列数 n 称为矩阵的<strong>维度（Dimension）</strong> 或<strong>形状（Shape）</strong>。一个 m 行 n 列的矩阵称为 m×n 矩阵。当 m = n 时，矩阵称为<strong>方阵（Square Matrix）</strong>。方阵有特殊的性质，在后面的章节中会重点讨论。</p>
 <p>矩阵可以看作是由 n 个列向量拼接而成（列表示）或由 m 个行向量拼接而成（行表示）。这种视角在理解矩阵与向量的乘法时特别有用。</p>
-<p><strong>行向量与列向量</strong>：只有一行的矩阵称为行向量（Row Vector），只有一列的矩阵称为列向量（Column Vector）。在深度学习中，我们通常将一个样本表示为列向量，例如一个包含 784 个像素值的 MNIST 图像被表示为 $\mathbb{R}^{784}$ 中的列向量。</p>
+<p><strong>行向量与列向量</strong>：只有一行的矩阵称为行向量（Row Vector），只有一列的矩阵称为列向量（Column Vector）。在深度学习中，我们通常将一个样本表示为列向量，例如一个包含 784 个像素值的 MNIST 图像被表示为 <span class="arithmatex">\(\mathbb{R}^{784}\)</span> 中的列向量。</p>
 <h3 id="14">1.4 矩阵运算</h3>
 <h4 id="141">1.4.1 矩阵加法</h4>
-<p>矩阵加法（Matrix Addition）要求两个矩阵具有相同的维度，结果是对应位置上的元素相加。设 $A, B \in \mathbb{R}^{m \times n}$，则：</p>
-<p>$$(A + B)<em>{ij} = a</em>{ij} + b_{ij}$$</p>
+<p>矩阵加法（Matrix Addition）要求两个矩阵具有相同的维度，结果是对应位置上的元素相加。设 <span class="arithmatex">\(A, B \in \mathbb{R}^{m \times n}\)</span>，则：</p>
+<div class="arithmatex">\[(A + B)_{ij} = a_{ij} + b_{ij}\]</div>
 <p>矩阵加法满足交换律和结合律，并且存在零矩阵（所有元素均为 0）作为加法单位元。</p>
 <h4 id="142">1.4.2 标量乘法</h4>
-<p>矩阵的标量乘法与向量的标量乘法类似，是将标量与矩阵的每个元素相乘。设标量 $k$ 和矩阵 $A \in \mathbb{R}^{m \times n}$，则：</p>
-<p>$$(kA)<em>{ij} = k \cdot a</em>{ij}$$</p>
+<p>矩阵的标量乘法与向量的标量乘法类似，是将标量与矩阵的每个元素相乘。设标量 <span class="arithmatex">\(k\)</span> 和矩阵 <span class="arithmatex">\(A \in \mathbb{R}^{m \times n}\)</span>，则：</p>
+<div class="arithmatex">\[(kA)_{ij} = k \cdot a_{ij}\]</div>
 <h4 id="143">1.4.3 矩阵乘法</h4>
-<p>矩阵乘法（Matrix Multiplication）是线性代数中最重要的运算之一，也是深度学习计算的核心。设 $A \in \mathbb{R}^{m \times p}$，$B \in \mathbb{R}^{p \times n}$，则它们的乘积 $C = AB \in \mathbb{R}^{m \times n}$ 定义为：</p>
-<p>$$c_{ij} = \sum_{k=1}^{p} a_{ik} b_{kj}$$</p>
+<p>矩阵乘法（Matrix Multiplication）是线性代数中最重要的运算之一，也是深度学习计算的核心。设 <span class="arithmatex">\(A \in \mathbb{R}^{m \times p}\)</span>，<span class="arithmatex">\(B \in \mathbb{R}^{p \times n}\)</span>，则它们的乘积 <span class="arithmatex">\(C = AB \in \mathbb{R}^{m \times n}\)</span> 定义为：</p>
+<div class="arithmatex">\[c_{ij} = \sum_{k=1}^{p} a_{ik} b_{kj}\]</div>
 <p>也就是说，乘积矩阵 C 的第 i 行第 j 列的元素，等于 A 的第 i 行与 B 的第 j 列的对应元素乘积之和。</p>
 <p><strong>理解矩阵乘法的几种视角</strong>：</p>
 <ol>
-<li><strong>行视图</strong>：乘积矩阵的第 i 行是 A 的第 i 行左乘矩阵 B 的结果，即 $A$ 的第 i 行与 $B$ 的每个列向量的内积组成的行向量。</li>
-<li><strong>列视图</strong>：乘积矩阵的第 j 列是矩阵 A 右乘 B 的第 j 列的结果，即 $B$ 的第 j 列与 $A$ 的每个行向量的内积组成的列向量。</li>
+<li><strong>行视图</strong>：乘积矩阵的第 i 行是 A 的第 i 行左乘矩阵 B 的结果，即 <span class="arithmatex">\(A\)</span> 的第 i 行与 <span class="arithmatex">\(B\)</span> 的每个列向量的内积组成的行向量。</li>
+<li><strong>列视图</strong>：乘积矩阵的第 j 列是矩阵 A 右乘 B 的第 j 列的结果，即 <span class="arithmatex">\(B\)</span> 的第 j 列与 <span class="arithmatex">\(A\)</span> 的每个行向量的内积组成的列向量。</li>
 <li><strong>向量对视角</strong>：乘积矩阵可以看作 A 的行向量与 B 的列向量的所有可能配对内积的集合。</li>
 </ol>
-<p><strong>矩阵乘法的维度规则</strong>：只有当左侧矩阵的列数等于右侧矩阵的行数时，乘法才有定义。这是"内维度匹配，外维度决定结果维度"规则的体现：$(m \times p) \cdot (p \times n) = (m \times n)$。</p>
+<p><strong>矩阵乘法的维度规则</strong>：只有当左侧矩阵的列数等于右侧矩阵的行数时，乘法才有定义。这是"内维度匹配，外维度决定结果维度"规则的体现：<span class="arithmatex">\((m \times p) \cdot (p \times n) = (m \times n)\)</span>。</p>
 <p><strong>矩阵乘法的性质</strong>：</p>
 <ul>
-<li><strong>结合律</strong>：$(AB)C = A(BC)$</li>
-<li><strong>分配律</strong>：$A(B + C) = AB + AC$，$(A + B)C = AC + BC$</li>
-<li><strong>单位矩阵</strong>：$AI = IA = A$，其中 $I$ 是单位矩阵</li>
-<li><strong>一般情况下不满足交换律</strong>：$AB \neq BA$（甚至维度可能不匹配）</li>
+<li><strong>结合律</strong>：<span class="arithmatex">\((AB)C = A(BC)\)</span></li>
+<li><strong>分配律</strong>：<span class="arithmatex">\(A(B + C) = AB + AC\)</span>，<span class="arithmatex">\((A + B)C = AC + BC\)</span></li>
+<li><strong>单位矩阵</strong>：<span class="arithmatex">\(AI = IA = A\)</span>，其中 <span class="arithmatex">\(I\)</span> 是单位矩阵</li>
+<li><strong>一般情况下不满足交换律</strong>：<span class="arithmatex">\(AB \neq BA\)</span>（甚至维度可能不匹配）</li>
 </ul>
 <p>这个不满足交换律的性质在深度学习中非常重要。当我们写神经网络的前向传播时，数据的流动顺序是固定的，从输入到输出依次经过各层的线性变换和非线性激活。如果交换任意两层的位置，网络的行为通常会完全改变。</p>
 <h4 id="144">1.4.4 矩阵转置</h4>
-<p>矩阵转置（Transpose）是将矩阵的行和列互换。设 $A \in \mathbb{R}^{m \times n}$，则 $A^\top \in \mathbb{R}^{n \times m}$，且 $(A^\top)<em>{ij} = a</em>{ji}$。</p>
+<p>矩阵转置（Transpose）是将矩阵的行和列互换。设 <span class="arithmatex">\(A \in \mathbb{R}^{m \times n}\)</span>，则 <span class="arithmatex">\(A^\top \in \mathbb{R}^{n \times m}\)</span>，且 <span class="arithmatex">\((A^\top)_{ij} = a_{ji}\)</span>。</p>
 <p>转置运算的性质：</p>
 <ul>
-<li>$(A^\top)^\top = A$</li>
-<li>$(A + B)^\top = A^\top + B^\top$</li>
-<li>$(AB)^\top = B^\top A^\top$</li>
+<li><span class="arithmatex">\((A^\top)^\top = A\)</span></li>
+<li><span class="arithmatex">\((A + B)^\top = A^\top + B^\top\)</span></li>
+<li><span class="arithmatex">\((AB)^\top = B^\top A^\top\)</span></li>
 </ul>
 <h4 id="145">1.4.5 矩阵求逆</h4>
-<p>矩阵的逆（Inverse）将在后面的专门章节详细讨论，这里先简单介绍概念。对于 n 阶方阵 A，如果存在矩阵 B 使得 $AB = BA = I_n$（n阶单位矩阵），则称 B 为 A 的逆矩阵，记作 $A^{-1}$。不是所有矩阵都有逆矩阵，有逆矩阵的矩阵称为可逆矩阵或非奇异矩阵。</p>
+<p>矩阵的逆（Inverse）将在后面的专门章节详细讨论，这里先简单介绍概念。对于 n 阶方阵 A，如果存在矩阵 B 使得 <span class="arithmatex">\(AB = BA = I_n\)</span>（n阶单位矩阵），则称 B 为 A 的逆矩阵，记作 <span class="arithmatex">\(A^{-1}\)</span>。不是所有矩阵都有逆矩阵，有逆矩阵的矩阵称为可逆矩阵或非奇异矩阵。</p>
 <h3 id="15">1.5 矩阵在人工智能中的应用</h3>
 <h4 id="151">1.5.1 神经网络中的矩阵运算</h4>
-<p>在神经网络中，矩阵运算无处不在。考虑一个全连接层（也称为线性层或稠密层），假设输入是 m 维向量 $\vec{x} \in \mathbb{R}^m$，权重矩阵为 $W \in \mathbb{R}^{n \times m}$，偏置向量为 $\vec{b} \in \mathbb{R}^n$，则该层的输出为：</p>
-<p>$$\vec{y} = W\vec{x} + \vec{b}$$</p>
-<p>其中 $W\vec{x}$ 是矩阵与向量的乘法，$W\vec{x} + \vec{b}$ 是向量加法。如果我们有批量大小为 batch 的小批量数据，每批数据构成一个矩阵 $X \in \mathbb{R}^{batch \times m}$，则输出为 $Y = XW^\top + \vec{b}$，其中 $XW^\top$ 是矩阵与矩阵的乘法。</p>
+<p>在神经网络中，矩阵运算无处不在。考虑一个全连接层（也称为线性层或稠密层），假设输入是 m 维向量 <span class="arithmatex">\(\vec{x} \in \mathbb{R}^m\)</span>，权重矩阵为 <span class="arithmatex">\(W \in \mathbb{R}^{n \times m}\)</span>，偏置向量为 <span class="arithmatex">\(\vec{b} \in \mathbb{R}^n\)</span>，则该层的输出为：</p>
+<div class="arithmatex">\[\vec{y} = W\vec{x} + \vec{b}\]</div>
+<p>其中 <span class="arithmatex">\(W\vec{x}\)</span> 是矩阵与向量的乘法，<span class="arithmatex">\(W\vec{x} + \vec{b}\)</span> 是向量加法。如果我们有批量大小为 batch 的小批量数据，每批数据构成一个矩阵 <span class="arithmatex">\(X \in \mathbb{R}^{batch \times m}\)</span>，则输出为 <span class="arithmatex">\(Y = XW^\top + \vec{b}\)</span>，其中 <span class="arithmatex">\(XW^\top\)</span> 是矩阵与矩阵的乘法。</p>
 <h4 id="152">1.5.2 卷积操作的矩阵表示</h4>
 <p>卷积神经网络中的卷积操作也可以用矩阵乘法来表示。通过 im2col（image to column）操作，可以将输入特征图展开成矩阵，将卷积核展开成另一个矩阵，然后使用矩阵乘法来高效实现卷积。这种表示使得卷积操作可以在 GPU 上利用高度优化的矩阵乘法库（如 cuBLAS）来加速计算。</p>
 <h4 id="153">1.5.3 注意力机制中的矩阵运算</h4>
-<p>Transformer 中的注意力机制可以简洁地表示为矩阵运算。设查询（Query）、键（Key）、值（Value）矩阵分别为 $Q$、$K$、$V$，则注意力输出为：</p>
-<p>$$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^\top}{\sqrt{d_k}}\right)V$$</p>
-<p>其中 $QK^\top$ 是查询与键的矩阵乘法，$\sqrt{d_k}$ 是缩放因子，softmax 是按行应用的。这种表示使得我们可以利用高度优化的矩阵运算来实现注意力机制。</p>
+<p>Transformer 中的注意力机制可以简洁地表示为矩阵运算。设查询（Query）、键（Key）、值（Value）矩阵分别为 <span class="arithmatex">\(Q\)</span>、<span class="arithmatex">\(K\)</span>、<span class="arithmatex">\(V\)</span>，则注意力输出为：</p>
+<div class="arithmatex">\[\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^\top}{\sqrt{d_k}}\right)V\]</div>
+<p>其中 <span class="arithmatex">\(QK^\top\)</span> 是查询与键的矩阵乘法，<span class="arithmatex">\(\sqrt{d_k}\)</span> 是缩放因子，softmax 是按行应用的。这种表示使得我们可以利用高度优化的矩阵运算来实现注意力机制。</p>
 <h2 id="2">2 行列式与逆矩阵</h2>
 <h3 id="21">2.1 行列式的定义</h3>
-<p><strong>行列式（Determinant）</strong> 是方阵的一个重要标量函数，记作 $\det(A)$ 或 $|A|$。行列式最初来源于求解线性方程组的问题，但在线性代数中有着深刻的理论和应用意义。</p>
+<p><strong>行列式（Determinant）</strong> 是方阵的一个重要标量函数，记作 <span class="arithmatex">\(\det(A)\)</span> 或 <span class="arithmatex">\(|A|\)</span>。行列式最初来源于求解线性方程组的问题，但在线性代数中有着深刻的理论和应用意义。</p>
 <p>对于 2×2 矩阵，行列式有简单的计算公式：</p>
-<p>$$\det\begin{pmatrix} a &amp; b \ c &amp; d \end{pmatrix} = ad - bc$$</p>
+<div class="arithmatex">\[\det\begin{pmatrix} a &amp; b \\ c &amp; d \end{pmatrix} = ad - bc\]</div>
 <p>对于 3×3 矩阵，行列式可以通过展开公式计算：</p>
-<p>$$\det\begin{pmatrix} a_{11} &amp; a_{12} &amp; a_{13} \ a_{21} &amp; a_{22} &amp; a_{23} \ a_{31} &amp; a_{32} &amp; a_{33} \end{pmatrix} = a_{11}\det\begin{pmatrix} a_{22} &amp; a_{23} \ a_{32} &amp; a_{33} \end{pmatrix} - a_{12}\det\begin{pmatrix} a_{21} &amp; a_{23} \ a_{31} &amp; a_{33} \end{pmatrix} + a_{13}\det\begin{pmatrix} a_{21} &amp; a_{22} \ a_{31} &amp; a_{32} \end{pmatrix}$$</p>
+<div class="arithmatex">\[\det\begin{pmatrix} a_{11} &amp; a_{12} &amp; a_{13} \\ a_{21} &amp; a_{22} &amp; a_{23} \\ a_{31} &amp; a_{32} &amp; a_{33} \end{pmatrix} = a_{11}\det\begin{pmatrix} a_{22} &amp; a_{23} \\ a_{32} &amp; a_{33} \end{pmatrix} - a_{12}\det\begin{pmatrix} a_{21} &amp; a_{23} \\ a_{31} &amp; a_{33} \end{pmatrix} + a_{13}\det\begin{pmatrix} a_{21} &amp; a_{22} \\ a_{31} &amp; a_{32} \end{pmatrix}\]</div>
 <p>对于 n×n 矩阵，行列式可以通过按任意行或列展开来递归计算，但这种方法计算复杂度较高。实际中通常使用 LU 分解等高效算法来计算行列式。</p>
 <p><strong>行列式的几何意义</strong>：在二维空间中，矩阵的行列式的绝对值等于由矩阵行（或列）向量张成的平行四边形的面积；在三维空间中，行列式的绝对值等于由矩阵行（或列）向量张成的平行六面体的体积。</p>
 <h3 id="22">2.2 行列式的性质</h3>
 <p>行列式具有以下重要性质：</p>
 <ol>
-<li><strong>单位矩阵的行列式为 1</strong>：$\det(I) = 1$</li>
-<li><strong>行列式与转置</strong>：$\det(A^\top) = \det(A)$</li>
+<li><strong>单位矩阵的行列式为 1</strong>：<span class="arithmatex">\(\det(I) = 1\)</span></li>
+<li><strong>行列式与转置</strong>：<span class="arithmatex">\(\det(A^\top) = \det(A)\)</span></li>
 <li><strong>两行交换改变符号</strong>：交换矩阵的两行会使得行列式变号</li>
 <li><strong>行倍加不变</strong>：将某行的倍数加到另一行上，行列式不变</li>
 <li><strong>倍乘抽出</strong>：将某行乘以标量 k，行列式乘以 k（这意味着如果矩阵有两行成比例，行列式为零）</li>
-<li><strong>乘积性质</strong>：$\det(AB) = \det(A)\det(B)$</li>
-<li><strong>可逆性与行列式</strong>：矩阵 A 可逆当且仅当 $\det(A) \neq 0$</li>
+<li><strong>乘积性质</strong>：<span class="arithmatex">\(\det(AB) = \det(A)\det(B)\)</span></li>
+<li><strong>可逆性与行列式</strong>：矩阵 A 可逆当且仅当 <span class="arithmatex">\(\det(A) \neq 0\)</span></li>
 </ol>
 <p>性质 7 是判断矩阵是否可逆的重要依据。在数值计算中，如果行列式的值非常接近零，通常意味着矩阵接近奇异，在求解线性方程组或进行数值计算时可能会遇到数值不稳定的问题。</p>
 <h3 id="23">2.3 逆矩阵的定义与性质</h3>
 <p><strong>逆矩阵（Inverse Matrix）</strong> 的概念在前文已简要提及。对于 n 阶方阵 A，如果存在矩阵 B 使得：</p>
-<p>$$AB = BA = I_n$$</p>
-<p>则称 A 是<strong>可逆的（Invertible）</strong> 或<strong>非奇异的（Non-singular）</strong>，并称 B 为 A 的逆矩阵，记作 $A^{-1}$。</p>
-<p><strong>逆矩阵是唯一的</strong>。如果存在两个矩阵 B 和 C 都满足上述条件，则 $B = BI = B(AC) = (BA)C = IC = C$，因此逆矩阵是唯一的。</p>
+<div class="arithmatex">\[AB = BA = I_n\]</div>
+<p>则称 A 是<strong>可逆的（Invertible）</strong> 或<strong>非奇异的（Non-singular）</strong>，并称 B 为 A 的逆矩阵，记作 <span class="arithmatex">\(A^{-1}\)</span>。</p>
+<p><strong>逆矩阵是唯一的</strong>。如果存在两个矩阵 B 和 C 都满足上述条件，则 <span class="arithmatex">\(B = BI = B(AC) = (BA)C = IC = C\)</span>，因此逆矩阵是唯一的。</p>
 <p><strong>逆矩阵的性质</strong>：</p>
 <ol>
-<li>$(A^{-1})^{-1} = A$</li>
-<li>$(AB)^{-1} = B^{-1}A^{-1}$（注意顺序反转）</li>
-<li>$(A^\top)^{-1} = (A^{-1})^\top$</li>
-<li>$(kA)^{-1} = \frac{1}{k}A^{-1}$（k ≠ 0）</li>
+<li><span class="arithmatex">\((A^{-1})^{-1} = A\)</span></li>
+<li><span class="arithmatex">\((AB)^{-1} = B^{-1}A^{-1}\)</span>（注意顺序反转）</li>
+<li><span class="arithmatex">\((A^\top)^{-1} = (A^{-1})^\top\)</span></li>
+<li><span class="arithmatex">\((kA)^{-1} = \frac{1}{k}A^{-1}\)</span>（k ≠ 0）</li>
 </ol>
 <h3 id="24">2.4 逆矩阵的计算</h3>
 <h4 id="241">2.4.1 伴随矩阵法</h4>
 <p>对于 2×2 矩阵，其逆矩阵可以直接通过公式计算：</p>
-<p>$$\begin{pmatrix} a &amp; b \ c &amp; d \end{pmatrix}^{-1} = \frac{1}{ad - bc}\begin{pmatrix} d &amp; -b \ -c &amp; a \end{pmatrix}$$</p>
-<p>更一般地，对于 n×n 矩阵，可以通过<strong>伴随矩阵（Adjugate Matrix）</strong> 来求逆。矩阵 A 的伴随矩阵 $\text{adj}(A)$ 是由 A 的所有代数余子式的转置组成的矩阵。则：</p>
-<p>$$A^{-1} = \frac{1}{\det(A)}\text{adj}(A)$$</p>
-<p>这种方法在理论推导中很有价值，但由于计算复杂度为 $O(n!)$，在实际数值计算中并不使用。</p>
+<div class="arithmatex">\[\begin{pmatrix} a &amp; b \\ c &amp; d \end{pmatrix}^{-1} = \frac{1}{ad - bc}\begin{pmatrix} d &amp; -b \\ -c &amp; a \end{pmatrix}\]</div>
+<p>更一般地，对于 n×n 矩阵，可以通过<strong>伴随矩阵（Adjugate Matrix）</strong> 来求逆。矩阵 A 的伴随矩阵 <span class="arithmatex">\(\text{adj}(A)\)</span> 是由 A 的所有代数余子式的转置组成的矩阵。则：</p>
+<div class="arithmatex">\[A^{-1} = \frac{1}{\det(A)}\text{adj}(A)\]</div>
+<p>这种方法在理论推导中很有价值，但由于计算复杂度为 <span class="arithmatex">\(O(n!)\)</span>，在实际数值计算中并不使用。</p>
 <h4 id="242-">2.4.2 高斯-约旦消元法</h4>
-<p>高斯-约旦消元法（Gauss-Jordan Elimination）是实际计算逆矩阵的常用方法。其基本思想是将增广矩阵 $[A | I]$ 通过初等行变换化为 $[I | A^{-1}]$ 的形式。</p>
+<p>高斯-约旦消元法（Gauss-Jordan Elimination）是实际计算逆矩阵的常用方法。其基本思想是将增广矩阵 <span class="arithmatex">\([A | I]\)</span> 通过初等行变换化为 <span class="arithmatex">\([I | A^{-1}]\)</span> 的形式。</p>
 <p>初等行变换包括：</p>
 <ol>
 <li>交换两行</li>
@@ -1867,52 +1867,52 @@
 </ol>
 <p>通过这些变换，我们可以将 A 化为单位矩阵，同时 I 就被化为了 A 的逆矩阵。</p>
 <h4 id="243-lu">2.4.3 LU 分解法</h4>
-<p>LU 分解将矩阵 A 表示为下三角矩阵 L 和上三角矩阵 U 的乘积：$A = LU$。如果 A 可以进行 LU 分解，则求解 $Ax = b$ 可以分解为求解 $Ly = b$ 和 $Ux = y$，这两个问题都很容易通过前向和后向代换解决。</p>
-<p>对于求逆问题，$Ax = I$ 可以通过 LU 分解高效求解。</p>
+<p>LU 分解将矩阵 A 表示为下三角矩阵 L 和上三角矩阵 U 的乘积：<span class="arithmatex">\(A = LU\)</span>。如果 A 可以进行 LU 分解，则求解 <span class="arithmatex">\(Ax = b\)</span> 可以分解为求解 <span class="arithmatex">\(Ly = b\)</span> 和 <span class="arithmatex">\(Ux = y\)</span>，这两个问题都很容易通过前向和后向代换解决。</p>
+<p>对于求逆问题，<span class="arithmatex">\(Ax = I\)</span> 可以通过 LU 分解高效求解。</p>
 <h3 id="25">2.5 逆矩阵在人工智能中的应用</h3>
 <h4 id="251">2.5.1 线性系统的求解</h4>
-<p>在机器学习中，我们经常需要求解线性系统 $Ax = b$。例如，在线性回归的正规方程解中，我们需要计算 $(X^\top X)^{-1}$；在神经网络的权重更新中，可能需要求解某些线性系统。虽然现代深度学习主要使用梯度下降法来优化，但理解逆矩阵的概念对于理解底层算法仍然很重要。</p>
+<p>在机器学习中，我们经常需要求解线性系统 <span class="arithmatex">\(Ax = b\)</span>。例如，在线性回归的正规方程解中，我们需要计算 <span class="arithmatex">\((X^\top X)^{-1}\)</span>；在神经网络的权重更新中，可能需要求解某些线性系统。虽然现代深度学习主要使用梯度下降法来优化，但理解逆矩阵的概念对于理解底层算法仍然很重要。</p>
 <h4 id="252">2.5.2 协方差矩阵的逆</h4>
 <p>在统计学习和机器学习中，协方差矩阵的逆（精度矩阵）有着重要作用。例如，在高斯马尔可夫随机场中，精度矩阵的非零元素表示变量之间的条件独立性。在高维统计中，使用协方差矩阵的逆来进行稀疏估计是常见的做法。</p>
-<p>然而，当特征数量很大时，直接计算协方差矩阵的逆是困难的（复杂度为 $O(p^3)$，其中 p 是特征数）。因此发展出了许多近似方法和稀疏化技术。</p>
+<p>然而，当特征数量很大时，直接计算协方差矩阵的逆是困难的（复杂度为 <span class="arithmatex">\(O(p^3)\)</span>，其中 p 是特征数）。因此发展出了许多近似方法和稀疏化技术。</p>
 <h4 id="253">2.5.3 矩阵求逆引理</h4>
 <p>在机器学习中，矩阵求逆引理（Woodbury Matrix Identity）是一个非常有用的工具：</p>
-<p>$$(A + UCU^\top)^{-1} = A^{-1} - A^{-1}U(C^{-1} + U^\top A^{-1}U)^{-1}U^\top A^{-1}$$</p>
+<div class="arithmatex">\[(A + UCU^\top)^{-1} = A^{-1} - A^{-1}U(C^{-1} + U^\top A^{-1}U)^{-1}U^\top A^{-1}\]</div>
 <p>这个恒等式允许我们用较小的矩阵的逆来近似计算较大矩阵的逆，在处理高维数据时非常有用。例如，在神经网络的循环应用中，可以使用这种技巧来高效地处理长序列数据。</p>
 <h2 id="3">3 特征值与特征向量</h2>
 <h3 id="31">3.1 特征值与特征向量的定义</h3>
 <p><strong>特征值（Eigenvalue）</strong> 和<strong>特征向量（Eigenvector）</strong> 是矩阵最重要的性质之一，在机器学习、信号处理、量子力学等领域都有广泛应用。</p>
-<p>设 A 是一个 n×n 方阵。如果存在非零向量 $\vec{v} \in \mathbb{R}^n$ 和标量 $\lambda \in \mathbb{R}$ 使得：</p>
-<p>$$A\vec{v} = \lambda\vec{v}$$</p>
-<p>则称 $\lambda$ 是 A 的一个特征值，$\vec{v}$ 是属于特征值 $\lambda$ 的一个特征向量。</p>
-<p>从几何角度来看，特征向量的含义是：矩阵 A 作用于特征向量 $\vec{v}$，只是将 $\vec{v}$ 拉伸或压缩了 $\lambda$ 倍，而没有改变它的方向（除非 $\lambda &lt; 0$，此时方向反转）。这是一个非常强的约束条件，大多数向量在矩阵作用后都会改变方向，只有特殊的向量（特征向量）能够保持方向不变。</p>
+<p>设 A 是一个 n×n 方阵。如果存在非零向量 <span class="arithmatex">\(\vec{v} \in \mathbb{R}^n\)</span> 和标量 <span class="arithmatex">\(\lambda \in \mathbb{R}\)</span> 使得：</p>
+<div class="arithmatex">\[A\vec{v} = \lambda\vec{v}\]</div>
+<p>则称 <span class="arithmatex">\(\lambda\)</span> 是 A 的一个特征值，<span class="arithmatex">\(\vec{v}\)</span> 是属于特征值 <span class="arithmatex">\(\lambda\)</span> 的一个特征向量。</p>
+<p>从几何角度来看，特征向量的含义是：矩阵 A 作用于特征向量 <span class="arithmatex">\(\vec{v}\)</span>，只是将 <span class="arithmatex">\(\vec{v}\)</span> 拉伸或压缩了 <span class="arithmatex">\(\lambda\)</span> 倍，而没有改变它的方向（除非 <span class="arithmatex">\(\lambda &lt; 0\)</span>，此时方向反转）。这是一个非常强的约束条件，大多数向量在矩阵作用后都会改变方向，只有特殊的向量（特征向量）能够保持方向不变。</p>
 <h3 id="32">3.2 特征值与特征向量的计算</h3>
-<p>将特征值方程 $A\vec{v} = \lambda\vec{v}$ 改写为：</p>
-<p>$$(A - \lambda I)\vec{v} = \vec{0}$$</p>
+<p>将特征值方程 <span class="arithmatex">\(A\vec{v} = \lambda\vec{v}\)</span> 改写为：</p>
+<div class="arithmatex">\[(A - \lambda I)\vec{v} = \vec{0}\]</div>
 <p>这是一个齐次线性方程组。要使这个方程组有非零解，系数矩阵必须是奇异的，即：</p>
-<p>$$\det(A - \lambda I) = 0$$</p>
+<div class="arithmatex">\[\det(A - \lambda I) = 0\]</div>
 <p>这个方程称为<strong>特征方程（Characteristic Equation）</strong> 或<strong>特征多项式（Characteristic Polynomial）</strong>。求解这个 n 次多项式方程，可以得到 n 个特征值（可能包含重根和复数根）。</p>
-<p>对于每个特征值 $\lambda_i$，解方程组 $(A - \lambda_i I)\vec{v} = \vec{0}$ 可以得到对应的特征向量。由于方程组是奇异的，解空间维度至少为 1（可能更高），因此每个特征值至少对应一个特征向量（可能对应无穷多个，因为特征向量的任何非零标量倍仍是特征向量）。</p>
-<p><strong>示例</strong>：考虑矩阵 $A = \begin{pmatrix} 2 &amp; 1 \ 1 &amp; 2 \end{pmatrix}$。</p>
+<p>对于每个特征值 <span class="arithmatex">\(\lambda_i\)</span>，解方程组 <span class="arithmatex">\((A - \lambda_i I)\vec{v} = \vec{0}\)</span> 可以得到对应的特征向量。由于方程组是奇异的，解空间维度至少为 1（可能更高），因此每个特征值至少对应一个特征向量（可能对应无穷多个，因为特征向量的任何非零标量倍仍是特征向量）。</p>
+<p><strong>示例</strong>：考虑矩阵 <span class="arithmatex">\(A = \begin{pmatrix} 2 &amp; 1 \\ 1 &amp; 2 \end{pmatrix}\)</span>。</p>
 <p>特征方程为：</p>
-<p>$$\det(A - \lambda I) = \det\begin{pmatrix} 2-\lambda &amp; 1 \ 1 &amp; 2-\lambda \end{pmatrix} = (2-\lambda)^2 - 1 = \lambda^2 - 4\lambda + 3 = 0$$</p>
-<p>解得 $\lambda_1 = 1$，$\lambda_2 = 3$。</p>
-<p>对于 $\lambda_1 = 1$：解 $(A - I)\vec{v} = \vec{0}$，即 $\begin{pmatrix} 1 &amp; 1 \ 1 &amp; 1 \end{pmatrix}\vec{v} = \vec{0}$，得 $v_1 = -v_2$，所以特征向量可以取 $\vec{v}_1 = \begin{pmatrix} 1 \ -1 \end{pmatrix}$。</p>
-<p>对于 $\lambda_2 = 3$：解 $(A - 3I)\vec{v} = \vec{0}$，即 $\begin{pmatrix} -1 &amp; 1 \ 1 &amp; -1 \end{pmatrix}\vec{v} = \vec{0}$，得 $v_1 = v_2$，所以特征向量可以取 $\vec{v}_2 = \begin{pmatrix} 1 \ 1 \end{pmatrix}$。</p>
+<div class="arithmatex">\[\det(A - \lambda I) = \det\begin{pmatrix} 2-\lambda &amp; 1 \\ 1 &amp; 2-\lambda \end{pmatrix} = (2-\lambda)^2 - 1 = \lambda^2 - 4\lambda + 3 = 0\]</div>
+<p>解得 <span class="arithmatex">\(\lambda_1 = 1\)</span>，<span class="arithmatex">\(\lambda_2 = 3\)</span>。</p>
+<p>对于 <span class="arithmatex">\(\lambda_1 = 1\)</span>：解 <span class="arithmatex">\((A - I)\vec{v} = \vec{0}\)</span>，即 <span class="arithmatex">\(\begin{pmatrix} 1 &amp; 1 \\ 1 &amp; 1 \end{pmatrix}\vec{v} = \vec{0}\)</span>，得 <span class="arithmatex">\(v_1 = -v_2\)</span>，所以特征向量可以取 <span class="arithmatex">\(\vec{v}_1 = \begin{pmatrix} 1 \\ -1 \end{pmatrix}\)</span>。</p>
+<p>对于 <span class="arithmatex">\(\lambda_2 = 3\)</span>：解 <span class="arithmatex">\((A - 3I)\vec{v} = \vec{0}\)</span>，即 <span class="arithmatex">\(\begin{pmatrix} -1 &amp; 1 \\ 1 &amp; -1 \end{pmatrix}\vec{v} = \vec{0}\)</span>，得 <span class="arithmatex">\(v_1 = v_2\)</span>，所以特征向量可以取 <span class="arithmatex">\(\vec{v}_2 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}\)</span>。</p>
 <h3 id="33">3.3 特征值的性质</h3>
-<p>设 $A \in \mathbb{R}^{n \times n}$，其特征值为 $\lambda_1, \lambda_2, \ldots, \lambda_n$（可能有重复和复数），则：</p>
+<p>设 <span class="arithmatex">\(A \in \mathbb{R}^{n \times n}\)</span>，其特征值为 <span class="arithmatex">\(\lambda_1, \lambda_2, \ldots, \lambda_n\)</span>（可能有重复和复数），则：</p>
 <ol>
 <li>
-<p><strong>特征值之和（迹）</strong>：$\text{tr}(A) = \sum_{i=1}^{n} \lambda_i = a_{11} + a_{22} + \cdots + a_{nn}$</p>
+<p><strong>特征值之和（迹）</strong>：<span class="arithmatex">\(\text{tr}(A) = \sum_{i=1}^{n} \lambda_i = a_{11} + a_{22} + \cdots + a_{nn}\)</span></p>
 </li>
 <li>
-<p><strong>特征值之积（行列式）</strong>：$\det(A) = \prod_{i=1}^{n} \lambda_i$</p>
+<p><strong>特征值之积（行列式）</strong>：<span class="arithmatex">\(\det(A) = \prod_{i=1}^{n} \lambda_i\)</span></p>
 </li>
 <li>
-<p><strong>幂的特征值</strong>：如果 $\lambda$ 是 A 的特征值，则 $\lambda^k$ 是 $A^k$ 的特征值</p>
+<p><strong>幂的特征值</strong>：如果 <span class="arithmatex">\(\lambda\)</span> 是 A 的特征值，则 <span class="arithmatex">\(\lambda^k\)</span> 是 <span class="arithmatex">\(A^k\)</span> 的特征值</p>
 </li>
 <li>
-<p><strong>可逆矩阵的特征值</strong>：如果 A 可逆，则 $1/\lambda_i$ 是 $A^{-1}$ 的特征值</p>
+<p><strong>可逆矩阵的特征值</strong>：如果 A 可逆，则 <span class="arithmatex">\(1/\lambda_i\)</span> 是 <span class="arithmatex">\(A^{-1}\)</span> 的特征值</p>
 </li>
 <li>
 <p><strong>相似矩阵有相同特征值</strong>：如果 B = P^{-1}AP，则 A 和 B 有相同的特征值</p>
@@ -1920,16 +1920,16 @@
 </ol>
 <p>这些性质在理论分析和数值计算中都很有用。例如，如果我们只需要特征值的和（迹），可以直接计算矩阵对角线元素之和，而不需要计算所有特征值。</p>
 <h3 id="34">3.4 对称矩阵的特征值</h3>
-<p>对称矩阵（$A = A^\top$）的特征值有特别好的性质：</p>
+<p>对称矩阵（<span class="arithmatex">\(A = A^\top\)</span>）的特征值有特别好的性质：</p>
 <ol>
 <li><strong>实特征值</strong>：对称矩阵的特征值一定是实数</li>
 <li><strong>正交特征向量</strong>：对称矩阵对应不同特征值的特征向量是正交的</li>
-<li><strong>谱分解</strong>：对称矩阵可以分解为 $A = Q\Lambda Q^\top$，其中 Q 是正交矩阵，$\Lambda$ 是对角矩阵</li>
+<li><strong>谱分解</strong>：对称矩阵可以分解为 <span class="arithmatex">\(A = Q\Lambda Q^\top\)</span>，其中 Q 是正交矩阵，<span class="arithmatex">\(\Lambda\)</span> 是对角矩阵</li>
 </ol>
 <p>对于实对称矩阵，一定可以进行<strong>特征分解（Eigendecomposition）</strong>，将矩阵表示为特征向量和特征值的组合。这在主成分分析（PCA）中有着核心的应用。</p>
 <h3 id="35">3.5 特征值与特征向量的应用</h3>
 <h4 id="351-pca">3.5.1 主成分分析（PCA）</h4>
-<p>主成分分析是一种经典的降维方法，其核心就是利用协方差矩阵的特征值和特征向量。给定数据矩阵 X，我们首先计算协方差矩阵 $C = \frac{1}{n-1}XX^\top$。然后计算 C 的特征值和特征向量。较大的特征值对应的特征方向是数据方差最大的方向，这些方向称为主成分。通过保留前 k 个最大的特征值对应的特征向量，我们可以将数据投影到低维空间，同时尽可能保留原始数据的信息。</p>
+<p>主成分分析是一种经典的降维方法，其核心就是利用协方差矩阵的特征值和特征向量。给定数据矩阵 X，我们首先计算协方差矩阵 <span class="arithmatex">\(C = \frac{1}{n-1}XX^\top\)</span>。然后计算 C 的特征值和特征向量。较大的特征值对应的特征方向是数据方差最大的方向，这些方向称为主成分。通过保留前 k 个最大的特征值对应的特征向量，我们可以将数据投影到低维空间，同时尽可能保留原始数据的信息。</p>
 <h4 id="352">3.5.2 谱聚类</h4>
 <p>谱聚类（Spectral Clustering）是一类基于图论的聚类算法。其基本思想是：构建数据的相似性图，计算拉普拉斯矩阵的特征向量，将数据映射到由特征向量张成的低维空间，然后在低维空间中使用 k-means 等算法进行聚类。谱聚类的理论基础与图论和矩阵谱理论密切相关。</p>
 <h4 id="353-pagerank">3.5.3 搜索引擎中的 PageRank</h4>
@@ -1941,22 +1941,22 @@
 <p><strong>矩阵分解（Matrix Decomposition）</strong> 是将一个矩阵表示为若干个特殊矩阵乘积的形式。矩阵分解在线性代数理论、数值计算和机器学习中都有着核心的地位。通过将复杂的矩阵分解为简单矩阵的组合，我们可以更好地理解矩阵的性质，设计高效的算法，并揭示数据中的潜在结构。</p>
 <p>不同的应用场景需要不同的矩阵分解形式。例如，当我们关心的是求解线性方程组时，LU 分解最为高效；当我们关心的是数据的降维表示时，SVD（奇异值分解）最为常用；当我们希望得到稀疏的或低秩的表示时，可能需要使用非负矩阵分解或字典学习等技术。</p>
 <h3 id="42-lu">4.2 LU 分解</h3>
-<p><strong>LU 分解</strong> 将矩阵 A 表示为下三角矩阵 L 和上三角矩阵 U 的乘积：$A = LU$。</p>
+<p><strong>LU 分解</strong> 将矩阵 A 表示为下三角矩阵 L 和上三角矩阵 U 的乘积：<span class="arithmatex">\(A = LU\)</span>。</p>
 <ul>
 <li>L 是下三角矩阵（Lower Triangular Matrix），对角线以上的元素均为零</li>
 <li>U 是上三角矩阵（Upper Triangular Matrix），对角线以下的元素均为零</li>
 </ul>
-<p>LU 分解在求解线性方程组时特别有用。给定 $Ax = b$，我们首先求 $A = LU$，然后分别求解 $Ly = b$（前向代换）和 $Ux = y$（后向代换）。</p>
+<p>LU 分解在求解线性方程组时特别有用。给定 <span class="arithmatex">\(Ax = b\)</span>，我们首先求 <span class="arithmatex">\(A = LU\)</span>，然后分别求解 <span class="arithmatex">\(Ly = b\)</span>（前向代换）和 <span class="arithmatex">\(Ux = y\)</span>（后向代换）。</p>
 <p><strong>LU 分解的存在条件</strong>：并非所有矩阵都有 LU 分解。一个充分条件是矩阵 A 的所有顺序主子式都不为零。但在实际应用中，我们可以通过行交换（部分主元 LU 分解）来处理一般情况。</p>
 <p><strong>部分主元 LU 分解（PA = LU）</strong>：对于可能病态的矩阵，我们通常先对行进行置换 P，再进行 LU 分解。这种分解在数值计算中更加稳定，是线性代数软件包中求解线性方程组的标准方法。</p>
 <h3 id="43-qr">4.3 QR 分解</h3>
-<p><strong>QR 分解</strong> 将矩阵 A 表示为正交矩阵 Q 和上三角矩阵 R 的乘积：$A = QR$。</p>
-<p>其中 Q 满足 $Q^\top Q = I$（正交矩阵），R 是上三角矩阵。</p>
+<p><strong>QR 分解</strong> 将矩阵 A 表示为正交矩阵 Q 和上三角矩阵 R 的乘积：<span class="arithmatex">\(A = QR\)</span>。</p>
+<p>其中 Q 满足 <span class="arithmatex">\(Q^\top Q = I\)</span>（正交矩阵），R 是上三角矩阵。</p>
 <p>QR 分解有多种计算方法，包括 Gram-Schmidt 正交化、Householder 变换和 Givens 旋转等。其中 Householder 变换是数值最稳定的方法。</p>
 <p><strong>QR 分解的应用</strong>：</p>
 <ol>
 <li>
-<p><strong>求解最小二乘问题</strong>：当方程组 $Ax = b$ 无解时，我们希望找到最小化 $|Ax - b|$ 的解 x。这可以通过 QR 分解高效求解。</p>
+<p><strong>求解最小二乘问题</strong>：当方程组 <span class="arithmatex">\(Ax = b\)</span> 无解时，我们希望找到最小化 <span class="arithmatex">\(\|Ax - b\|\)</span> 的解 x。这可以通过 QR 分解高效求解。</p>
 </li>
 <li>
 <p><strong>特征值计算</strong>：QR 算法是计算矩阵特征值的主流算法之一。</p>
@@ -1967,7 +1967,7 @@
 </ol>
 <h3 id="44-svd">4.4 奇异值分解（SVD）</h3>
 <p><strong>奇异值分解（Singular Value Decomposition，简称 SVD）</strong> 是最重要和最广泛应用的矩阵分解之一。对于任意 m×n 矩阵 A，SVD 分解为：</p>
-<p>$$A = U\Sigma V^\top$$</p>
+<div class="arithmatex">\[A = U\Sigma V^\top\]</div>
 <p>其中：</p>
 <ul>
 <li>U 是 m×m 正交矩阵（U 的列向量称为左奇异向量）</li>
@@ -1984,7 +1984,7 @@
 <p><strong>截断 SVD</strong>：在许多应用中，我们只保留前 k 个最大的奇异值及其对应的奇异向量，得到矩阵的最佳低秩近似。这在降维、去噪和推荐系统等领域有广泛应用。</p>
 <h3 id="45-svd">4.5 SVD 在人工智能中的应用</h3>
 <h4 id="451">4.5.1 降维与主成分分析</h4>
-<p>SVD 与主成分分析（PCA）有着深刻的联系。实际上，PCA 可以看作是对数据协方差矩阵进行 SVD 分解。设数据矩阵 X 的 SVD 为 $X = U\Sigma V^\top$，则协方差矩阵 $C = \frac{1}{n-1}XX^\top = U\frac{\Sigma^2}{n-1}U^\top$。因此，V 的列向量（右奇异向量）给出了数据方差最大的方向，而奇异值的平方给出了各方向上方差的大小。</p>
+<p>SVD 与主成分分析（PCA）有着深刻的联系。实际上，PCA 可以看作是对数据协方差矩阵进行 SVD 分解。设数据矩阵 X 的 SVD 为 <span class="arithmatex">\(X = U\Sigma V^\top\)</span>，则协方差矩阵 <span class="arithmatex">\(C = \frac{1}{n-1}XX^\top = U\frac{\Sigma^2}{n-1}U^\top\)</span>。因此，V 的列向量（右奇异向量）给出了数据方差最大的方向，而奇异值的平方给出了各方向上方差的大小。</p>
 <p>通过截断 SVD，我们可以找到数据的低维表示，同时最小化重构误差。这正是 PCA 的核心思想。</p>
 <h4 id="452">4.5.2 图像压缩</h4>
 <p>图像可以表示为像素值矩阵。对图像矩阵进行 SVD 分解，保留前 k 个最大的奇异值，我们可以得到原图像的最佳 k 秩近似。对于自然图像，前几个奇异值通常捕获了大部分的能量，因此使用很少的奇异值就可以获得较好的图像质量。例如，只需要保留 10-20 个奇异值，就可以较好地重构一张 512×512 的图像，实现显著的压缩比。</p>
@@ -1992,46 +1992,46 @@
 <p>在推荐系统中，用户-物品交互矩阵通常非常稀疏（大多数用户只与少数物品交互）。矩阵分解技术（如 SVD 及其变体）是协同过滤算法的核心。通过将用户-物品矩阵分解为用户特征矩阵和物品特征矩阵的乘积，我们可以预测用户对未交互物品的偏好。</p>
 <p>然而，原始 SVD 无法处理稀疏矩阵（因为未定义元素），因此发展出了各种变体，如 FunkSVD（通过梯度下降学习隐因子）、ALS（交替最小二乘法）等。</p>
 <h4 id="454">4.5.4 伪逆</h4>
-<p>矩阵的伪逆（Moore-Penrose Pseudoinverse）可以通过 SVD 方便地定义。设 A 的 SVD 为 $A = U\Sigma V^\top$，则 A 的伪逆为：</p>
-<p>$$A^+ = V\Sigma^+ U^\top$$</p>
+<p>矩阵的伪逆（Moore-Penrose Pseudoinverse）可以通过 SVD 方便地定义。设 A 的 SVD 为 <span class="arithmatex">\(A = U\Sigma V^\top\)</span>，则 A 的伪逆为：</p>
+<div class="arithmatex">\[A^+ = V\Sigma^+ U^\top\]</div>
 <p>其中 Σ^+ 是将 Σ 的非零奇异值取倒数并转置后得到的矩阵。</p>
-<p>伪逆在求解线性最小二乘问题中非常重要。当矩阵 A 列满秩时，最小二乘问题 $Ax = b$ 的解可以表示为 $x = A^+ b$。</p>
+<p>伪逆在求解线性最小二乘问题中非常重要。当矩阵 A 列满秩时，最小二乘问题 <span class="arithmatex">\(Ax = b\)</span> 的解可以表示为 <span class="arithmatex">\(x = A^+ b\)</span>。</p>
 <h3 id="46">4.6 其他矩阵分解</h3>
 <h4 id="461-cholesky">4.6.1 Cholesky 分解</h4>
-<p>Cholesky 分解是 LU 分解的特殊形式，适用于对称正定矩阵。任何对称正定矩阵 A 都可以分解为 $A = LL^\top$，其中 L 是下三角矩阵。Cholesky 分解在求解正定系统的线性方程组时比一般 LU 分解快一倍，并且不需要行置换。</p>
+<p>Cholesky 分解是 LU 分解的特殊形式，适用于对称正定矩阵。任何对称正定矩阵 A 都可以分解为 <span class="arithmatex">\(A = LL^\top\)</span>，其中 L 是下三角矩阵。Cholesky 分解在求解正定系统的线性方程组时比一般 LU 分解快一倍，并且不需要行置换。</p>
 <h4 id="462">4.6.2 特征分解</h4>
 <p>对于可以对角化的矩阵 A（有多少个线性无关的特征向量就能对角化），可以分解为：</p>
-<p>$$A = PDP^{-1}$$</p>
+<div class="arithmatex">\[A = PDP^{-1}\]</div>
 <p>其中 D 是对角矩阵，对角线上的元素是特征值；P 的列向量是对应的特征向量。</p>
 <p>特征分解在分析矩阵的幂、指数等问题时非常有用，在微分方程和动力系统分析中有重要应用。</p>
 <h4 id="463-nmf">4.6.3 非负矩阵分解（NMF）</h4>
-<p>非负矩阵分解（Non-negative Matrix Factorization）将非负矩阵分解为两个非负矩阵的乘积：$V \approx WH$。与 SVD 不同，NMF 强制分解后的矩阵元素都是非负的，这使得分解结果具有更好的可解释性。在图像处理、文本主题建模、音频分离等领域有广泛应用。</p>
+<p>非负矩阵分解（Non-negative Matrix Factorization）将非负矩阵分解为两个非负矩阵的乘积：<span class="arithmatex">\(V \approx WH\)</span>。与 SVD 不同，NMF 强制分解后的矩阵元素都是非负的，这使得分解结果具有更好的可解释性。在图像处理、文本主题建模、音频分离等领域有广泛应用。</p>
 <h2 id="5">5 范数</h2>
 <h3 id="51">5.1 范数的定义</h3>
 <p><strong>范数（Norm）</strong> 是向量和矩阵大小的一种度量。范数的概念来自数学分析中函数极限的思想，是绝对值概念在高维空间的推广。</p>
 <p>直观地理解，范数是对向量"长度"的测量。就像在二维空间中我们用欧几里得距离（勾股定理）来测量向量的长度一样，在高维空间中我们需要更一般的"长度"概念，范数就是这样的概念。</p>
-<p><strong>向量范数的定义</strong>：如果函数 $|\cdot|: \mathbb{R}^n \rightarrow \mathbb{R}$ 满足以下三个条件，则称其为向量范数：</p>
+<p><strong>向量范数的定义</strong>：如果函数 <span class="arithmatex">\(\|\cdot\|: \mathbb{R}^n \rightarrow \mathbb{R}\)</span> 满足以下三个条件，则称其为向量范数：</p>
 <ol>
-<li><strong>正定性（Positive Definiteness）</strong>：$|\vec{x}| \geq 0$，且 $|\vec{x}| = 0$ 当且仅当 $\vec{x} = \vec{0}$</li>
-<li><strong>齐次性（Homogeneity）</strong>：$|k\vec{x}| = |k| |\vec{x}|$（k 为标量）</li>
-<li><strong>三角不等式（Triangle Inequality）</strong>：$|\vec{x} + \vec{y}| \leq |\vec{x}| + |\vec{y}|$</li>
+<li><strong>正定性（Positive Definiteness）</strong>：<span class="arithmatex">\(\|\vec{x}\| \geq 0\)</span>，且 <span class="arithmatex">\(\|\vec{x}\| = 0\)</span> 当且仅当 <span class="arithmatex">\(\vec{x} = \vec{0}\)</span></li>
+<li><strong>齐次性（Homogeneity）</strong>：<span class="arithmatex">\(\|k\vec{x}\| = |k| \|\vec{x}\|\)</span>（k 为标量）</li>
+<li><strong>三角不等式（Triangle Inequality）</strong>：<span class="arithmatex">\(\|\vec{x} + \vec{y}\| \leq \|\vec{x}\| + \|\vec{y}\|\)</span></li>
 </ol>
-<p>类似地，<strong>矩阵范数</strong>除了满足上述条件外，还需要满足<strong>次乘性（Submultiplicativity）</strong>：$|AB| \leq |A| |B|$。</p>
+<p>类似地，<strong>矩阵范数</strong>除了满足上述条件外，还需要满足<strong>次乘性（Submultiplicativity）</strong>：<span class="arithmatex">\(\|AB\| \leq \|A\| \|B\|\)</span>。</p>
 <h3 id="52">5.2 常见向量范数</h3>
 <h4 id="521-l0">5.2.1 L0 范数</h4>
 <p>L0 范数定义为向量中非零元素的个数：</p>
-<p>$$|\vec{x}|<em>0 = \sum</em>{i=1}^{n} \mathbf{1}(x_i \neq 0)$$</p>
-<p>其中 $\mathbf{1}(\cdot)$ 是指示函数。</p>
+<div class="arithmatex">\[\|\vec{x}\|_0 = \sum_{i=1}^{n} \mathbf{1}(x_i \neq 0)\]</div>
+<p>其中 <span class="arithmatex">\(\mathbf{1}(\cdot)\)</span> 是指示函数。</p>
 <p>L0 范数度量了向量的"稀疏程度"——非零元素越少，向量越稀疏。在压缩感知、稀疏编码等应用中，我们经常希望找到 L0 范数最小的解。然而，L0 范数的优化问题是 NP 难的，因此通常用 L1 范数来近似。</p>
 <h4 id="522-l1">5.2.2 L1 范数</h4>
 <p>L1 范数（曼哈顿范数或曼哈顿距离）定义为向量元素绝对值之和：</p>
-<p>$$|\vec{x}|<em>1 = \sum</em>{i=1}^{n} |x_i|$$</p>
+<div class="arithmatex">\[\|\vec{x}\|_1 = \sum_{i=1}^{n} |x_i|\]</div>
 <p>L1 范数的几何意义是向量各分量绝对值之和，对应于在网格线上移动从原点到点的距离（就像在曼哈顿街区行走）。在机器学习中，L1 范数经常被用作正则化项来促进解的稀疏性。</p>
 <h4 id="523-l2">5.2.3 L2 范数</h4>
 <p>L2 范数（欧几里得范数）是我们最熟悉的范数，定义为：</p>
-<p>$$|\vec{x}|<em>2 = \sqrt{\sum</em>{i=1}^{n} x_i^2} = \sqrt{\vec{x}^\top \vec{x}}$$</p>
+<div class="arithmatex">\[\|\vec{x}\|_2 = \sqrt{\sum_{i=1}^{n} x_i^2} = \sqrt{\vec{x}^\top \vec{x}}\]</div>
 <p>L2 范数的几何意义就是我们通常所说的"距离"或"长度"。在机器学习中，L2 范数（也称为欧几里得距离）是最常用的范数之一，用于度量向量之间的差异。</p>
-<p><strong>单位球</strong>：在不同的范数下，单位球（满足 $|\vec{x}| \leq 1$ 的点集）有不同的形状：</p>
+<p><strong>单位球</strong>：在不同的范数下，单位球（满足 <span class="arithmatex">\(\|\vec{x}\| \leq 1\)</span> 的点集）有不同的形状：</p>
 <ul>
 <li>L1 范数的单位球是一个旋转正方形（钻石形）</li>
 <li>L2 范数的单位球就是我们熟悉的单位圆（球）</li>
@@ -2039,7 +2039,7 @@
 <p>这些不同的形状在优化和几何直观理解中很有用。</p>
 <h4 id="524-lp">5.2.4 Lp 范数</h4>
 <p>更一般地，对于 p ≥ 1，Lp 范数定义为：</p>
-<p>$$|\vec{x}|<em>p = \left(\sum</em>{i=1}^{n} |x_i|^p\right)^{1/p}$$</p>
+<div class="arithmatex">\[\|\vec{x}\|_p = \left(\sum_{i=1}^{n} |x_i|^p\right)^{1/p}\]</div>
 <ul>
 <li>当 p = 1 时，得到 L1 范数</li>
 <li>当 p = 2 时，得到 L2 范数</li>
@@ -2047,45 +2047,45 @@
 </ul>
 <h4 id="525-l">5.2.5 L∞ 范数</h4>
 <p>L∞ 范数（无穷范数或切比雪夫范数）定义为向量元素绝对值的最大值：</p>
-<p>$$|\vec{x}|<em>\infty = \max</em>{i} |x_i|$$</p>
+<div class="arithmatex">\[\|\vec{x}\|_\infty = \max_{i} |x_i|\]</div>
 <p>在某些应用中，我们关心的是向量中最大的元素，L∞ 范数提供了这种度量。</p>
 <h3 id="53">5.3 矩阵范数</h3>
 <h4 id="531-frobenius">5.3.1 Frobenius 范数</h4>
 <p>Frobenius 范数是矩阵最常用的范数之一，定义为：</p>
-<p>$$|A|<em>F = \sqrt{\sum</em>{i=1}^{m}\sum_{j=1}^{n} a_{ij}^2} = \sqrt{\text{tr}(A^\top A)}$$</p>
-<p>Frobenius 范数可以理解为将矩阵展成向量后的 L2 范数。它具有旋转不变性：$|A|_F = |UAV^\top|_F$ 对于任意正交矩阵 U、V 成立。</p>
+<div class="arithmatex">\[\|A\|_F = \sqrt{\sum_{i=1}^{m}\sum_{j=1}^{n} a_{ij}^2} = \sqrt{\text{tr}(A^\top A)}\]</div>
+<p>Frobenius 范数可以理解为将矩阵展成向量后的 L2 范数。它具有旋转不变性：<span class="arithmatex">\(\|A\|_F = \|UAV^\top\|_F\)</span> 对于任意正交矩阵 U、V 成立。</p>
 <p>在机器学习中，Frobenius 范数经常被用作正则化项来控制模型复杂度，例如在矩阵分解中防止过拟合。</p>
 <h4 id="532">5.3.2 谱范数</h4>
 <p>矩阵的谱范数（Spectral Norm）是矩阵的最大奇异值：</p>
-<p>$$|A|<em>2 = \sigma</em>{\max}(A) = \sqrt{\lambda_{\max}(A^\top A)}$$</p>
-<p>谱范数是算子范数，对应于矩阵作为线性算子将向量映射到向量时的最大放大倍数。对于任意向量 $\vec{x}$，有 $|A\vec{x}| \leq |A|_2 |\vec{x}|$。</p>
+<div class="arithmatex">\[\|A\|_2 = \sigma_{\max}(A) = \sqrt{\lambda_{\max}(A^\top A)}\]</div>
+<p>谱范数是算子范数，对应于矩阵作为线性算子将向量映射到向量时的最大放大倍数。对于任意向量 <span class="arithmatex">\(\vec{x}\)</span>，有 <span class="arithmatex">\(\|A\vec{x}\| \leq \|A\|_2 \|\vec{x}\|\)</span>。</p>
 <p>谱范数在分析迭代算法的收敛性、设计和分析神经网络的表达能力等方面有重要作用。</p>
 <h4 id="533">5.3.3 核范数</h4>
 <p>矩阵的核范数（Nuclear Norm）定义为奇异值的和：</p>
-<p>$$|A|<em>* = \sum</em>{i=1}^{r} \sigma_i$$</p>
-<p>其中 r 是矩阵的秩，$\sigma_i$ 是奇异值。</p>
+<div class="arithmatex">\[\|A\|_* = \sum_{i=1}^{r} \sigma_i\]</div>
+<p>其中 r 是矩阵的秩，<span class="arithmatex">\(\sigma_i\)</span> 是奇异值。</p>
 <p>核范数在低秩矩阵恢复问题中有重要应用，例如在推荐系统、图像恢复等任务中。核范数是秩函数的凸近似，因此可以用作凸优化问题的正则化项。</p>
 <h3 id="54">5.4 范数在机器学习中的应用</h3>
 <h4 id="541">5.4.1 损失函数中的范数</h4>
 <p>在机器学习中，范数经常被用作损失函数来度量预测值与真实值之间的差异：</p>
 <ul>
-<li><strong>L2 损失（均方误差）</strong>：$| \vec{y} - \hat{\vec{y}} |_2^2$，对离群点敏感</li>
-<li><strong>L1 损失（平均绝对误差）</strong>：$| \vec{y} - \hat{\vec{y}} |_1$，对离群点更鲁棒</li>
-<li><strong>L∞ 损失</strong>：$| \vec{y} - \hat{\vec{y}} |_\infty$，关注最大误差</li>
+<li><strong>L2 损失（均方误差）</strong>：<span class="arithmatex">\(\| \vec{y} - \hat{\vec{y}} \|_2^2\)</span>，对离群点敏感</li>
+<li><strong>L1 损失（平均绝对误差）</strong>：<span class="arithmatex">\(\| \vec{y} - \hat{\vec{y}} \|_1\)</span>，对离群点更鲁棒</li>
+<li><strong>L∞ 损失</strong>：<span class="arithmatex">\(\| \vec{y} - \hat{\vec{y}} \|_\infty\)</span>，关注最大误差</li>
 </ul>
 <p>不同的范数对误差的惩罚方式不同，L2 范数对大误差惩罚更重（平方增长），而 L1 范数对所有误差线性惩罚，L∞ 范数只关心最大的误差。</p>
 <h4 id="542">5.4.2 正则化中的范数</h4>
 <p>范数在正则化中有广泛应用：</p>
 <ul>
-<li><strong>L2 正则化（Ridge Regression）</strong>：在损失函数中加入 $|W|_F^2$，倾向于让权重均匀地小，防止过拟合</li>
-<li><strong>L1 正则化（Lasso）</strong>：在损失函数中加入 $|W|_1$，倾向于产生稀疏的权重矩阵</li>
+<li><strong>L2 正则化（Ridge Regression）</strong>：在损失函数中加入 <span class="arithmatex">\(\|W\|_F^2\)</span>，倾向于让权重均匀地小，防止过拟合</li>
+<li><strong>L1 正则化（Lasso）</strong>：在损失函数中加入 <span class="arithmatex">\(\|W\|_1\)</span>，倾向于产生稀疏的权重矩阵</li>
 <li><strong>核范数正则化</strong>：在矩阵分解问题中加入核范数约束，倾向于产生低秩解</li>
 </ul>
 <p>不同的正则化策略会导致不同的解的性质，这在模型压缩、特征选择等场景中非常重要。</p>
 <h4 id="543">5.4.3 梯度下降中的范数</h4>
 <p>在优化算法的分析中，范数用于度量梯度的"大小"和参数的"尺度"。梯度下降的收敛性分析通常涉及梯度的范数约束。在深度学习中，权重初始化、梯度裁剪等操作都与范数密切相关。</p>
 <p>例如，梯度裁剪（Gradient Clipping）是一种防止梯度爆炸的技术，它将梯度的范数限制在一个预设的阈值内：</p>
-<p>$$\vec{g} \leftarrow \vec{g} \cdot \min\left(1, \frac{c}{|\vec{g}|}\right)$$</p>
+<div class="arithmatex">\[\vec{g} \leftarrow \vec{g} \cdot \min\left(1, \frac{c}{\|\vec{g}\|}\right)\]</div>
 <p>其中 c 是阈值。</p>
 <h2 id="_4">本章小结</h2>
 <p>本章系统介绍了线性代数的基础知识，这些知识是理解人工智能算法的数学基础。我们首先学习了向量与矩阵的基本概念和运算，包括向量加法、标量乘法、内积、外积，以及矩阵的加法、乘法、转置等运算。这些运算构成了神经网络的计算基础。</p>
@@ -2097,29 +2097,29 @@
 <h2 id="_5">思考与练习</h2>
 <ol>
 <li>
-<p><strong>向量运算验证</strong>：设 $\vec{a} = (1, 2, 3)$，$\vec{b} = (4, 5, 6)$，计算 $\vec{a} + \vec{b}$、$3\vec{a}$、$\vec{a} \cdot \vec{b}$，并解释每种运算的几何意义。</p>
+<p><strong>向量运算验证</strong>：设 <span class="arithmatex">\(\vec{a} = (1, 2, 3)\)</span>，<span class="arithmatex">\(\vec{b} = (4, 5, 6)\)</span>，计算 <span class="arithmatex">\(\vec{a} + \vec{b}\)</span>、<span class="arithmatex">\(3\vec{a}\)</span>、<span class="arithmatex">\(\vec{a} \cdot \vec{b}\)</span>，并解释每种运算的几何意义。</p>
 </li>
 <li>
-<p><strong>矩阵乘法维度分析</strong>：如果 $A \in \mathbb{R}^{3 \times 4}$，$B \in \mathbb{R}^{4 \times 5}$，$C \in \mathbb{R}^{5 \times 2}$，那么 $ABC$ 的维度是什么？计算 $AB$ 和 $(AB)C$ 的复杂度分别是多少（用乘法次数衡量）？</p>
+<p><strong>矩阵乘法维度分析</strong>：如果 <span class="arithmatex">\(A \in \mathbb{R}^{3 \times 4}\)</span>，<span class="arithmatex">\(B \in \mathbb{R}^{4 \times 5}\)</span>，<span class="arithmatex">\(C \in \mathbb{R}^{5 \times 2}\)</span>，那么 <span class="arithmatex">\(ABC\)</span> 的维度是什么？计算 <span class="arithmatex">\(AB\)</span> 和 <span class="arithmatex">\((AB)C\)</span> 的复杂度分别是多少（用乘法次数衡量）？</p>
 </li>
 <li>
 <p><strong>逆矩阵存在性判断</strong>：判断以下矩阵是否可逆，如果可逆，求其逆矩阵：</p>
 </li>
-<li>$A = \begin{pmatrix} 1 &amp; 2 \ 3 &amp; 4 \end{pmatrix}$</li>
+<li><span class="arithmatex">\(A = \begin{pmatrix} 1 &amp; 2 \\ 3 &amp; 4 \end{pmatrix}\)</span></li>
 <li>
-<p>$B = \begin{pmatrix} 2 &amp; 4 \ 3 &amp; 6 \end{pmatrix}$</p>
+<p><span class="arithmatex">\(B = \begin{pmatrix} 2 &amp; 4 \\ 3 &amp; 6 \end{pmatrix}\)</span></p>
 </li>
 <li>
-<p><strong>特征值与特征向量计算</strong>：求矩阵 $A = \begin{pmatrix} 3 &amp; 1 \ 0 &amp; 2 \end{pmatrix}$ 的特征值和对应的特征向量，并验证 $A\vec{v} = \lambda\vec{v}$ 对每个特征对成立。</p>
+<p><strong>特征值与特征向量计算</strong>：求矩阵 <span class="arithmatex">\(A = \begin{pmatrix} 3 &amp; 1 \\ 0 &amp; 2 \end{pmatrix}\)</span> 的特征值和对应的特征向量，并验证 <span class="arithmatex">\(A\vec{v} = \lambda\vec{v}\)</span> 对每个特征对成立。</p>
 </li>
 <li>
 <p><strong>SVD 的应用思考</strong>：考虑一个 100×100 的图像矩阵，如果对其进行 SVD 分解并保留前 10 个奇异值，重构后的矩阵秩是多少？与原矩阵相比可能有什么差异？</p>
 </li>
 <li>
-<p><strong>范数的比较</strong>：对于向量 $\vec{x} = (1, -2, 3, -4)$，计算其 L1 范数、L2 范数和 L∞ 范数。如果使用 L1 范数作为正则化项，为什么会倾向于产生稀疏解（提示：考虑单位球的形状）？</p>
+<p><strong>范数的比较</strong>：对于向量 <span class="arithmatex">\(\vec{x} = (1, -2, 3, -4)\)</span>，计算其 L1 范数、L2 范数和 L∞ 范数。如果使用 L1 范数作为正则化项，为什么会倾向于产生稀疏解（提示：考虑单位球的形状）？</p>
 </li>
 <li>
-<p><strong>矩阵分解的应用</strong>：在推荐系统中，假设用户-物品评分矩阵 R 是 1000×500 的矩阵（共 1000 个用户，500 个物品）。如果使用 SVD 将其分解为 $R \approx U\Sigma V^\top$，其中 U 是 1000×k，Σ 是 k×k，V 是 500×k，解释这种分解如何用于预测用户对未评分物品的偏好。k 的选择对预测效果可能有什么影响？</p>
+<p><strong>矩阵分解的应用</strong>：在推荐系统中，假设用户-物品评分矩阵 R 是 1000×500 的矩阵（共 1000 个用户，500 个物品）。如果使用 SVD 将其分解为 <span class="arithmatex">\(R \approx U\Sigma V^\top\)</span>，其中 U 是 1000×k，Σ 是 k×k，V 是 500×k，解释这种分解如何用于预测用户对未评分物品的偏好。k 的选择对预测效果可能有什么影响？</p>
 </li>
 </ol>
 
@@ -2175,6 +2175,10 @@
     
     
       <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

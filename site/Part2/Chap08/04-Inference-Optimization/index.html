@@ -1373,7 +1373,7 @@
 </ol>
 <p><strong>张量并行（Tensor Parallelism）</strong></p>
 <p>张量并行将单个层的参数矩阵切分到多个GPU：</p>
-<p>对于矩阵乘法$Y = XA$，其中$A$是$m \times n$的权重矩阵，可以将$A$按列切分为$[A_1, A_2]$，分别放到GPU1和GPU2：</p>
+<p>对于矩阵乘法<span class="arithmatex">\(Y = XA\)</span>，其中<span class="arithmatex">\(A\)</span>是<span class="arithmatex">\(m \times n\)</span>的权重矩阵，可以将<span class="arithmatex">\(A\)</span>按列切分为<span class="arithmatex">\([A_1, A_2]\)</span>，分别放到GPU1和GPU2：</p>
 <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">TensorParallelLinear</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_features</span><span class="p">,</span> <span class="n">out_features</span><span class="p">,</span> <span class="n">num_gpus</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -1781,6 +1781,10 @@ GPU2:                             Layer6 → Layer7 → Output
     
     
       <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

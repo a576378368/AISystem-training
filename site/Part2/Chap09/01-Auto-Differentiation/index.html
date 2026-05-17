@@ -1912,10 +1912,10 @@
 <h3 id="11">1.1 什么是微分</h3>
 <p>在深度学习中，<strong>微分（Differentiation）</strong> 是一个核心概念。当我们训练神经网络时，我们需要知道当输入发生微小变化时，输出会如何变化。这种"变化率"就是导数，而计算导数的过程就是微分。</p>
 <p>举个具体的例子。假设我们有一个简单的函数：</p>
-<p>$$y = f(x) = x^2$$</p>
-<p>当 $x$ 从 2 变到 3 时，$y$ 从 4 变到 9。我们可以说，在 $x=2$ 这个点，函数 $f(x)$ 的导数是：</p>
-<p>$$\frac{dy}{dx} = 2x = 4$$</p>
-<p>这个导数表示：在 $x=2$ 这个点，当 $x$ 增加一个极小的量 $\Delta x$ 时，$y$ 会增加大约 $4 \times \Delta x$。</p>
+<div class="arithmatex">\[y = f(x) = x^2\]</div>
+<p>当 <span class="arithmatex">\(x\)</span> 从 2 变到 3 时，<span class="arithmatex">\(y\)</span> 从 4 变到 9。我们可以说，在 <span class="arithmatex">\(x=2\)</span> 这个点，函数 <span class="arithmatex">\(f(x)\)</span> 的导数是：</p>
+<div class="arithmatex">\[\frac{dy}{dx} = 2x = 4\]</div>
+<p>这个导数表示：在 <span class="arithmatex">\(x=2\)</span> 这个点，当 <span class="arithmatex">\(x\)</span> 增加一个极小的量 <span class="arithmatex">\(\Delta x\)</span> 时，<span class="arithmatex">\(y\)</span> 会增加大约 <span class="arithmatex">\(4 \times \Delta x\)</span>。</p>
 <p>在神经网络中，我们处理的是成千上万甚至上亿参数的复杂函数。神经网络的"学习"本质上就是找到一组参数，使得损失函数（衡量预测值与真实值差距的函数）的导数为零，或者更准确地说，沿着梯度的反方向更新参数，逐步降低损失函数的值。这个过程叫做<strong>梯度下降</strong>。</p>
 <h3 id="12">1.2 计算机求导方法概述</h3>
 <p>要让计算机程序自动计算导数，有四种主要方法：</p>
@@ -1937,7 +1937,7 @@
 </tr>
 <tr>
 <td>数值微分</td>
-<td>使用导数定义 $f'(x) \approx \frac{f(x+h)-f(x)}{h}$</td>
+<td>使用导数定义 <span class="arithmatex">\(f'(x) \approx \frac{f(x+h)-f(x)}{h}\)</span></td>
 <td>简单直观</td>
 <td>精度低，计算量大</td>
 </tr>
@@ -1958,8 +1958,8 @@
 <p>下面我们逐一介绍这四种方法。</p>
 <h3 id="13">1.3 手动微分</h3>
 <p><strong>手动微分（Manual Differentiation）</strong> 是最直接的方法：人工对目标函数求导，然后编写对应的代码。</p>
-<p>例如，对于函数 $f(x) = x^2 + \sin(x)$，我们知道：</p>
-<p>$$\frac{df}{dx} = 2x + \cos(x)$$</p>
+<p>例如，对于函数 <span class="arithmatex">\(f(x) = x^2 + \sin(x)\)</span>，我们知道：</p>
+<div class="arithmatex">\[\frac{df}{dx} = 2x + \cos(x)\]</div>
 <p>手动微分的代码：</p>
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -1974,17 +1974,17 @@
 <h3 id="14">1.4 数值微分</h3>
 <p><strong>数值微分（Numerical Differentiation）</strong> 利用导数的数学定义，通过有限差分近似计算导数值。</p>
 <p>导数的定义：</p>
-<p>$$f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$</p>
-<p>当 $h$ 很小时，可以用差商近似导数：</p>
+<div class="arithmatex">\[f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}\]</div>
+<p>当 <span class="arithmatex">\(h\)</span> 很小时，可以用差商近似导数：</p>
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">numerical_diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;数值微分：近似计算函数f在点x处的导数&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">h</span><span class="p">)</span> <span class="o">-</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">/</span> <span class="n">h</span>
 </code></pre></div>
 <p>数值微分有三种常见形式：</p>
 <ol>
-<li><strong>向前差分</strong>：$\frac{f(x+h) - f(x)}{h}$，误差 $O(h)$</li>
-<li><strong>向后差分</strong>：$\frac{f(x) - f(x-h)}{h}$，误差 $O(h)$</li>
-<li><strong>中心差分</strong>：$\frac{f(x+h) - f(x-h)}{2h}$，误差 $O(h^2)$</li>
+<li><strong>向前差分</strong>：<span class="arithmatex">\(\frac{f(x+h) - f(x)}{h}\)</span>，误差 <span class="arithmatex">\(O(h)\)</span></li>
+<li><strong>向后差分</strong>：<span class="arithmatex">\(\frac{f(x) - f(x-h)}{h}\)</span>，误差 <span class="arithmatex">\(O(h)\)</span></li>
+<li><strong>中心差分</strong>：<span class="arithmatex">\(\frac{f(x+h) - f(x-h)}{2h}\)</span>，误差 <span class="arithmatex">\(O(h^2)\)</span></li>
 </ol>
 <p>中心差分精度更高，因为它的误差是二阶的。</p>
 <p>数值微分的<strong>优点</strong>：
@@ -1993,15 +1993,15 @@
 - 不需要理解函数的内部结构</p>
 <p><strong>缺点</strong>：
 - 计算量大：每个参数都需要多次函数求值
-- 精度问题：$h$ 太小会有舍入误差，$h$ 太大会有截断误差
+- 精度问题：<span class="arithmatex">\(h\)</span> 太小会有舍入误差，<span class="arithmatex">\(h\)</span> 太大会有截断误差
 - 无法得到导数的解析表达式</p>
 <h3 id="15">1.5 符号微分</h3>
 <p><strong>符号微分（Symbolic Differentiation）</strong> 是对完整的数学表达式进行求导，得到导函数的解析表达式。</p>
 <p>符号微分的原理是利用求导规则对表达式进行递归变换。例如：</p>
 <ul>
-<li>$\frac{d}{dx}[f(x) + g(x)] = \frac{df}{dx} + \frac{dg}{dx}$</li>
-<li>$\frac{d}{dx}[f(x) \cdot g(x)] = \frac{df}{dx} \cdot g(x) + f(x) \cdot \frac{dg}{dx}$</li>
-<li>$\frac{d}{dx}[f(g(x))] = \frac{df}{dg} \cdot \frac{dg}{dx}$ （链式法则）</li>
+<li><span class="arithmatex">\(\frac{d}{dx}[f(x) + g(x)] = \frac{df}{dx} + \frac{dg}{dx}\)</span></li>
+<li><span class="arithmatex">\(\frac{d}{dx}[f(x) \cdot g(x)] = \frac{df}{dx} \cdot g(x) + f(x) \cdot \frac{dg}{dx}\)</span></li>
+<li><span class="arithmatex">\(\frac{d}{dx}[f(g(x))] = \frac{df}{dg} \cdot \frac{dg}{dx}\)</span> （链式法则）</li>
 </ul>
 <p>使用 Python 的 sympy 库进行符号微分：</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">sympy</span> <span class="k">as</span> <span class="nn">sp</span>
@@ -2017,7 +2017,7 @@
 - 得到精确的导数表达式
 - 数值精度高</p>
 <p><strong>主要缺点</strong>是<strong>表达式膨胀（Expression Swell）</strong>问题。考虑 Logistic 函数：</p>
-<p>$$l_n = \frac{1}{1 + e^{-l_{n-1}}}$$</p>
+<div class="arithmatex">\[l_n = \frac{1}{1 + e^{-l_{n-1}}}\]</div>
 <p>对其求导会得到极其复杂的表达式，随着层数增加，表达式会指数级膨胀。这使得符号微分在实际应用中受到很大限制。</p>
 <h3 id="16">1.6 自动微分：核心思想</h3>
 <p><strong>自动微分（Automatic Differentiation，AD）</strong> 是一种介于数值微分和符号微分之间的方法。它既不像数值微分那样近似，也不像符号微分那样产生复杂的中间表达式。</p>
@@ -2025,7 +2025,7 @@
 <h4 id="161">1.6.1 关键洞察</h4>
 <p>自动微分的精髓在于：微分计算本质上是一系列有限可微算子的组合。</p>
 <p>以函数为例：</p>
-<p>$$y = f(x_1, x_2) = \ln(x_1) + x_1 \cdot x_2 - \sin(x_2)$$</p>
+<div class="arithmatex">\[y = f(x_1, x_2) = \ln(x_1) + x_1 \cdot x_2 - \sin(x_2)\]</div>
 <p>我们可以将其分解为基本操作：</p>
 <table>
 <thead>
@@ -2039,27 +2039,27 @@
 <tr>
 <td>1</td>
 <td>取对数</td>
-<td>$v_1 = \ln(x_1)$</td>
+<td><span class="arithmatex">\(v_1 = \ln(x_1)\)</span></td>
 </tr>
 <tr>
 <td>2</td>
 <td>乘法</td>
-<td>$v_2 = x_1 \cdot x_2$</td>
+<td><span class="arithmatex">\(v_2 = x_1 \cdot x_2\)</span></td>
 </tr>
 <tr>
 <td>3</td>
 <td>加法</td>
-<td>$v_3 = v_1 + v_2$</td>
+<td><span class="arithmatex">\(v_3 = v_1 + v_2\)</span></td>
 </tr>
 <tr>
 <td>4</td>
 <td>正弦</td>
-<td>$v_4 = \sin(x_2)$</td>
+<td><span class="arithmatex">\(v_4 = \sin(x_2)\)</span></td>
 </tr>
 <tr>
 <td>5</td>
 <td>减法</td>
-<td>$y = v_3 - v_4$</td>
+<td><span class="arithmatex">\(y = v_3 - v_4\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -2070,26 +2070,26 @@
 <h4 id="162">1.6.2 链式法则</h4>
 <p><strong>链式法则（Chain Rule）</strong> 是自动微分的数学基础。</p>
 <p>对于复合函数：
-$$y = f(g(x))$$</p>
+$<span class="arithmatex">\(y = f(g(x))\)</span>$</p>
 <p>其导数为：
-$$\frac{dy}{dx} = \frac{dy}{dg} \cdot \frac{dg}{dx}$$</p>
+$<span class="arithmatex">\(\frac{dy}{dx} = \frac{dy}{dg} \cdot \frac{dg}{dx}\)</span>$</p>
 <p>更一般地，对于多变量复合函数：
-$$\frac{\partial y}{\partial x} = \sum_{k=1}^{n} \frac{\partial y}{\partial v_k} \cdot \frac{\partial v_k}{\partial x}$$</p>
-<p>例如，对于 $y = \sin(x^2)$：</p>
-<p>令 $u = x^2$，则 $y = \sin(u)$</p>
-<p>$$\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx} = \cos(u) \cdot 2x = 2x\cos(x^2)$$</p>
+$<span class="arithmatex">\(\frac{\partial y}{\partial x} = \sum_{k=1}^{n} \frac{\partial y}{\partial v_k} \cdot \frac{\partial v_k}{\partial x}\)</span>$</p>
+<p>例如，对于 <span class="arithmatex">\(y = \sin(x^2)\)</span>：</p>
+<p>令 <span class="arithmatex">\(u = x^2\)</span>，则 <span class="arithmatex">\(y = \sin(u)\)</span></p>
+<div class="arithmatex">\[\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx} = \cos(u) \cdot 2x = 2x\cos(x^2)\]</div>
 <h3 id="17">1.7 计算图与自动微分</h3>
 <p><strong>计算图（Computational Graph）</strong> 是表达自动微分的理想数据结构。在计算图中：</p>
 <ul>
 <li><strong>节点（Node）</strong> 表示变量（标量、向量、矩阵或张量）</li>
 <li><strong>边（Edge）</strong> 表示操作或函数</li>
 </ul>
-<p>以函数 $f(x_1, x_2) = \ln(x_1) + x_1 \cdot x_2 - \sin(x_2)$ 为例，其计算图如下：</p>
+<p>以函数 <span class="arithmatex">\(f(x_1, x_2) = \ln(x_1) + x_1 \cdot x_2 - \sin(x_2)\)</span> 为例，其计算图如下：</p>
 <p><img alt="计算图示例" src="../../images/05Framework/02AutoDiff/images/03GradMode02.png" /></p>
 <p>从图中可以看出数据流动的过程：
-- $x_1$ 和 $x_2$ 是输入节点
-- $\ln(x_1)$、$x_1 \cdot x_2$、$\sin(x_2)$ 是中间节点
-- 最终输出 $y$ 是根节点</p>
+- <span class="arithmatex">\(x_1\)</span> 和 <span class="arithmatex">\(x_2\)</span> 是输入节点
+- <span class="arithmatex">\(\ln(x_1)\)</span>、<span class="arithmatex">\(x_1 \cdot x_2\)</span>、<span class="arithmatex">\(\sin(x_2)\)</span> 是中间节点
+- 最终输出 <span class="arithmatex">\(y\)</span> 是根节点</p>
 <p>计算图清晰地表达了：
 1. <strong>数据依赖关系</strong>：哪些操作需要等待哪些结果
 2. <strong>执行顺序</strong>：按照拓扑排序从前向后计算</p>
@@ -2098,75 +2098,75 @@ $$\frac{\partial y}{\partial x} = \sum_{k=1}^{n} \frac{\partial y}{\partial v_k}
 <p>自动微分根据链式法则的应用顺序，分为两种主要模式：<strong>前向模式（Forward Mode）</strong> 和 <strong>反向模式（Reverse Mode）</strong>。</p>
 <h3 id="21">2.1 雅克比矩阵基础</h3>
 <p>在深入理解两种模式之前，我们需要了解<strong>雅克比矩阵（Jacobian Matrix）</strong>。</p>
-<p>对于一个从 $n$ 维输入到 $m$ 维输出的函数：
-$$\mathbf{y} = f(\mathbf{x})$$</p>
-<p>其中 $\mathbf{x} \in \mathbb{R}^n$，$\mathbf{y} \in \mathbb{R}^m$。</p>
-<p>雅克比矩阵 $\mathbf{J}$ 是一个 $m \times n$ 的矩阵，定义了所有一阶偏导数：</p>
-<p>$$\mathbf{J} = \frac{\partial \mathbf{y}}{\partial \mathbf{x}} = \begin{bmatrix} \frac{\partial y_1}{\partial x_1} &amp; \cdots &amp; \frac{\partial y_1}{\partial x_n} \ \vdots &amp; \ddots &amp; \vdots \ \frac{\partial y_m}{\partial x_1} &amp; \cdots &amp; \frac{\partial y_m}{\partial x_n} \end{bmatrix}$$</p>
+<p>对于一个从 <span class="arithmatex">\(n\)</span> 维输入到 <span class="arithmatex">\(m\)</span> 维输出的函数：
+$<span class="arithmatex">\(\mathbf{y} = f(\mathbf{x})\)</span>$</p>
+<p>其中 <span class="arithmatex">\(\mathbf{x} \in \mathbb{R}^n\)</span>，<span class="arithmatex">\(\mathbf{y} \in \mathbb{R}^m\)</span>。</p>
+<p>雅克比矩阵 <span class="arithmatex">\(\mathbf{J}\)</span> 是一个 <span class="arithmatex">\(m \times n\)</span> 的矩阵，定义了所有一阶偏导数：</p>
+<div class="arithmatex">\[\mathbf{J} = \frac{\partial \mathbf{y}}{\partial \mathbf{x}} = \begin{bmatrix} \frac{\partial y_1}{\partial x_1} &amp; \cdots &amp; \frac{\partial y_1}{\partial x_n} \\ \vdots &amp; \ddots &amp; \vdots \\ \frac{\partial y_m}{\partial x_1} &amp; \cdots &amp; \frac{\partial y_m}{\partial x_n} \end{bmatrix}\]</div>
 <p>在深度学习中，我们通常处理的是单输出函数（标量损失函数），所以雅克比矩阵会简化为梯度向量。</p>
 <h3 id="22">2.2 前向模式详解</h3>
 <p><strong>前向模式（Forward Mode）</strong> 从输入向输出方向计算导数，也称为<strong>切线模式（Tangent Mode）</strong>。</p>
 <h4 id="221">2.2.1 工作原理</h4>
 <p>在前向模式中，我们沿着计算图从输入向输出方向前进，计算每个节点对目标输入的偏导数。</p>
-<p>对于函数 $y = f(x_1, x_2)$，如果要求 $\frac{\partial y}{\partial x_1}$：</p>
+<p>对于函数 <span class="arithmatex">\(y = f(x_1, x_2)\)</span>，如果要求 <span class="arithmatex">\(\frac{\partial y}{\partial x_1}\)</span>：</p>
 <ol>
-<li>初始化：$\dot{x}_1 = 1$，$\dot{x}_2 = 0$（表示只对 $x_1$ 求导）</li>
+<li>初始化：<span class="arithmatex">\(\dot{x}_1 = 1\)</span>，<span class="arithmatex">\(\dot{x}_2 = 0\)</span>（表示只对 <span class="arithmatex">\(x_1\)</span> 求导）</li>
 <li>沿计算图前向传播，同时计算数值和导数</li>
 </ol>
-<p>以具体数值为例，假设 $x_1 = 2$，$x_2 = 5$，求 $f(x_1, x_2) = \ln(x_1) + x_1 \cdot x_2 - \sin(x_2)$ 的偏导数。</p>
+<p>以具体数值为例，假设 <span class="arithmatex">\(x_1 = 2\)</span>，<span class="arithmatex">\(x_2 = 5\)</span>，求 <span class="arithmatex">\(f(x_1, x_2) = \ln(x_1) + x_1 \cdot x_2 - \sin(x_2)\)</span> 的偏导数。</p>
 <p><strong>前向计算过程：</strong></p>
 <table>
 <thead>
 <tr>
 <th>节点</th>
 <th>数值计算</th>
-<th>导数计算 $\dot{v} = \frac{\partial v}{\partial x_1}$</th>
+<th>导数计算 <span class="arithmatex">\(\dot{v} = \frac{\partial v}{\partial x_1}\)</span></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>$v_{-1} = x_1$</td>
+<td><span class="arithmatex">\(v_{-1} = x_1\)</span></td>
 <td>2</td>
-<td>$\dot{v}_{-1} = 1$</td>
+<td><span class="arithmatex">\(\dot{v}_{-1} = 1\)</span></td>
 </tr>
 <tr>
-<td>$v_0 = x_2$</td>
+<td><span class="arithmatex">\(v_0 = x_2\)</span></td>
 <td>5</td>
-<td>$\dot{v}_0 = 0$</td>
+<td><span class="arithmatex">\(\dot{v}_0 = 0\)</span></td>
 </tr>
 <tr>
-<td>$v_1 = \ln(v_{-1})$</td>
-<td>$\ln(2) = 0.693$</td>
-<td>$\dot{v}<em>1 = \frac{1}{v</em>{-1}} \cdot \dot{v}_{-1} = 0.5$</td>
+<td><span class="arithmatex">\(v_1 = \ln(v_{-1})\)</span></td>
+<td><span class="arithmatex">\(\ln(2) = 0.693\)</span></td>
+<td><span class="arithmatex">\(\dot{v}_1 = \frac{1}{v_{-1}} \cdot \dot{v}_{-1} = 0.5\)</span></td>
 </tr>
 <tr>
-<td>$v_2 = v_{-1} \cdot v_0$</td>
-<td>$2 \times 5 = 10$</td>
-<td>$\dot{v}<em>2 = v_0 \cdot \dot{v}</em>{-1} + v_{-1} \cdot \dot{v}_0 = 5 + 0 = 5$</td>
+<td><span class="arithmatex">\(v_2 = v_{-1} \cdot v_0\)</span></td>
+<td><span class="arithmatex">\(2 \times 5 = 10\)</span></td>
+<td><span class="arithmatex">\(\dot{v}_2 = v_0 \cdot \dot{v}_{-1} + v_{-1} \cdot \dot{v}_0 = 5 + 0 = 5\)</span></td>
 </tr>
 <tr>
-<td>$v_3 = \sin(v_0)$</td>
-<td>$\sin(5) = -0.959$</td>
-<td>$\dot{v}_3 = \cos(v_0) \cdot \dot{v}_0 = 0.284 \times 0 = 0$</td>
+<td><span class="arithmatex">\(v_3 = \sin(v_0)\)</span></td>
+<td><span class="arithmatex">\(\sin(5) = -0.959\)</span></td>
+<td><span class="arithmatex">\(\dot{v}_3 = \cos(v_0) \cdot \dot{v}_0 = 0.284 \times 0 = 0\)</span></td>
 </tr>
 <tr>
-<td>$v_4 = v_1 + v_2$</td>
-<td>$0.693 + 10 = 10.693$</td>
-<td>$\dot{v}_4 = \dot{v}_1 + \dot{v}_2 = 0.5 + 5 = 5.5$</td>
+<td><span class="arithmatex">\(v_4 = v_1 + v_2\)</span></td>
+<td><span class="arithmatex">\(0.693 + 10 = 10.693\)</span></td>
+<td><span class="arithmatex">\(\dot{v}_4 = \dot{v}_1 + \dot{v}_2 = 0.5 + 5 = 5.5\)</span></td>
 </tr>
 <tr>
-<td>$v_5 = v_4 - v_3$</td>
-<td>$10.693 - (-0.959) = 11.652$</td>
-<td>$\dot{v}_5 = \dot{v}_4 - \dot{v}_3 = 5.5 - 0 = 5.5$</td>
+<td><span class="arithmatex">\(v_5 = v_4 - v_3\)</span></td>
+<td><span class="arithmatex">\(10.693 - (-0.959) = 11.652\)</span></td>
+<td><span class="arithmatex">\(\dot{v}_5 = \dot{v}_4 - \dot{v}_3 = 5.5 - 0 = 5.5\)</span></td>
 </tr>
 </tbody>
 </table>
-<p>最终得到 $\frac{\partial y}{\partial x_1} = 5.5$。</p>
+<p>最终得到 <span class="arithmatex">\(\frac{\partial y}{\partial x_1} = 5.5\)</span>。</p>
 <h4 id="222-">2.2.2 雅克比-向量积</h4>
 <p>前向模式可以高效地计算<strong>雅克比-向量积（Jacobian-Vector Product）</strong>：</p>
-<p>$$\mathbf{J} \cdot \mathbf{r}$$</p>
-<p>其中 $\mathbf{r}$ 是一个输入方向的向量。如果设置 $\mathbf{r} = [1, 0, ..., 0]$，就得到雅克比矩阵的第一列。</p>
-<p>一次前向计算得到雅克比矩阵的一列。如果有 $n$ 个输入，就需要 $n$ 次前向计算。</p>
+<div class="arithmatex">\[\mathbf{J} \cdot \mathbf{r}\]</div>
+<p>其中 <span class="arithmatex">\(\mathbf{r}\)</span> 是一个输入方向的向量。如果设置 <span class="arithmatex">\(\mathbf{r} = [1, 0, ..., 0]\)</span>，就得到雅克比矩阵的第一列。</p>
+<p>一次前向计算得到雅克比矩阵的一列。如果有 <span class="arithmatex">\(n\)</span> 个输入，就需要 <span class="arithmatex">\(n\)</span> 次前向计算。</p>
 <h4 id="223">2.2.3 优缺点分析</h4>
 <p><strong>前向模式的优点：</strong>
 - 实现相对简单
@@ -2174,7 +2174,7 @@ $$\mathbf{y} = f(\mathbf{x})$$</p>
 - 对于<strong>单输入、多输出</strong>的情况效率高</p>
 <p><strong>前向模式的缺点：</strong>
 - 对于<strong>多输入、单输出</strong>（深度学习中的典型情况）效率低
-- 需要 $n$ 次前向传播才能得到对所有 $n$ 个输入的导数</p>
+- 需要 <span class="arithmatex">\(n\)</span> 次前向传播才能得到对所有 <span class="arithmatex">\(n\)</span> 个输入的导数</p>
 <h3 id="23">2.3 反向模式详解</h3>
 <p><strong>反向模式（Reverse Mode）</strong> 从输出向输入方向计算导数，也称为<strong>伴随模式（Adjoint Mode）</strong>。这是深度学习中使用的核心方法。</p>
 <h4 id="231">2.3.1 工作原理</h4>
@@ -2184,66 +2184,66 @@ $$\mathbf{y} = f(\mathbf{x})$$</p>
 <li>然后从输出开始，沿着计算图<strong>反向传播</strong>，计算每个节点对损失的导数</li>
 </ol>
 <p>定义<strong>伴随变量（Adjoint Variable）</strong>：
-$$\bar{v}_i = \frac{\partial y}{\partial v_i}$$</p>
-<p>其中 $y$ 是最终的输出（标量）。</p>
+$<span class="arithmatex">\(\bar{v}_i = \frac{\partial y}{\partial v_i}\)</span>$</p>
+<p>其中 <span class="arithmatex">\(y\)</span> 是最终的输出（标量）。</p>
 <p>反向传播的关键公式：
-$$\bar{v}<em>i = \sum</em>{j \in \text{Succ}(i)} \bar{v}_j \cdot \frac{\partial v_j}{\partial v_i}$$</p>
+$<span class="arithmatex">\(\bar{v}_i = \sum_{j \in \text{Succ}(i)} \bar{v}_j \cdot \frac{\partial v_j}{\partial v_i}\)</span>$</p>
 <p>即一个节点的导数等于所有后续节点传递来的导数乘以相应偏导数的和。</p>
 <h4 id="232">2.3.2 具体计算示例</h4>
-<p>仍以函数 $f(x_1, x_2) = \ln(x_1) + x_1 \cdot x_2 - \sin(x_2)$ 为例。</p>
+<p>仍以函数 <span class="arithmatex">\(f(x_1, x_2) = \ln(x_1) + x_1 \cdot x_2 - \sin(x_2)\)</span> 为例。</p>
 <p><strong>第一步：前向传播（与之前相同）</strong></p>
 <p>计算并保存所有节点的值。</p>
 <p><strong>第二步：反向传播</strong></p>
-<p>初始化：$\bar{v}_5 = \frac{\partial y}{\partial y} = 1$</p>
+<p>初始化：<span class="arithmatex">\(\bar{v}_5 = \frac{\partial y}{\partial y} = 1\)</span></p>
 <table>
 <thead>
 <tr>
 <th>节点</th>
 <th>偏导数计算</th>
-<th>伴随值 $\bar{v}_i$</th>
+<th>伴随值 <span class="arithmatex">\(\bar{v}_i\)</span></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>$\bar{v}_5 = \bar{y}$</td>
-<td>$1$</td>
-<td>$1$</td>
+<td><span class="arithmatex">\(\bar{v}_5 = \bar{y}\)</span></td>
+<td><span class="arithmatex">\(1\)</span></td>
+<td><span class="arithmatex">\(1\)</span></td>
 </tr>
 <tr>
-<td>$\bar{v}_4$</td>
-<td>$\bar{v}_5 \cdot \frac{\partial v_5}{\partial v_4} = 1 \cdot 1$</td>
-<td>$1$</td>
+<td><span class="arithmatex">\(\bar{v}_4\)</span></td>
+<td><span class="arithmatex">\(\bar{v}_5 \cdot \frac{\partial v_5}{\partial v_4} = 1 \cdot 1\)</span></td>
+<td><span class="arithmatex">\(1\)</span></td>
 </tr>
 <tr>
-<td>$\bar{v}_3$</td>
-<td>$\bar{v}_5 \cdot \frac{\partial v_5}{\partial v_3} = 1 \cdot (-1)$</td>
-<td>$-1$</td>
+<td><span class="arithmatex">\(\bar{v}_3\)</span></td>
+<td><span class="arithmatex">\(\bar{v}_5 \cdot \frac{\partial v_5}{\partial v_3} = 1 \cdot (-1)\)</span></td>
+<td><span class="arithmatex">\(-1\)</span></td>
 </tr>
 <tr>
-<td>$\bar{v}_1$</td>
-<td>$\bar{v}_4 \cdot \frac{\partial v_4}{\partial v_1} = 1 \cdot 1$</td>
-<td>$1$</td>
+<td><span class="arithmatex">\(\bar{v}_1\)</span></td>
+<td><span class="arithmatex">\(\bar{v}_4 \cdot \frac{\partial v_4}{\partial v_1} = 1 \cdot 1\)</span></td>
+<td><span class="arithmatex">\(1\)</span></td>
 </tr>
 <tr>
-<td>$\bar{v}_2$</td>
-<td>$\bar{v}_4 \cdot \frac{\partial v_4}{\partial v_2} = 1 \cdot 1$</td>
-<td>$1$</td>
+<td><span class="arithmatex">\(\bar{v}_2\)</span></td>
+<td><span class="arithmatex">\(\bar{v}_4 \cdot \frac{\partial v_4}{\partial v_2} = 1 \cdot 1\)</span></td>
+<td><span class="arithmatex">\(1\)</span></td>
 </tr>
 </tbody>
 </table>
-<p>对于叶子节点 $v_{-1}$ 和 $v_0$，需要累加来自所有后续节点的贡献：</p>
-<p>$\bar{v}_0$ 的计算（有两个后续节点 $v_2$ 和 $v_3$）：
-$$\bar{v}_0 = \bar{v}_2 \cdot \frac{\partial v_2}{\partial v_0} + \bar{v}_3 \cdot \frac{\partial v_3}{\partial v_0}$$
-$$= 1 \cdot x_1 + (-1) \cdot \cos(x_2) = 2 + 0.284 = 2.284$$</p>
-<p>$\bar{v}<em>{-1}$ 的计算（有两个后续节点 $v_1$ 和 $v_2$）：
-$$\bar{v}</em>{-1} = \bar{v}<em>1 \cdot \frac{\partial v_1}{\partial v</em>{-1}} + \bar{v}<em>2 \cdot \frac{\partial v_2}{\partial v</em>{-1}}$$
-$$= 1 \cdot \frac{1}{x_1} + 1 \cdot x_2 = 0.5 + 5 = 5.5$$</p>
+<p>对于叶子节点 <span class="arithmatex">\(v_{-1}\)</span> 和 <span class="arithmatex">\(v_0\)</span>，需要累加来自所有后续节点的贡献：</p>
+<p><span class="arithmatex">\(\bar{v}_0\)</span> 的计算（有两个后续节点 <span class="arithmatex">\(v_2\)</span> 和 <span class="arithmatex">\(v_3\)</span>）：
+$<span class="arithmatex">\(\bar{v}_0 = \bar{v}_2 \cdot \frac{\partial v_2}{\partial v_0} + \bar{v}_3 \cdot \frac{\partial v_3}{\partial v_0}\)</span>$
+$<span class="arithmatex">\(= 1 \cdot x_1 + (-1) \cdot \cos(x_2) = 2 + 0.284 = 2.284\)</span>$</p>
+<p><span class="arithmatex">\(\bar{v}_{-1}\)</span> 的计算（有两个后续节点 <span class="arithmatex">\(v_1\)</span> 和 <span class="arithmatex">\(v_2\)</span>）：
+$<span class="arithmatex">\(\bar{v}_{-1} = \bar{v}_1 \cdot \frac{\partial v_1}{\partial v_{-1}} + \bar{v}_2 \cdot \frac{\partial v_2}{\partial v_{-1}}\)</span>$
+$<span class="arithmatex">\(= 1 \cdot \frac{1}{x_1} + 1 \cdot x_2 = 0.5 + 5 = 5.5\)</span>$</p>
 <p>因此：
-$$\frac{\partial f}{\partial x_1} = 5.5, \quad \frac{\partial f}{\partial x_2} = 2.284$$</p>
+$<span class="arithmatex">\(\frac{\partial f}{\partial x_1} = 5.5, \quad \frac{\partial f}{\partial x_2} = 2.284\)</span>$</p>
 <h4 id="233-">2.3.3 向量-雅克比积</h4>
 <p>反向模式计算的是<strong>向量-雅克比积（Vector-Jacobian Product，VJP）</strong>：</p>
-<p>$$\mathbf{v}^T \cdot \mathbf{J}$$</p>
-<p>其中 $\mathbf{v}$ 是从后续节点传来的梯度向量。这正是反向传播算法中计算 $\frac{\partial L}{\partial x}$ 的方式。</p>
+<div class="arithmatex">\[\mathbf{v}^T \cdot \mathbf{J}\]</div>
+<p>其中 <span class="arithmatex">\(\mathbf{v}\)</span> 是从后续节点传来的梯度向量。这正是反向传播算法中计算 <span class="arithmatex">\(\frac{\partial L}{\partial x}\)</span> 的方式。</p>
 <h4 id="234">2.3.4 优缺点分析</h4>
 <p><strong>反向模式的优点：</strong>
 - 对于<strong>多输入、单输出</strong>的情况效率极高
@@ -2265,8 +2265,8 @@ $$\frac{\partial f}{\partial x_1} = 5.5, \quad \frac{\partial f}{\partial x_2} =
 <tbody>
 <tr>
 <td>计算方向</td>
-<td>输入 $\to$ 输出</td>
-<td>输出 $\to$ 输入</td>
+<td>输入 <span class="arithmatex">\(\to\)</span> 输出</td>
+<td>输出 <span class="arithmatex">\(\to\)</span> 输入</td>
 </tr>
 <tr>
 <td>计算内容</td>
@@ -2279,8 +2279,8 @@ $$\frac{\partial f}{\partial x_1} = 5.5, \quad \frac{\partial f}{\partial x_2} =
 <td>多输出（通常为1）、多输入</td>
 </tr>
 <tr>
-<td>计算次数（$n$输入）</td>
-<td>$n$ 次前向</td>
+<td>计算次数（<span class="arithmatex">\(n\)</span>输入）</td>
+<td><span class="arithmatex">\(n\)</span> 次前向</td>
 <td>1 次前向 + 1 次反向</td>
 </tr>
 <tr>
@@ -2797,23 +2797,23 @@ $$\frac{\partial f}{\partial x_1} = 5.5, \quad \frac{\partial f}{\partial x_2} =
 <tbody>
 <tr>
 <td>参数</td>
-<td>模型权重 $W$</td>
-<td>$O(\text{参数量})$</td>
+<td>模型权重 <span class="arithmatex">\(W\)</span></td>
+<td><span class="arithmatex">\(O(\text{参数量})\)</span></td>
 </tr>
 <tr>
 <td>梯度</td>
-<td>参数梯度 $\frac{\partial L}{\partial W}$</td>
-<td>$O(\text{参数量})$</td>
+<td>参数梯度 <span class="arithmatex">\(\frac{\partial L}{\partial W}\)</span></td>
+<td><span class="arithmatex">\(O(\text{参数量})\)</span></td>
 </tr>
 <tr>
 <td>优化器状态</td>
 <td>Adam的momentum和variance</td>
-<td>$O(2 \times \text{参数量})$</td>
+<td><span class="arithmatex">\(O(2 \times \text{参数量})\)</span></td>
 </tr>
 <tr>
 <td>激活</td>
 <td>前向传播中间结果</td>
-<td>$O(\text{批大小} \times \text{序列长度} \times \text{隐藏层维度})$</td>
+<td><span class="arithmatex">\(O(\text{批大小} \times \text{序列长度} \times \text{隐藏层维度})\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -3517,6 +3517,10 @@ $$\frac{\partial f}{\partial x_1} = 5.5, \quad \frac{\partial f}{\partial x_2} =
     
     
       <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

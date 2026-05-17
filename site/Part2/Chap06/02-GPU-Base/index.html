@@ -1394,7 +1394,7 @@ Thread 0-31 执行相同指令，但可访问任意内存地址
 <h3 id="223-gpu">2.2.3 GPU的并行计算原理</h3>
 <p>让我们通过一个具体例子来理解GPU的并行计算原理。</p>
 <p><strong>AX+Y向量运算</strong></p>
-<p>在深度学习中，$Y = \alpha \times X + Y$是一个常见的向量运算（称为SAXPY）。CPU和GPU处理这个运算的方式截然不同：</p>
+<p>在深度学习中，<span class="arithmatex">\(Y = \alpha \times X + Y\)</span>是一个常见的向量运算（称为SAXPY）。CPU和GPU处理这个运算的方式截然不同：</p>
 <p><strong>CPU串行执行</strong>：</p>
 <div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alpha</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
@@ -1442,9 +1442,9 @@ Thread 0-31 执行相同指令，但可访问任意内存地址
 </code></pre></div>
 <p>对于矩阵乘法：</p>
 <ul>
-<li>两个N×N矩阵相乘，需要$2N^3 - N^2$次运算</li>
-<li>需要传输$3N^2$个数据元素</li>
-<li>计算强度约为$O(N)$</li>
+<li>两个N×N矩阵相乘，需要<span class="arithmatex">\(2N^3 - N^2\)</span>次运算</li>
+<li>需要传输<span class="arithmatex">\(3N^2\)</span>个数据元素</li>
+<li>计算强度约为<span class="arithmatex">\(O(N)\)</span></li>
 </ul>
 <p><strong>屋顶线模型（Roofline Model）</strong></p>
 <p>屋顶线模型是评估GPU性能的理论框架：</p>
@@ -1881,7 +1881,7 @@ Thread 2 → Bank 0  ← 冲突！
 </ul>
 <p><strong>Tensor Core的革命</strong>：</p>
 <p>2017年，NVIDIA在Volta架构中引入Tensor Core，专门加速矩阵运算。一个Tensor Core在一个时钟周期内执行4×4矩阵乘加：</p>
-<p>$$D = A \times B + C$$</p>
+<div class="arithmatex">\[D = A \times B + C\]</div>
 <p>其中A、B、C、D都是4×4矩阵。</p>
 <h3 id="252-tensor-core">2.5.2 Tensor Core工作原理</h3>
 <p><strong>矩阵乘法并行本质</strong></p>
@@ -2169,6 +2169,10 @@ Thread 2 → Bank 0  ← 冲突！
     
     
       <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

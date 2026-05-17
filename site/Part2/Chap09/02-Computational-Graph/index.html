@@ -1945,7 +1945,7 @@
 </ul>
 <p>想象一条流水线工厂：原材料从一端进入，经过一系列机器的加工处理，最终变成成品。计算图描述的就是这个加工流程，只不过这里的"原材料"是数据（张量），"机器"是数学运算。</p>
 <p>以一个简单的函数为例：</p>
-<p>$$z = (x + y) \times 2$$</p>
+<div class="arithmatex">\[z = (x + y) \times 2\]</div>
 <p>其计算图可以表示为：</p>
 <div class="highlight"><pre><span></span><code>    x ──┐
         ├──► add ──► multiply ──► z
@@ -1954,7 +1954,7 @@
                 2 ─┘
 </code></pre></div>
 <p>在这个计算图中：
-- $x$ 和 $y$ 是输入节点
+- <span class="arithmatex">\(x\)</span> 和 <span class="arithmatex">\(y\)</span> 是输入节点
 - "add" 是加法运算节点
 - "multiply" 是乘法运算节点
 - 边表示数据的流向</p>
@@ -1962,8 +1962,8 @@
 <p>使用计算图有以下几个重要原因：</p>
 <h4 id="121">1.2.1 统一表达各类计算</h4>
 <p>神经网络本质上是一系列数学运算的组合。计算图提供了一种统一的方式来描述这些运算，无论是：
-- 简单的矩阵乘法：$Y = XW^T$
-- 复杂的卷积操作：$Y = Conv(X, W)$
+- 简单的矩阵乘法：<span class="arithmatex">\(Y = XW^T\)</span>
+- 复杂的卷积操作：<span class="arithmatex">\(Y = Conv(X, W)\)</span>
 - 多分支的网络结构
 - 带循环的RNN</p>
 <p>都可以用计算图统一表达。</p>
@@ -1983,9 +1983,9 @@
 <h4 id="131-tensor">1.3.1 张量（Tensor）</h4>
 <p><strong>张量</strong>是计算图中的基本数据单位。在数学上，张量是向量和矩阵的推广：</p>
 <ul>
-<li><strong>0阶张量（标量）</strong>：一个单独的数，如 $3.14$</li>
-<li><strong>1阶张量（向量）</strong>：一维数组，如 $[1, 2, 3]$</li>
-<li><strong>2阶张量（矩阵）</strong>：二维数组，如 $\begin{bmatrix}1 &amp; 2 \ 3 &amp; 4\end{bmatrix}$</li>
+<li><strong>0阶张量（标量）</strong>：一个单独的数，如 <span class="arithmatex">\(3.14\)</span></li>
+<li><strong>1阶张量（向量）</strong>：一维数组，如 <span class="arithmatex">\([1, 2, 3]\)</span></li>
+<li><strong>2阶张量（矩阵）</strong>：二维数组，如 <span class="arithmatex">\(\begin{bmatrix}1 &amp; 2 \\ 3 &amp; 4\end{bmatrix}\)</span></li>
 <li><strong>n阶张量</strong>：n维数组</li>
 </ul>
 <p>在深度学习中，一张图片可以表示为三维张量（高度、宽度、通道），一批图片表示为四维张量（批量大小、高度、宽度、通道）。</p>
@@ -2124,7 +2124,7 @@
 <span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># dy/dy = x = 2</span>
 </code></pre></div>
 <p>在这个例子中：
-- 前向传播构建了计算图：$z = x \times y + \log(x)$
+- 前向传播构建了计算图：<span class="arithmatex">\(z = x \times y + \log(x)\)</span>
 - 反向传播时，PyTorch沿着计算图反向计算梯度</p>
 <hr />
 <h2 id="2">2 静态计算图与动态计算图</h2>
@@ -2503,9 +2503,9 @@
 <span class="n">h</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>  <span class="c1"># ReLU activation</span>
 </code></pre></div>
 <p>如果没有融合，需要：
-1. 分配临时内存存储 $h$
+1. 分配临时内存存储 <span class="arithmatex">\(h\)</span>
 2. 执行矩阵乘法内核
-3. 执行ReLU内核（需要读取 $h$，写入新内存）</p>
+3. 执行ReLU内核（需要读取 <span class="arithmatex">\(h\)</span>，写入新内存）</p>
 <h4 id="412">4.1.2 融合后的优势</h4>
 <p>融合后：</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># 融合操作</span>
@@ -2655,12 +2655,12 @@
 <p>算子融合是现代AI编译器（如TVM、TensorRT）的核心技术。本节深入介绍算子融合的原理和实现。</p>
 <h3 id="51">5.1 融合的数学基础</h3>
 <p>考虑两个逐元素操作：</p>
-<p>$$y = f(g(x))$$</p>
+<div class="arithmatex">\[y = f(g(x))\]</div>
 <p>融合后：</p>
-<p>$$h(x) = (f \circ g)(x)$$</p>
+<div class="arithmatex">\[h(x) = (f \circ g)(x)\]</div>
 <p>融合的优势：
 - 内存：只需存储一个中间结果（而非两个）
-- 带宽：只读取一次 $x$，只写一次 $y$
+- 带宽：只读取一次 <span class="arithmatex">\(x\)</span>，只写一次 <span class="arithmatex">\(y\)</span>
 - 指令效率：更好的数据局部性</p>
 <h3 id="52">5.2 常见融合模式</h3>
 <h4 id="521-relu">5.2.1 ReLU融合</h4>
@@ -3082,7 +3082,7 @@
 </ol>
 <p><strong>思考与练习</strong>：</p>
 <ol>
-<li>绘制函数 $z = \max(x^2, y^2) + \min(x, y)$ 的计算图。</li>
+<li>绘制函数 <span class="arithmatex">\(z = \max(x^2, y^2) + \min(x, y)\)</span> 的计算图。</li>
 <li>静态计算图和动态计算图各适合什么场景？</li>
 <li>为什么算子融合能提高效率？哪些算子适合融合？</li>
 <li>在PyTorch中，如果需要多次反向传播但保留计算图，应该如何做？</li>
@@ -3150,6 +3150,10 @@
     
     
       <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

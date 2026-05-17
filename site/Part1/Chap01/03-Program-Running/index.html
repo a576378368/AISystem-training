@@ -1746,14 +1746,14 @@
 <p>假设程序中有P比例的部分可以并行化，(1-P)比例的部分必须串行执行。</p>
 <ul>
 <li>单核执行时间：T</li>
-<li>并行执行时间：$T_{parallel} = T \times (1-P) + \frac{T \times P}{N}$</li>
+<li>并行执行时间：<span class="arithmatex">\(T_{parallel} = T \times (1-P) + \frac{T \times P}{N}\)</span></li>
 </ul>
 <p>其中N是核心数量。</p>
 <p><strong>加速比（Speedup）</strong>：</p>
-<p>$$S = \frac{T}{T_{parallel}} = \frac{1}{(1-P) + \frac{P}{N}}$$</p>
+<div class="arithmatex">\[S = \frac{T}{T_{parallel}} = \frac{1}{(1-P) + \frac{P}{N}}\]</div>
 <p><strong>举例</strong>：</p>
 <p>如果90%的代码可以并行化（N→∞）：
-$$S = \frac{1}{0.1 + 0} = 10$$</p>
+$<span class="arithmatex">\(S = \frac{1}{0.1 + 0} = 10\)</span>$</p>
 <p>即使无限多的核心，加速比最多也只有10倍。</p>
 <p><strong>启示</strong>：</p>
 <p>Amdahl定律告诉我们，并行化的收益是有限的。要提高加速比：
@@ -2089,6 +2089,10 @@ $$S = \frac{1}{0.1 + 0} = 10$$</p>
     
     
       <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

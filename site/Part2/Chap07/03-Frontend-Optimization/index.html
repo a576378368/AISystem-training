@@ -1794,19 +1794,19 @@
 <p><strong>BN的计算公式</strong>：</p>
 <p>前向传播中，BN的计算过程为：</p>
 <ol>
-<li>计算均值：$\mu_B = \frac{1}{m} \sum_{i=1}^{m} x_i$</li>
-<li>计算方差：$\sigma_B^2 = \frac{1}{m} \sum_{i=1}^{m} (x_i - \mu_B)^2$</li>
-<li>归一化：$\hat{x}_i = \frac{x_i - \mu_B}{\sqrt{\sigma_B^2 + \epsilon}}$</li>
-<li>线性变换：$y_i = \gamma \hat{x}_i + \beta$</li>
+<li>计算均值：<span class="arithmatex">\(\mu_B = \frac{1}{m} \sum_{i=1}^{m} x_i\)</span></li>
+<li>计算方差：<span class="arithmatex">\(\sigma_B^2 = \frac{1}{m} \sum_{i=1}^{m} (x_i - \mu_B)^2\)</span></li>
+<li>归一化：<span class="arithmatex">\(\hat{x}_i = \frac{x_i - \mu_B}{\sqrt{\sigma_B^2 + \epsilon}}\)</span></li>
+<li>线性变换：<span class="arithmatex">\(y_i = \gamma \hat{x}_i + \beta\)</span></li>
 </ol>
 <p><strong>融合原理</strong>：</p>
 <p>将卷积的结果直接送入BN计算，可以将整个计算过程化简为一次卷积操作：</p>
-<p>设卷积输出为：$z = w * x + b$</p>
-<p>BN计算为：$y = \gamma \frac{z - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta$</p>
-<p>展开后：$y = \gamma \frac{w}{\sqrt{\sigma^2 + \epsilon}} * x + \gamma \frac{b - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta$</p>
+<p>设卷积输出为：<span class="arithmatex">\(z = w * x + b\)</span></p>
+<p>BN计算为：<span class="arithmatex">\(y = \gamma \frac{z - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta\)</span></p>
+<p>展开后：<span class="arithmatex">\(y = \gamma \frac{w}{\sqrt{\sigma^2 + \epsilon}} * x + \gamma \frac{b - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta\)</span></p>
 <p>因此，融合后的卷积权重和偏置为：</p>
-<p>$$w' = \gamma \frac{w}{\sqrt{\sigma^2 + \epsilon}}$$</p>
-<p>$$b' = \gamma \frac{b - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta$$</p>
+<div class="arithmatex">\[w' = \gamma \frac{w}{\sqrt{\sigma^2 + \epsilon}}\]</div>
+<div class="arithmatex">\[b' = \gamma \frac{b - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta\]</div>
 <p><strong>融合效果</strong>：</p>
 <p>融合前需要两次Kernel调用（Conv + BN），融合后只需要一次Kernel调用（融合Conv），大幅减少了内存访问和调度开销。</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Conv-BN-ReLU融合示例</span>
@@ -2009,19 +2009,19 @@
 <p>代数化简的规则包括：</p>
 <p><strong>恒等变换</strong>：</p>
 <ul>
-<li>$x + 0 = x$</li>
-<li>$x \times 1 = x$</li>
-<li>$x \div 1 = x$</li>
+<li><span class="arithmatex">\(x + 0 = x\)</span></li>
+<li><span class="arithmatex">\(x \times 1 = x\)</span></li>
+<li><span class="arithmatex">\(x \div 1 = x\)</span></li>
 </ul>
 <p><strong>幂等变换</strong>：</p>
 <ul>
-<li>$x \times x = x^2$</li>
-<li>$x + x = 2x$</li>
+<li><span class="arithmatex">\(x \times x = x^2\)</span></li>
+<li><span class="arithmatex">\(x + x = 2x\)</span></li>
 </ul>
 <p><strong>消去变换</strong>：</p>
 <ul>
-<li>$\frac{x \times y}{x} = y$</li>
-<li>$(x + y) - y = x$</li>
+<li><span class="arithmatex">\(\frac{x \times y}{x} = y\)</span></li>
+<li><span class="arithmatex">\((x + y) - y = x\)</span></li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="c1"># 代数化简示例</span>
 
@@ -2387,6 +2387,10 @@
     
     
       <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

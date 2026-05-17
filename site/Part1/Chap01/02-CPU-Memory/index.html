@@ -1373,7 +1373,7 @@
 <h3 id="226">2.2.6 指令执行详解</h3>
 <p>让我们通过一个具体的例子，详细了解指令执行的完整过程。</p>
 <p>假设我们要执行：<code>add eax, ebx</code>（将eax和ebx的值相加，结果存入eax）</p>
-<p>这条指令的功能是：$eax = eax + ebx$</p>
+<p>这条指令的功能是：<span class="arithmatex">\(eax = eax + ebx\)</span></p>
 <p><strong>第一步：取指（Fetch）</strong>
 1. 控制单元将程序计数器（PC）的值送到地址总线
 2. 内存根据地址返回指令数据到数据总线
@@ -1698,9 +1698,9 @@
 4. 内存控制器检测到地址、控制信号和数据，将数据写入指定地址</p>
 <p><strong>总线的带宽</strong>：</p>
 <p>总线带宽是指单位时间内可以传输的数据量，计算公式是：</p>
-<p>$$\text{带宽} = \text{总线频率} \times \text{总线宽度}$$</p>
+<div class="arithmatex">\[\text{带宽} = \text{总线频率} \times \text{总线宽度}\]</div>
 <p>例如，一个64位（8字节）宽度的总线，工作频率为100MHz，则理论带宽是：</p>
-<p>$$100\text{MHz} \times 8\text{字节} = 800\text{MB/s}$$</p>
+<div class="arithmatex">\[100\text{MHz} \times 8\text{字节} = 800\text{MB/s}\]</div>
 <h3 id="243-dma">2.4.3 直接内存访问（DMA）</h3>
 <p><strong>DMA（Direct Memory Access，直接内存访问）</strong>是一种允许外部设备直接与内存交换数据的技术，无需CPU介入。</p>
 <p><strong>为什么需要DMA</strong>：</p>
@@ -1969,6 +1969,10 @@
     
     
       <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

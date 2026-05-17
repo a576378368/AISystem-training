@@ -1286,10 +1286,10 @@
 <h3 id="112">1.1.2 自注意力机制的数学原理</h3>
 <p>自注意力机制的计算过程可以通过以下步骤来描述：</p>
 <p><strong>第一步：生成查询、键和值向量</strong></p>
-<p>对于输入序列中的每个词向量 $\mathbf{x}_i$，我们使用三个独立的权重矩阵 $\mathbf{W}_q$、$\mathbf{W}_k$、$\mathbf{W}_v$ 来生成对应的查询（Query）、键（Key）和值（Value）向量：</p>
-<p>$$
+<p>对于输入序列中的每个词向量 <span class="arithmatex">\(\mathbf{x}_i\)</span>，我们使用三个独立的权重矩阵 <span class="arithmatex">\(\mathbf{W}_q\)</span>、<span class="arithmatex">\(\mathbf{W}_k\)</span>、<span class="arithmatex">\(\mathbf{W}_v\)</span> 来生成对应的查询（Query）、键（Key）和值（Value）向量：</p>
+<div class="arithmatex">\[
 \mathbf{q}_i = \mathbf{W}_q \mathbf{x}_i, \quad \mathbf{k}_i = \mathbf{W}_k \mathbf{x}_i, \quad \mathbf{v}_i = \mathbf{W}_v \mathbf{x}_i
-$$</p>
+\]</div>
 <p>这三个向量在注意力机制中扮演不同的角色，理解它们有助于理解整个系统：</p>
 <ul>
 <li><strong>查询向量（Query）</strong>：表示当前位置"想要查询什么信息"，类似于数据库检索中的搜索关键词</li>
@@ -1298,36 +1298,36 @@ $$</p>
 </ul>
 <p><strong>第二步：计算注意力分数</strong></p>
 <p>接下来，我们计算查询向量与所有键向量的点积，得到注意力分数：</p>
-<p>$$
+<div class="arithmatex">\[
 \text{score}_{ij} = \frac{\mathbf{q}_i \cdot \mathbf{k}_j}{\sqrt{d_k}}
-$$</p>
-<p>其中 $d_k$ 是键向量的维度。引入这个缩放因子 $\sqrt{d_k}$ 是为了防止点积结果过大，导致softmax函数进入梯度饱和区。点积结果随着维度的增大而增大，如果不进行缩放，softmax函数可能处于非常尖锐的概率分布状态，导致梯度消失，影响模型训练。</p>
+\]</div>
+<p>其中 <span class="arithmatex">\(d_k\)</span> 是键向量的维度。引入这个缩放因子 <span class="arithmatex">\(\sqrt{d_k}\)</span> 是为了防止点积结果过大，导致softmax函数进入梯度饱和区。点积结果随着维度的增大而增大，如果不进行缩放，softmax函数可能处于非常尖锐的概率分布状态，导致梯度消失，影响模型训练。</p>
 <p><strong>第三步：归一化与加权求和</strong></p>
 <p>使用softmax函数对注意力分数进行归一化，得到注意力权重：</p>
-<p>$$
-\alpha_{ij} = \frac{\exp(\text{score}<em>{ij})}{\sum_j \exp(\text{score}</em>{ij})}
-$$</p>
+<div class="arithmatex">\[
+\alpha_{ij} = \frac{\exp(\text{score}_{ij})}{\sum_j \exp(\text{score}_{ij})}
+\]</div>
 <p>这些权重表示位置i对位置j的注意力程度，权重之和为1。最后，用注意力权重对值向量进行加权求和，得到最终的输出：</p>
-<p>$$
-\mathbf{o}<em>i = \sum_j \alpha</em>{ij} \mathbf{v}_j
-$$</p>
+<div class="arithmatex">\[
+\mathbf{o}_i = \sum_j \alpha_{ij} \mathbf{v}_j
+\]</div>
 <p>这个过程可以看作是一次"软查找"操作——每个位置都在整个序列中查找相关信息，并根据相关性加权组合。</p>
 <h3 id="113">1.1.3 多头注意力机制</h3>
 <p>单一的注意力头可能只能捕获一种类型的相关性。例如，一个注意力头可能学会了关注语法依存关系，另一个头可能学会了关注语义相似性，还有一个头可能捕捉指代关系。为了让模型能够同时关注不同类型的信息，Transformer引入了<strong>多头注意力机制（Multi-Head Attention）</strong>。</p>
 <p>多头注意力的思想是：<strong>将查询、键、值向量分别投影到多个低维空间，在每个空间中独立地计算注意力，然后合并所有头的输出</strong>。</p>
-<p>具体来说，如果有 $h$ 个注意力头，每个头的维度为 $d_k' = d_k / h$，则：</p>
-<p>$$
+<p>具体来说，如果有 <span class="arithmatex">\(h\)</span> 个注意力头，每个头的维度为 <span class="arithmatex">\(d_k' = d_k / h\)</span>，则：</p>
+<div class="arithmatex">\[
 \text{head}_h = \text{Attention}(\mathbf{W}_q^h \mathbf{x}, \mathbf{W}_k^h \mathbf{x}, \mathbf{W}_v^h \mathbf{W}_o^h \mathbf{x})
-$$</p>
+\]</div>
 <p>最终输出为所有注意力头的拼接：</p>
-<p>$$
+<div class="arithmatex">\[
 \mathbf{o} = \text{Concat}(\text{head}_1, \text{head}_2, \ldots, \text{head}_h) \mathbf{W}_o
-$$</p>
+\]</div>
 <p>这种设计让模型能够同时学习多种类型的关系，提高了模型的表达能力。</p>
 <h3 id="114-transformer">1.1.4 Transformer总体架构</h3>
 <p>Transformer采用了经典的编码器-解码器（Encoder-Decoder）架构，这种架构在机器翻译等序列到序列任务中表现出色。编码器负责理解输入序列，解码器负责生成输出序列，两者协同工作完成翻译任务。</p>
 <p><strong>编码器结构</strong></p>
-<p>编码器由 $N$ 个相同的层堆叠而成，每一层包含两个子层：</p>
+<p>编码器由 <span class="arithmatex">\(N\)</span> 个相同的层堆叠而成，每一层包含两个子层：</p>
 <ol>
 <li>
 <p><strong>多头自注意力层</strong>：帮助编码器在对每个位置进行编码时，能够关注到上下文的其他位置。这使得编码器在处理每个词时能够"看到"句子中的其他词，更好地理解词语之间的依赖关系。</p>
@@ -1337,9 +1337,9 @@ $$</p>
 </li>
 </ol>
 <p>每个子层都使用了<strong>残差连接（Residual Connection）</strong>和<strong>层归一化（Layer Normalization）</strong>：</p>
-<p>$$
+<div class="arithmatex">\[
 \mathbf{x}' = \text{LayerNorm}(\mathbf{x} + \text{Sublayer}(\mathbf{x}))
-$$</p>
+\]</div>
 <p>这种设计有两个重要作用：</p>
 <ul>
 <li>
@@ -1350,7 +1350,7 @@ $$</p>
 </li>
 </ul>
 <p><strong>解码器结构</strong></p>
-<p>解码器同样由 $N$ 个相同的层堆叠而成，但每一层包含三个子层：</p>
+<p>解码器同样由 <span class="arithmatex">\(N\)</span> 个相同的层堆叠而成，但每一层包含三个子层：</p>
 <ol>
 <li>
 <p><strong>掩码多头自注意力层</strong>：确保解码器只能看到当前及之前的位置，保持自回归特性。在生成任务中，解码器只能基于已经生成的内容进行预测，而不能"看到"未来的信息。掩码机制通过将未生成位置的信息遮盖来实现这一点。</p>
@@ -1367,33 +1367,33 @@ $$</p>
 <p>与RNN不同，Transformer架构本身不包含序列中token位置的信息。这是一个设计上的有意选择——让我们能够使用高效的并行计算，但同时也意味着我们需要显式地将位置信息注入模型。</p>
 <p><strong>位置编码（Positional Encoding）</strong>通过向输入嵌入添加位置信息来实现这一目标。原始Transformer使用了两种位置编码方式：</p>
 <p><strong>方法一：正弦位置编码</strong></p>
-<p>对于位置 $pos$ 和维度 $i$：</p>
-<p>$$
+<p>对于位置 <span class="arithmatex">\(pos\)</span> 和维度 <span class="arithmatex">\(i\)</span>：</p>
+<div class="arithmatex">\[
 PE_{(pos, 2i)} = \sin\left(\frac{pos}{10000^{2i/d_{model}}}\right)
-$$</p>
-<p>$$
+\]</div>
+<div class="arithmatex">\[
 PE_{(pos, 2i+1)} = \cos\left(\frac{pos}{10000^{2i/d_{model}}}\right)
-$$</p>
-<p>这种设计的优点是：<strong>对于任意固定的偏移量 $k$，$PE_{pos+k}$ 可以表示为 $PE_{pos}$ 的线性函数</strong>，这使得模型能够轻松地学习关注相对位置。</p>
+\]</div>
+<p>这种设计的优点是：<strong>对于任意固定的偏移量 <span class="arithmatex">\(k\)</span>，<span class="arithmatex">\(PE_{pos+k}\)</span> 可以表示为 <span class="arithmatex">\(PE_{pos}\)</span> 的线性函数</strong>，这使得模型能够轻松地学习关注相对位置。</p>
 <p><strong>方法二：可学习的位置编码</strong></p>
 <p>另一种方法是将位置编码作为可学习的参数，让模型从数据中自动学习有意义的位置表示。这种方法在某些任务中表现良好，但正弦编码具有更好的外推性。</p>
 <p><strong>旋转位置编码（RoPE）</strong></p>
 <p>近年来，旋转位置编码成为大语言模型中的主流选择。RoPE通过将位置信息编码为旋转矩阵来实现，其核心思想是：<strong>将位置编码融入到查询和键向量的旋转操作中</strong>。</p>
-<p>具体来说，对于二维情形，RoPE将位置 $m$ 的查询向量 $\mathbf{q}$ 旋转角度 $m\theta$：</p>
-<p>$$
+<p>具体来说，对于二维情形，RoPE将位置 <span class="arithmatex">\(m\)</span> 的查询向量 <span class="arithmatex">\(\mathbf{q}\)</span> 旋转角度 <span class="arithmatex">\(m\theta\)</span>：</p>
+<div class="arithmatex">\[
 \mathbf{q}' = \mathbf{R}(m\theta) \mathbf{q}
-$$</p>
-<p>其中 $\mathbf{R}(m\theta)$ 是旋转矩阵。这种编码方式具有更好的外推性，能够处理训练时未见过的更长序列。</p>
+\]</div>
+<p>其中 <span class="arithmatex">\(\mathbf{R}(m\theta)\)</span> 是旋转矩阵。这种编码方式具有更好的外推性，能够处理训练时未见过的更长序列。</p>
 <h2 id="12">1.2 注意力机制的扩展与优化</h2>
 <h3 id="121">1.2.1 标准注意力的计算瓶颈</h3>
-<p>标准自注意力的计算复杂度为 $O(n^2)$，其中 $n$ 是序列长度。这意味着当序列长度增加时，计算量会急剧增长。例如，当序列长度从512增加到4096时，计算量会增加64倍。</p>
+<p>标准自注意力的计算复杂度为 <span class="arithmatex">\(O(n^2)\)</span>，其中 <span class="arithmatex">\(n\)</span> 是序列长度。这意味着当序列长度增加时，计算量会急剧增长。例如，当序列长度从512增加到4096时，计算量会增加64倍。</p>
 <p>在大语言模型中，序列长度通常非常大。例如，GPT-4支持长达32,000个token的上下文，而某些模型甚至支持更长的序列。处理如此长的序列是一个巨大的挑战，特别是在显存和计算时间方面。</p>
 <p>为了解决这个问题，研究者们提出了多种高效的注意力机制变体，包括多查询注意力、分组查询注意力、稀疏注意力、线性注意力和FlashAttention等。</p>
 <h3 id="122">1.2.2 多查询注意力与分组查询注意力</h3>
 <p>标准多头注意力中，每个注意力头都有独立的查询、键和值向量。但在某些场景下，我们可能希望<strong>共享键向量</strong>，以减少计算和内存开销。</p>
 <p><strong>多查询注意力（Multi-Query Attention，MQA）</strong>采用了这一思路——所有注意力头共享相同的键和值向量，只有查询向量保持独立。这种设计可以显著减少键值对的存储和计算量。</p>
 <p>MQA的trade-off是：减少了内存和计算，但可能损失一定的表达能力，因为不同头不能学习独立的键值映射。</p>
-<p><strong>分组查询注意力（Grouped Query Attention，GQA）</strong>是MQA的推广，它将注意力头分成 $g$ 个组，同一组内的头共享键和值向量，不同组则有独立的键值向量。</p>
+<p><strong>分组查询注意力（Grouped Query Attention，GQA）</strong>是MQA的推广，它将注意力头分成 <span class="arithmatex">\(g\)</span> 个组，同一组内的头共享键和值向量，不同组则有独立的键值向量。</p>
 <p>这种设计允许模型在保持一定多样性的同时，减少键值向量的数量，从而降低内存占用和计算成本。LLaMA 2就采用了分组查询注意力来平衡性能和效率。</p>
 <h3 id="123">1.2.3 稀疏注意力机制</h3>
 <p>稀疏注意力（Sparse Attention）是一种通过只计算部分注意力分数来提高效率的方法。其核心思想是：<strong>不是所有位置都需要关注所有其他位置，很多注意力模式是可以预测的</strong>。</p>
@@ -1402,7 +1402,7 @@ $$</p>
 <p>常见的稀疏注意力模式包括：</p>
 <ol>
 <li>
-<p><strong>滑窗注意力（Sliding Window Attention）</strong>：每个位置只关注其邻近的 $w$ 个位置。这种模式适合捕捉局部依赖关系，计算复杂度为 $O(n \cdot w)$。</p>
+<p><strong>滑窗注意力（Sliding Window Attention）</strong>：每个位置只关注其邻近的 <span class="arithmatex">\(w\)</span> 个位置。这种模式适合捕捉局部依赖关系，计算复杂度为 <span class="arithmatex">\(O(n \cdot w)\)</span>。</p>
 </li>
 <li>
 <p><strong>扩张滑窗注意力（Dilated Sliding Window）</strong>：在滑窗中引入扩张间隔，增加感受野。例如，扩张率为2的滑窗会跳过一个位置，让感受野更广。</p>
@@ -1412,25 +1412,25 @@ $$</p>
 </li>
 </ol>
 <h3 id="124">1.2.4 线性注意力机制</h3>
-<p>线性注意力（Linear Attention）通过重新排列计算顺序，将注意力计算的复杂度从 $O(n^2)$ 降低到 $O(n)$。</p>
+<p>线性注意力（Linear Attention）通过重新排列计算顺序，将注意力计算的复杂度从 <span class="arithmatex">\(O(n^2)\)</span> 降低到 <span class="arithmatex">\(O(n)\)</span>。</p>
 <p>标准注意力的计算过程是：</p>
-<p>$$
-\mathbf{o}<em>i = \sum_j \alpha</em>{ij} \mathbf{v}_j = \sum_j \frac{\exp(\mathbf{q}_i \cdot \mathbf{k}_j)}{\sum_j \exp(\mathbf{q}_i \cdot \mathbf{k}_j)} \mathbf{v}_j
-$$</p>
-<p>线性注意力的核心思想是<strong>使用核函数近似softmax操作</strong>，从而将计算顺序从 $(\mathbf{q} \cdot \mathbf{k}) \mathbf{v}$ 变为 $\mathbf{q} \cdot (\mathbf{k} \cdot \mathbf{v})$，实现计算复杂度的降低。</p>
-<p>具体来说，如果我们使用一个核函数 $\phi(\cdot)$ 来近似 $\exp(\mathbf{q} \cdot \mathbf{k})$，那么：</p>
-<p>$$
+<div class="arithmatex">\[
+\mathbf{o}_i = \sum_j \alpha_{ij} \mathbf{v}_j = \sum_j \frac{\exp(\mathbf{q}_i \cdot \mathbf{k}_j)}{\sum_j \exp(\mathbf{q}_i \cdot \mathbf{k}_j)} \mathbf{v}_j
+\]</div>
+<p>线性注意力的核心思想是<strong>使用核函数近似softmax操作</strong>，从而将计算顺序从 <span class="arithmatex">\((\mathbf{q} \cdot \mathbf{k}) \mathbf{v}\)</span> 变为 <span class="arithmatex">\(\mathbf{q} \cdot (\mathbf{k} \cdot \mathbf{v})\)</span>，实现计算复杂度的降低。</p>
+<p>具体来说，如果我们使用一个核函数 <span class="arithmatex">\(\phi(\cdot)\)</span> 来近似 <span class="arithmatex">\(\exp(\mathbf{q} \cdot \mathbf{k})\)</span>，那么：</p>
+<div class="arithmatex">\[
 \mathbf{o}_i \approx \mathbf{q}_i^T \left( \sum_j \phi(\mathbf{k}_j) \phi(\mathbf{k}_j)^T \right)
-$$</p>
-<p>这样可以将计算复杂度降低到 $O(n)$。</p>
+\]</div>
+<p>这样可以将计算复杂度降低到 <span class="arithmatex">\(O(n)\)</span>。</p>
 <p>然而，线性注意力有一个重要的局限性：<strong>它无法自然地支持掩码机制</strong>，这使得它在生成任务中的表现受到影响，因为生成任务需要防止看到未来信息。</p>
 <h3 id="125-flashattention">1.2.5 FlashAttention</h3>
 <p>FlashAttention是一种最近提出的高效注意力计算方法，它利用GPU的层次化内存结构（共享内存、L2缓存、HBM）来加速注意力计算。</p>
 <p>传统的注意力实现需要多次访问HBM（High Bandwidth Memory），这会成为性能瓶颈——HBM的带宽虽然高，但延迟也较大，频繁访问会影响性能。</p>
 <p>FlashAttention的核心思想是<strong>将注意力计算分成多个小块，每次将一小块数据从HBM加载到共享内存，在共享内存中进行计算，然后再写回HBM</strong>。</p>
 <p>通过这种方式，FlashAttention能够：
-- <strong>减少HBM访问次数</strong>：从 $O(n^2)$ 次减少到更少的次数
-- <strong>避免存储完整的注意力矩阵</strong>：节省 $O(n^2)$ 的显存占用
+- <strong>减少HBM访问次数</strong>：从 <span class="arithmatex">\(O(n^2)\)</span> 次减少到更少的次数
+- <strong>避免存储完整的注意力矩阵</strong>：节省 <span class="arithmatex">\(O(n^2)\)</span> 的显存占用
 - <strong>保持数值精度</strong>：使用在线softmax等技巧保证计算结果的准确性</p>
 <p>FlashAttention已经成为训练大语言模型的标准优化技术之一，被广泛应用于GPT、LLAMA等大模型的训练中。</p>
 <h3 id="126">1.2.6 注意力机制的未来发展</h3>
@@ -1594,9 +1594,9 @@ $$</p>
 <p>LLaMA的架构基于Transformer，但进行了多项重要改进：</p>
 <p><strong>1. 预归一化（Pre-normalization）</strong></p>
 <p>与标准Transformer不同，LLaMA对每个子层的输入进行归一化，而不是对输出进行归一化。具体使用RMSNorm：</p>
-<p>$$
+<div class="arithmatex">\[
 \mathbf{x}' = \mathbf{x} \otimes \frac{\mathbf{g}}{\sqrt{\text{RMS}(\mathbf{x})}}, \quad \text{RMS}(\mathbf{x}) = \sqrt{\frac{1}{n}\sum_i x_i^2}
-$$</p>
+\]</div>
 <p>这种归一化方式比层归一化更简单，计算更快，同时在实验中表现良好。</p>
 <p><strong>2. 分组查询注意力（GQA）</strong></p>
 <p>LLaMA-65B和LLaMA-33B使用分组查询注意力，在保持推理效率的同时不牺牲模型性能。</p>
@@ -1604,9 +1604,9 @@ $$</p>
 <p>LLaMA使用旋转位置编码取代了绝对位置编码，具有更好的外推性。这对于处理长序列尤为重要。</p>
 <p><strong>4. SwiGLU激活函数</strong></p>
 <p>LLaMA使用SwiGLU激活函数取代ReLU：</p>
-<p>$$
+<div class="arithmatex">\[
 \text{SwiGLU}(x) = x \cdot \sigma(x) \cdot \text{Swish}(x) = x \cdot \sigma(x) \cdot \frac{x}{1+e^{-x}}
-$$</p>
+\]</div>
 <p>SwiGLU结合了门控机制和Swish激活函数的优点，在多项实验中表现优于标准激活函数。</p>
 <h3 id="143">1.4.3 开源生态的繁荣</h3>
 <p>LLaMA的开源引发了开源社区的爆炸式发展，产生了众多重要衍生项目：</p>
@@ -1656,9 +1656,9 @@ $$</p>
 <li>分别计算每个micro-batch的梯度并累积</li>
 <li>当累积到预定数量后，再执行一次参数更新</li>
 </ol>
-<p>$$
+<div class="arithmatex">\[
 \theta_{t+1} = \theta_t - \eta \cdot \sum_{i=1}^{m} \nabla\mathcal{L}_i(\theta_t)
-$$</p>
+\]</div>
 <p>梯度累积的优势：</p>
 <ul>
 <li>有效批大小 = micro-batch大小 × 累积步数</li>
@@ -1673,7 +1673,7 @@ $$</p>
 <li>在反向传播时重新计算需要的激活值</li>
 <li>节省显存用于更大的模型或更大的batch</li>
 </ul>
-<p>对于Transformer模型，激活检查点可以将显存需求减少到原来的约 $\sqrt{N}$（$N$为层数）。</p>
+<p>对于Transformer模型，激活检查点可以将显存需求减少到原来的约 <span class="arithmatex">\(\sqrt{N}\)</span>（<span class="arithmatex">\(N\)</span>为层数）。</p>
 <p>激活检查点的trade-off是增加了计算量（前向传播需要重新计算某些激活值），但换取了大比例的显存节省。</p>
 <h3 id="154">1.5.4 学习率调度</h3>
 <p>大模型训练通常使用复杂的学习率调度策略：</p>
@@ -1682,12 +1682,12 @@ $$</p>
 <li><strong>余弦退火（Cosine Decay）</strong>：学习率随训练步数按照余弦曲线下降</li>
 <li><strong>线性预热+余弦退火</strong>：组合策略，先线性预热再余弦退火</li>
 </ol>
-<p>$$
+<div class="arithmatex">\[
 \eta_t = \begin{cases}
-\eta_{max} \cdot \frac{t}{T_{warm}} &amp; t &lt; T_{warm} \
+\eta_{max} \cdot \frac{t}{T_{warm}} &amp; t &lt; T_{warm} \\
 \eta_{max} \cdot 0.5 \cdot \left(1 + \cos\left(\frac{t - T_{warm}}{T_{total} - T_{warm}} \cdot \pi\right)\right) &amp; t \geq T_{warm}
 \end{cases}
-$$</p>
+\]</div>
 <p>预热阶段的作用：</p>
 <ul>
 <li>避免早期过大梯度导致的不稳定</li>
@@ -1761,9 +1761,9 @@ $$</p>
 <h3 id="171">1.7.1 语言模型的评估指标</h3>
 <p>评估语言模型需要多维度的指标：</p>
 <p><strong>困惑度（Perplexity）</strong>：</p>
-<p>$$
+<div class="arithmatex">\[
 \text{PPL} = \exp\left(-\frac{1}{N}\sum_{i=1}^{N} \log P(w_i | w_{&lt;i})\right)
-$$</p>
+\]</div>
 <p>困惑度越低，模型越好。</p>
 <p><strong>下游任务评估</strong>：</p>
 <ul>
@@ -1862,6 +1862,10 @@ $$</p>
     
     
       <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

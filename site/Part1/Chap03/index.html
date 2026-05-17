@@ -1054,19 +1054,19 @@
 <h3 id="_6">线性代数</h3>
 <ol>
 <li>
-<p><strong>向量运算验证</strong>：设 $\vec{a} = (1, 2, 3)$，$\vec{b} = (4, 5, 6)$，计算 $\vec{a} + \vec{b}$、$3\vec{a}$、$\vec{a} \cdot \vec{b}$，并解释每种运算的几何意义。</p>
+<p><strong>向量运算验证</strong>：设 <span class="arithmatex">\(\vec{a} = (1, 2, 3)\)</span>，<span class="arithmatex">\(\vec{b} = (4, 5, 6)\)</span>，计算 <span class="arithmatex">\(\vec{a} + \vec{b}\)</span>、<span class="arithmatex">\(3\vec{a}\)</span>、<span class="arithmatex">\(\vec{a} \cdot \vec{b}\)</span>，并解释每种运算的几何意义。</p>
 </li>
 <li>
-<p><strong>矩阵乘法维度分析</strong>：如果 $A \in \mathbb{R}^{3 \times 4}$，$B \in \mathbb{R}^{4 \times 5}$，$C \in \mathbb{R}^{5 \times 2}$，那么 $ABC$ 的维度是什么？计算 $AB$ 和 $(AB)C$ 的复杂度分别是多少？</p>
+<p><strong>矩阵乘法维度分析</strong>：如果 <span class="arithmatex">\(A \in \mathbb{R}^{3 \times 4}\)</span>，<span class="arithmatex">\(B \in \mathbb{R}^{4 \times 5}\)</span>，<span class="arithmatex">\(C \in \mathbb{R}^{5 \times 2}\)</span>，那么 <span class="arithmatex">\(ABC\)</span> 的维度是什么？计算 <span class="arithmatex">\(AB\)</span> 和 <span class="arithmatex">\((AB)C\)</span> 的复杂度分别是多少？</p>
 </li>
 <li>
-<p><strong>特征值与特征向量计算</strong>：求矩阵 $A = \begin{pmatrix} 3 &amp; 1 \ 0 &amp; 2 \end{pmatrix}$ 的特征值和对应的特征向量，并验证 $A\vec{v} = \lambda\vec{v}$ 对每个特征对成立。</p>
+<p><strong>特征值与特征向量计算</strong>：求矩阵 <span class="arithmatex">\(A = \begin{pmatrix} 3 &amp; 1 \\ 0 &amp; 2 \end{pmatrix}\)</span> 的特征值和对应的特征向量，并验证 <span class="arithmatex">\(A\vec{v} = \lambda\vec{v}\)</span> 对每个特征对成立。</p>
 </li>
 <li>
 <p><strong>SVD 应用思考</strong>：考虑一个 100×100 的图像矩阵，如果对其进行 SVD 分解并保留前 10 个奇异值，重构后的矩阵秩是多少？</p>
 </li>
 <li>
-<p><strong>范数的比较</strong>：对于向量 $\vec{x} = (1, -2, 3, -4)$，计算其 L1 范数、L2 范数和 L∞ 范数。</p>
+<p><strong>范数的比较</strong>：对于向量 <span class="arithmatex">\(\vec{x} = (1, -2, 3, -4)\)</span>，计算其 L1 范数、L2 范数和 L∞ 范数。</p>
 </li>
 </ol>
 <h3 id="_7">概率与统计</h3>
@@ -1090,19 +1090,19 @@
 <h3 id="_8">优化基础</h3>
 <ol>
 <li>
-<p><strong>梯度下降法验证</strong>：设目标函数 $f(x) = x^4 - 3x^3 + 2$，使用梯度下降法求解最小值，观察不同学习率下的收敛行为。</p>
+<p><strong>梯度下降法验证</strong>：设目标函数 <span class="arithmatex">\(f(x) = x^4 - 3x^3 + 2\)</span>，使用梯度下降法求解最小值，观察不同学习率下的收敛行为。</p>
 </li>
 <li>
 <p><strong>随机梯度下降分析</strong>：对于一个有 100 万样本的训练集，比较批量梯度下降和随机梯度下降每次迭代的计算复杂度。</p>
 </li>
 <li>
-<p><strong>动量法分析</strong>：考虑函数 $f(x, y) = x^2 + 10y^2$，使用标准梯度下降和动量法迭代 100 步，比较收敛路径。</p>
+<p><strong>动量法分析</strong>：考虑函数 <span class="arithmatex">\(f(x, y) = x^2 + 10y^2\)</span>，使用标准梯度下降和动量法迭代 100 步，比较收敛路径。</p>
 </li>
 <li>
 <p><strong>Adam 算法实现</strong>：实现 Adam 优化器，包括偏差校正步骤，并用其训练一个简单模型。</p>
 </li>
 <li>
-<p><strong>约束优化</strong>：求解约束优化问题 $\min_{x, y} x^2 + y^2$ s.t. $x + y = 1$，使用拉格朗日乘数法验证结果。</p>
+<p><strong>约束优化</strong>：求解约束优化问题 <span class="arithmatex">\(\min_{x, y} x^2 + y^2\)</span> s.t. <span class="arithmatex">\(x + y = 1\)</span>，使用拉格朗日乘数法验证结果。</p>
 </li>
 </ol>
 
@@ -1158,6 +1158,10 @@
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

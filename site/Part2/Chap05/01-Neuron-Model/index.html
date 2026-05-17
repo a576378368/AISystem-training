@@ -1097,10 +1097,10 @@
 <h3 id="112-activation-function">1.1.2 激活函数（Activation Function）</h3>
 <p>激活函数（Activation Function）用于神经元输出非线性化的函数。线性函数的表达能力有限，只能表示线性关系，而现实世界中的大多数问题都是非线性的。通过在神经网络中引入非线性激活函数，神经网络能够学习和表示复杂非线性模式，这是神经网络强大表达能力的关键所在。</p>
 <p>常见的激活函数包括：</p>
-<p><strong>ReLU（Rectified Linear Unit）</strong>：$f(x) = max(0, x)$，计算简单高效，是目前最广泛使用的激活函数之一。ReLU函数的优点是收敛速度快，且不存在梯度饱和问题。</p>
-<p><strong>Sigmoid</strong>：$f(x) = \frac{1}{1 + e^{-x}}$，将输入压缩到$(0, 1)$区间，常用于二分类问题的输出层。缺点是容易出现梯度消失问题，且输出不是零中心化的。</p>
-<p><strong>Tanh（双曲正切）</strong>：$f(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$，输出范围是$(-1, 1)$，是零中心化的。但同样存在梯度消失问题。</p>
-<p><strong>Softmax</strong>：常用于多分类问题的输出层，将输出转换为概率分布：$Softmax(x_i) = \frac{e^{x_i}}{\sum_j e^{x_j}}$。</p>
+<p><strong>ReLU（Rectified Linear Unit）</strong>：<span class="arithmatex">\(f(x) = max(0, x)\)</span>，计算简单高效，是目前最广泛使用的激活函数之一。ReLU函数的优点是收敛速度快，且不存在梯度饱和问题。</p>
+<p><strong>Sigmoid</strong>：<span class="arithmatex">\(f(x) = \frac{1}{1 + e^{-x}}\)</span>，将输入压缩到<span class="arithmatex">\((0, 1)\)</span>区间，常用于二分类问题的输出层。缺点是容易出现梯度消失问题，且输出不是零中心化的。</p>
+<p><strong>Tanh（双曲正切）</strong>：<span class="arithmatex">\(f(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}\)</span>，输出范围是<span class="arithmatex">\((-1, 1)\)</span>，是零中心化的。但同样存在梯度消失问题。</p>
+<p><strong>Softmax</strong>：常用于多分类问题的输出层，将输出转换为概率分布：<span class="arithmatex">\(Softmax(x_i) = \frac{e^{x_i}}{\sum_j e^{x_j}}\)</span>。</p>
 <h3 id="113-layer">1.1.3 模型层数（Layer）</h3>
 <p>神经网络由多个层次组成，主要包括三种类型的层：</p>
 <p><strong>输入层（Input Layer）</strong>：接收原始输入数据，不进行任何计算，只是将数据传递给下一层。输入层的神经元数量等于输入特征的维度。</p>
@@ -1111,31 +1111,31 @@
 <p>具体过程如下：</p>
 <ol>
 <li>输入数据进入输入层</li>
-<li>对于第$l$层的每个神经元，计算：$z^l = W^l \cdot a^{l-1} + b^l$</li>
-<li>应用激活函数：$a^l = \sigma(z^l)$</li>
-<li>将$a^l$传递给下一层，重复步骤2-3直到输出层</li>
+<li>对于第<span class="arithmatex">\(l\)</span>层的每个神经元，计算：<span class="arithmatex">\(z^l = W^l \cdot a^{l-1} + b^l\)</span></li>
+<li>应用激活函数：<span class="arithmatex">\(a^l = \sigma(z^l)\)</span></li>
+<li>将<span class="arithmatex">\(a^l\)</span>传递给下一层，重复步骤2-3直到输出层</li>
 </ol>
 <h3 id="115-backpropagation">1.1.5 反向传播（Backpropagation）</h3>
 <p>反向传播（Backpropagation）是通过计算损失函数对网络参数进行调整的过程，以使网络的输出更接近预期输出。反向传播是深度学习中最重要的算法之一，它利用链式法则计算损失函数对每个参数的梯度。</p>
 <p>反向传播的基本步骤：</p>
 <ol>
-<li>计算输出层的损失：给定预测值$\hat{y}$和真实值$y$，计算损失$L(y, \hat{y})$</li>
+<li>计算输出层的损失：给定预测值<span class="arithmatex">\(\hat{y}\)</span>和真实值<span class="arithmatex">\(y\)</span>，计算损失<span class="arithmatex">\(L(y, \hat{y})\)</span></li>
 <li>从输出层开始，利用链式法则逐层计算梯度：</li>
-<li>$\frac{\partial L}{\partial W^l} = \frac{\partial L}{\partial a^L} \cdot \frac{\partial a^L}{\partial z^L} \cdot \cdots \cdot \frac{\partial a^l}{\partial z^l} \cdot \frac{\partial z^l}{\partial W^l}$</li>
-<li>使用梯度下降或其他优化算法更新参数：$W^l = W^l - \alpha \frac{\partial L}{\partial W^l}$</li>
+<li><span class="arithmatex">\(\frac{\partial L}{\partial W^l} = \frac{\partial L}{\partial a^L} \cdot \frac{\partial a^L}{\partial z^L} \cdot \cdots \cdot \frac{\partial a^l}{\partial z^l} \cdot \frac{\partial z^l}{\partial W^l}\)</span></li>
+<li>使用梯度下降或其他优化算法更新参数：<span class="arithmatex">\(W^l = W^l - \alpha \frac{\partial L}{\partial W^l}\)</span></li>
 </ol>
 <h3 id="116-loss-function">1.1.6 损失函数（Loss Function）</h3>
 <p>损失函数（Loss Function）衡量模型预测结果与实际结果之间差异的函数。神经网络训练的目标是最小化损失函数，使模型的预测尽可能接近真实值。</p>
 <p>常见的损失函数：</p>
-<p><strong>均方误差（MSE）</strong>：$L = \frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2$，常用于回归任务。</p>
-<p><strong>交叉熵（Cross-Entropy）</strong>：$L = -\sum_{i=1}^{n}y_i \log(\hat{y}_i)$，常用于分类任务，特别是多分类问题。</p>
-<p><strong>二元交叉熵（Binary Cross-Entropy）</strong>：$L = -[y \log(\hat{y}) + (1-y)\log(1-\hat{y})]$，用于二分类问题。</p>
+<p><strong>均方误差（MSE）</strong>：<span class="arithmatex">\(L = \frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2\)</span>，常用于回归任务。</p>
+<p><strong>交叉熵（Cross-Entropy）</strong>：<span class="arithmatex">\(L = -\sum_{i=1}^{n}y_i \log(\hat{y}_i)\)</span>，常用于分类任务，特别是多分类问题。</p>
+<p><strong>二元交叉熵（Binary Cross-Entropy）</strong>：<span class="arithmatex">\(L = -[y \log(\hat{y}) + (1-y)\log(1-\hat{y})]\)</span>，用于二分类问题。</p>
 <h3 id="117-optimization-algorithm">1.1.7 优化算法（Optimization Algorithm）</h3>
 <p>优化算法用于调整神经网络参数以最小化损失函数。不同的优化算法会影响模型训练的收敛速度和能达到的性能。</p>
 <p><strong>梯度下降（Gradient Descent）</strong>：最基本的优化算法，沿着梯度的负方向更新参数。缺点是收敛速度慢，且容易陷入局部最优。</p>
 <p><strong>随机梯度下降（SGD）</strong>：每次使用一个样本或少量样本来估计梯度，加快收敛速度，但会带来梯度估计的噪声。</p>
-<p><strong>动量（Momentum）</strong>：引入动量概念，加速收敛并减少震荡：$v_t = \gamma v_{t-1} + \alpha \nabla L(\theta)$，$\theta = \theta - v_t$</p>
-<p><strong>Adam（Adaptive Moment Estimation）</strong>：结合动量和自适应学习率：$m_t = \beta_1 m_{t-1} + (1-\beta_1) \nabla L(\theta)$，$v_t = \beta_2 v_{t-1} + (1-\beta_2)(\nabla L(\theta))^2$，$\theta = \theta - \alpha \frac{m_t}{\sqrt{v_t} + \epsilon}$</p>
+<p><strong>动量（Momentum）</strong>：引入动量概念，加速收敛并减少震荡：<span class="arithmatex">\(v_t = \gamma v_{t-1} + \alpha \nabla L(\theta)\)</span>，<span class="arithmatex">\(\theta = \theta - v_t\)</span></p>
+<p><strong>Adam（Adaptive Moment Estimation）</strong>：结合动量和自适应学习率：<span class="arithmatex">\(m_t = \beta_1 m_{t-1} + (1-\beta_1) \nabla L(\theta)\)</span>，<span class="arithmatex">\(v_t = \beta_2 v_{t-1} + (1-\beta_2)(\nabla L(\theta))^2\)</span>，<span class="arithmatex">\(\theta = \theta - \alpha \frac{m_t}{\sqrt{v_t} + \epsilon}\)</span></p>
 <hr />
 <h2 id="12">1.2 神经网络的训练与推理</h2>
 <p>神经网络的产生包含训练和推理两个阶段。训练阶段可以描述为如下几个过程。从下图流程中可以发现，神经网络的训练阶段比推理阶段对算力和内存的需求更大，流程更加复杂，难度更大，所以很多公司芯片研发会优先考虑支持AI推理阶段。</p>
@@ -1176,23 +1176,23 @@
 <h2 id="13">1.3 权重求和计算范式</h2>
 <p>接下来我们来了解一下神经网络中的主要计算范式：<strong>权重求和</strong>。权重求和是神经网络中最基本也是最核心的计算操作，掌握这一计算范式对于理解AI芯片设计至关重要。</p>
 <h3 id="131">1.3.1 权重求和的基本原理</h3>
-<p>神经网络中90%的计算量都是在做乘加（multiply and accumulate, MAC）的操作，也称为权重求和。MAC操作可以表示为：$y = \sum_{i=1}^{n} w_i \cdot x_i + b$，其中$w_i$是权重，$x_i$是输入，$b$是偏置。</p>
+<p>神经网络中90%的计算量都是在做乘加（multiply and accumulate, MAC）的操作，也称为权重求和。MAC操作可以表示为：<span class="arithmatex">\(y = \sum_{i=1}^{n} w_i \cdot x_i + b\)</span>，其中<span class="arithmatex">\(w_i\)</span>是权重，<span class="arithmatex">\(x_i\)</span>是输入，<span class="arithmatex">\(b\)</span>是偏置。</p>
 <p>下图是一个简单的神经网络结构，左边中间灰色的圈圈表示一个简单的神经元，每个神经元里有求和和激活两个操作，求和就是指乘加或者矩阵相乘，激活函数则是决定这些神经元是否对输出有用，Tanh、ReLU、Sigmoid和Linear都是常见的激活函数。</p>
 <p><img alt="神经元权重求和示意" src="../../images/02Hardware/01Foundation/images/02ArchSlim03.png" /></p>
 <h3 id="132">1.3.2 全连接层的权重求和</h3>
 <p>全连接层（Fully Connected Layer），也称为密集连接层或仿射层，是深度学习神经网络中常见的一种层类型，通常位于网络的最后几层。全连接层的每个神经元都会与前一层的所有神经元进行全连接，通过这种方式，全连接层能够学习到输入数据的全局特征，并对其进行分类或回归等任务。</p>
 <p><img alt="全连接层结构" src="../../images/02Hardware/01Foundation/images/02ArchSlim04.png" /></p>
 <p>全连接层的基本概念和特点：</p>
-<p><strong>连接方式</strong>：全连接层中的每个神经元与前一层的所有神经元都有连接，这意味着每个输入特征都会影响到每个输出神经元，因此全连接层是一种高度密集的连接结构。对于一个有$n$个输入和$m$个输出的全连接层，其参数数量为$n \times m + m$（包括偏置）。</p>
+<p><strong>连接方式</strong>：全连接层中的每个神经元与前一层的所有神经元都有连接，这意味着每个输入特征都会影响到每个输出神经元，因此全连接层是一种高度密集的连接结构。对于一个有<span class="arithmatex">\(n\)</span>个输入和<span class="arithmatex">\(m\)</span>个输出的全连接层，其参数数量为<span class="arithmatex">\(n \times m + m\)</span>（包括偏置）。</p>
 <p><strong>参数学习</strong>：全连接层中的连接权重和偏置项是需要通过反向传播算法进行学习的模型参数，这些参数的优化过程通过最小化损失函数来实现。</p>
 <p><strong>特征整合</strong>：全连接层的主要作用是将前面层提取到的特征进行整合和转换，以生成最终的输出。在图像分类任务中，全连接层通常用于将卷积层提取到的特征映射转换为类别预测分数。</p>
 <p><strong>非线性变换</strong>：在全连接层中通常会应用非线性激活函数，如ReLU（Rectified Linear Unit）、Sigmoid或Tanh等，以增加模型的表达能力和非线性拟合能力。</p>
 <p><strong>输出层</strong>：在分类任务中，全连接层通常作为网络的最后一层，并配合Softmax激活函数用于生成类别预测的概率分布。在回归任务中，全连接层的输出通常直接作为最终的预测值。</p>
 <p><strong>过拟合风险</strong>：全连接层的参数数量通常较大，因此在训练过程中容易产生过拟合的问题。为了缓解过拟合，可以采用正则化技术、Dropout等方法。</p>
 <h3 id="133">1.3.3 矩阵乘法在神经网络中的应用</h3>
-<p>在神经网络中，权重求和通常以矩阵乘法的形式实现。给定输入向量$\mathbf{x}$和权重矩阵$\mathbf{W}$，偏置向量$\mathbf{b}$，全连接层的计算可以表示为：</p>
-<p>$$\mathbf{y} = \mathbf{W} \cdot \mathbf{x} + \mathbf{b}$$</p>
-<p>对于批量输入，假设输入矩阵为$\mathbf{X} \in \mathbb{R}^{batch \times n}$，权重矩阵为$\mathbf{W} \in \mathbb{R}^{n \times m}$，则输出为$\mathbf{Y} = \mathbf{X} \cdot \mathbf{W} + \mathbf{B}$，其中$\mathbf{Y} \in \mathbb{R}^{batch \times m}$。</p>
+<p>在神经网络中，权重求和通常以矩阵乘法的形式实现。给定输入向量<span class="arithmatex">\(\mathbf{x}\)</span>和权重矩阵<span class="arithmatex">\(\mathbf{W}\)</span>，偏置向量<span class="arithmatex">\(\mathbf{b}\)</span>，全连接层的计算可以表示为：</p>
+<div class="arithmatex">\[\mathbf{y} = \mathbf{W} \cdot \mathbf{x} + \mathbf{b}\]</div>
+<p>对于批量输入，假设输入矩阵为<span class="arithmatex">\(\mathbf{X} \in \mathbb{R}^{batch \times n}\)</span>，权重矩阵为<span class="arithmatex">\(\mathbf{W} \in \mathbb{R}^{n \times m}\)</span>，则输出为<span class="arithmatex">\(\mathbf{Y} = \mathbf{X} \cdot \mathbf{W} + \mathbf{B}\)</span>，其中<span class="arithmatex">\(\mathbf{Y} \in \mathbb{R}^{batch \times m}\)</span>。</p>
 <p>这种矩阵运算形式非常适合硬件加速，因为：
 - 矩阵乘法具有高度的并行性
 - 矩阵乘法是计算密集型操作，适合利用专用计算单元
@@ -1266,10 +1266,10 @@
 <h2 id="_5">思考与练习</h2>
 <ol>
 <li>
-<p><strong>神经元计算</strong>：假设一个神经元有3个输入$x_1=0.5, x_2=-0.3, x_3=0.8$，对应的权重$w_1=0.2, w_2=0.5, w_3=-0.4$，偏置$b=0.1$。分别计算使用ReLU和Sigmoid激活函数的输出。</p>
+<p><strong>神经元计算</strong>：假设一个神经元有3个输入<span class="arithmatex">\(x_1=0.5, x_2=-0.3, x_3=0.8\)</span>，对应的权重<span class="arithmatex">\(w_1=0.2, w_2=0.5, w_3=-0.4\)</span>，偏置<span class="arithmatex">\(b=0.1\)</span>。分别计算使用ReLU和Sigmoid激活函数的输出。</p>
 </li>
 <li>
-<p><strong>梯度计算</strong>：对于简单的单层网络$\hat{y} = \sigma(Wx + b)$，其中$\sigma$是Sigmoid函数，推导损失函数$L = (y - \hat{y})^2$对参数$W$和$b$的梯度。</p>
+<p><strong>梯度计算</strong>：对于简单的单层网络<span class="arithmatex">\(\hat{y} = \sigma(Wx + b)\)</span>，其中<span class="arithmatex">\(\sigma\)</span>是Sigmoid函数，推导损失函数<span class="arithmatex">\(L = (y - \hat{y})^2\)</span>对参数<span class="arithmatex">\(W\)</span>和<span class="arithmatex">\(b\)</span>的梯度。</p>
 </li>
 <li>
 <p><strong>参数量计算</strong>：对于一个全连接层，输入维度为1024，输出维度为256，计算该层的参数数量，并分析参数量对模型存储和计算量的影响。</p>
@@ -1334,6 +1334,10 @@
     
     
       <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

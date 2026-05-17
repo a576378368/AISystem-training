@@ -1231,13 +1231,13 @@
 <li><strong>能耗问题突出</strong>：移动设备依赖电池供电，高计算量的模型会快速消耗电量</li>
 </ul>
 <p><strong>模型压缩（Model Compression）</strong>是一类技术的统称，旨在保持模型性能的前提下，减小模型的存储体积、降低计算复杂度和减少内存占用。模型压缩不是简单地删除模型，而是通过各种技术手段重新表示模型信息，在"表示能力"和"压缩率"之间找到最优平衡。</p>
-<p>模型压缩的目标可以用数学语言描述：给定一个训练好的原始模型$M$和压缩后的模型$M'$，在满足压缩率约束（如参数量减少4倍）的前提下，最小化性能损失（如精度下降不超过1%）。</p>
+<p>模型压缩的目标可以用数学语言描述：给定一个训练好的原始模型<span class="arithmatex">\(M\)</span>和压缩后的模型<span class="arithmatex">\(M'\)</span>，在满足压缩率约束（如参数量减少4倍）的前提下，最小化性能损失（如精度下降不超过1%）。</p>
 <h3 id="212">2.1.2 模型压缩的主要方法</h3>
 <p>模型压缩技术可以分为四大类别：<strong>量化（Quantization）</strong>、<strong>剪枝（Pruning）</strong>、<strong>知识蒸馏（Knowledge Distillation）</strong>和<strong>低秩分解（Low-Rank Factorization）</strong>。</p>
 <p><strong>量化</strong>通过减少模型参数和计算的数值精度来减小模型体积。典型的量化方法将FP32浮点数转换为INT8整数表示，可以将模型体积减少4倍，同时加速推理计算（因为整数运算比浮点运算更快更省电）。</p>
 <p><strong>剪枝</strong>通过删除模型中"不重要"的参数来减小模型规模。这里的"不重要"可以理解为对模型输出影响较小的权重或结构。剪枝可以是粗粒度的（删除整个神经元或卷积核）或细粒度的（删除单个权重连接）。</p>
 <p><strong>知识蒸馏</strong>通过让"学生模型"学习"教师模型"的知识来实现模型压缩。教师模型通常是大而精确的模型，学生模型是小而高效的模型。蒸馏过程中，学生模型不仅学习真实标签，还学习教师模型的输出分布（软标签）。</p>
-<p><strong>低秩分解</strong>通过将大矩阵分解为多个小矩阵的乘积来减少参数量。例如，将一个$1000 \times 1000$的矩阵分解为$1000 \times 100 \times 100 \times 1000$的形式，参数量从100万减少到20万。</p>
+<p><strong>低秩分解</strong>通过将大矩阵分解为多个小矩阵的乘积来减少参数量。例如，将一个<span class="arithmatex">\(1000 \times 1000\)</span>的矩阵分解为<span class="arithmatex">\(1000 \times 100 \times 100 \times 1000\)</span>的形式，参数量从100万减少到20万。</p>
 <p>这四类方法各有优劣，实际应用中经常组合使用以获得更好的压缩效果。</p>
 <h3 id="213">2.1.3 模型压缩的评估指标</h3>
 <p>评估模型压缩的效果需要综合考虑多个维度：</p>
@@ -1266,40 +1266,40 @@
 <p><strong>为什么量化可以压缩模型？</strong></p>
 <p>FP32浮点数占用4字节（32位），而INT8整数占用1字节（8位）。从FP32到INT8，理论上可以将模型体积减少4倍。同时，现代CPU/GPU的整数运算单元比浮点运算单元更高效，可以实现3-4倍的推理加速。</p>
 <p><strong>量化的数学表示</strong></p>
-<p>设原始浮点数据为$r$，量化的整数值为$q$，量化参数包括缩放因子$S$（Scale）和零点$Z$（Zero Point）。</p>
+<p>设原始浮点数据为<span class="arithmatex">\(r\)</span>，量化的整数值为<span class="arithmatex">\(q\)</span>，量化参数包括缩放因子<span class="arithmatex">\(S\)</span>（Scale）和零点<span class="arithmatex">\(Z\)</span>（Zero Point）。</p>
 <p>非对称量化的转换公式为：</p>
-<p>$$q = \text{round}\left(\frac{r}{S}\right) + Z$$</p>
+<div class="arithmatex">\[q = \text{round}\left(\frac{r}{S}\right) + Z\]</div>
 <p>对应的反量化公式为：</p>
-<p>$$r = S \times (q - Z)$$</p>
-<p>对称量化的零点$Z=0$，公式简化为：</p>
-<p>$$q = \text{round}\left(\frac{r}{S}\right)$$</p>
-<p>$$r = S \times q$$</p>
+<div class="arithmatex">\[r = S \times (q - Z)\]</div>
+<p>对称量化的零点<span class="arithmatex">\(Z=0\)</span>，公式简化为：</p>
+<div class="arithmatex">\[q = \text{round}\left(\frac{r}{S}\right)\]</div>
+<div class="arithmatex">\[r = S \times q\]</div>
 <p><strong>量化参数的选择</strong></p>
-<p>量化参数$S$和$Z$的选取直接决定了量化后的数值分布和精度损失。常见的参数选择方法包括：</p>
+<p>量化参数<span class="arithmatex">\(S\)</span>和<span class="arithmatex">\(Z\)</span>的选取直接决定了量化后的数值分布和精度损失。常见的参数选择方法包括：</p>
 <ol>
-<li><strong>MinMax方法</strong>：基于数据的实际范围计算$S$和$Z$</li>
+<li><strong>MinMax方法</strong>：基于数据的实际范围计算<span class="arithmatex">\(S\)</span>和<span class="arithmatex">\(Z\)</span></li>
 </ol>
-<p>$$S = \frac{r_{\max} - r_{\min}}{q_{\max} - q_{\min}}$$</p>
-<p>$$Z = q_{\max} - \frac{r_{\max}}{S}$$</p>
+<div class="arithmatex">\[S = \frac{r_{\max} - r_{\min}}{q_{\max} - q_{\min}}\]</div>
+<div class="arithmatex">\[Z = q_{\max} - \frac{r_{\max}}{S}\]</div>
 <ol>
 <li>
 <p><strong>KL散度方法</strong>：通过最小化量化前后的分布差异来选择参数（TensorRT使用这种方法）</p>
 </li>
 <li>
-<p><strong>阈值校准方法</strong>：选择一个阈值$T$截断极端值，只对$[-\alpha, \alpha]$范围内的数据进行量化</p>
+<p><strong>阈值校准方法</strong>：选择一个阈值<span class="arithmatex">\(T\)</span>截断极端值，只对<span class="arithmatex">\([-\alpha, \alpha]\)</span>范围内的数据进行量化</p>
 </li>
 </ol>
 <h3 id="222">2.2.2 对称量化与非对称量化</h3>
 <p><strong>对称量化（Symmetric Quantization）</strong>的零点固定为0，数据分布在0点两侧。在深度学习中，权重（Weight）的分布通常关于0对称，适合使用对称量化。</p>
-<p>对称量化的数值范围为$[-R, R]$，其中$R$是绝对值最大的元素。缩放因子计算为：</p>
-<p>$$S = \frac{R}{2^{N-1}}$$</p>
-<p>其中$N$是量化位数。对于INT8，$N=8$，所以$S = R / 128$。</p>
+<p>对称量化的数值范围为<span class="arithmatex">\([-R, R]\)</span>，其中<span class="arithmatex">\(R\)</span>是绝对值最大的元素。缩放因子计算为：</p>
+<div class="arithmatex">\[S = \frac{R}{2^{N-1}}\]</div>
+<p>其中<span class="arithmatex">\(N\)</span>是量化位数。对于INT8，<span class="arithmatex">\(N=8\)</span>，所以<span class="arithmatex">\(S = R / 128\)</span>。</p>
 <p>对称量化的优势是实现简单，硬件处理方便；劣势是不能很好地处理非对称分布的数据。</p>
-<p><strong>非对称量化（Asymmetric Quantization）</strong>的零点$Z$可以不为0，可以更好地适应非对称分布的数据。激活值（Activation）的分布通常不是关于0对称的，适合使用非对称量化。</p>
-<p>非对称量化的数值范围为$[r_{\min}, r_{\max}]$，对应的缩放因子为：</p>
-<p>$$S = \frac{r_{\max} - r_{\min}}{2^N - 1}$$</p>
+<p><strong>非对称量化（Asymmetric Quantization）</strong>的零点<span class="arithmatex">\(Z\)</span>可以不为0，可以更好地适应非对称分布的数据。激活值（Activation）的分布通常不是关于0对称的，适合使用非对称量化。</p>
+<p>非对称量化的数值范围为<span class="arithmatex">\([r_{\min}, r_{\max}]\)</span>，对应的缩放因子为：</p>
+<div class="arithmatex">\[S = \frac{r_{\max} - r_{\min}}{2^N - 1}\]</div>
 <p>零点为：</p>
-<p>$$Z = -\text{round}\left(\frac{r_{\min}}{S}\right)$$</p>
+<div class="arithmatex">\[Z = -\text{round}\left(\frac{r_{\min}}{S}\right)\]</div>
 <p>非对称量化的优势是能更充分利用量化后的数值范围，精度损失更小；劣势是实现稍复杂，需要处理零点偏移。</p>
 <p><strong>实际选择建议</strong>：</p>
 <ul>
@@ -1310,17 +1310,17 @@
 <h3 id="223">2.2.3 饱和量化与非饱和量化</h3>
 <p>在将浮点数映射到整数时，有两种策略：<strong>饱和量化（Saturating Quantization）</strong>和<strong>非饱和量化（Non-saturating Quantization）</strong>。</p>
 <p><strong>非饱和量化</strong>直接按照数值的实际比例进行映射，超出范围的数值会被截断：</p>
-<p>$$q = \text{clamp}\left(\text{round}\left(\frac{r}{S}\right), q_{\min}, q_{\max}\right)$$</p>
+<div class="arithmatex">\[q = \text{clamp}\left(\text{round}\left(\frac{r}{S}\right), q_{\min}, q_{\max}\right)\]</div>
 <p>如果数据分布中存在极端值（Outlier），这些极端值会被截断，可能导致信息丢失。</p>
-<p><strong>饱和量化</strong>先用一个阈值$T$截断超出范围的极端值，再进行量化：</p>
-<p>$$r' = \text{clip}(r, -T, T)$$</p>
-<p>$$q = \text{round}\left(\frac{r'}{S}\right)$$</p>
+<p><strong>饱和量化</strong>先用一个阈值<span class="arithmatex">\(T\)</span>截断超出范围的极端值，再进行量化：</p>
+<div class="arithmatex">\[r' = \text{clip}(r, -T, T)\]</div>
+<div class="arithmatex">\[q = \text{round}\left(\frac{r'}{S}\right)\]</div>
 <p>通过截断极端值，可以让剩余大部分数据在量化后有更好的表示精度。对于存在噪声或异常值的数据集，饱和量化通常表现更好。</p>
-<p><strong>阈值$T$的选择</strong>是饱和量化的关键。常用的方法是KL散度校准：遍历不同的阈值，计算原始分布和量化分布之间的KL散度，选择使KL散度最小的阈值作为$T$。</p>
+<p><strong>阈值<span class="arithmatex">\(T\)</span>的选择</strong>是饱和量化的关键。常用的方法是KL散度校准：遍历不同的阈值，计算原始分布和量化分布之间的KL散度，选择使KL散度最小的阈值作为<span class="arithmatex">\(T\)</span>。</p>
 <h3 id="224">2.2.4 量化粒度</h3>
 <p>量化可以在不同的粒度上进行：<strong>逐张量量化（Per-Tensor）</strong>和<strong>逐通道量化（Per-Channel）</strong>。</p>
-<p><strong>逐张量量化</strong>对整个张量使用统一的量化参数。所有元素共享同一个缩放因子$S$和零点$Z$。这是最简单的量化方式，实现开销最小，但可能因为不同通道/神经元数值分布差异大而导致精度损失。</p>
-<p><strong>逐通道量化</strong>对张量的不同通道（如卷积的输出通道）使用不同的量化参数。每个通道有独立的$S$和$Z$。逐通道量化能更好地捕捉不同通道的数值分布差异，通常能获得更好的精度，但实现开销稍大。</p>
+<p><strong>逐张量量化</strong>对整个张量使用统一的量化参数。所有元素共享同一个缩放因子<span class="arithmatex">\(S\)</span>和零点<span class="arithmatex">\(Z\)</span>。这是最简单的量化方式，实现开销最小，但可能因为不同通道/神经元数值分布差异大而导致精度损失。</p>
+<p><strong>逐通道量化</strong>对张量的不同通道（如卷积的输出通道）使用不同的量化参数。每个通道有独立的<span class="arithmatex">\(S\)</span>和<span class="arithmatex">\(Z\)</span>。逐通道量化能更好地捕捉不同通道的数值分布差异，通常能获得更好的精度，但实现开销稍大。</p>
 <p>对于卷积神经网络：</p>
 <ul>
 <li>权重（Weight）：逐通道量化（Per-Channel），每个输出通道有独立的量化参数</li>
@@ -1334,7 +1334,7 @@
 <li><strong>加载预训练模型</strong>：读取FP32精度的训练好的模型</li>
 <li><strong>准备校准数据</strong>：收集一小部分有代表性的输入数据（通常500-1000个样本）</li>
 <li><strong>执行模型推理</strong>：用校准数据运行模型前向传播，收集各层输出的数值分布</li>
-<li><strong>计算量化参数</strong>：根据数值分布确定每层的量化参数（$S$和$Z$）</li>
+<li><strong>计算量化参数</strong>：根据数值分布确定每层的量化参数（<span class="arithmatex">\(S\)</span>和<span class="arithmatex">\(Z\)</span>）</li>
 <li><strong>执行量化转换</strong>：将FP32参数转换为INT8表示</li>
 <li><strong>验证量化精度</strong>：在测试集上评估量化后模型的精度</li>
 </ol>
@@ -1361,15 +1361,15 @@
 <p>量化参数校准是PTQ中最关键的步骤，直接决定量化精度。</p>
 <p><strong>基于数值范围的校准（MinMax Calibration）</strong></p>
 <p>最简单的校准方法，基于数据的实际数值范围：</p>
-<p>$$S = \frac{r_{\max} - r_{\min}}{q_{\max} - q_{\min}}$$</p>
-<p>$$Z = q_{\max} - \frac{r_{\max}}{S}$$</p>
+<div class="arithmatex">\[S = \frac{r_{\max} - r_{\min}}{q_{\max} - q_{\min}}\]</div>
+<div class="arithmatex">\[Z = q_{\max} - \frac{r_{\max}}{S}\]</div>
 <p>这种方法简单但容易受到极端值影响。如果数据中存在少量极端值，数值范围会被拉大，导致大部分数据的量化精度下降。</p>
 <p><strong>基于直方图的校准（Histogram Calibration）</strong></p>
 <p>将数据分布整理为直方图，选择一个最优阈值进行截断和量化：</p>
 <ol>
 <li>收集数据的直方图分布</li>
-<li>遍历不同的阈值$T$，计算截断后的KL散度</li>
-<li>选择使KL散度最小的$T$作为截断阈值</li>
+<li>遍历不同的阈值<span class="arithmatex">\(T\)</span>，计算截断后的KL散度</li>
+<li>选择使KL散度最小的<span class="arithmatex">\(T\)</span>作为截断阈值</li>
 <li>根据阈值计算量化参数</li>
 </ol>
 <p>KL散度校准是TensorRT等推理引擎使用的方法，通常能获得比MinMax更好的精度。</p>
@@ -1436,7 +1436,7 @@
 </code></pre></div>
 <p>虽然这个操作在数学上应该恒等于输入，但由于浮点舍入误差，实际上引入了量化噪声。</p>
 <p>在反向传播中，梯度需要近似传递。由于四舍五入操作的梯度在大多数点为0或1，QAT使用<strong>直通估计器（Straight-Through Estimator，STE）</strong>来近似梯度：</p>
-<p>$$\frac{\partial \text{FakeQuant}(x)}{\partial x} \approx 1$$</p>
+<div class="arithmatex">\[\frac{\partial \text{FakeQuant}(x)}{\partial x} \approx 1\]</div>
 <p>STE允许梯度畅通无阻地通过伪量化节点，使参数能够正常更新。</p>
 <h3 id="243-qat">2.4.3 QAT训练流程</h3>
 <p>QAT的训练流程如下：</p>
@@ -1502,8 +1502,8 @@
 <h3 id="251">2.5.1 剪枝概述</h3>
 <p><strong>模型剪枝（Pruning）</strong>通过删除模型中"不重要"的参数来减小模型规模。与量化通过改变数值精度来压缩模型不同，剪枝直接减少参数数量。</p>
 <p>剪枝的理论基础是神经网络的<strong>过参数化（Over-parameterization）</strong>现象。研究表明，很多训练好的神经网络中存在大量冗余的参数。这些参数对模型输出的贡献很小甚至没有贡献，可以被安全地删除而不显著影响模型精度。</p>
-<p>剪枝的形式化描述：给定原始参数向量$\mathbf{w}$和目标稀疏度$k$，找到一个稀疏参数向量$\mathbf{w}'$满足：</p>
-<p>$$|\mathbf{w}'|_0 \leq k$$</p>
+<p>剪枝的形式化描述：给定原始参数向量<span class="arithmatex">\(\mathbf{w}\)</span>和目标稀疏度<span class="arithmatex">\(k\)</span>，找到一个稀疏参数向量<span class="arithmatex">\(\mathbf{w}'\)</span>满足：</p>
+<div class="arithmatex">\[\|\mathbf{w}'\|_0 \leq k\]</div>
 <p>使得在验证集上的性能损失最小。</p>
 <h3 id="252">2.5.2 非结构化剪枝</h3>
 <p><strong>非结构化剪枝（Unstructured Pruning）</strong>以单个参数为单位进行剪枝，即随机地将某些权重设为0。这种方法可以达到很高的压缩率（稀疏度），但需要特殊的硬件支持才能实际加速推理。</p>
@@ -1540,7 +1540,7 @@
 <li>实际加速效果与理论压缩率接近</li>
 </ul>
 <p><strong>卷积核剪枝（Kernel/Filter Pruning）</strong></p>
-<p>删除整个卷积核是最常见的结构化剪枝形式。设原始卷积层有$N$个卷积核，剪枝后保留$M &lt; N$个卷积核。</p>
+<p>删除整个卷积核是最常见的结构化剪枝形式。设原始卷积层有<span class="arithmatex">\(N\)</span>个卷积核，剪枝后保留<span class="arithmatex">\(M &lt; N\)</span>个卷积核。</p>
 <p>卷积核剪枝的影响：</p>
 <ul>
 <li>输出特征图的通道数减少</li>
@@ -1561,9 +1561,9 @@
 <p><strong>基于重要性的剪枝</strong></p>
 <p>最简单的方法是基于某种重要性指标对结构进行排序，然后剪掉最不重要的部分。常用指标包括：</p>
 <ul>
-<li><strong>权重的L1范数</strong>：$|w|_1 = \sum |w_i|$，L1范数小的权重被认为不重要</li>
-<li><strong>权重的L2范数</strong>：$|w|_2 = \sqrt{\sum w_i^2}$，类似L1</li>
-<li><strong>BatchNorm的缩放因子$\gamma$</strong>：训练时对通道添加缩放因子，$\gamma$小的通道被剪枝</li>
+<li><strong>权重的L1范数</strong>：<span class="arithmatex">\(\|w\|_1 = \sum |w_i|\)</span>，L1范数小的权重被认为不重要</li>
+<li><strong>权重的L2范数</strong>：<span class="arithmatex">\(\|w\|_2 = \sqrt{\sum w_i^2}\)</span>，类似L1</li>
+<li><strong>BatchNorm的缩放因子<span class="arithmatex">\(\gamma\)</span></strong>：训练时对通道添加缩放因子，<span class="arithmatex">\(\gamma\)</span>小的通道被剪枝</li>
 <li><strong>Taylor展开近似</strong>：近似计算移除参数对损失函数的影响</li>
 </ul>
 <p><strong>基于正则化的剪枝</strong></p>
@@ -1616,21 +1616,21 @@
 <p>Hinton等人提出的经典算法，流程如下：</p>
 <ol>
 <li>用训练数据同时训练教师模型和学生模型</li>
-<li>教师模型生成软标签（通过高温度$T$的softmax）</li>
+<li>教师模型生成软标签（通过高温度<span class="arithmatex">\(T\)</span>的softmax）</li>
 <li>学生模型同时学习硬标签和软标签</li>
 </ol>
 <p>损失函数为：</p>
-<p>$$\mathcal{L} = \alpha \mathcal{L}<em>{soft} + (1-\alpha) \mathcal{L}</em>{hard}$$</p>
+<div class="arithmatex">\[\mathcal{L} = \alpha \mathcal{L}_{soft} + (1-\alpha) \mathcal{L}_{hard}\]</div>
 <p>其中：</p>
 <ul>
-<li>$\mathcal{L}_{soft}$：学生与教师软标签的交叉熵</li>
-<li>$\mathcal{L}_{hard}$：学生与真实标签的交叉熵</li>
-<li>$\alpha$：两类损失的权重</li>
+<li><span class="arithmatex">\(\mathcal{L}_{soft}\)</span>：学生与教师软标签的交叉熵</li>
+<li><span class="arithmatex">\(\mathcal{L}_{hard}\)</span>：学生与真实标签的交叉熵</li>
+<li><span class="arithmatex">\(\alpha\)</span>：两类损失的权重</li>
 </ul>
-<p><strong>温度参数$T$的作用</strong></p>
+<p><strong>温度参数<span class="arithmatex">\(T\)</span>的作用</strong></p>
 <p>标准softmax将logits转换为概率：</p>
-<p>$$q_i = \frac{e^{z_i/T}}{\sum_j e^{z_j/T}}$$</p>
-<p>当$T=1$时，就是标准softmax。当$T &gt; 1$时，概率分布变得更"软"（Smooth），各类别之间的概率差异被缩小。</p>
+<div class="arithmatex">\[q_i = \frac{e^{z_i/T}}{\sum_j e^{z_j/T}}\]</div>
+<p>当<span class="arithmatex">\(T=1\)</span>时，就是标准softmax。当<span class="arithmatex">\(T &gt; 1\)</span>时，概率分布变得更"软"（Smooth），各类别之间的概率差异被缩小。</p>
 <p>高温下的软标签能更好地揭示类别之间的相似性。例如，"狗"和"狼"在高温下概率会比较接近，而"狗"和"汽车"则相差很大。</p>
 <p><strong>在线蒸馏（Online Distillation）</strong></p>
 <p>在线蒸馏中，教师和学生模型同时训练、同时更新。教师模型可以是多个模型的ensemble，也可以是和学生模型相同结构的多个模型。</p>
@@ -1649,7 +1649,7 @@
 <li><strong>准备教师模型</strong>：通常使用在大数据集上预训练好的高精度模型</li>
 <li><strong>准备学生模型</strong>：设计比教师模型更简单的结构</li>
 <li><strong>准备训练数据</strong>：可以使用与训练教师相同的数据集</li>
-<li><strong>设置蒸馏温度</strong>：通常$T=2-20$，需要调试选择</li>
+<li><strong>设置蒸馏温度</strong>：通常<span class="arithmatex">\(T=2-20\)</span>，需要调试选择</li>
 <li><strong>执行蒸馏训练</strong>：同时用硬标签和软标签监督学生模型</li>
 <li><strong>评估学生模型</strong>：在测试集上评估蒸馏后模型的精度</li>
 </ol>
@@ -1698,13 +1698,13 @@
         <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 </code></pre></div>
 <p><strong>蒸馏温度的选择</strong></p>
-<p>温度$T$的选择影响软标签的分布：</p>
+<p>温度<span class="arithmatex">\(T\)</span>的选择影响软标签的分布：</p>
 <ul>
-<li>$T=1$：标准softmax，不做任何"软化"</li>
-<li>$T=2-5$：轻度软化，类别间差异仍然明显</li>
-<li>$T=10-20$：高度软化，几乎所有类别都有一定概率</li>
+<li><span class="arithmatex">\(T=1\)</span>：标准softmax，不做任何"软化"</li>
+<li><span class="arithmatex">\(T=2-5\)</span>：轻度软化，类别间差异仍然明显</li>
+<li><span class="arithmatex">\(T=10-20\)</span>：高度软化，几乎所有类别都有一定概率</li>
 </ul>
-<p>建议从$T=4$开始尝试，根据学生模型精度调整。</p>
+<p>建议从<span class="arithmatex">\(T=4\)</span>开始尝试，根据学生模型精度调整。</p>
 <h2 id="27">2.7 模型压缩综合应用</h2>
 <h3 id="271">2.7.1 量化与剪枝的结合</h3>
 <p>量化和剪枝是从不同维度压缩模型的方法，可以组合使用以获得更高的压缩率。</p>
@@ -1766,7 +1766,7 @@
 <p>如何确定每个层的剪枝率？</p>
 </li>
 <li>
-<p><strong>实践应用</strong>：在知识蒸馏中，温度参数$T$的作用是什么？$T$过大或过小会有什么影响？</p>
+<p><strong>实践应用</strong>：在知识蒸馏中，温度参数<span class="arithmatex">\(T\)</span>的作用是什么？<span class="arithmatex">\(T\)</span>过大或过小会有什么影响？</p>
 </li>
 <li>
 <p><strong>综合分析</strong>：假设你需要在边缘设备上部署一个目标检测模型，该设备只有INT8硬件加速支持，且内存有限。请设计一个综合使用量化、剪枝和知识蒸馏的压缩方案。</p>
@@ -1828,6 +1828,10 @@
     
     
       <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

@@ -1399,20 +1399,20 @@
 <h3 id="332">3.3.2 张量并行</h3>
 <p>张量并行将单层计算（如矩阵乘法）的操作数分割到多个设备上，实现单层的并行计算。</p>
 <p><strong>矩阵乘法的张量并行</strong>：</p>
-<p>以矩阵乘法 $Y = X \cdot W$ 为例：
-- 将 $W$ 按列分割成 $[W_1, W_2]$，分别放在GPU0和GPU1上
-- $X$ 同时发送到两个GPU
-- 各GPU计算部分结果 $Y_1 = X \cdot W_1$, $Y_2 = X \cdot W_2$
+<p>以矩阵乘法 <span class="arithmatex">\(Y = X \cdot W\)</span> 为例：
+- 将 <span class="arithmatex">\(W\)</span> 按列分割成 <span class="arithmatex">\([W_1, W_2]\)</span>，分别放在GPU0和GPU1上
+- <span class="arithmatex">\(X\)</span> 同时发送到两个GPU
+- 各GPU计算部分结果 <span class="arithmatex">\(Y_1 = X \cdot W_1\)</span>, <span class="arithmatex">\(Y_2 = X \cdot W_2\)</span>
 - 通过AllGather汇总完整结果</p>
 <p><strong>Transformer中的张量并行</strong>：</p>
 <p>Transformer的主要计算是矩阵乘法和注意力机制。</p>
 <p>对于MLP层：
-- 第一个线性层的权重矩阵 $W_1$ 按列分割
-- 第二个线性层的权重矩阵 $W_2$ 按行分割
+- 第一个线性层的权重矩阵 <span class="arithmatex">\(W_1\)</span> 按列分割
+- 第二个线性层的权重矩阵 <span class="arithmatex">\(W_2\)</span> 按行分割
 - 中间结果通过AllReduce同步</p>
 <p>对于注意力层：
 - Q、K、V矩阵按列分割
-- 输出投影 $W_O$ 按行分割
+- 输出投影 <span class="arithmatex">\(W_O\)</span> 按行分割
 - 各GPU计算注意力的部分结果后汇总</p>
 <h3 id="333">3.3.3 张量并行的通信模式</h3>
 <p>张量并行的通信发生在每层计算之后，需要仔细考虑通信开销。</p>
@@ -1448,7 +1448,7 @@
 <p>Gpipe是Google提出的流水线并行方案，通过<strong>微批次（micro-batch）</strong>和<strong>重计算（Recomputation）</strong>来实现高效的流水线。</p>
 <p><strong>微批次处理</strong>：</p>
 <p>Gpipe将mini-batch进一步分成更小的micro-batch：
-- 设mini-batch大小为 $m$，分成 $n$ 个micro-batch
+- 设mini-batch大小为 <span class="arithmatex">\(m\)</span>，分成 <span class="arithmatex">\(n\)</span> 个micro-batch
 - 每个micro-batch的处理时间更短，便于流水线调度</p>
 <p><strong>F-then-B策略</strong>：</p>
 <p>Gpipe采用先前向（F）后反向（B）的调度策略：
@@ -1774,6 +1774,10 @@
     
     
       <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

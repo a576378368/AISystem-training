@@ -1277,36 +1277,36 @@
 <h2 id="42">4.2 自注意力机制详解</h2>
 <h3 id="421-scaled-dot-product-attention">4.2.1 Scaled Dot-Product Attention</h3>
 <p>Dot-Product Attention也称为自注意力，是Transformer的基础组件。给定查询（Query）、键（Key）和值（Value）向量，自注意力的计算如下：</p>
-<p>$$
+<div class="arithmatex">\[
 Attention(Q, K, V) = softmax\left(\frac{QK^T}{\sqrt{d_k}}\right)V
-$$</p>
+\]</div>
 <p>其中：
-- $Q \in \mathbb{R}^{n \times d_k}$：查询矩阵
-- $K \in \mathbb{R}^{m \times d_k}$：键矩阵
-- $V \in \mathbb{R}^{m \times d_v}$：值矩阵
-- $d_k$是键向量的维度
-- $\sqrt{d_k}$是缩放因子，防止点积值过大导致梯度消失</p>
+- <span class="arithmatex">\(Q \in \mathbb{R}^{n \times d_k}\)</span>：查询矩阵
+- <span class="arithmatex">\(K \in \mathbb{R}^{m \times d_k}\)</span>：键矩阵
+- <span class="arithmatex">\(V \in \mathbb{R}^{m \times d_v}\)</span>：值矩阵
+- <span class="arithmatex">\(d_k\)</span>是键向量的维度
+- <span class="arithmatex">\(\sqrt{d_k}\)</span>是缩放因子，防止点积值过大导致梯度消失</p>
 <p><strong>为什么需要缩放因子？</strong></p>
-<p>当$d_k$较大时，$QK^T$的点积值方差会变大，可能使Softmax函数进入饱和区域（梯度接近0）。缩放因子$\sqrt{d_k}$使点积的方差回归到1，保证梯度稳定。</p>
+<p>当<span class="arithmatex">\(d_k\)</span>较大时，<span class="arithmatex">\(QK^T\)</span>的点积值方差会变大，可能使Softmax函数进入饱和区域（梯度接近0）。缩放因子<span class="arithmatex">\(\sqrt{d_k}\)</span>使点积的方差回归到1，保证梯度稳定。</p>
 <p><img alt="注意力机制结构" src="../../images/02Hardware/01Foundation/images/02ArchSlim07.png" /></p>
 <h3 id="422">4.2.2 自注意力的计算过程</h3>
 <p>自注意力的计算过程可以分解为以下步骤：</p>
 <ol>
 <li>
-<p><strong>线性变换</strong>：对输入$X$分别进行三个线性变换得到$Q$、$K$、$V$：
-   $$Q = XW_Q, \quad K = XW_K, \quad V = XW_V$$</p>
+<p><strong>线性变换</strong>：对输入<span class="arithmatex">\(X\)</span>分别进行三个线性变换得到<span class="arithmatex">\(Q\)</span>、<span class="arithmatex">\(K\)</span>、<span class="arithmatex">\(V\)</span>：
+   $<span class="arithmatex">\(Q = XW_Q, \quad K = XW_K, \quad V = XW_V\)</span>$</p>
 </li>
 <li>
-<p><strong>计算注意力分数</strong>：$QK^T$衡量Query和Key之间的相关性</p>
+<p><strong>计算注意力分数</strong>：<span class="arithmatex">\(QK^T\)</span>衡量Query和Key之间的相关性</p>
 </li>
 <li>
-<p><strong>缩放</strong>：除以$\sqrt{d_k}$</p>
+<p><strong>缩放</strong>：除以<span class="arithmatex">\(\sqrt{d_k}\)</span></p>
 </li>
 <li>
 <p><strong>Softmax</strong>：获得注意力权重</p>
 </li>
 <li>
-<p><strong>加权求和</strong>：用注意力权重对$V$加权求和</p>
+<p><strong>加权求和</strong>：用注意力权重对<span class="arithmatex">\(V\)</span>加权求和</p>
 </li>
 </ol>
 <h3 id="423">4.2.3 自注意力的矩阵形式</h3>
@@ -1338,18 +1338,18 @@ $$</p>
 <h2 id="43">4.3 多头注意力机制</h2>
 <h3 id="431">4.3.1 多头注意力的原理</h3>
 <p>多头注意力机制是在自注意力机制的基础上发展起来的，是自注意力机制的变体，旨在增强模型的表达能力和泛化能力。它通过使用多个独立的注意力头，分别计算注意力权重，并将它们的结果进行拼接或加权求和，从而获得更丰富的表示。</p>
-<p>每个注意力头有独立的$W_Q^i, W_K^i, W_V^i$参数，允许模型在不同的子空间学习不同的注意力模式。</p>
+<p>每个注意力头有独立的<span class="arithmatex">\(W_Q^i, W_K^i, W_V^i\)</span>参数，允许模型在不同的子空间学习不同的注意力模式。</p>
 <h3 id="432">4.3.2 多头注意力的计算</h3>
-<p>$$
+<div class="arithmatex">\[
 \begin{aligned}
-MultiHead(Q, K, V) &amp;= Concat(head_1, head_2, ..., head_h)W^O \
+MultiHead(Q, K, V) &amp;= Concat(head_1, head_2, ..., head_h)W^O \\
 head_i &amp;= Attention(QW_Q^i, KW_K^i, VW_V^i)
 \end{aligned}
-$$</p>
+\]</div>
 <p>其中：
-- $h$是注意力头的数量
-- $d_k = d_{model}/h$是每个头的维度
-- $W^O \in \mathbb{R}^{hd_v \times d_{model}}$是输出投影矩阵</p>
+- <span class="arithmatex">\(h\)</span>是注意力头的数量
+- <span class="arithmatex">\(d_k = d_{model}/h\)</span>是每个头的维度
+- <span class="arithmatex">\(W^O \in \mathbb{R}^{hd_v \times d_{model}}\)</span>是输出投影矩阵</p>
 <h3 id="433">4.3.3 多头注意力的代码实现</h3>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
@@ -1392,15 +1392,15 @@ $$</p>
 <hr />
 <h2 id="44-transformer">4.4 Transformer架构</h2>
 <h3 id="441">4.4.1 编码器结构</h3>
-<p>Transformer的编码器（Encoder）由$N$个相同的层堆叠而成，每层包含两个子层：</p>
+<p>Transformer的编码器（Encoder）由<span class="arithmatex">\(N\)</span>个相同的层堆叠而成，每层包含两个子层：</p>
 <ol>
 <li><strong>多头自注意力层</strong>：对输入序列进行自注意力计算</li>
 <li><strong>前馈神经网络</strong>：包含两个线性变换和ReLU激活</li>
 </ol>
 <p>每个子层都使用残差连接（Skip Connection）和层归一化（Layer Normalization）：
-$$Output = LayerNorm(x + Sublayer(x))$$</p>
+$<span class="arithmatex">\(Output = LayerNorm(x + Sublayer(x))\)</span>$</p>
 <h3 id="442">4.4.2 解码器结构</h3>
-<p>Transformer的解码器（Decoder）同样由$N$个相同的层堆叠而成，每层包含三个子层：</p>
+<p>Transformer的解码器（Decoder）同样由<span class="arithmatex">\(N\)</span>个相同的层堆叠而成，每层包含三个子层：</p>
 <ol>
 <li><strong>掩码多头自注意力层</strong>：确保预测时只能看到之前的输出</li>
 <li><strong>编码器-解码器注意力层</strong>：Query来自解码器，Key和Value来自编码器</li>
@@ -1408,19 +1408,19 @@ $$Output = LayerNorm(x + Sublayer(x))$$</p>
 </ol>
 <h3 id="443">4.4.3 位置编码</h3>
 <p>由于Transformer没有循环结构，无法直接获取序列的位置信息，因此需要显式添加位置编码：</p>
-<p>$$
+<div class="arithmatex">\[
 \begin{aligned}
-PE_{(pos, 2i)} &amp;= \sin\left(\frac{pos}{10000^{2i/d_{model}}}\right) \
+PE_{(pos, 2i)} &amp;= \sin\left(\frac{pos}{10000^{2i/d_{model}}}\right) \\
 PE_{(pos, 2i+1)} &amp;= \cos\left(\frac{pos}{10000^{2i/d_{model}}}\right)
 \end{aligned}
-$$</p>
+\]</div>
 <p>位置编码可以采用正弦/余弦形式，也可以采用可学习的位置嵌入。</p>
 <hr />
 <h2 id="45-transformer">4.5 Transformer的计算特性</h2>
 <h3 id="451">4.5.1 自注意力的计算复杂度</h3>
-<p>自注意力的计算复杂度为$O(n^2 \cdot d)$，其中：
-- $n$是序列长度
-- $d$是模型的维度</p>
+<p>自注意力的计算复杂度为<span class="arithmatex">\(O(n^2 \cdot d)\)</span>，其中：
+- <span class="arithmatex">\(n\)</span>是序列长度
+- <span class="arithmatex">\(d\)</span>是模型的维度</p>
 <p>这意味着：
 - 对于短序列，自注意力高效且能捕捉全局依赖
 - 对于长序列（如长文档或视频），计算量和内存需求爆炸性增长</p>
@@ -1430,7 +1430,7 @@ $$</p>
 - 不需要沿时间轴顺序传递隐藏状态
 - 大大加速了训练过程</p>
 <h3 id="453">4.5.3 长距离依赖的路径长度</h3>
-<p>Transformer中任意两个位置之间的依赖路径长度是$O(1)$，而RNN中是$O(n)$。这使得Transformer能够更高效地学习长距离依赖。</p>
+<p>Transformer中任意两个位置之间的依赖路径长度是<span class="arithmatex">\(O(1)\)</span>，而RNN中是<span class="arithmatex">\(O(n)\)</span>。这使得Transformer能够更高效地学习长距离依赖。</p>
 <hr />
 <h2 id="46-transformer">4.6 Transformer的变体与应用</h2>
 <h3 id="461-bert-transformer">4.6.1 BERT - 双向Transformer编码器</h3>
@@ -1506,10 +1506,10 @@ $$</p>
 <hr />
 <h2 id="49">4.9 未来展望</h2>
 <h3 id="491">4.9.1 高效注意力机制</h3>
-<p>为了解决自注意力的$O(n^2)$复杂度问题，研究者提出了多种高效注意力机制：</p>
+<p>为了解决自注意力的<span class="arithmatex">\(O(n^2)\)</span>复杂度问题，研究者提出了多种高效注意力机制：</p>
 <ol>
 <li><strong>Sparse Attention</strong>：如Longformer、BigBird，使用稀疏模式近似全注意力</li>
-<li><strong>Linear Attention</strong>：如Performer、Linear Transformer，将复杂度降为$O(n)$</li>
+<li><strong>Linear Attention</strong>：如Performer、Linear Transformer，将复杂度降为<span class="arithmatex">\(O(n)\)</span></li>
 <li><strong>FlashAttention</strong>：利用GPU内存层次优化，减少内存读写</li>
 </ol>
 <h3 id="492">4.9.2 多模态融合</h3>
@@ -1539,7 +1539,7 @@ $$</p>
 <p><strong>Transformer架构</strong>：编码器-解码器结构，配合残差连接、层归一化、位置编码等组件。</p>
 </li>
 <li>
-<p><strong>计算特性</strong>：$O(n^2)$复杂度、全并行计算、$O(1)$长距离依赖路径，对AI芯片设计有重要影响。</p>
+<p><strong>计算特性</strong>：<span class="arithmatex">\(O(n^2)\)</span>复杂度、全并行计算、<span class="arithmatex">\(O(1)\)</span>长距离依赖路径，对AI芯片设计有重要影响。</p>
 </li>
 <li>
 <p><strong>应用领域</strong>：从NLP扩展到计算机视觉、多模态等领域，成为现代AI的基础架构。</p>
@@ -1552,13 +1552,13 @@ $$</p>
 <h2 id="_2">思考与练习</h2>
 <ol>
 <li>
-<p><strong>注意力计算</strong>：假设输入序列长度为512，模型维度$d_{model}=768$，注意力头数$h=12$。计算单层自注意力的计算量（MACs）和参数量。</p>
+<p><strong>注意力计算</strong>：假设输入序列长度为512，模型维度<span class="arithmatex">\(d_{model}=768\)</span>，注意力头数<span class="arithmatex">\(h=12\)</span>。计算单层自注意力的计算量（MACs）和参数量。</p>
 </li>
 <li>
 <p><strong>与RNN对比</strong>：比较RNN和Transformer在处理长序列时的优缺点。讨论为什么Transformer在长序列任务中表现更好。</p>
 </li>
 <li>
-<p><strong>缩放因子</strong>：解释为什么注意力机制需要除以$\sqrt{d_k}$。如果不做缩放会产生什么问题？</p>
+<p><strong>缩放因子</strong>：解释为什么注意力机制需要除以<span class="arithmatex">\(\sqrt{d_k}\)</span>。如果不做缩放会产生什么问题？</p>
 </li>
 <li>
 <p><strong>多头注意力的作用</strong>：分析多头注意力相比单头注意力的优势。为什么需要多个注意力头而不是一个维度更高的单头注意力？</p>
@@ -1620,6 +1620,10 @@ $$</p>
     
     
       <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

@@ -1183,15 +1183,15 @@
 <p><strong>参数共享</strong>：卷积层的参数共享是指在整个输入数据上使用相同的卷积核进行卷积操作，这样可以大大减少模型的参数数量，从而减少过拟合的风险并提高模型的泛化能力。</p>
 <p><strong>局部连接</strong>：与全连接层的全局连接不同，卷积层只连接输入数据的局部区域。这种局部连接特性使得卷积层能够捕捉局部特征，如边缘、纹理等。</p>
 <h3 id="213">2.1.3 卷积层的数学表示</h3>
-<p>对于输入特征图$I$，卷积核$K$，卷积操作可以表示为：</p>
-<p>$$(I * K)<em>{i,j} = \sum_m \sum_n I</em>{i+m, j+n} \cdot K_{m,n}$$</p>
+<p>对于输入特征图<span class="arithmatex">\(I\)</span>，卷积核<span class="arithmatex">\(K\)</span>，卷积操作可以表示为：</p>
+<div class="arithmatex">\[(I * K)_{i,j} = \sum_m \sum_n I_{i+m, j+n} \cdot K_{m,n}\]</div>
 <p>对于具有多个输入通道和多个输出通道的卷积层：</p>
-<p>$$Y_{c_{out}, i, j} = \sum_{c_{in}} \sum_{m} \sum_{n} K_{c_{out}, c_{in}, m, n} \cdot X_{c_{in}, i+m, j+n} + b_{c_{out}}$$</p>
+<div class="arithmatex">\[Y_{c_{out}, i, j} = \sum_{c_{in}} \sum_{m} \sum_{n} K_{c_{out}, c_{in}, m, n} \cdot X_{c_{in}, i+m, j+n} + b_{c_{out}}\]</div>
 <p>其中：
-- $X$是输入特征图，维度为$(C_{in}, H_{in}, W_{in})$
-- $K$是卷积核，维度为$(C_{out}, C_{in}, K_h, K_w)$
-- $Y$是输出特征图，维度为$(C_{out}, H_{out}, W_{out})$
-- $b$是偏置</p>
+- <span class="arithmatex">\(X\)</span>是输入特征图，维度为<span class="arithmatex">\((C_{in}, H_{in}, W_{in})\)</span>
+- <span class="arithmatex">\(K\)</span>是卷积核，维度为<span class="arithmatex">\((C_{out}, C_{in}, K_h, K_w)\)</span>
+- <span class="arithmatex">\(Y\)</span>是输出特征图，维度为<span class="arithmatex">\((C_{out}, H_{out}, W_{out})\)</span>
+- <span class="arithmatex">\(b\)</span>是偏置</p>
 <hr />
 <h2 id="22">2.2 卷积层的详细计算过程</h2>
 <h3 id="221">2.2.1 单通道卷积示例</h3>
@@ -1208,32 +1208,32 @@
 - 在输入周围填充0，使输出尺寸与输入尺寸相同
 - 输出为5x5的特征图</p>
 <h3 id="222">2.2.2 多通道卷积</h3>
-<p>实际应用中，输入图像通常是RGB三通道图像。设输入有$C_{in}$个通道，输出有$C_{out}$个通道：</p>
+<p>实际应用中，输入图像通常是RGB三通道图像。设输入有<span class="arithmatex">\(C_{in}\)</span>个通道，输出有<span class="arithmatex">\(C_{out}\)</span>个通道：</p>
 <ol>
-<li>每个输出通道有独立的卷积核，维度为$(C_{in}, K_h, K_w)$</li>
+<li>每个输出通道有独立的卷积核，维度为<span class="arithmatex">\((C_{in}, K_h, K_w)\)</span></li>
 <li>输入通道与对应卷积核进行卷积，然后所有通道结果相加</li>
 <li>加上该输出通道的偏置，通过激活函数得到最终输出</li>
 </ol>
-<p><strong>参数数量</strong>：对于卷积层，参数数量为$(K_h \times K_w \times C_{in} + 1) \times C_{out}$</p>
+<p><strong>参数数量</strong>：对于卷积层，参数数量为<span class="arithmatex">\((K_h \times K_w \times C_{in} + 1) \times C_{out}\)</span></p>
 <h3 id="223-flops">2.2.3 卷积层的FLOPs计算</h3>
 <p>卷积层的浮点运算数（FLOPs）计算公式为：</p>
-<p>$$FLOPs = 2 \cdot H_{out} \cdot W_{out} \cdot C_{in} \cdot K_h \cdot K_w \cdot C_{out}$$</p>
+<div class="arithmatex">\[FLOPs = 2 \cdot H_{out} \cdot W_{out} \cdot C_{in} \cdot K_h \cdot K_w \cdot C_{out}\]</div>
 <p>其中：
-- $H_{out}, W_{out}$是输出特征图的空间尺寸
-- $C_{in}$是输入通道数
-- $K_h, K_w$是卷积核尺寸
-- $C_{out}$是输出通道数
+- <span class="arithmatex">\(H_{out}, W_{out}\)</span>是输出特征图的空间尺寸
+- <span class="arithmatex">\(C_{in}\)</span>是输入通道数
+- <span class="arithmatex">\(K_h, K_w\)</span>是卷积核尺寸
+- <span class="arithmatex">\(C_{out}\)</span>是输出通道数
 - 因子2是因为每次乘加运算包含一次乘法和一次加法</p>
 <hr />
 <h2 id="23">2.3 池化操作</h2>
 <p>在卷积层之后通常会使用池化层来减小特征图的尺寸并提取最重要的特征。池化操作通过对局部区域进行下采样来减少数据量和计算量，同时提供一定的平移不变性。</p>
 <h3 id="231-max-pooling">2.3.1 最大池化（Max Pooling）</h3>
 <p>最大池化取局部区域中的最大值：</p>
-<p>$$Y_{i,j} = \max_{(m,n) \in \text{patch}} X_{m,n}$$</p>
+<div class="arithmatex">\[Y_{i,j} = \max_{(m,n) \in \text{patch}} X_{m,n}\]</div>
 <p>最大池化能够保留显著特征，对小的平移不敏感。</p>
 <h3 id="232-average-pooling">2.3.2 平均池化（Average Pooling）</h3>
 <p>平均池化取局部区域的平均值：</p>
-<p>$$Y_{i,j} = \frac{1}{k_h \times k_w}\sum_{(m,n) \in \text{patch}} X_{m,n}$$</p>
+<div class="arithmatex">\[Y_{i,j} = \frac{1}{k_h \times k_w}\sum_{(m,n) \in \text{patch}} X_{m,n}\]</div>
 <p>平均池化能够保留区域的整体信息，产生更平滑的特征表示。</p>
 <h3 id="233">2.3.3 全局池化</h3>
 <p>全局池化将整个特征图压缩为一个值，常用于网络的最后阶段：</p>
@@ -1270,7 +1270,7 @@
 - 使信息能够直接跨层传递
 - 允许训练非常深的网络（152层甚至更多）
 - 大幅提升了模型性能</p>
-<p>残差连接的数学形式：$\mathbf{y} = \mathcal{F}(\mathbf{x}) + \mathbf{x}$，其中$\mathcal{F}$是卷积层的映射，$\mathbf{x}$是输入。</p>
+<p>残差连接的数学形式：<span class="arithmatex">\(\mathbf{y} = \mathcal{F}(\mathbf{x}) + \mathbf{x}\)</span>，其中<span class="arithmatex">\(\mathcal{F}\)</span>是卷积层的映射，<span class="arithmatex">\(\mathbf{x}\)</span>是输入。</p>
 <hr />
 <h2 id="25">2.5 卷积神经网络的计算特性</h2>
 <h3 id="251">2.5.1 卷积层的计算特点</h3>
@@ -1311,14 +1311,14 @@
 <li><strong>Im2Col</strong>：将输入特征图按照卷积窗口展开成列矩阵</li>
 <li><strong>Col2Im</strong>：将矩阵乘的结果转换回特征图格式</li>
 </ol>
-<p>设卷积的输入和输出的特征图维度用$(IH, IW), (OH, OW)$表示，卷积核窗口的数据维度用$(KH, KW)$表示，输入通道是$IC$，输出通道是$OC$，输入输出特征图和卷积核数据维度重排的转化对应关系如下：</p>
-<p>$$
+<p>设卷积的输入和输出的特征图维度用<span class="arithmatex">\((IH, IW), (OH, OW)\)</span>表示，卷积核窗口的数据维度用<span class="arithmatex">\((KH, KW)\)</span>表示，输入通道是<span class="arithmatex">\(IC\)</span>，输出通道是<span class="arithmatex">\(OC\)</span>，输入输出特征图和卷积核数据维度重排的转化对应关系如下：</p>
+<div class="arithmatex">\[
 \begin{aligned}
-&amp;input:(IC, IH, IW)\rightarrow(OH \cdot OW, KH \cdot KW \cdot IC)\
-&amp;filter: (OC, KH, KW, IC)\rightarrow(OC, KH \cdot KW \cdot IC)\
+&amp;input:(IC, IH, IW)\rightarrow(OH \cdot OW, KH \cdot KW \cdot IC)\\
+&amp;filter: (OC, KH, KW, IC)\rightarrow(OC, KH \cdot KW \cdot IC)\\
 &amp;output:(OC,OH, OW)\rightarrow(OC,OH \cdot OW)
 \end{aligned}
-$$</p>
+\]</div>
 <hr />
 <h2 id="26">2.6 卷积神经网络的轻量化</h2>
 <p>随着神经网络应用的普及，越来越多的模型需要在特定的硬件平台部署，如移动端和嵌入式设备。轻量化网络模型设计旨在保持模型精度的同时减少模型参数量和计算量。</p>
@@ -1326,14 +1326,14 @@ $$</p>
 <p>网络模型的轻量级衡量指标有两个，一个是网络参数量，另一个是浮点运算数（FLOPs）。</p>
 <p><strong>深度可分离卷积（Depthwise Separable Convolution）</strong></p>
 <p>MobileNet系列的网络设计中，提出了深度可分离卷积的设计策略，其中通过Depthwise逐层卷积加1x1的卷积核来实现一个正常的卷积操作。</p>
-<p>普通卷积的参数量：$K_h \times K_w \times C_{in} \times C_{out}$</p>
-<p>深度可分离卷积的参数量：$K_h \times K_w \times C_{in} + 1 \times 1 \times C_{in} \times C_{out}$</p>
+<p>普通卷积的参数量：<span class="arithmatex">\(K_h \times K_w \times C_{in} \times C_{out}\)</span></p>
+<p>深度可分离卷积的参数量：<span class="arithmatex">\(K_h \times K_w \times C_{in} + 1 \times 1 \times C_{in} \times C_{out}\)</span></p>
 <p>例如一个3x3卷积核大小的卷积层，输入通道是16，输出通道是32：
-- 正常卷积参数：$3 \times 3 \times 16 \times 32 = 4608$
-- 深度可分离卷积参数：$3 \times 3 \times 16 + 1 \times 1 \times 16 \times 32 = 656$</p>
+- 正常卷积参数：<span class="arithmatex">\(3 \times 3 \times 16 \times 32 = 4608\)</span>
+- 深度可分离卷积参数：<span class="arithmatex">\(3 \times 3 \times 16 + 1 \times 1 \times 16 \times 32 = 656\)</span></p>
 <p>参数量减少了约85%。</p>
 <p><strong>小卷积核替代</strong></p>
-<p>在VGG和InceptionNet系列网络中，提出将两个3x3卷积核代替一个5x5卷积核。这种方法在保证具有相同感知野的条件下，提升了网络的深度。参数量由$5 \times 5 \times C_i \times C_o$变成$3 \times 3 \times C_i \times C_o + 3 \times 3 \times C_i \times C_o = 18/25 \times (5 \times 5)$。</p>
+<p>在VGG和InceptionNet系列网络中，提出将两个3x3卷积核代替一个5x5卷积核。这种方法在保证具有相同感知野的条件下，提升了网络的深度。参数量由<span class="arithmatex">\(5 \times 5 \times C_i \times C_o\)</span>变成<span class="arithmatex">\(3 \times 3 \times C_i \times C_o + 3 \times 3 \times C_i \times C_o = 18/25 \times (5 \times 5)\)</span>。</p>
 <h3 id="262">2.6.2 卷积核设计考虑</h3>
 <p>AI芯片设计需要考虑支持多种卷积核设计：</p>
 <ol>
@@ -1471,6 +1471,10 @@ $$</p>
     
     
       <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

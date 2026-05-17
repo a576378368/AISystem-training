@@ -1237,10 +1237,10 @@
 <p>Im2Col（Image to Column）算法将卷积操作转换为矩阵乘法（GEMM，General Matrix Multiply），从而可以利用成熟的矩阵乘法库来加速计算。</p>
 <p><strong>Im2Col的核心思想</strong></p>
 <p>Im2Col将输入特征图按照卷积窗口展开成列，卷积核展开成行，从而将卷积转化为矩阵乘法。</p>
-<p>设输入特征图为$X$，形状为$(N, C_{in}, H_{in}, W_{in})$，卷积核为$W$，形状为$(C_{out}, C_{in}, K_H, K_W)$，输出为$Y$，形状为$(N, C_{out}, H_{out}, W_{out})$。</p>
+<p>设输入特征图为<span class="arithmatex">\(X\)</span>，形状为<span class="arithmatex">\((N, C_{in}, H_{in}, W_{in})\)</span>，卷积核为<span class="arithmatex">\(W\)</span>，形状为<span class="arithmatex">\((C_{out}, C_{in}, K_H, K_W)\)</span>，输出为<span class="arithmatex">\(Y\)</span>，形状为<span class="arithmatex">\((N, C_{out}, H_{out}, W_{out})\)</span>。</p>
 <p>卷积的计算公式为：</p>
-<p>$$Y(n, c_{out}, h_{out}, w_{out}) = \sum_{c_{in}=0}^{C_{in}-1}\sum_{k_h=0}^{K_H-1}\sum_{k_w=0}^{K_W-1} X(n, c_{in}, h_{out}+k_h, w_{out}+k_w) \cdot W(c_{out}, c_{in}, k_h, k_w)$$</p>
-<p>Im2Col将输入转换为矩阵$A$，形状为$(H_{out}W_{out}, K_HK_WC_{in})$，将卷积核转换为矩阵$B$，形状为$(C_{out}, K_HK_WC_{in})$，则输出为矩阵$C = AB$，形状为$(H_{out}W_{out}, C_{out})$。</p>
+<div class="arithmatex">\[Y(n, c_{out}, h_{out}, w_{out}) = \sum_{c_{in}=0}^{C_{in}-1}\sum_{k_h=0}^{K_H-1}\sum_{k_w=0}^{K_W-1} X(n, c_{in}, h_{out}+k_h, w_{out}+k_w) \cdot W(c_{out}, c_{in}, k_h, k_w)\]</div>
+<p>Im2Col将输入转换为矩阵<span class="arithmatex">\(A\)</span>，形状为<span class="arithmatex">\((H_{out}W_{out}, K_HK_WC_{in})\)</span>，将卷积核转换为矩阵<span class="arithmatex">\(B\)</span>，形状为<span class="arithmatex">\((C_{out}, K_HK_WC_{in})\)</span>，则输出为矩阵<span class="arithmatex">\(C = AB\)</span>，形状为<span class="arithmatex">\((H_{out}W_{out}, C_{out})\)</span>。</p>
 <h3 id="522-im2col">5.2.2 Im2Col实现过程</h3>
 <p><strong>输入数据重排</strong></p>
 <p>将输入特征图按照卷积窗口展开成矩阵。假设输入为单通道图像，卷积核为3x3，步长为1：</p>
@@ -1263,7 +1263,7 @@ Im2Col转换后的矩阵A（每行是一个卷积窗口的展开）：
  [f, g, h, j, k, l, n, o, p]]   # 位置(1,1)
 </code></pre></div>
 <p><strong>卷积核重排</strong></p>
-<p>将卷积核展开成矩阵。假设有$C_{out}$个卷积核，每个卷积核的形状为$(C_{in}, K_H, K_W)$：</p>
+<p>将卷积核展开成矩阵。假设有<span class="arithmatex">\(C_{out}\)</span>个卷积核，每个卷积核的形状为<span class="arithmatex">\((C_{in}, K_H, K_W)\)</span>：</p>
 <div class="highlight"><pre><span></span><code>卷积核权重：
 形状为(C_out, C_in*K_H*K_W)
 
@@ -1274,7 +1274,7 @@ Im2Col转换后的矩阵A（每行是一个卷积窗口的展开）：
  [w_m0, w_m1, ..., w_mn]]   # 卷积核m
 </code></pre></div>
 <p><strong>矩阵乘法</strong></p>
-<p>将Im2Col转换后的矩阵$A$和卷积核矩阵$B^T$相乘：</p>
+<p>将Im2Col转换后的矩阵<span class="arithmatex">\(A\)</span>和卷积核矩阵<span class="arithmatex">\(B^T\)</span>相乘：</p>
 <div class="highlight"><pre><span></span><code>C = A @ B^T
 
 C的形状为(H_out*W_out, C_out)
@@ -1284,7 +1284,7 @@ C的形状为(H_out*W_out, C_out)
 <h3 id="523-im2col">5.2.3 Im2Col的优化</h3>
 <p><strong>空间组合优化</strong></p>
 <p>空间组合（Spatial Pack）优化是一种基于分治法的Im2Col优化策略。它将输入特征图在空间维度上划分为多个小区域，分别处理。</p>
-<p>假设将输出划分为$2\times2$的小块：</p>
+<p>假设将输出划分为<span class="arithmatex">\(2\times2\)</span>的小块：</p>
 <div class="highlight"><pre><span></span><code>原始输出划分：
 [[小块0, 小块1],
  [小块2, 小块3]]
@@ -1380,36 +1380,36 @@ C的形状为(H_out*W_out, C_out)
 <p><strong>核心思想</strong></p>
 <p>Winograd算法的核心思想是：用更多的加法替代乘法，从而减少计算量。因为在硬件中，乘法比加法消耗更多的时钟周期和面积。</p>
 <p><strong>一维Winograd</strong></p>
-<p>设输入信号为$d = [d_0, d_1, d_2, d_3]^T$，卷积核为$g = [g_0, g_1, g_2]^T$，则F(2,3)表示2个输出点需要3个卷积核元素。</p>
+<p>设输入信号为<span class="arithmatex">\(d = [d_0, d_1, d_2, d_3]^T\)</span>，卷积核为<span class="arithmatex">\(g = [g_0, g_1, g_2]^T\)</span>，则F(2,3)表示2个输出点需要3个卷积核元素。</p>
 <p>普通卷积计算：
-$$y_0 = d_0 g_0 + d_1 g_1 + d_2 g_2$$
-$$y_1 = d_1 g_0 + d_2 g_1 + d_3 g_2$$</p>
+$<span class="arithmatex">\(y_0 = d_0 g_0 + d_1 g_1 + d_2 g_2\)</span>$
+$<span class="arithmatex">\(y_1 = d_1 g_0 + d_2 g_1 + d_3 g_2\)</span>$</p>
 <p>需要6次乘法和4次加法。</p>
 <p>Winograd优化后：
-$$m_1 = (d_0 - d_2) g_0$$
-$$m_2 = (d_1 + d_2) \cdot \frac{g_0 + g_1 + g_2}{2}$$
-$$m_3 = (d_2 - d_1) \cdot \frac{g_0 - g_1 + g_2}{2}$$
-$$m_4 = (d_1 - d_3) g_2$$</p>
-<p>$$y_0 = m_1 + m_2 + m_3$$
-$$y_1 = m_2 - m_3 - m_4$$</p>
+$<span class="arithmatex">\(m_1 = (d_0 - d_2) g_0\)</span>$
+$<span class="arithmatex">\(m_2 = (d_1 + d_2) \cdot \frac{g_0 + g_1 + g_2}{2}\)</span>$
+$<span class="arithmatex">\(m_3 = (d_2 - d_1) \cdot \frac{g_0 - g_1 + g_2}{2}\)</span>$
+$<span class="arithmatex">\(m_4 = (d_1 - d_3) g_2\)</span>$</p>
+<div class="arithmatex">\[y_0 = m_1 + m_2 + m_3$$
+$$y_1 = m_2 - m_3 - m_4\]</div>
 <p>只需要4次乘法和8次加法。乘法减少2次！</p>
 <p><strong>Winograd的矩阵形式</strong></p>
 <p>Winograd算法可以用矩阵形式表示：</p>
-<p>$$Y = A^T [(Gg) \odot (B^T d)]$$</p>
+<div class="arithmatex">\[Y = A^T [(Gg) \odot (B^T d)]\]</div>
 <p>其中：
-- $G$：卷积核变换矩阵
-- $B^T$：输入变换矩阵
-- $A^T$：输出变换矩阵
-- $\odot$：逐元素乘法（Hadamard积）</p>
+- <span class="arithmatex">\(G\)</span>：卷积核变换矩阵
+- <span class="arithmatex">\(B^T\)</span>：输入变换矩阵
+- <span class="arithmatex">\(A^T\)</span>：输出变换矩阵
+- <span class="arithmatex">\(\odot\)</span>：逐元素乘法（Hadamard积）</p>
 <h3 id="532-winograd">5.3.2 二维Winograd</h3>
-<p>将一维Winograd扩展到二维卷积。对于$F(2\times2, 3\times3)$的卷积：</p>
-<p>$$Y = A^T [[GgG^T] \odot [B^T d B]] A$$</p>
+<p>将一维Winograd扩展到二维卷积。对于<span class="arithmatex">\(F(2\times2, 3\times3)\)</span>的卷积：</p>
+<div class="arithmatex">\[Y = A^T [[GgG^T] \odot [B^T d B]] A\]</div>
 <p>二维Winograd的实现步骤：</p>
 <ol>
-<li><strong>输入变换</strong>：将输入分成$4\times4$的小块，通过$B^T$和$B$进行变换</li>
-<li><strong>卷积核变换</strong>：通过$G$和$G^T$对每个$3\times3$卷积核进行变换</li>
+<li><strong>输入变换</strong>：将输入分成<span class="arithmatex">\(4\times4\)</span>的小块，通过<span class="arithmatex">\(B^T\)</span>和<span class="arithmatex">\(B\)</span>进行变换</li>
+<li><strong>卷积核变换</strong>：通过<span class="arithmatex">\(G\)</span>和<span class="arithmatex">\(G^T\)</span>对每个<span class="arithmatex">\(3\times3\)</span>卷积核进行变换</li>
 <li><strong>元素级乘法</strong>：对应位置相乘</li>
-<li><strong>输出变换</strong>：通过$A^T$和$A$恢复输出</li>
+<li><strong>输出变换</strong>：通过<span class="arithmatex">\(A^T\)</span>和<span class="arithmatex">\(A\)</span>恢复输出</li>
 </ol>
 <h3 id="533-winograd">5.3.3 Winograd的变换矩阵</h3>
 <p>对于F(2,3)，常用的变换矩阵为：</p>
@@ -1427,14 +1427,14 @@ A^T = [[1,  1,  1,  0],
        [0,  1, -1, -1]]
 </code></pre></div>
 <p>对于F(2x2, 3x3)，变换后的矩阵尺寸：
-- 输入：$4\times4$
-- 卷积核：$4\times4$
-- 输出：$2\times2$</p>
+- 输入：<span class="arithmatex">\(4\times4\)</span>
+- 卷积核：<span class="arithmatex">\(4\times4\)</span>
+- 输出：<span class="arithmatex">\(2\times2\)</span></p>
 <h3 id="534-winograd">5.3.4 Winograd的优缺点</h3>
 <p><strong>优点</strong></p>
 <ol>
-<li>减少乘法次数：对于$3\times3$卷积核，理论上可以减少约2.25倍的乘法量</li>
-<li>适用于小卷积核：$3\times3$卷积核是CNN中最常用的，Winograd优化效果显著</li>
+<li>减少乘法次数：对于<span class="arithmatex">\(3\times3\)</span>卷积核，理论上可以减少约2.25倍的乘法量</li>
+<li>适用于小卷积核：<span class="arithmatex">\(3\times3\)</span>卷积核是CNN中最常用的，Winograd优化效果显著</li>
 <li>硬件友好：加法比乘法更快速、更节能</li>
 </ol>
 <p><strong>缺点</strong></p>
@@ -1446,7 +1446,7 @@ A^T = [[1,  1,  1,  0],
 </ol>
 <p><strong>适用场景</strong></p>
 <p>Winograd算法最适合以下场景：
-- 卷积核尺寸为$3\times3$或更小
+- 卷积核尺寸为<span class="arithmatex">\(3\times3\)</span>或更小
 - 输入输出通道数较大（充分利用并行性）
 - 批量大小较大（分摊变换开销）</p>
 <h2 id="54-qnnpack">5.4 QNNPACK算法详解</h2>
@@ -1469,11 +1469,11 @@ A^T = [[1,  1,  1,  0],
 <h3 id="543">5.4.3 间接缓冲区</h3>
 <p>间接缓冲区是间接卷积算法的核心数据结构。假设：</p>
 <ul>
-<li>输入形状：$(C_{in}, H, W)$</li>
-<li>卷积核形状：$(C_{out}, C_{in}, K_H, K_W)$</li>
-<li>输出形状：$(C_{out}, H_{out}, W_{out})$</li>
+<li>输入形状：<span class="arithmatex">\((C_{in}, H, W)\)</span></li>
+<li>卷积核形状：<span class="arithmatex">\((C_{out}, C_{in}, K_H, K_W)\)</span></li>
+<li>输出形状：<span class="arithmatex">\((C_{out}, H_{out}, W_{out})\)</span></li>
 </ul>
-<p>间接缓冲区是一个形状为$(H_{out} \times W_{out}, K_H, K_W)$的指针数组。对于输出位置$(h_{out}, w_{out})$，其对应的间接缓冲区条目指向输入中位置$(h_{out} \times s + k_h, w_{out} \times s + k_w)$的元素，其中$s$是步长。</p>
+<p>间接缓冲区是一个形状为<span class="arithmatex">\((H_{out} \times W_{out}, K_H, K_W)\)</span>的指针数组。对于输出位置<span class="arithmatex">\((h_{out}, w_{out})\)</span>，其对应的间接缓冲区条目指向输入中位置<span class="arithmatex">\((h_{out} \times s + k_h, w_{out} \times s + k_w)\)</span>的元素，其中<span class="arithmatex">\(s\)</span>是步长。</p>
 <div class="highlight"><pre><span></span><code>间接缓冲区访问示意：
 
 输出位置(0,0)的计算：
@@ -1490,7 +1490,7 @@ A^T = [[1,  1,  1,  0],
 <p><strong>1. 消除Im2Col数据拷贝</strong></p>
 <p>传统Im2Col需要将输入拷贝到连续内存，QNNPACK通过间接寻址避免了这个拷贝开销。</p>
 <p><strong>2. 提高缓存效率</strong></p>
-<p>QNNPACK将计算划分为小的tiles，使得每个tile的计算完全在L1缓存中进行。对于ARM Cortex-A75，每个tile的大小通常为$4\times4$或$8\times8$。</p>
+<p>QNNPACK将计算划分为小的tiles，使得每个tile的计算完全在L1缓存中进行。对于ARM Cortex-A75，每个tile的大小通常为<span class="arithmatex">\(4\times4\)</span>或<span class="arithmatex">\(8\times8\)</span>。</p>
 <p><strong>3. 充分利用INT8 SIMD</strong></p>
 <p>QNNPACK专为INT8量化设计，利用ARM NEON指令集的SIMD能力并行处理多个数据：</p>
 <div class="highlight"><pre><span></span><code># 伪代码：INT8矩阵乘法的一块计算
@@ -1826,7 +1826,7 @@ FLOPS/s │     *
 <p><strong>Im2Col算法</strong>：通过将卷积转换为矩阵乘法（GEMM）来加速计算。核心思想是将输入按卷积窗口展开成矩阵，然后利用成熟的BLAS库进行计算。空间组合优化可以进一步提高缓存效率。</p>
 </li>
 <li>
-<p><strong>Winograd算法</strong>：用更多的加法替代乘法来减少计算量。适用于$3\times3$等小卷积核，可以显著减少乘法次数。但需要额外的变换开销，且仅适用于固定尺寸的卷积。</p>
+<p><strong>Winograd算法</strong>：用更多的加法替代乘法来减少计算量。适用于<span class="arithmatex">\(3\times3\)</span>等小卷积核，可以显著减少乘法次数。但需要额外的变换开销，且仅适用于固定尺寸的卷积。</p>
 </li>
 <li>
 <p><strong>QNNPACK算法</strong>：Facebook开源的移动端量化加速库，核心是间接卷积算法。通过建立间接缓冲区避免Im2Col的数据拷贝开销，优化到L1缓存级别，充分利用INT8 SIMD指令。</p>
@@ -1909,6 +1909,10 @@ FLOPS/s │     *
     
     
       <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

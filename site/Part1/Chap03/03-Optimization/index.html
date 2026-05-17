@@ -1390,17 +1390,17 @@
 <h2 id="1">1 优化基础</h2>
 <h3 id="11">1.1 优化问题的定义</h3>
 <p><strong>优化问题（Optimization Problem）</strong> 的一般形式是：</p>
-<p>$$\min_{x \in \mathbb{R}^n} f(x)$$</p>
+<div class="arithmatex">\[\min_{x \in \mathbb{R}^n} f(x)\]</div>
 <p>或者更一般地：</p>
-<p>$$\min_{x \in \mathbb{R}^n} f(x) \quad \text{s.t.} \quad g_i(x) \leq 0, \quad i = 1, \ldots, m$$</p>
+<div class="arithmatex">\[\min_{x \in \mathbb{R}^n} f(x) \quad \text{s.t.} \quad g_i(x) \leq 0, \quad i = 1, \ldots, m\]</div>
 <p>其中：</p>
 <ul>
-<li>$f: \mathbb{R}^n \rightarrow \mathbb{R}$ 是<strong>目标函数（Objective Function）</strong> 或<strong>损失函数（Loss Function）</strong></li>
-<li>$g_i(x) \leq 0$ 是<strong>不等式约束（Inequality Constraint）</strong></li>
-<li>如果还有等式约束 $h_j(x) = 0$，则构成更一般的约束优化问题</li>
+<li><span class="arithmatex">\(f: \mathbb{R}^n \rightarrow \mathbb{R}\)</span> 是<strong>目标函数（Objective Function）</strong> 或<strong>损失函数（Loss Function）</strong></li>
+<li><span class="arithmatex">\(g_i(x) \leq 0\)</span> 是<strong>不等式约束（Inequality Constraint）</strong></li>
+<li>如果还有等式约束 <span class="arithmatex">\(h_j(x) = 0\)</span>，则构成更一般的约束优化问题</li>
 </ul>
 <p>在机器学习中，优化问题通常没有约束（或约束非常简单），因此无约束优化是最常见的形式。我们将在本章最后一节专门讨论约束优化。</p>
-<p><strong>最小化与最大化</strong>：由于 $\max f(x) = -\min(-f(x))$，最小化和最大化问题是等价的。在机器学习中，我们通常习惯于最小化损失函数，因此本书主要讨论最小化问题。</p>
+<p><strong>最小化与最大化</strong>：由于 <span class="arithmatex">\(\max f(x) = -\min(-f(x))\)</span>，最小化和最大化问题是等价的。在机器学习中，我们通常习惯于最小化损失函数，因此本书主要讨论最小化问题。</p>
 <h3 id="12">1.2 优化问题的分类</h3>
 <p>优化问题可以从多个角度进行分类：</p>
 <p><strong>根据目标函数的性质</strong>：</p>
@@ -1421,18 +1421,18 @@
 </ul>
 <p>这种分类非常重要。凸优化问题具有很好的性质：任何局部最优解都是全局最优解。而非凸优化问题可能存在多个局部最优解，找到全局最优解通常很困难。深度学习中的优化问题大多是非凸的，这是一个具有挑战性但又必须面对的问题。</p>
 <h3 id="13">1.3 梯度与海森矩阵</h3>
-<p><strong>梯度（Gradient）</strong> 是多元函数导数的推广。设函数 $f: \mathbb{R}^n \rightarrow \mathbb{R}$，则梯度定义为：</p>
-<p>$$\nabla f(x) = \begin{bmatrix} \frac{\partial f}{\partial x_1} \ \frac{\partial f}{\partial x_2} \ \vdots \ \frac{\partial f}{\partial x_n} \end{bmatrix}$$</p>
+<p><strong>梯度（Gradient）</strong> 是多元函数导数的推广。设函数 <span class="arithmatex">\(f: \mathbb{R}^n \rightarrow \mathbb{R}\)</span>，则梯度定义为：</p>
+<div class="arithmatex">\[\nabla f(x) = \begin{bmatrix} \frac{\partial f}{\partial x_1} \\ \frac{\partial f}{\partial x_2} \\ \vdots \\ \frac{\partial f}{\partial x_n} \end{bmatrix}\]</div>
 <p>梯度是一个向量，指向函数值增长最快的方向。在优化中，我们通常使用梯度的反方向（负梯度）来下降。</p>
 <p><strong>海森矩阵（Hessian Matrix）</strong> 是梯度的雅可比矩阵，定义为：</p>
-<p>$$H(x) = \nabla^2 f(x) = \begin{bmatrix} \frac{\partial^2 f}{\partial x_1^2} &amp; \frac{\partial^2 f}{\partial x_1 \partial x_2} &amp; \cdots &amp; \frac{\partial^2 f}{\partial x_1 \partial x_n} \ \frac{\partial^2 f}{\partial x_2 \partial x_1} &amp; \frac{\partial^2 f}{\partial x_2^2} &amp; \cdots &amp; \frac{\partial^2 f}{\partial x_2 \partial x_n} \ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \ \frac{\partial^2 f}{\partial x_n \partial x_1} &amp; \frac{\partial^2 f}{\partial x_n \partial x_2} &amp; \cdots &amp; \frac{\partial^2 f}{\partial x_n^2} \end{bmatrix}$$</p>
+<div class="arithmatex">\[H(x) = \nabla^2 f(x) = \begin{bmatrix} \frac{\partial^2 f}{\partial x_1^2} &amp; \frac{\partial^2 f}{\partial x_1 \partial x_2} &amp; \cdots &amp; \frac{\partial^2 f}{\partial x_1 \partial x_n} \\ \frac{\partial^2 f}{\partial x_2 \partial x_1} &amp; \frac{\partial^2 f}{\partial x_2^2} &amp; \cdots &amp; \frac{\partial^2 f}{\partial x_2 \partial x_n} \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ \frac{\partial^2 f}{\partial x_n \partial x_1} &amp; \frac{\partial^2 f}{\partial x_n \partial x_2} &amp; \cdots &amp; \frac{\partial^2 f}{\partial x_n^2} \end{bmatrix}\]</div>
 <p>海森矩阵是目标函数的二阶导数，描述了函数的曲率信息。在牛頓法等二阶优化算法中，海森矩阵起着核心作用。</p>
 <p><strong>泰勒展开</strong>：函数在某点附近的局部行为可以用泰勒级数来近似：</p>
-<p>$$f(x + \Delta x) \approx f(x) + \nabla f(x)^\top \Delta x + \frac{1}{2} \Delta x^\top H(x) \Delta x + O(|\Delta x|^3)$$</p>
+<div class="arithmatex">\[f(x + \Delta x) \approx f(x) + \nabla f(x)^\top \Delta x + \frac{1}{2} \Delta x^\top H(x) \Delta x + O(\|\Delta x\|^3)\]</div>
 <p>这个展开式是许多优化算法推导的基础。</p>
 <h3 id="14">1.4 局部最优与全局最优</h3>
-<p><strong>局部最优（Local Optimum）</strong>：如果存在 ε &gt; 0，使得对于所有满足 $|x - x^<em>| &lt; \epsilon$ 的 x，都有 $f(x) \geq f(x^</em>)$，则称 $x^*$ 是 f 的一个局部最小值点。</p>
-<p><strong>全局最优（Global Optimum）</strong>：如果对于所有 $x \in \mathbb{R}^n$，都有 $f(x) \geq f(x^<em>)$，则称 $x^</em>$ 是 f 的全局最小值点。</p>
+<p><strong>局部最优（Local Optimum）</strong>：如果存在 ε &gt; 0，使得对于所有满足 <span class="arithmatex">\(\|x - x^*\| &lt; \epsilon\)</span> 的 x，都有 <span class="arithmatex">\(f(x) \geq f(x^*)\)</span>，则称 <span class="arithmatex">\(x^*\)</span> 是 f 的一个局部最小值点。</p>
+<p><strong>全局最优（Global Optimum）</strong>：如果对于所有 <span class="arithmatex">\(x \in \mathbb{R}^n\)</span>，都有 <span class="arithmatex">\(f(x) \geq f(x^*)\)</span>，则称 <span class="arithmatex">\(x^*\)</span> 是 f 的全局最小值点。</p>
 <p>对于凸函数，局部最优就是全局最优。但对于非凸函数（如深度神经网络的目标函数），可能存在多个局部最优解，这些局部最优解的性质可能差异很大。</p>
 <p>在深度学习中，损失函数 landscape（损失 landscape，即损失函数在参数空间中的形状）非常复杂，充满了鞍点（saddle points）和局部最优。理解这些性质对于理解为什么深度学习能够成功至关重要——研究表明，在高维空间中，局部最优可能并不像我们想象的那么可怕，很多局部最优的函数值接近全局最优，而真正的问题可能是鞍点。</p>
 <h3 id="15">1.5 优化算法概述</h3>
@@ -1451,27 +1451,27 @@
 <h2 id="2">2 梯度下降法</h2>
 <h3 id="21">2.1 梯度下降法的原理</h3>
 <p><strong>梯度下降法（Gradient Descent）</strong> 是最基本、最广泛使用的优化算法之一。其核心思想来自一个直观的观察：沿函数梯度的反方向移动，函数值会下降。</p>
-<p>给定当前点 $x^{(t)}$，梯度下降法的更新规则为：</p>
-<p>$$x^{(t+1)} = x^{(t)} - \alpha \nabla f(x^{(t)})$$</p>
-<p>其中 $\alpha &gt; 0$ 是<strong>学习率（Learning Rate）</strong> 或步长（Step Size），控制每一步移动的距离。</p>
-<p><strong>几何解释</strong>：梯度 $\nabla f(x)$ 指向函数增长最快的方向，因此负梯度 $-\nabla f(x)$ 指向函数下降最快的方向。梯度下降法就是沿着这个方向迈一小步，然后重新计算梯度，重复这个过程。</p>
-<p><strong>一维示例</strong>：考虑函数 $f(x) = x^2$。梯度为 $\nabla f(x) = 2x$。如果当前点在 $x^{(t)} = 2$，梯度为 4，负梯度方向是 -4。更新后 $x^{(t+1)} = 2 - \alpha \cdot 4 = 2 - 4\alpha$。如果选择 $\alpha = 0.1$，则 $x^{(t+1)} = 2 - 0.4 = 1.6$，函数值从 $f(2) = 4$ 下降到 $f(1.6) = 2.56$，确实下降了。</p>
+<p>给定当前点 <span class="arithmatex">\(x^{(t)}\)</span>，梯度下降法的更新规则为：</p>
+<div class="arithmatex">\[x^{(t+1)} = x^{(t)} - \alpha \nabla f(x^{(t)})\]</div>
+<p>其中 <span class="arithmatex">\(\alpha &gt; 0\)</span> 是<strong>学习率（Learning Rate）</strong> 或步长（Step Size），控制每一步移动的距离。</p>
+<p><strong>几何解释</strong>：梯度 <span class="arithmatex">\(\nabla f(x)\)</span> 指向函数增长最快的方向，因此负梯度 <span class="arithmatex">\(-\nabla f(x)\)</span> 指向函数下降最快的方向。梯度下降法就是沿着这个方向迈一小步，然后重新计算梯度，重复这个过程。</p>
+<p><strong>一维示例</strong>：考虑函数 <span class="arithmatex">\(f(x) = x^2\)</span>。梯度为 <span class="arithmatex">\(\nabla f(x) = 2x\)</span>。如果当前点在 <span class="arithmatex">\(x^{(t)} = 2\)</span>，梯度为 4，负梯度方向是 -4。更新后 <span class="arithmatex">\(x^{(t+1)} = 2 - \alpha \cdot 4 = 2 - 4\alpha\)</span>。如果选择 <span class="arithmatex">\(\alpha = 0.1\)</span>，则 <span class="arithmatex">\(x^{(t+1)} = 2 - 0.4 = 1.6\)</span>，函数值从 <span class="arithmatex">\(f(2) = 4\)</span> 下降到 <span class="arithmatex">\(f(1.6) = 2.56\)</span>，确实下降了。</p>
 <p><strong>泰勒展开解释</strong>：由泰勒展开：</p>
-<p>$$f(x^{(t+1)}) \approx f(x^{(t)}) + \nabla f(x^{(t)})^\top (x^{(t+1)} - x^{(t)}) = f(x^{(t)}) - \alpha |\nabla f(x^{(t)})|^2$$</p>
-<p>只要 $\alpha &gt; 0$，函数值必然下降（近似意义上）。</p>
+<div class="arithmatex">\[f(x^{(t+1)}) \approx f(x^{(t)}) + \nabla f(x^{(t)})^\top (x^{(t+1)} - x^{(t)}) = f(x^{(t)}) - \alpha \|\nabla f(x^{(t)})\|^2\]</div>
+<p>只要 <span class="arithmatex">\(\alpha &gt; 0\)</span>，函数值必然下降（近似意义上）。</p>
 <h3 id="22">2.2 收敛性分析</h3>
 <p>梯度下降法的收敛性取决于多个因素，包括目标函数的性质和学习率的选择。</p>
-<p><strong>凸函数的情况</strong>：对于凸函数 $f: \mathbb{R}^n \rightarrow \mathbb{R}$，如果梯度是 Lipschitz 连续的（ Lipschitz 常数为 L），即：</p>
-<p>$$|\nabla f(x) - \nabla f(y)| \leq L |x - y|, \quad \forall x, y$$</p>
-<p>并且学习率满足 $\alpha \leq 1/L$，则梯度下降法具有线性收敛速度：</p>
-<p>$$|x^{(t)} - x^<em>|^2 \leq \left(1 - \frac{\mu}{L}\right)^t |x^{(0)} - x^</em>|^2$$</p>
-<p>其中 $\mu$ 是函数的强凸参数（strongly convex parameter），$x^*$ 是全局最优解。</p>
+<p><strong>凸函数的情况</strong>：对于凸函数 <span class="arithmatex">\(f: \mathbb{R}^n \rightarrow \mathbb{R}\)</span>，如果梯度是 Lipschitz 连续的（ Lipschitz 常数为 L），即：</p>
+<div class="arithmatex">\[\|\nabla f(x) - \nabla f(y)\| \leq L \|x - y\|, \quad \forall x, y\]</div>
+<p>并且学习率满足 <span class="arithmatex">\(\alpha \leq 1/L\)</span>，则梯度下降法具有线性收敛速度：</p>
+<div class="arithmatex">\[\|x^{(t)} - x^*\|^2 \leq \left(1 - \frac{\mu}{L}\right)^t \|x^{(0)} - x^*\|^2\]</div>
+<p>其中 <span class="arithmatex">\(\mu\)</span> 是函数的强凸参数（strongly convex parameter），<span class="arithmatex">\(x^*\)</span> 是全局最优解。</p>
 <p><strong>Lipschitz 连续梯度</strong>是一个常见且合理的假设。它保证函数变化不会太快，梯度不会剧烈波动。</p>
 <p><strong>收敛速度分类</strong>：</p>
 <ul>
 <li><strong>线性收敛（Linear Convergence）</strong>：误差以几何级数减少，收敛速度用收敛率衡量</li>
-<li><strong>次线性收敛（Sublinear Convergence）</strong>：收敛越来越慢，如 $O(1/t)$</li>
-<li><strong>超线性收敛（Superlinear Convergence）</strong>：收敛越来越快，如 $O(1/t^2)$（牛頓法）</li>
+<li><strong>次线性收敛（Sublinear Convergence）</strong>：收敛越来越慢，如 <span class="arithmatex">\(O(1/t)\)</span></li>
+<li><strong>超线性收敛（Superlinear Convergence）</strong>：收敛越来越快，如 <span class="arithmatex">\(O(1/t^2)\)</span>（牛頓法）</li>
 </ul>
 <p>对于一般非凸函数，梯度下降法只能保证收敛到驻点（stationary point，即梯度为零的点），但不能保证收敛到全局甚至局部最优。在深度学习中，实际发现梯度下降法通常能够找到不错的局部最优解（如果存在的话）。</p>
 <h3 id="23">2.3 学习率的影响</h3>
@@ -1498,64 +1498,64 @@
 <p><strong>学习率衰减（Learning Rate Decay）</strong> 是一种经验上有效且广泛使用的策略，它允许算法在训练初期快速探索，在后期精细调整。</p>
 <p>常见的衰减策略包括：</p>
 <p><strong>步衰减（Step Decay）</strong>：每隔固定 epoch 数将学习率乘以一个因子（如 0.5）：</p>
-<p>$$\alpha_t = \alpha_0 \cdot \gamma^{\lfloor t / T \rfloor}$$</p>
-<p>其中 $\gamma$ 是衰减率（通常为 0.5 或 0.9），T 是衰减周期。</p>
+<div class="arithmatex">\[\alpha_t = \alpha_0 \cdot \gamma^{\lfloor t / T \rfloor}\]</div>
+<p>其中 <span class="arithmatex">\(\gamma\)</span> 是衰减率（通常为 0.5 或 0.9），T 是衰减周期。</p>
 <p><strong>指数衰减（Exponential Decay）</strong>：</p>
-<p>$$\alpha_t = \alpha_0 \cdot e^{-\gamma t}$$</p>
+<div class="arithmatex">\[\alpha_t = \alpha_0 \cdot e^{-\gamma t}\]</div>
 <p><strong>余弦衰减（Cosine Decay）</strong>：学习率按余弦函数曲线衰减：</p>
-<p>$$\alpha_t = \alpha_0 \cdot \frac{1 + \cos(\pi t / T)}{2}$$</p>
+<div class="arithmatex">\[\alpha_t = \alpha_0 \cdot \frac{1 + \cos(\pi t / T)}{2}\]</div>
 <p>余弦衰减在深度学习中有广泛应用，PyTorch 的 CosineAnnealingLR 等调度器实现了这种策略。</p>
 <p><strong>线性热身（Linear Warmup）</strong>：在训练初期逐渐增大学习率，然后再衰减：</p>
-<p>$$\alpha_t = \begin{cases} \alpha_0 \cdot t / T_w &amp; \text{if } t &lt; T_w \ \text{按策略衰减} &amp; \text{if } t \geq T_w \end{cases}$$</p>
+<div class="arithmatex">\[\alpha_t = \begin{cases} \alpha_0 \cdot t / T_w &amp; \text{if } t &lt; T_w \\ \text{按策略衰减} &amp; \text{if } t \geq T_w \end{cases}\]</div>
 <p>热身策略有助于训练初期参数的稳定性，防止因参数初始化不当导致的大梯度。</p>
 <h3 id="25">2.5 批量梯度下降、随机梯度下降与小批量梯度下降</h3>
 <p>根据每次迭代使用的样本数量，梯度下降法可以分为三种形式：</p>
 <p><strong>批量梯度下降（Batch Gradient Descent，BGD）</strong>：每次迭代使用全部训练样本计算梯度：</p>
-<p>$$x^{(t+1)} = x^{(t)} - \alpha \frac{1}{n} \sum_{i=1}^{n} \nabla f_i(x^{(t)})$$</p>
+<div class="arithmatex">\[x^{(t+1)} = x^{(t)} - \alpha \frac{1}{n} \sum_{i=1}^{n} \nabla f_i(x^{(t)})\]</div>
 <p>其中 n 是训练样本总数。</p>
 <ul>
 <li>优点：梯度估计准确，收敛稳定</li>
 <li>缺点：每次迭代计算量大，不适合大规模数据；容易陷入局部最优（泛化能力可能受限）</li>
 </ul>
 <p><strong>随机梯度下降（Stochastic Gradient Descent，SGD）</strong>：每次迭代只使用一个样本计算梯度：</p>
-<p>$$x^{(t+1)} = x^{(t)} - \alpha \nabla f_i(x^{(t)})$$</p>
+<div class="arithmatex">\[x^{(t+1)} = x^{(t)} - \alpha \nabla f_i(x^{(t)})\]</div>
 <p>其中 i 是随机选择的一个样本。</p>
 <ul>
 <li>优点：每次迭代计算量小，可以逃离局部最优</li>
 <li>缺点：梯度估计噪声大，收敛不稳定，可能在极小值附近震荡</li>
 </ul>
 <p><strong>小批量梯度下降（Mini-batch Gradient Descent）</strong>：每次迭代使用一小批（batch）样本计算梯度：</p>
-<p>$$x^{(t+1)} = x^{(t)} - \alpha \frac{1}{|\mathcal{B}|} \sum_{i \in \mathcal{B}} \nabla f_i(x^{(t)})$$</p>
-<p>其中 $\mathcal{B}$ 是大小为 b 的小批量。</p>
+<div class="arithmatex">\[x^{(t+1)} = x^{(t)} - \alpha \frac{1}{|\mathcal{B}|} \sum_{i \in \mathcal{B}} \nabla f_i(x^{(t)})\]</div>
+<p>其中 <span class="arithmatex">\(\mathcal{B}\)</span> 是大小为 b 的小批量。</p>
 <p>这是深度学习中最常用的形式，它结合了批量梯度下降的稳定性和随机梯度下降的效率。小批量大小（batch size）是一个重要超参数，通常在 32 到 256 之间选择。</p>
 <p><strong>小批量梯度下降的理论解释</strong>：使用小批量而非单个样本，可以获得更准确的梯度估计，减少噪声；而与全量数据相比，小批量计算更快，允许更多参数更新。适当大小的批量可以利用并行计算（如 GPU）的效率，同时保持足够的随机性来逃离局部最优。</p>
 <h2 id="3">3 随机梯度下降</h2>
 <h3 id="31">3.1 随机梯度下降的原理</h3>
 <p><strong>随机梯度下降（SGD）</strong> 是机器学习最重要的优化算法之一，尤其在大规模机器学习中扮演核心角色。其基本思想是用单个样本（或小批量样本）的梯度来近似整体梯度，从而大大降低每次迭代的计算量。</p>
 <p>在机器学习中，目标函数通常可以写成经验风险的形式：</p>
-<p>$$L(\theta) = \frac{1}{n} \sum_{i=1}^{n} \ell(x_i, y_i, \theta)$$</p>
-<p>其中 $\ell$ 是单个样本的损失，n 是样本数量。</p>
-<p>计算 $\nabla L(\theta)$ 需要遍历所有 n 个样本，当 n 非常大时（如 ImageNet 有上百万张图片），这变得不可接受。随机梯度下降用单个样本 $i_t$ 的梯度 $\nabla \ell(x_{i_t}, y_{i_t}, \theta)$ 来近似整体梯度：</p>
-<p>$$\theta^{(t+1)} = \theta^{(t)} - \alpha \nabla \ell(x_{i_t}, y_{i_t}, \theta^{(t)})$$</p>
+<div class="arithmatex">\[L(\theta) = \frac{1}{n} \sum_{i=1}^{n} \ell(x_i, y_i, \theta)\]</div>
+<p>其中 <span class="arithmatex">\(\ell\)</span> 是单个样本的损失，n 是样本数量。</p>
+<p>计算 <span class="arithmatex">\(\nabla L(\theta)\)</span> 需要遍历所有 n 个样本，当 n 非常大时（如 ImageNet 有上百万张图片），这变得不可接受。随机梯度下降用单个样本 <span class="arithmatex">\(i_t\)</span> 的梯度 <span class="arithmatex">\(\nabla \ell(x_{i_t}, y_{i_t}, \theta)\)</span> 来近似整体梯度：</p>
+<div class="arithmatex">\[\theta^{(t+1)} = \theta^{(t)} - \alpha \nabla \ell(x_{i_t}, y_{i_t}, \theta^{(t)})\]</div>
 <h3 id="32">3.2 随机梯度的统计性质</h3>
 <p>随机梯度是真实梯度的无偏估计：</p>
-<p>$$E[\nabla \ell(x_{i_t}, y_{i_t}, \theta)] = \nabla L(\theta)$$</p>
+<div class="arithmatex">\[E[\nabla \ell(x_{i_t}, y_{i_t}, \theta)] = \nabla L(\theta)\]</div>
 <p>这是因为每个样本被选中的概率相等，期望等于整体平均。</p>
 <p>然而，随机梯度有方差（variance）：</p>
-<p>$$\text{Var}(\nabla \ell(x_i, y_i, \theta)) = \sigma^2$$</p>
+<div class="arithmatex">\[\text{Var}(\nabla \ell(x_i, y_i, \theta)) = \sigma^2\]</div>
 <p>这个方差导致随机梯度下降的收敛路径是曲折的，而不是平滑地直奔极小值。</p>
 <p><strong>方差与收敛的关系</strong>：在优化后期，当参数接近最优解时，梯度的模长趋近于零，但随机梯度的方差可能仍然较大，导致参数在最优解附近震荡。这就是为什么在训练后期需要降低学习率或使用方差缩减技术。</p>
 <h3 id="33">3.3 收敛性分析</h3>
 <p>随机梯度下降的收敛性分析比批量梯度下降更复杂，主要使用随机优化的分析工具。</p>
 <p><strong>基本假设</strong>：</p>
 <ol>
-<li>目标函数 $L(\theta)$ 是凸的（或满足其他正则条件）</li>
+<li>目标函数 <span class="arithmatex">\(L(\theta)\)</span> 是凸的（或满足其他正则条件）</li>
 <li>随机梯度是真实梯度的无偏估计</li>
-<li>梯度的二阶矩（variance）有界：$E[|\nabla \ell(x_i, y_i, \theta)|^2] \leq G^2$</li>
+<li>梯度的二阶矩（variance）有界：<span class="arithmatex">\(E[\|\nabla \ell(x_i, y_i, \theta)\|^2] \leq G^2\)</span></li>
 </ol>
-<p><strong>收敛率</strong>：在适当的学习率调度下（如学习率递减），随机梯度下降可以收敛到全局最优，收敛率为 $O(1/\sqrt{T})$，其中 T 是迭代次数。</p>
-<p><strong>与批量梯度下降的比较</strong>：批量梯度下降的收敛率是 $O(1/T)$（线性收敛），比随机梯度下降快。但批量梯度下降每次迭代的成本是 $O(n)$，而随机梯度下降是 $O(1)$。综合考虑计算成本，对于大规模问题，随机梯度下降往往更有效。</p>
-<p><strong>非凸情况</strong>：在深度学习中，目标函数是非凸的。理论研究表明，在适当的条件下（如学习率满足 $\sum \alpha_t = \infty$ 和 $\sum \alpha_t^2 &lt; \infty$），随机梯度下降可以收敛到驻点（梯度为零的点）。实践中，随机梯度下降通常能够找到不错的局部最优或鞍点。</p>
+<p><strong>收敛率</strong>：在适当的学习率调度下（如学习率递减），随机梯度下降可以收敛到全局最优，收敛率为 <span class="arithmatex">\(O(1/\sqrt{T})\)</span>，其中 T 是迭代次数。</p>
+<p><strong>与批量梯度下降的比较</strong>：批量梯度下降的收敛率是 <span class="arithmatex">\(O(1/T)\)</span>（线性收敛），比随机梯度下降快。但批量梯度下降每次迭代的成本是 <span class="arithmatex">\(O(n)\)</span>，而随机梯度下降是 <span class="arithmatex">\(O(1)\)</span>。综合考虑计算成本，对于大规模问题，随机梯度下降往往更有效。</p>
+<p><strong>非凸情况</strong>：在深度学习中，目标函数是非凸的。理论研究表明，在适当的条件下（如学习率满足 <span class="arithmatex">\(\sum \alpha_t = \infty\)</span> 和 <span class="arithmatex">\(\sum \alpha_t^2 &lt; \infty\)</span>），随机梯度下降可以收敛到驻点（梯度为零的点）。实践中，随机梯度下降通常能够找到不错的局部最优或鞍点。</p>
 <h3 id="34">3.4 随机梯度下降在深度学习中的应用</h3>
 <p>随机梯度下降及其变体是深度学习训练的基础。几乎所有深度学习框架（如 PyTorch、TensorFlow）都内置了 SGD 优化器。</p>
 <p><strong>批量大小的影响</strong>：在深度学习中，批量大小是一个重要超参数，它影响训练动态和最终性能：</p>
@@ -1567,9 +1567,9 @@
 <h3 id="35">3.5 梯度裁剪</h3>
 <p><strong>梯度裁剪（Gradient Clipping）</strong> 是一种防止梯度爆炸的技术，特别适用于训练循环神经网络（RNN）等容易出现梯度爆炸的模型。</p>
 <p><strong>梯度裁剪的公式</strong>：</p>
-<p>$$g \leftarrow g \cdot \min\left(1, \frac{c}{|g|}\right)$$</p>
+<div class="arithmatex">\[g \leftarrow g \cdot \min\left(1, \frac{c}{\|g\|}\right)\]</div>
 <p>或者按范数裁剪：</p>
-<p>$$\text{if } |g| &gt; c: \quad g \leftarrow \frac{c}{|g|} \cdot g$$</p>
+<div class="arithmatex">\[\text{if } \|g\| &gt; c: \quad g \leftarrow \frac{c}{\|g\|} \cdot g\]</div>
 <p>其中 c 是阈值（通常为 1-5），g 是梯度。</p>
 <p><strong>何时使用</strong>：当梯度范数超过阈值时进行裁剪。这可以防止参数更新过大，避免数值不稳定。梯度裁剪在训练 RNN、Transformer 等模型时几乎是必不可少的。</p>
 <h2 id="4">4 高级优化算法</h2>
@@ -1577,19 +1577,19 @@
 <h4 id="411">4.1.1 动量法的原理</h4>
 <p><strong>动量法（Momentum）</strong> 是最古老且最有效的优化算法加速技术之一，由 Polyak 在 1964 年提出。其核心思想是模拟物理中动量的概念，让参数更新具有一定的惯性。</p>
 <p>标准 SGD 的更新规则是：</p>
-<p>$$v^{(t+1)} = \alpha \nabla f(x^{(t)})$$
-$$x^{(t+1)} = x^{(t)} - v^{(t+1)}$$</p>
+<div class="arithmatex">\[v^{(t+1)} = \alpha \nabla f(x^{(t)})$$
+$$x^{(t+1)} = x^{(t)} - v^{(t+1)}\]</div>
 <p>动量法的更新规则是：</p>
-<p>$$v^{(t+1)} = \beta v^{(t)} + \alpha \nabla f(x^{(t)})$$
-$$x^{(t+1)} = x^{(t)} - v^{(t+1)}$$</p>
-<p>其中 $v^{(t)}$ 是速度（velocity），$\beta \in [0, 1)$ 是动量系数（通常取 0.9 或 0.99）。</p>
+<div class="arithmatex">\[v^{(t+1)} = \beta v^{(t)} + \alpha \nabla f(x^{(t)})$$
+$$x^{(t+1)} = x^{(t)} - v^{(t+1)}\]</div>
+<p>其中 <span class="arithmatex">\(v^{(t)}\)</span> 是速度（velocity），<span class="arithmatex">\(\beta \in [0, 1)\)</span> 是动量系数（通常取 0.9 或 0.99）。</p>
 <p><strong>物理直观</strong>：动量法可以理解为一个小球在损失函数曲面上滚动。由于具有动量，小球不会在第一个平坦点就停下来，而是会继续滚动，积累更大的动量，从而能够翻过小丘，逃离浅的局部最优。同时，当曲面下凹时，动量帮助小球加速前进。</p>
 <p><strong>等效形式</strong>：动量法还有另一种等效的表达形式：</p>
-<p>$$x^{(t+1)} = x^{(t)} - \alpha \nabla f(x^{(t)}) + \beta (x^{(t)} - x^{(t-1)})$$</p>
+<div class="arithmatex">\[x^{(t+1)} = x^{(t)} - \alpha \nabla f(x^{(t)}) + \beta (x^{(t)} - x^{(t-1)})\]</div>
 <p>这表明当前更新方向是当前梯度和上一步更新的组合。</p>
 <h4 id="412">4.1.2 动量法的收敛性</h4>
 <p>动量法的收敛性分析比标准 SGD 更复杂。在凸函数情况下，动量法可以加速收敛。</p>
-<p><strong>收敛速度</strong>：对于凸函数，动量法可以达到 $O(1/t)$ 的收敛率（与批量梯度下降相同），但实际收敛速度更快，尤其是对于 ill-conditioned（条件数较大）的函数。</p>
+<p><strong>收敛速度</strong>：对于凸函数，动量法可以达到 <span class="arithmatex">\(O(1/t)\)</span> 的收敛率（与批量梯度下降相同），但实际收敛速度更快，尤其是对于 ill-conditioned（条件数较大）的函数。</p>
 <p><strong>Condition Number 的影响</strong>：函数的 condition number（条件数）定义为最大曲率与最小曲率之比。当 condition number 很大时（即函数在不同方向上曲率差异很大），标准梯度下降会走"之"字形路线，收敛缓慢。动量法通过累积历史更新方向，帮助平滑这些振荡，加速收敛。</p>
 <h4 id="413">4.1.3 动量法在深度学习中的应用</h4>
 <p>在深度学习中，动量法几乎是训练神经网络的标配。它被内置于所有主流深度学习框架的优化器中（如 PyTorch 的 SGD with momentum）。</p>
@@ -1600,66 +1600,66 @@ $$x^{(t+1)} = x^{(t)} - v^{(t+1)}$$</p>
 <li>但过大的动量可能导致不稳定</li>
 </ul>
 <p><strong>Nesterov 动量</strong>：Nesterov 动量是动量法的一个变体，它使用"前瞻"梯度来计算更新：</p>
-<p>$$v^{(t+1)} = \beta v^{(t)} + \alpha \nabla f(x^{(t)} - \beta v^{(t)})$$
-$$x^{(t+1)} = x^{(t)} - v^{(t+1)}$$</p>
+<div class="arithmatex">\[v^{(t+1)} = \beta v^{(t)} + \alpha \nabla f(x^{(t)} - \beta v^{(t)})$$
+$$x^{(t+1)} = x^{(t)} - v^{(t+1)}\]</div>
 <p>这相当于先按照之前的速度方向走一步，然后再计算梯度校正。Nesterov 动量在某些情况下比标准动量收敛更快。</p>
 <h3 id="42-adagrad">4.2 AdaGrad</h3>
 <h4 id="421-adagrad">4.2.1 AdaGrad 的原理</h4>
 <p><strong>AdaGrad（Adaptive Gradient）</strong> 是第一个自适应学习率算法，由 Duchi 等人在 2011 年提出。它的核心思想是对每个参数使用不同的学习率，频繁更新的参数学习率较小，稀疏更新的参数学习率较大。</p>
 <p>AdaGrad 的更新规则为：</p>
-<p>$$g^{(t)} = \nabla f(x^{(t)})$$
+<div class="arithmatex">\[g^{(t)} = \nabla f(x^{(t)})$$
 $$r^{(t)} = r^{(t-1)} + g^{(t)} \odot g^{(t)}$$
-$$x^{(t+1)} = x^{(t)} - \frac{\alpha}{\sqrt{r^{(t)}} + \epsilon} \odot g^{(t)}$$</p>
+$$x^{(t+1)} = x^{(t)} - \frac{\alpha}{\sqrt{r^{(t)}} + \epsilon} \odot g^{(t)}\]</div>
 <p>其中：</p>
 <ul>
-<li>$r^{(t)}$ 是梯度平方的累积和（按元素）</li>
-<li>$\odot$ 是逐元素乘法</li>
-<li>$\epsilon$ 是防止除零的小常数（如 $10^{-8}$）</li>
+<li><span class="arithmatex">\(r^{(t)}\)</span> 是梯度平方的累积和（按元素）</li>
+<li><span class="arithmatex">\(\odot\)</span> 是逐元素乘法</li>
+<li><span class="arithmatex">\(\epsilon\)</span> 是防止除零的小常数（如 <span class="arithmatex">\(10^{-8}\)</span>）</li>
 </ul>
-<p><strong>直观理解</strong>：AdaGrad 对每个维度维护了一个累积的梯度平方和。如果某个维度在过去经常有大的梯度（即更新频繁），$r^{(t)}$ 会较大，该维度的学习率会被自动调低。反之，如果某个维度稀疏更新（即很少被更新），$r^{(t)}$ 较小，学习率相对较高。</p>
+<p><strong>直观理解</strong>：AdaGrad 对每个维度维护了一个累积的梯度平方和。如果某个维度在过去经常有大的梯度（即更新频繁），<span class="arithmatex">\(r^{(t)}\)</span> 会较大，该维度的学习率会被自动调低。反之，如果某个维度稀疏更新（即很少被更新），<span class="arithmatex">\(r^{(t)}\)</span> 较小，学习率相对较高。</p>
 <p>这对于处理稀疏数据（如自然语言处理中的词嵌入）特别有效，因为词频差异很大，频繁出现的词不需要大学习率，而罕见词需要更大的学习率来赶上。</p>
 <h4 id="422-adagrad">4.2.2 AdaGrad 的问题</h4>
-<p>AdaGrad 的一个主要问题是学习率会单调递减，可能导致训练过早停止。随着 $r^{(t)}$ 不断累积，学习率会越来越小，最终趋近于零，参数停止更新。</p>
+<p>AdaGrad 的一个主要问题是学习率会单调递减，可能导致训练过早停止。随着 <span class="arithmatex">\(r^{(t)}\)</span> 不断累积，学习率会越来越小，最终趋近于零，参数停止更新。</p>
 <p>这在处理凸函数时是可以接受的（学习率递减有助于收敛到最优解），但在非凸的深度学习场景中可能有问题——我们可能还没有找到好的解，学习率就已经太小了。</p>
 <h3 id="43-rmsprop">4.3 RMSprop</h3>
 <h4 id="431-rmsprop">4.3.1 RMSprop 的原理</h4>
 <p><strong>RMSprop（Root Mean Square Propagation）</strong> 是 AdaGrad 的改进版本，由 Hinton 在其 Coursera 课程中提出，它使用指数移动平均来替代累积和，从而避免学习率持续下降的问题。</p>
 <p>RMSprop 的更新规则：</p>
-<p>$$g^{(t)} = \nabla f(x^{(t)})$$
+<div class="arithmatex">\[g^{(t)} = \nabla f(x^{(t)})$$
 $$r^{(t)} = \rho r^{(t-1)} + (1 - \rho) g^{(t)} \odot g^{(t)}$$
-$$x^{(t+1)} = x^{(t)} - \frac{\alpha}{\sqrt{r^{(t)}} + \epsilon} \odot g^{(t)}$$</p>
-<p>其中 $\rho$ 是衰减率（通常取 0.9），控制指数移动平均的窗口大小。</p>
+$$x^{(t+1)} = x^{(t)} - \frac{\alpha}{\sqrt{r^{(t)}} + \epsilon} \odot g^{(t)}\]</div>
+<p>其中 <span class="arithmatex">\(\rho\)</span> 是衰减率（通常取 0.9），控制指数移动平均的窗口大小。</p>
 <p><strong>与 AdaGrad 的区别</strong>：AdaGrad 使用所有历史梯度平方的累积和，而 RMSprop 只使用最近一段时间的梯度（通过指数移动平均实现）。这使得学习率可以自适应调整，而不会无限递减。</p>
 <p><strong>等效形式</strong>：RMSprop 可以与动量结合使用：</p>
-<p>$$g^{(t)} = \nabla f(x^{(t)})$$
+<div class="arithmatex">\[g^{(t)} = \nabla f(x^{(t)})$$
 $$r^{(t)} = \rho r^{(t-1)} + (1 - \rho) g^{(t)} \odot g^{(t)}$$
 $$v^{(t+1)} = \beta v^{(t)} + \frac{\alpha}{\sqrt{r^{(t)}} + \epsilon} \odot g^{(t)}$$
-$$x^{(t+1)} = x^{(t)} - v^{(t+1)}$$</p>
+$$x^{(t+1)} = x^{(t)} - v^{(t+1)}\]</div>
 <p>这称为 RMSprop with Momentum，是深度学习中的常用优化器之一。</p>
 <h3 id="44-adam">4.4 Adam</h3>
 <h4 id="441-adam">4.4.1 Adam 的原理</h4>
 <p><strong>Adam（Adaptive Moment Estimation）</strong> 是目前深度学习中使用最广泛的优化器之一，由 Kingma 和 Ba 在 2015 年提出。Adam 结合了动量法和 RMSprop 的优点，同时使用了一阶矩估计（动量）和二阶矩估计（梯度平方的移动平均）。</p>
 <p>Adam 的更新规则：</p>
 <p><strong>参数初始化</strong>：
-$$m^{(0)} = 0, \quad v^{(0)} = 0, \quad t = 0$$</p>
+$<span class="arithmatex">\(m^{(0)} = 0, \quad v^{(0)} = 0, \quad t = 0\)</span>$</p>
 <p><strong>每次迭代</strong>：
-$$t = t + 1$$
-$$g^{(t)} = \nabla f(x^{(t-1)})$$
-$$m^{(t)} = \beta_1 m^{(t-1)} + (1 - \beta_1) g^{(t)} \quad \text{（一阶矩，动量）}$$
-$$v^{(t)} = \beta_2 v^{(t-1)} + (1 - \beta_2) g^{(t)} \odot g^{(t)} \quad \text{（二阶矩）}$$</p>
+$<span class="arithmatex">\(t = t + 1\)</span>$
+$<span class="arithmatex">\(g^{(t)} = \nabla f(x^{(t-1)})\)</span>$
+$<span class="arithmatex">\(m^{(t)} = \beta_1 m^{(t-1)} + (1 - \beta_1) g^{(t)} \quad \text{（一阶矩，动量）}\)</span>$
+$<span class="arithmatex">\(v^{(t)} = \beta_2 v^{(t-1)} + (1 - \beta_2) g^{(t)} \odot g^{(t)} \quad \text{（二阶矩）}\)</span>$</p>
 <p><strong>偏差校正</strong>：
-$$\hat{m}^{(t)} = \frac{m^{(t)}}{1 - \beta_1^t} \quad \text{（校正一阶矩偏差）}$$
-$$\hat{v}^{(t)} = \frac{v^{(t)}}{1 - \beta_2^t} \quad \text{（校正二阶矩偏差）}$$</p>
+$<span class="arithmatex">\(\hat{m}^{(t)} = \frac{m^{(t)}}{1 - \beta_1^t} \quad \text{（校正一阶矩偏差）}\)</span>$
+$<span class="arithmatex">\(\hat{v}^{(t)} = \frac{v^{(t)}}{1 - \beta_2^t} \quad \text{（校正二阶矩偏差）}\)</span>$</p>
 <p><strong>参数更新</strong>：
-$$x^{(t)} = x^{(t-1)} - \frac{\alpha}{\sqrt{\hat{v}^{(t)}} + \epsilon} \odot \hat{m}^{(t)}$$</p>
+$<span class="arithmatex">\(x^{(t)} = x^{(t-1)} - \frac{\alpha}{\sqrt{\hat{v}^{(t)}} + \epsilon} \odot \hat{m}^{(t)}\)</span>$</p>
 <p><strong>参数说明</strong>：</p>
 <ul>
-<li>$\beta_1$：一阶矩（动量）的衰减率，通常取 0.9</li>
-<li>$\beta_2$：二阶矩（梯度平方）的衰减率，通常取 0.999</li>
-<li>$\alpha$：学习率，通常取 0.001（与上述默认值配合使用）</li>
-<li>$\epsilon$：防止除零的小常数，通常取 $10^{-8}$</li>
+<li><span class="arithmatex">\(\beta_1\)</span>：一阶矩（动量）的衰减率，通常取 0.9</li>
+<li><span class="arithmatex">\(\beta_2\)</span>：二阶矩（梯度平方）的衰减率，通常取 0.999</li>
+<li><span class="arithmatex">\(\alpha\)</span>：学习率，通常取 0.001（与上述默认值配合使用）</li>
+<li><span class="arithmatex">\(\epsilon\)</span>：防止除零的小常数，通常取 <span class="arithmatex">\(10^{-8}\)</span></li>
 </ul>
-<p><strong>偏差校正的必要性</strong>：在训练初期，由于 $m^{(0)} = 0$ 和 $v^{(0)} = 0$，一阶矩和二阶矩的估计值会有偏差。例如，$m^{(1)} = \beta_1 \cdot 0 + (1-\beta_1) g^{(1)} = (1-\beta_1) g^{(1)}$，而真实值应该是 $g^{(1)}$。通过除以 $(1 - \beta^t)$ 可以校正这个偏差。随着 t 增大，$\beta^t$ 趋近于零，校正项趋近于 1，偏差逐渐消失。</p>
+<p><strong>偏差校正的必要性</strong>：在训练初期，由于 <span class="arithmatex">\(m^{(0)} = 0\)</span> 和 <span class="arithmatex">\(v^{(0)} = 0\)</span>，一阶矩和二阶矩的估计值会有偏差。例如，<span class="arithmatex">\(m^{(1)} = \beta_1 \cdot 0 + (1-\beta_1) g^{(1)} = (1-\beta_1) g^{(1)}\)</span>，而真实值应该是 <span class="arithmatex">\(g^{(1)}\)</span>。通过除以 <span class="arithmatex">\((1 - \beta^t)\)</span> 可以校正这个偏差。随着 t 增大，<span class="arithmatex">\(\beta^t\)</span> 趋近于零，校正项趋近于 1，偏差逐渐消失。</p>
 <h4 id="442-adam">4.4.2 Adam 的优点</h4>
 <p>Adam 有以下主要优点：</p>
 <ol>
@@ -1726,17 +1726,17 @@ $$x^{(t)} = x^{(t-1)} - \frac{\alpha}{\sqrt{\hat{v}^{(t)}} + \epsilon} \odot \ha
 <h2 id="5">5 约束优化</h2>
 <h3 id="51">5.1 约束优化问题的定义</h3>
 <p><strong>约束优化（Constrained Optimization）</strong> 问题是指在满足一定约束条件的情况下，寻找使目标函数最小化的解。约束优化问题的一般形式为：</p>
-<p>$$\min_x f(x)$$</p>
-<p>$$\text{s.t.} \quad g_i(x) \leq 0, \quad i = 1, \ldots, m$$</p>
-<p>$$\quad h_j(x) = 0, \quad j = 1, \ldots, p$$</p>
-<p>其中 $g_i(x) \leq 0$ 是不等式约束，$h_j(x) = 0$ 是等式约束。</p>
+<div class="arithmatex">\[\min_x f(x)\]</div>
+<div class="arithmatex">\[\text{s.t.} \quad g_i(x) \leq 0, \quad i = 1, \ldots, m\]</div>
+<div class="arithmatex">\[\quad h_j(x) = 0, \quad j = 1, \ldots, p\]</div>
+<p>其中 <span class="arithmatex">\(g_i(x) \leq 0\)</span> 是不等式约束，<span class="arithmatex">\(h_j(x) = 0\)</span> 是等式约束。</p>
 <p><strong>可行域（Feasible Region）</strong>：满足所有约束条件的点 x 的集合称为可行域，记作：</p>
-<p>$$\mathcal{F} = {x \in \mathbb{R}^n \mid g_i(x) \leq 0, i = 1, \ldots, m; h_j(x) = 0, j = 1, \ldots, p}$$</p>
-<p>约束优化的目标是找到 $x^<em> \in \mathcal{F}$ 使得 $f(x^</em>) = \min_{x \in \mathcal{F}} f(x)$。</p>
+<div class="arithmatex">\[\mathcal{F} = \{x \in \mathbb{R}^n \mid g_i(x) \leq 0, i = 1, \ldots, m; h_j(x) = 0, j = 1, \ldots, p\}\]</div>
+<p>约束优化的目标是找到 <span class="arithmatex">\(x^* \in \mathcal{F}\)</span> 使得 <span class="arithmatex">\(f(x^*) = \min_{x \in \mathcal{F}} f(x)\)</span>。</p>
 <h3 id="52">5.2 约束优化的分类</h3>
 <p>根据约束的类型，约束优化问题可以分为：</p>
-<p><strong>仅含不等式约束</strong>：$g_i(x) \leq 0$，这是最一般的情况</p>
-<p><strong>仅含等式约束</strong>：$h_j(x) = 0$，等式约束定义了一个流形（manifold）</p>
+<p><strong>仅含不等式约束</strong>：<span class="arithmatex">\(g_i(x) \leq 0\)</span>，这是最一般的情况</p>
+<p><strong>仅含等式约束</strong>：<span class="arithmatex">\(h_j(x) = 0\)</span>，等式约束定义了一个流形（manifold）</p>
 <p><strong>混合约束</strong>：同时含有不等式约束和等式约束</p>
 <p><strong>约束的性质</strong>：</p>
 <ul>
@@ -1747,91 +1747,91 @@ $$x^{(t)} = x^{(t-1)} - \frac{\alpha}{\sqrt{\hat{v}^{(t)}} + \epsilon} \odot \ha
 <p><strong>凸优化问题</strong>：如果目标函数是凸函数，不等式约束函数是凸函数，等式约束函数是仿射函数（即线性的），则该问题称为凸优化问题。凸优化问题的任何局部最优都是全局最优。</p>
 <h3 id="53">5.3 可视化理解约束</h3>
 <p><strong>二维例子</strong>：考虑以下约束优化问题：</p>
-<p>$$\min_{x_1, x_2} f(x_1, x_2) = x_1^2 + x_2^2$$</p>
-<p>$$\text{s.t.} \quad x_1 + x_2 = 1$$</p>
-<p>这是一个在直线 $x_1 + x_2 = 1$ 上寻找离原点最近点的问题。几何直观告诉我们，最优解应该是 $(0.5, 0.5)$，距离原点 $\sqrt{0.5}$。</p>
+<div class="arithmatex">\[\min_{x_1, x_2} f(x_1, x_2) = x_1^2 + x_2^2\]</div>
+<div class="arithmatex">\[\text{s.t.} \quad x_1 + x_2 = 1\]</div>
+<p>这是一个在直线 <span class="arithmatex">\(x_1 + x_2 = 1\)</span> 上寻找离原点最近点的问题。几何直观告诉我们，最优解应该是 <span class="arithmatex">\((0.5, 0.5)\)</span>，距离原点 <span class="arithmatex">\(\sqrt{0.5}\)</span>。</p>
 <p><strong>不等式约束的例子</strong>：</p>
-<p>$$\min_{x_1, x_2} f(x_1, x_2) = x_1^2 + x_2^2$$</p>
-<p>$$\text{s.t.} \quad x_1 + x_2 \leq 1, \quad x_1 \geq 0, \quad x_2 \geq 0$$</p>
-<p>这个问题的可行域是第一象限中位于直线 $x_1 + x_2 = 1$ 下方的三角形区域。最小值点仍然是 $(0.5, 0.5)$，但这次它是一个内部可行点（不是边界约束的交点）。</p>
+<div class="arithmatex">\[\min_{x_1, x_2} f(x_1, x_2) = x_1^2 + x_2^2\]</div>
+<div class="arithmatex">\[\text{s.t.} \quad x_1 + x_2 \leq 1, \quad x_1 \geq 0, \quad x_2 \geq 0\]</div>
+<p>这个问题的可行域是第一象限中位于直线 <span class="arithmatex">\(x_1 + x_2 = 1\)</span> 下方的三角形区域。最小值点仍然是 <span class="arithmatex">\((0.5, 0.5)\)</span>，但这次它是一个内部可行点（不是边界约束的交点）。</p>
 <h3 id="54">5.4 拉格朗日乘数法</h3>
 <p><strong>拉格朗日乘数法（Lagrange Multiplier Method）</strong> 是求解等式约束优化问题的基本方法。</p>
-<p><strong>基本思想</strong>：对于等式约束问题 $\min_x f(x) \quad \text{s.t.} \quad h(x) = 0$，我们引入拉格朗日乘子 $\lambda$ 构造拉格朗日函数：</p>
-<p>$$\mathcal{L}(x, \lambda) = f(x) + \lambda^\top h(x)$$</p>
-<p>其中 $\lambda \in \mathbb{R}^p$ 是拉格朗日乘子向量。</p>
+<p><strong>基本思想</strong>：对于等式约束问题 <span class="arithmatex">\(\min_x f(x) \quad \text{s.t.} \quad h(x) = 0\)</span>，我们引入拉格朗日乘子 <span class="arithmatex">\(\lambda\)</span> 构造拉格朗日函数：</p>
+<div class="arithmatex">\[\mathcal{L}(x, \lambda) = f(x) + \lambda^\top h(x)\]</div>
+<p>其中 <span class="arithmatex">\(\lambda \in \mathbb{R}^p\)</span> 是拉格朗日乘子向量。</p>
 <p><strong>最优性条件</strong>：在约束下极小化 f 等价于在无约束下极小化拉格朗日函数。一阶必要条件为：</p>
-<p>$$\frac{\partial \mathcal{L}}{\partial x} = \nabla f(x) + J_h(x)^\top \lambda = 0$$
-$$\frac{\partial \mathcal{L}}{\partial \lambda} = h(x) = 0$$</p>
-<p>其中 $J_h(x)$ 是等式约束函数 $h$ 的雅可比矩阵（梯度按行排列）。</p>
-<p><strong>几何解释</strong>：在最优解处，目标函数的梯度 $\nabla f(x^<em>)$ 一定位于约束曲面法向量张成的空间中，即 $\nabla f(x^</em>)$ 是约束梯度 $h'(x^*)$ 的线性组合。这意味着在最优解处，目标函数的梯度与约束曲面正交，约束曲面是目标函数梯度方向的等值线。</p>
-<p><strong>二维例子回顾</strong>：对于问题 $\min x_1^2 + x_2^2 \quad \text{s.t.} \quad x_1 + x_2 = 1$：</p>
-<p>构造拉格朗日函数：$\mathcal{L} = x_1^2 + x_2^2 + \lambda(x_1 + x_2 - 1)$</p>
+<div class="arithmatex">\[\frac{\partial \mathcal{L}}{\partial x} = \nabla f(x) + J_h(x)^\top \lambda = 0$$
+$$\frac{\partial \mathcal{L}}{\partial \lambda} = h(x) = 0\]</div>
+<p>其中 <span class="arithmatex">\(J_h(x)\)</span> 是等式约束函数 <span class="arithmatex">\(h\)</span> 的雅可比矩阵（梯度按行排列）。</p>
+<p><strong>几何解释</strong>：在最优解处，目标函数的梯度 <span class="arithmatex">\(\nabla f(x^*)\)</span> 一定位于约束曲面法向量张成的空间中，即 <span class="arithmatex">\(\nabla f(x^*)\)</span> 是约束梯度 <span class="arithmatex">\(h'(x^*)\)</span> 的线性组合。这意味着在最优解处，目标函数的梯度与约束曲面正交，约束曲面是目标函数梯度方向的等值线。</p>
+<p><strong>二维例子回顾</strong>：对于问题 <span class="arithmatex">\(\min x_1^2 + x_2^2 \quad \text{s.t.} \quad x_1 + x_2 = 1\)</span>：</p>
+<p>构造拉格朗日函数：<span class="arithmatex">\(\mathcal{L} = x_1^2 + x_2^2 + \lambda(x_1 + x_2 - 1)\)</span></p>
 <p>求偏导并设为零：
-- $\frac{\partial \mathcal{L}}{\partial x_1} = 2x_1 + \lambda = 0 \Rightarrow x_1 = -\lambda/2$
-- $\frac{\partial \mathcal{L}}{\partial x_2} = 2x_2 + \lambda = 0 \Rightarrow x_2 = -\lambda/2$
-- $\frac{\partial \mathcal{L}}{\partial \lambda} = x_1 + x_2 - 1 = 0 \Rightarrow x_1 + x_2 = 1$</p>
-<p>由前两式得 $x_1 = x_2$，代入第三式得 $2x_1 = 1$，即 $x_1 = x_2 = 0.5$，$\lambda = -1$。</p>
+- <span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial x_1} = 2x_1 + \lambda = 0 \Rightarrow x_1 = -\lambda/2\)</span>
+- <span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial x_2} = 2x_2 + \lambda = 0 \Rightarrow x_2 = -\lambda/2\)</span>
+- <span class="arithmatex">\(\frac{\partial \mathcal{L}}{\partial \lambda} = x_1 + x_2 - 1 = 0 \Rightarrow x_1 + x_2 = 1\)</span></p>
+<p>由前两式得 <span class="arithmatex">\(x_1 = x_2\)</span>，代入第三式得 <span class="arithmatex">\(2x_1 = 1\)</span>，即 <span class="arithmatex">\(x_1 = x_2 = 0.5\)</span>，<span class="arithmatex">\(\lambda = -1\)</span>。</p>
 <h3 id="55-kkt">5.5 KKT 条件</h3>
 <p><strong>KKT 条件（Karush-Kuhn-Tucker Conditions）</strong> 是拉格朗日乘数法在不等式约束问题上的推广，是约束优化问题最优解的一阶必要条件。</p>
 <p>考虑一般约束优化问题：</p>
-<p>$$\min_x f(x)$$</p>
-<p>$$\text{s.t.} \quad g_i(x) \leq 0, \quad i = 1, \ldots, m$$</p>
-<p>$$\quad h_j(x) = 0, \quad j = 1, \ldots, p$$</p>
+<div class="arithmatex">\[\min_x f(x)\]</div>
+<div class="arithmatex">\[\text{s.t.} \quad g_i(x) \leq 0, \quad i = 1, \ldots, m\]</div>
+<div class="arithmatex">\[\quad h_j(x) = 0, \quad j = 1, \ldots, p\]</div>
 <p><strong>KKT 条件</strong>：</p>
 <ol>
 <li>
 <p><strong>Stationarity（平稳性）</strong>：
-$$\nabla f(x^<em>) + \sum_{i=1}^{m} \mu_i \nabla g_i(x^</em>) + \sum_{j=1}^{p} \lambda_j \nabla h_j(x^*) = 0$$</p>
+$<span class="arithmatex">\(\nabla f(x^*) + \sum_{i=1}^{m} \mu_i \nabla g_i(x^*) + \sum_{j=1}^{p} \lambda_j \nabla h_j(x^*) = 0\)</span>$</p>
 </li>
 <li>
 <p><strong>Primal Feasibility（原始可行性）</strong>：
-$$g_i(x^<em>) \leq 0, \quad i = 1, \ldots, m$$
-$$h_j(x^</em>) = 0, \quad j = 1, \ldots, p$$</p>
+$<span class="arithmatex">\(g_i(x^*) \leq 0, \quad i = 1, \ldots, m\)</span>$
+$<span class="arithmatex">\(h_j(x^*) = 0, \quad j = 1, \ldots, p\)</span>$</p>
 </li>
 <li>
 <p><strong>Dual Feasibility（对偶可行性）</strong>：
-$$\mu_i \geq 0, \quad i = 1, \ldots, m$$</p>
+$<span class="arithmatex">\(\mu_i \geq 0, \quad i = 1, \ldots, m\)</span>$</p>
 </li>
 <li>
 <p><strong>Complementary Slackness（互补松弛）</strong>：
-$$\mu_i g_i(x^*) = 0, \quad i = 1, \ldots, m$$</p>
+$<span class="arithmatex">\(\mu_i g_i(x^*) = 0, \quad i = 1, \ldots, m\)</span>$</p>
 </li>
 </ol>
-<p><strong>互补松弛条件的直观理解</strong>：对于每个不等式约束 $g_i(x) \leq 0$：</p>
+<p><strong>互补松弛条件的直观理解</strong>：对于每个不等式约束 <span class="arithmatex">\(g_i(x) \leq 0\)</span>：</p>
 <ul>
-<li>如果 $g_i(x^*) &lt; 0$（约束未绑紧），则 $\mu_i = 0$（对应的乘子为零）</li>
-<li>如果 $g_i(x^*) = 0$（约束绑紧，在可行域边界上），则 $\mu_i \geq 0$ 可以非零</li>
+<li>如果 <span class="arithmatex">\(g_i(x^*) &lt; 0\)</span>（约束未绑紧），则 <span class="arithmatex">\(\mu_i = 0\)</span>（对应的乘子为零）</li>
+<li>如果 <span class="arithmatex">\(g_i(x^*) = 0\)</span>（约束绑紧，在可行域边界上），则 <span class="arithmatex">\(\mu_i \geq 0\)</span> 可以非零</li>
 </ul>
 <p>这意味着只有"活跃的"（active）不等式约束才会对对偶变量有贡献。</p>
 <p><strong>例子</strong>：考虑约束优化问题：</p>
-<p>$$\min_{x_1, x_2} (x_1 - 2)^2 + (x_2 - 1)^2$$</p>
-<p>$$\text{s.t.} \quad x_1^2 - x_2 \leq 0$$</p>
-<p>这是一个抛物线约束——可行域是抛物线 $x_2 = x_1^2$ 下方的区域（包括边界）。目标函数是一个二次函数，在 $(2, 1)$ 处取得最小值（无约束情况下）。</p>
-<p>检查 $(2, 1)$ 是否在可行域内：$2^2 - 1 = 3 &gt; 0$，不满足约束。所以约束是绑紧的（active），最优解在边界 $x_2 = x_1^2$ 上。</p>
-<p>设 $x_1 = t, x_2 = t^2$，代入目标函数：$f(t) = (t-2)^2 + (t^2-1)^2$。求导：$f'(t) = 2(t-2) + 4t(t^2-1) = 2t - 4 + 4t^3 - 4t = 4t^3 - 2t - 4$。解 $f'(t) = 0$ 可以得到最优解。</p>
+<div class="arithmatex">\[\min_{x_1, x_2} (x_1 - 2)^2 + (x_2 - 1)^2\]</div>
+<div class="arithmatex">\[\text{s.t.} \quad x_1^2 - x_2 \leq 0\]</div>
+<p>这是一个抛物线约束——可行域是抛物线 <span class="arithmatex">\(x_2 = x_1^2\)</span> 下方的区域（包括边界）。目标函数是一个二次函数，在 <span class="arithmatex">\((2, 1)\)</span> 处取得最小值（无约束情况下）。</p>
+<p>检查 <span class="arithmatex">\((2, 1)\)</span> 是否在可行域内：<span class="arithmatex">\(2^2 - 1 = 3 &gt; 0\)</span>，不满足约束。所以约束是绑紧的（active），最优解在边界 <span class="arithmatex">\(x_2 = x_1^2\)</span> 上。</p>
+<p>设 <span class="arithmatex">\(x_1 = t, x_2 = t^2\)</span>，代入目标函数：<span class="arithmatex">\(f(t) = (t-2)^2 + (t^2-1)^2\)</span>。求导：<span class="arithmatex">\(f'(t) = 2(t-2) + 4t(t^2-1) = 2t - 4 + 4t^3 - 4t = 4t^3 - 2t - 4\)</span>。解 <span class="arithmatex">\(f'(t) = 0\)</span> 可以得到最优解。</p>
 <h3 id="56">5.6 约束优化在机器学习中的应用</h3>
 <h4 id="561-svm">5.6.1 支持向量机（SVM）</h4>
 <p>支持向量机是一个经典的约束优化问题：</p>
-<p>$$\min_{w, b} \frac{1}{2}|w|^2$$</p>
-<p>$$\text{s.t.} \quad y_i(w^\top x_i + b) \geq 1, \quad i = 1, \ldots, n$$</p>
+<div class="arithmatex">\[\min_{w, b} \frac{1}{2}\|w\|^2\]</div>
+<div class="arithmatex">\[\text{s.t.} \quad y_i(w^\top x_i + b) \geq 1, \quad i = 1, \ldots, n\]</div>
 <p>这是一个凸二次规划问题，目标是最大化间隔（等价于最小化权重范数），约束是保证所有样本被正确分类且有间隔。</p>
 <p>通过引入拉格朗日乘子和求解对偶问题，我们可以得到支持向量的稀疏解——只有少数样本（支持向量）的乘子非零。</p>
 <h4 id="562">5.6.2 神经网络的不确定性量化</h4>
 <p>在贝叶斯深度学习中，我们经常需要对网络权重施加约束（如非负性、正则化等），这可以通过约束优化来实现。</p>
 <h4 id="563">5.6.3 权重归一化</h4>
 <p>某些模型架构要求权重满足特定约束（如正交性、归一性等）。权重归一化（Weight Normalization）将权重向量分解为模长和方向两部分：</p>
-<p>$$w = \frac{g}{|v|} v$$</p>
+<div class="arithmatex">\[w = \frac{g}{\|v\|} v\]</div>
 <p>其中 v 是方向参数，g 是模长参数。通过参数化，我们可以将模长约束转化为无约束参数优化。</p>
 <h3 id="57">5.7 约束优化算法概述</h3>
 <p>实际求解约束优化问题的算法包括：</p>
 <p><strong>惩罚函数法（Penalty Method）</strong>：将约束加入目标函数，形成惩罚项：</p>
-<p>$$\min_x f(x) + \sigma \sum_{i=1}^{m} \max(0, g_i(x))^2 + \sigma \sum_{j=1}^{p} h_j(x)^2$$</p>
+<div class="arithmatex">\[\min_x f(x) + \sigma \sum_{i=1}^{m} \max(0, g_i(x))^2 + \sigma \sum_{j=1}^{p} h_j(x)^2\]</div>
 <p>当 x 违反约束时，惩罚项增加。增大惩罚系数 σ 可以迫使解进入可行域。</p>
 <p><strong>障碍函数法（Barrier Method）</strong>：只在可行域内部进行优化，通过障碍函数防止接近边界：</p>
-<p>$$\min_x f(x) - \frac{1}{t} \sum_{i=1}^{m} \log(-g_i(x))$$</p>
-<p>当 x 接近边界（$g_i(x) \to 0$）时，障碍函数值趋近无穷，阻止 x 离开可行域。</p>
+<div class="arithmatex">\[\min_x f(x) - \frac{1}{t} \sum_{i=1}^{m} \log(-g_i(x))\]</div>
+<p>当 x 接近边界（<span class="arithmatex">\(g_i(x) \to 0\)</span>）时，障碍函数值趋近无穷，阻止 x 离开可行域。</p>
 <p><strong>增广拉格朗日法（Augmented Lagrangian Method）</strong>：结合了惩罚函数和拉格朗日乘数的优点：</p>
-<p>$$\mathcal{L}<em>\rho(x, \lambda) = f(x) + \lambda^\top h(x) + \frac{\rho}{2} |h(x)|^2 + \sum</em>{i=1}^{m} \mu_i g_i(x) + \frac{\rho}{2} \sum_{i=1}^{m} \max(0, g_i(x))^2$$</p>
+<div class="arithmatex">\[\mathcal{L}_\rho(x, \lambda) = f(x) + \lambda^\top h(x) + \frac{\rho}{2} \|h(x)\|^2 + \sum_{i=1}^{m} \mu_i g_i(x) + \frac{\rho}{2} \sum_{i=1}^{m} \max(0, g_i(x))^2\]</div>
 <p><strong>序列最小二乘规划（SQP）</strong>：将约束优化问题转化为一系列二次规划子问题来求解，是求解非线性约束优化问题最有效的方法之一。</p>
 <h2 id="_4">本章小结</h2>
 <p>本章系统介绍了优化的基础知识及其在机器学习中的应用。</p>
@@ -1842,9 +1842,9 @@ $$\mu_i g_i(x^*) = 0, \quad i = 1, \ldots, m$$</p>
 <p>优化算法是机器学习的核心，掌握这些基础知识对于理解模型训练过程、诊断训练问题、设计新算法都至关重要。</p>
 <h2 id="_5">思考与练习</h2>
 <ol>
-<li><strong>梯度下降法验证</strong>：设目标函数 $f(x) = x^4 - 3x^3 + 2$，使用梯度下降法求解最小值：</li>
-<li>计算梯度 $\nabla f(x)$</li>
-<li>编写程序实现梯度下降法，初始点 $x_0 = 3$，学习率 $\alpha = 0.01$</li>
+<li><strong>梯度下降法验证</strong>：设目标函数 <span class="arithmatex">\(f(x) = x^4 - 3x^3 + 2\)</span>，使用梯度下降法求解最小值：</li>
+<li>计算梯度 <span class="arithmatex">\(\nabla f(x)\)</span></li>
+<li>编写程序实现梯度下降法，初始点 <span class="arithmatex">\(x_0 = 3\)</span>，学习率 <span class="arithmatex">\(\alpha = 0.01\)</span></li>
 <li>观察迭代过程，理解为什么学习率过大会导致不收敛</li>
 <li>
 <p>尝试不同的学习率（如 0.1, 0.05, 0.01），观察收敛行为的差异</p>
@@ -1866,7 +1866,7 @@ $$\mu_i g_i(x^*) = 0, \quad i = 1, \ldots, m$$</p>
 <p>为什么说随机梯度下降的"噪声"有时候是有益的？</p>
 </li>
 <li>
-<p><strong>动量法分析</strong>：考虑函数 $f(x, y) = x^2 + 10y^2$（椭圆函数，condition number = 10）。</p>
+<p><strong>动量法分析</strong>：考虑函数 <span class="arithmatex">\(f(x, y) = x^2 + 10y^2\)</span>（椭圆函数，condition number = 10）。</p>
 </li>
 <li>使用标准梯度下降（学习率适当）迭代 100 步，观察收敛路径</li>
 <li>使用动量法（β = 0.9）迭代 100 步，观察收敛路径有何不同</li>
@@ -1876,8 +1876,8 @@ $$\mu_i g_i(x^*) = 0, \quad i = 1, \ldots, m$$</p>
 <li>
 <p><strong>Adam 算法实现</strong>：手动实现 Adam 优化器，包括偏差校正步骤。</p>
 </li>
-<li>初始化 $m_0 = 0, v_0 = 0, t = 0$</li>
-<li>给定梯度 $g_t$，更新规则是什么？</li>
+<li>初始化 <span class="arithmatex">\(m_0 = 0, v_0 = 0, t = 0\)</span></li>
+<li>给定梯度 <span class="arithmatex">\(g_t\)</span>，更新规则是什么？</li>
 <li>解释为什么需要偏差校正</li>
 <li>
 <p>使用 Adam 训练一个简单模型（如线性回归），观察收敛过程</p>
@@ -1891,8 +1891,8 @@ $$\mu_i g_i(x^*) = 0, \quad i = 1, \ldots, m$$</p>
 </li>
 <li>
 <p><strong>约束优化 - 拉格朗日乘数法</strong>：求解以下约束优化问题：
-   $$\min_{x, y} x^2 + y^2$$
-   $$\text{s.t.} \quad x + y = 1$$</p>
+   $<span class="arithmatex">\(\min_{x, y} x^2 + y^2\)</span>$
+   $<span class="arithmatex">\(\text{s.t.} \quad x + y = 1\)</span>$</p>
 </li>
 <li>
 <p>构造拉格朗日函数</p>
@@ -1904,8 +1904,8 @@ $$\mu_i g_i(x^*) = 0, \quad i = 1, \ldots, m$$</p>
 </li>
 <li>
 <p><strong>KKT 条件应用</strong>：考虑 SVM 的优化问题（简化为二维情况）：
-   $$\min_{w, b} \frac{1}{2}|w|^2$$
-   $$\text{s.t.} \quad y_i(w^\top x_i + b) \geq 1$$</p>
+   $<span class="arithmatex">\(\min_{w, b} \frac{1}{2}\|w\|^2\)</span>$
+   $<span class="arithmatex">\(\text{s.t.} \quad y_i(w^\top x_i + b) \geq 1\)</span>$</p>
 </li>
 <li>
 <p>写出 KKT 条件中的 complementary slackness 条件</p>
@@ -1985,6 +1985,10 @@ $$\mu_i g_i(x^*) = 0, \quad i = 1, \ldots, m$$</p>
     
     
       <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

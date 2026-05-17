@@ -31,9 +31,8 @@ nav:
 markdown_extensions:
   - pymdownx.highlight
   - pymdownx.superfences
-  - pymdownx.math:
-      prettyprint: true
-      alt_text: "Math equation"
+  - pymdownx.arithmatex:
+      generic: true
   - admonition
   - tables
 
