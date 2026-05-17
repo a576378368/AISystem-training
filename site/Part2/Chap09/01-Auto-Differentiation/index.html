@@ -1,0 +1,3523 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="专为零基础新人设计的AI系统培训教程">
+      
+      
+      
+        <link rel="canonical" href="https://a576378368.github.io/AISystem-training/Part2/Chap09/01-Auto-Differentiation/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>自动微分 - AI系统工程师培训教程</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="AI系统工程师培训教程" class="md-header__button md-logo" aria-label="AI系统工程师培训教程" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AI系统工程师培训教程
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              自动微分
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="AI系统工程师培训教程" class="md-nav__button md-logo" aria-label="AI系统工程师培训教程" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AI系统工程师培训教程
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第一阶段：AI基础入门
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第一阶段：AI基础入门
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part1/Chap01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap01 计算机基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part1/Chap02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap02 Python编程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part1/Chap03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap03 数学基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第二阶段：AI系统核心
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第二阶段：AI系统核心
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap04 AI系统概述
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap05 神经网络基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap06/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap06 AI芯片体系架构
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap07 AI编译器原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap08 推理系统与引擎
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap09 AI框架核心
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap10 大模型与集群
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第三阶段：附录
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第三阶段：附录
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part3/AppendixA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录A：术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part3/AppendixB/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录B：参考文献
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part3/AppendixC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录C：实践项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        本章学习目标
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        预备知识
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1 自动微分基础
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1 自动微分基础">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 什么是微分
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 计算机求导方法概述
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 手动微分
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 数值微分
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 符号微分
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 自动微分：核心思想
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.6 自动微分：核心思想">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#161" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6.1 关键洞察
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#162" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6.2 链式法则
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.7 计算图与自动微分
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2 前向模式与反向模式
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2 前向模式与反向模式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 雅克比矩阵基础
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 前向模式详解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 前向模式详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#221" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.1 工作原理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#222-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.2 雅克比-向量积
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#223" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.3 优缺点分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 反向模式详解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3 反向模式详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#231" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3.1 工作原理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#232" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3.2 具体计算示例
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#233-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3.3 向量-雅克比积
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#234" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3.4 优缺点分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 两种模式的对比
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 为什么深度学习用反向模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-pytorch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 PyTorch自动微分机制
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3 PyTorch自动微分机制">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-autograd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 autograd 核心概念
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.1 autograd 核心概念">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#311-requires_grad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.1 张量的 requires_grad 属性
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#312" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.2 计算图结构
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Function 对象
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-backward" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 backward() 函数详解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3 backward() 函数详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#331" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.1 基本用法
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#332" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.2 非标量张量的反向传播
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#333-retain_graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.3 retain_graph 参数
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 计算图构建过程
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.4 计算图构建过程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#341" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.1 叶子节点判定
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#342" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.2 计算图的可视化
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 梯度累积与清零
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-no_grad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 no_grad 上下文
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4 Hook机制详解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4 Hook机制详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 什么是Hook
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 张量Hook详解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2 张量Hook详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#421-register_hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2.1 register_hook 基本用法
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#422" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2.2 修改梯度
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#423" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2.3 累计梯度处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-module-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Module Hook详解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3 Module Hook详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#431-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3.1 前向Hook
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#432-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3.2 反向Hook
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#433-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3.3 完整Hook示例：特征图提取
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Hook的高级应用
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.4 Hook的高级应用">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#441-gradient-checkpointing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4.1 梯度检查点（Gradient Checkpointing）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#442-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4.2 自定义优化器Hook
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-hook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Hook的注意事项
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5 自动微分的挑战与优化
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5 自动微分的挑战与优化">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 自动微分面临的挑战
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.1 自动微分面临的挑战">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#511" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1.1 内存优化挑战
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#512" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1.2 计算效率挑战
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 内存优化技术
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2 内存优化技术">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#521-activation-checkpointing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2.1 激活检查点（Activation Checkpointing）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#522-gradient-accumulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2.2 梯度累积（Gradient Accumulation）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#523-mixed-precision-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2.3 混合精度训练（Mixed Precision Training）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 效率优化技术
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.3 效率优化技术">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#531-jit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3.1 JIT编译优化
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#532-operator-fusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3.2 算子融合（Operator Fusion）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#533" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3.3 数据加载优化
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 分布式训练中的自动微分
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.4 分布式训练中的自动微分">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#541" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4.1 梯度同步
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#542" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4.2 分片梯度计算
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6 动手实现自动微分
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6 动手实现自动微分">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 设计概述
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 核心数据结构
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 基本运算实现
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 算符重载
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 完整示例
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#66" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.6 扩展：支持向量和矩阵
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-pytorch-autograd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7 PyTorch autograd 高级用法
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7 PyTorch autograd 高级用法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 自定义可微函数
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.1 自定义可微函数">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#711" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1.1 基础自定义函数
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#712-ctx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1.2 支持ctx参数
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 函数式梯度修改
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 梯度检查点实用技巧
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.3 梯度检查点实用技巧">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#731" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3.1 选择性检查点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#732" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3.2 自定义检查点函数
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 调试自动微分
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.4 调试自动微分">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#741-naninf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4.1 检测NaN和Inf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#742" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4.2 可视化计算图
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        本章小结
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        本节视频
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="_1">自动微分</h1>
+<h2 id="_2">本章学习目标</h2>
+<ol>
+<li>理解什么是微分以及计算机程序求导的各种方法</li>
+<li>掌握自动微分的基本原理和核心思想</li>
+<li>了解前向模式和反向模式的区别与适用场景</li>
+<li>掌握PyTorch中autograd机制的使用方法</li>
+<li>理解Hook机制在自动微分中的应用</li>
+<li>了解自动微分面临的挑战与优化方向</li>
+</ol>
+<h2 id="_3">预备知识</h2>
+<ul>
+<li>高等数学（导数与微分、链式法则）</li>
+<li>线性代数（向量、矩阵运算）</li>
+<li>Python编程基础</li>
+</ul>
+<hr />
+<h2 id="1">1 自动微分基础</h2>
+<h3 id="11">1.1 什么是微分</h3>
+<p>在深度学习中，<strong>微分（Differentiation）</strong> 是一个核心概念。当我们训练神经网络时，我们需要知道当输入发生微小变化时，输出会如何变化。这种"变化率"就是导数，而计算导数的过程就是微分。</p>
+<p>举个具体的例子。假设我们有一个简单的函数：</p>
+<p>$$y = f(x) = x^2$$</p>
+<p>当 $x$ 从 2 变到 3 时，$y$ 从 4 变到 9。我们可以说，在 $x=2$ 这个点，函数 $f(x)$ 的导数是：</p>
+<p>$$\frac{dy}{dx} = 2x = 4$$</p>
+<p>这个导数表示：在 $x=2$ 这个点，当 $x$ 增加一个极小的量 $\Delta x$ 时，$y$ 会增加大约 $4 \times \Delta x$。</p>
+<p>在神经网络中，我们处理的是成千上万甚至上亿参数的复杂函数。神经网络的"学习"本质上就是找到一组参数，使得损失函数（衡量预测值与真实值差距的函数）的导数为零，或者更准确地说，沿着梯度的反方向更新参数，逐步降低损失函数的值。这个过程叫做<strong>梯度下降</strong>。</p>
+<h3 id="12">1.2 计算机求导方法概述</h3>
+<p>要让计算机程序自动计算导数，有四种主要方法：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>原理</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>手动微分</td>
+<td>人工求导并编写代码</td>
+<td>精度高</td>
+<td>工作量大，不灵活</td>
+</tr>
+<tr>
+<td>数值微分</td>
+<td>使用导数定义 $f'(x) \approx \frac{f(x+h)-f(x)}{h}$</td>
+<td>简单直观</td>
+<td>精度低，计算量大</td>
+</tr>
+<tr>
+<td>符号微分</td>
+<td>完整求导公式变换</td>
+<td>精度高</td>
+<td>可能产生表达式膨胀</td>
+</tr>
+<tr>
+<td><strong>自动微分</strong></td>
+<td>分解为基本操作，利用链式法则</td>
+<td>精度高，效率高</td>
+<td>需要记录计算过程</td>
+</tr>
+</tbody>
+</table>
+<p>下面我们逐一介绍这四种方法。</p>
+<h3 id="13">1.3 手动微分</h3>
+<p><strong>手动微分（Manual Differentiation）</strong> 是最直接的方法：人工对目标函数求导，然后编写对应的代码。</p>
+<p>例如，对于函数 $f(x) = x^2 + \sin(x)$，我们知道：</p>
+<p>$$\frac{df}{dx} = 2x + \cos(x)$$</p>
+<p>手动微分的代码：</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">df_dx</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div>
+<p>手动微分的优点是计算效率高、没有额外开销。但缺点也非常明显：
+- 每个新模型都需要人工求导
+- 复杂模型的求导极其繁琐，容易出错
+- 当模型结构改变时，需要重新求导</p>
+<h3 id="14">1.4 数值微分</h3>
+<p><strong>数值微分（Numerical Differentiation）</strong> 利用导数的数学定义，通过有限差分近似计算导数值。</p>
+<p>导数的定义：</p>
+<p>$$f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$</p>
+<p>当 $h$ 很小时，可以用差商近似导数：</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">numerical_diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;数值微分：近似计算函数f在点x处的导数&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">h</span><span class="p">)</span> <span class="o">-</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">/</span> <span class="n">h</span>
+</code></pre></div>
+<p>数值微分有三种常见形式：</p>
+<ol>
+<li><strong>向前差分</strong>：$\frac{f(x+h) - f(x)}{h}$，误差 $O(h)$</li>
+<li><strong>向后差分</strong>：$\frac{f(x) - f(x-h)}{h}$，误差 $O(h)$</li>
+<li><strong>中心差分</strong>：$\frac{f(x+h) - f(x-h)}{2h}$，误差 $O(h^2)$</li>
+</ol>
+<p>中心差分精度更高，因为它的误差是二阶的。</p>
+<p>数值微分的<strong>优点</strong>：
+- 实现非常简单
+- 适用于任何函数
+- 不需要理解函数的内部结构</p>
+<p><strong>缺点</strong>：
+- 计算量大：每个参数都需要多次函数求值
+- 精度问题：$h$ 太小会有舍入误差，$h$ 太大会有截断误差
+- 无法得到导数的解析表达式</p>
+<h3 id="15">1.5 符号微分</h3>
+<p><strong>符号微分（Symbolic Differentiation）</strong> 是对完整的数学表达式进行求导，得到导函数的解析表达式。</p>
+<p>符号微分的原理是利用求导规则对表达式进行递归变换。例如：</p>
+<ul>
+<li>$\frac{d}{dx}[f(x) + g(x)] = \frac{df}{dx} + \frac{dg}{dx}$</li>
+<li>$\frac{d}{dx}[f(x) \cdot g(x)] = \frac{df}{dx} \cdot g(x) + f(x) \cdot \frac{dg}{dx}$</li>
+<li>$\frac{d}{dx}[f(g(x))] = \frac{df}{dg} \cdot \frac{dg}{dx}$ （链式法则）</li>
+</ul>
+<p>使用 Python 的 sympy 库进行符号微分：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">sympy</span> <span class="k">as</span> <span class="nn">sp</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">sp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># 求导</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>  <span class="c1"># 输出: 2*x + cos(x)</span>
+</code></pre></div>
+<p>符号微分的<strong>优点</strong>：
+- 得到精确的导数表达式
+- 数值精度高</p>
+<p><strong>主要缺点</strong>是<strong>表达式膨胀（Expression Swell）</strong>问题。考虑 Logistic 函数：</p>
+<p>$$l_n = \frac{1}{1 + e^{-l_{n-1}}}$$</p>
+<p>对其求导会得到极其复杂的表达式，随着层数增加，表达式会指数级膨胀。这使得符号微分在实际应用中受到很大限制。</p>
+<h3 id="16">1.6 自动微分：核心思想</h3>
+<p><strong>自动微分（Automatic Differentiation，AD）</strong> 是一种介于数值微分和符号微分之间的方法。它既不像数值微分那样近似，也不像符号微分那样产生复杂的中间表达式。</p>
+<p>自动微分的核心思想可以概括为：<strong>任何复杂的函数都可以分解为一系列基本操作的组合，而每个基本操作都有已知的导数规则。</strong></p>
+<h4 id="161">1.6.1 关键洞察</h4>
+<p>自动微分的精髓在于：微分计算本质上是一系列有限可微算子的组合。</p>
+<p>以函数为例：</p>
+<p>$$y = f(x_1, x_2) = \ln(x_1) + x_1 \cdot x_2 - \sin(x_2)$$</p>
+<p>我们可以将其分解为基本操作：</p>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>操作</th>
+<th>表达式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>取对数</td>
+<td>$v_1 = \ln(x_1)$</td>
+</tr>
+<tr>
+<td>2</td>
+<td>乘法</td>
+<td>$v_2 = x_1 \cdot x_2$</td>
+</tr>
+<tr>
+<td>3</td>
+<td>加法</td>
+<td>$v_3 = v_1 + v_2$</td>
+</tr>
+<tr>
+<td>4</td>
+<td>正弦</td>
+<td>$v_4 = \sin(x_2)$</td>
+</tr>
+<tr>
+<td>5</td>
+<td>减法</td>
+<td>$y = v_3 - v_4$</td>
+</tr>
+</tbody>
+</table>
+<p>每个基本操作（加、减、乘、除、对数、三角函数等）的导数都是已知的。自动微分只需：
+1. 分解程序为基本操作序列
+2. 应用已知的导数规则到每个基本操作
+3. 使用链式法则组合结果</p>
+<h4 id="162">1.6.2 链式法则</h4>
+<p><strong>链式法则（Chain Rule）</strong> 是自动微分的数学基础。</p>
+<p>对于复合函数：
+$$y = f(g(x))$$</p>
+<p>其导数为：
+$$\frac{dy}{dx} = \frac{dy}{dg} \cdot \frac{dg}{dx}$$</p>
+<p>更一般地，对于多变量复合函数：
+$$\frac{\partial y}{\partial x} = \sum_{k=1}^{n} \frac{\partial y}{\partial v_k} \cdot \frac{\partial v_k}{\partial x}$$</p>
+<p>例如，对于 $y = \sin(x^2)$：</p>
+<p>令 $u = x^2$，则 $y = \sin(u)$</p>
+<p>$$\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx} = \cos(u) \cdot 2x = 2x\cos(x^2)$$</p>
+<h3 id="17">1.7 计算图与自动微分</h3>
+<p><strong>计算图（Computational Graph）</strong> 是表达自动微分的理想数据结构。在计算图中：</p>
+<ul>
+<li><strong>节点（Node）</strong> 表示变量（标量、向量、矩阵或张量）</li>
+<li><strong>边（Edge）</strong> 表示操作或函数</li>
+</ul>
+<p>以函数 $f(x_1, x_2) = \ln(x_1) + x_1 \cdot x_2 - \sin(x_2)$ 为例，其计算图如下：</p>
+<p><img alt="计算图示例" src="../../images/05Framework/02AutoDiff/images/03GradMode02.png" /></p>
+<p>从图中可以看出数据流动的过程：
+- $x_1$ 和 $x_2$ 是输入节点
+- $\ln(x_1)$、$x_1 \cdot x_2$、$\sin(x_2)$ 是中间节点
+- 最终输出 $y$ 是根节点</p>
+<p>计算图清晰地表达了：
+1. <strong>数据依赖关系</strong>：哪些操作需要等待哪些结果
+2. <strong>执行顺序</strong>：按照拓扑排序从前向后计算</p>
+<hr />
+<h2 id="2">2 前向模式与反向模式</h2>
+<p>自动微分根据链式法则的应用顺序，分为两种主要模式：<strong>前向模式（Forward Mode）</strong> 和 <strong>反向模式（Reverse Mode）</strong>。</p>
+<h3 id="21">2.1 雅克比矩阵基础</h3>
+<p>在深入理解两种模式之前，我们需要了解<strong>雅克比矩阵（Jacobian Matrix）</strong>。</p>
+<p>对于一个从 $n$ 维输入到 $m$ 维输出的函数：
+$$\mathbf{y} = f(\mathbf{x})$$</p>
+<p>其中 $\mathbf{x} \in \mathbb{R}^n$，$\mathbf{y} \in \mathbb{R}^m$。</p>
+<p>雅克比矩阵 $\mathbf{J}$ 是一个 $m \times n$ 的矩阵，定义了所有一阶偏导数：</p>
+<p>$$\mathbf{J} = \frac{\partial \mathbf{y}}{\partial \mathbf{x}} = \begin{bmatrix} \frac{\partial y_1}{\partial x_1} &amp; \cdots &amp; \frac{\partial y_1}{\partial x_n} \ \vdots &amp; \ddots &amp; \vdots \ \frac{\partial y_m}{\partial x_1} &amp; \cdots &amp; \frac{\partial y_m}{\partial x_n} \end{bmatrix}$$</p>
+<p>在深度学习中，我们通常处理的是单输出函数（标量损失函数），所以雅克比矩阵会简化为梯度向量。</p>
+<h3 id="22">2.2 前向模式详解</h3>
+<p><strong>前向模式（Forward Mode）</strong> 从输入向输出方向计算导数，也称为<strong>切线模式（Tangent Mode）</strong>。</p>
+<h4 id="221">2.2.1 工作原理</h4>
+<p>在前向模式中，我们沿着计算图从输入向输出方向前进，计算每个节点对目标输入的偏导数。</p>
+<p>对于函数 $y = f(x_1, x_2)$，如果要求 $\frac{\partial y}{\partial x_1}$：</p>
+<ol>
+<li>初始化：$\dot{x}_1 = 1$，$\dot{x}_2 = 0$（表示只对 $x_1$ 求导）</li>
+<li>沿计算图前向传播，同时计算数值和导数</li>
+</ol>
+<p>以具体数值为例，假设 $x_1 = 2$，$x_2 = 5$，求 $f(x_1, x_2) = \ln(x_1) + x_1 \cdot x_2 - \sin(x_2)$ 的偏导数。</p>
+<p><strong>前向计算过程：</strong></p>
+<table>
+<thead>
+<tr>
+<th>节点</th>
+<th>数值计算</th>
+<th>导数计算 $\dot{v} = \frac{\partial v}{\partial x_1}$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$v_{-1} = x_1$</td>
+<td>2</td>
+<td>$\dot{v}_{-1} = 1$</td>
+</tr>
+<tr>
+<td>$v_0 = x_2$</td>
+<td>5</td>
+<td>$\dot{v}_0 = 0$</td>
+</tr>
+<tr>
+<td>$v_1 = \ln(v_{-1})$</td>
+<td>$\ln(2) = 0.693$</td>
+<td>$\dot{v}<em>1 = \frac{1}{v</em>{-1}} \cdot \dot{v}_{-1} = 0.5$</td>
+</tr>
+<tr>
+<td>$v_2 = v_{-1} \cdot v_0$</td>
+<td>$2 \times 5 = 10$</td>
+<td>$\dot{v}<em>2 = v_0 \cdot \dot{v}</em>{-1} + v_{-1} \cdot \dot{v}_0 = 5 + 0 = 5$</td>
+</tr>
+<tr>
+<td>$v_3 = \sin(v_0)$</td>
+<td>$\sin(5) = -0.959$</td>
+<td>$\dot{v}_3 = \cos(v_0) \cdot \dot{v}_0 = 0.284 \times 0 = 0$</td>
+</tr>
+<tr>
+<td>$v_4 = v_1 + v_2$</td>
+<td>$0.693 + 10 = 10.693$</td>
+<td>$\dot{v}_4 = \dot{v}_1 + \dot{v}_2 = 0.5 + 5 = 5.5$</td>
+</tr>
+<tr>
+<td>$v_5 = v_4 - v_3$</td>
+<td>$10.693 - (-0.959) = 11.652$</td>
+<td>$\dot{v}_5 = \dot{v}_4 - \dot{v}_3 = 5.5 - 0 = 5.5$</td>
+</tr>
+</tbody>
+</table>
+<p>最终得到 $\frac{\partial y}{\partial x_1} = 5.5$。</p>
+<h4 id="222-">2.2.2 雅克比-向量积</h4>
+<p>前向模式可以高效地计算<strong>雅克比-向量积（Jacobian-Vector Product）</strong>：</p>
+<p>$$\mathbf{J} \cdot \mathbf{r}$$</p>
+<p>其中 $\mathbf{r}$ 是一个输入方向的向量。如果设置 $\mathbf{r} = [1, 0, ..., 0]$，就得到雅克比矩阵的第一列。</p>
+<p>一次前向计算得到雅克比矩阵的一列。如果有 $n$ 个输入，就需要 $n$ 次前向计算。</p>
+<h4 id="223">2.2.3 优缺点分析</h4>
+<p><strong>前向模式的优点：</strong>
+- 实现相对简单
+- 内存占用较低（不需要保存中间结果）
+- 对于<strong>单输入、多输出</strong>的情况效率高</p>
+<p><strong>前向模式的缺点：</strong>
+- 对于<strong>多输入、单输出</strong>（深度学习中的典型情况）效率低
+- 需要 $n$ 次前向传播才能得到对所有 $n$ 个输入的导数</p>
+<h3 id="23">2.3 反向模式详解</h3>
+<p><strong>反向模式（Reverse Mode）</strong> 从输出向输入方向计算导数，也称为<strong>伴随模式（Adjoint Mode）</strong>。这是深度学习中使用的核心方法。</p>
+<h4 id="231">2.3.1 工作原理</h4>
+<p>在反向模式中：</p>
+<ol>
+<li>首先进行<strong>前向传播</strong>，计算并保存所有中间节点的值</li>
+<li>然后从输出开始，沿着计算图<strong>反向传播</strong>，计算每个节点对损失的导数</li>
+</ol>
+<p>定义<strong>伴随变量（Adjoint Variable）</strong>：
+$$\bar{v}_i = \frac{\partial y}{\partial v_i}$$</p>
+<p>其中 $y$ 是最终的输出（标量）。</p>
+<p>反向传播的关键公式：
+$$\bar{v}<em>i = \sum</em>{j \in \text{Succ}(i)} \bar{v}_j \cdot \frac{\partial v_j}{\partial v_i}$$</p>
+<p>即一个节点的导数等于所有后续节点传递来的导数乘以相应偏导数的和。</p>
+<h4 id="232">2.3.2 具体计算示例</h4>
+<p>仍以函数 $f(x_1, x_2) = \ln(x_1) + x_1 \cdot x_2 - \sin(x_2)$ 为例。</p>
+<p><strong>第一步：前向传播（与之前相同）</strong></p>
+<p>计算并保存所有节点的值。</p>
+<p><strong>第二步：反向传播</strong></p>
+<p>初始化：$\bar{v}_5 = \frac{\partial y}{\partial y} = 1$</p>
+<table>
+<thead>
+<tr>
+<th>节点</th>
+<th>偏导数计算</th>
+<th>伴随值 $\bar{v}_i$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$\bar{v}_5 = \bar{y}$</td>
+<td>$1$</td>
+<td>$1$</td>
+</tr>
+<tr>
+<td>$\bar{v}_4$</td>
+<td>$\bar{v}_5 \cdot \frac{\partial v_5}{\partial v_4} = 1 \cdot 1$</td>
+<td>$1$</td>
+</tr>
+<tr>
+<td>$\bar{v}_3$</td>
+<td>$\bar{v}_5 \cdot \frac{\partial v_5}{\partial v_3} = 1 \cdot (-1)$</td>
+<td>$-1$</td>
+</tr>
+<tr>
+<td>$\bar{v}_1$</td>
+<td>$\bar{v}_4 \cdot \frac{\partial v_4}{\partial v_1} = 1 \cdot 1$</td>
+<td>$1$</td>
+</tr>
+<tr>
+<td>$\bar{v}_2$</td>
+<td>$\bar{v}_4 \cdot \frac{\partial v_4}{\partial v_2} = 1 \cdot 1$</td>
+<td>$1$</td>
+</tr>
+</tbody>
+</table>
+<p>对于叶子节点 $v_{-1}$ 和 $v_0$，需要累加来自所有后续节点的贡献：</p>
+<p>$\bar{v}_0$ 的计算（有两个后续节点 $v_2$ 和 $v_3$）：
+$$\bar{v}_0 = \bar{v}_2 \cdot \frac{\partial v_2}{\partial v_0} + \bar{v}_3 \cdot \frac{\partial v_3}{\partial v_0}$$
+$$= 1 \cdot x_1 + (-1) \cdot \cos(x_2) = 2 + 0.284 = 2.284$$</p>
+<p>$\bar{v}<em>{-1}$ 的计算（有两个后续节点 $v_1$ 和 $v_2$）：
+$$\bar{v}</em>{-1} = \bar{v}<em>1 \cdot \frac{\partial v_1}{\partial v</em>{-1}} + \bar{v}<em>2 \cdot \frac{\partial v_2}{\partial v</em>{-1}}$$
+$$= 1 \cdot \frac{1}{x_1} + 1 \cdot x_2 = 0.5 + 5 = 5.5$$</p>
+<p>因此：
+$$\frac{\partial f}{\partial x_1} = 5.5, \quad \frac{\partial f}{\partial x_2} = 2.284$$</p>
+<h4 id="233-">2.3.3 向量-雅克比积</h4>
+<p>反向模式计算的是<strong>向量-雅克比积（Vector-Jacobian Product，VJP）</strong>：</p>
+<p>$$\mathbf{v}^T \cdot \mathbf{J}$$</p>
+<p>其中 $\mathbf{v}$ 是从后续节点传来的梯度向量。这正是反向传播算法中计算 $\frac{\partial L}{\partial x}$ 的方式。</p>
+<h4 id="234">2.3.4 优缺点分析</h4>
+<p><strong>反向模式的优点：</strong>
+- 对于<strong>多输入、单输出</strong>的情况效率极高
+- 一次反向传播即可计算出<strong>所有参数</strong>的梯度
+- 深度学习中的典型场景（单损失函数、多参数）正好符合</p>
+<p><strong>反向模式的缺点：</strong>
+- 需要保存前向传播的<strong>中间结果</strong>，内存开销大
+- 实现相对复杂
+- 需要特殊的数据结构来记录计算图</p>
+<h3 id="24">2.4 两种模式的对比</h3>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>前向模式</th>
+<th>反向模式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>计算方向</td>
+<td>输入 $\to$ 输出</td>
+<td>输出 $\to$ 输入</td>
+</tr>
+<tr>
+<td>计算内容</td>
+<td>雅克比-向量积</td>
+<td>向量-雅克比积</td>
+</tr>
+<tr>
+<td>适用场景</td>
+<td>单输出、多输入</td>
+<td>多输出（通常为1）、多输入</td>
+</tr>
+<tr>
+<td>计算次数（$n$输入）</td>
+<td>$n$ 次前向</td>
+<td>1 次前向 + 1 次反向</td>
+</tr>
+<tr>
+<td>内存需求</td>
+<td>较低</td>
+<td>较高</td>
+</tr>
+</tbody>
+</table>
+<p>在深度学习中，由于：
+- 输出通常是单个标量损失函数
+- 输入是庞大的参数集合（百万到万亿级别）</p>
+<p><strong>反向模式是必然选择</strong>，一次反向传播就能得到所有参数的梯度。</p>
+<h3 id="25">2.5 为什么深度学习用反向模式</h3>
+<p>深度学习选择反向模式的原因：</p>
+<ol>
+<li>
+<p><strong>效率</strong>：想象一个有100万个参数的网络，用前向模式需要100万次前向传播，而反向模式只需1次前向+1次反向。</p>
+</li>
+<li>
+<p><strong>内存优化</strong>：虽然反向模式需要保存中间结果，但可以通过<strong>激活检查点（Activation Checkpointing）</strong>等技术优化。</p>
+</li>
+<li>
+<p><strong>局部性</strong>：每个节点的梯度计算只依赖于后续节点，便于并行化。</p>
+</li>
+</ol>
+<hr />
+<h2 id="3-pytorch">3 PyTorch自动微分机制</h2>
+<p>PyTorch 是当前最流行的深度学习框架之一，其自动微分机制（autograd）是整个框架的核心。本节将深入介绍 PyTorch 的 autograd 机制。</p>
+<h3 id="31-autograd">3.1 autograd 核心概念</h3>
+<p>PyTorch 的 autograd 系统基于<strong>动态计算图（Dynamic Computational Graph）</strong>。理解 autograd，需要掌握以下核心概念：</p>
+<h4 id="311-requires_grad">3.1.1 张量的 requires_grad 属性</h4>
+<p>在 PyTorch 中，每个张量（Tensor）有一个 <code>requires_grad</code> 属性，标记该张量是否需要计算梯度。</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="c1"># 创建一个需要计算梯度的张量</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">requires_grad</span><span class="p">)</span>  <span class="c1"># True</span>
+
+<span class="c1"># 从其他张量派生出来的张量，默认requires_grad=True</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">requires_grad</span><span class="p">)</span>  <span class="c1"># True</span>
+
+<span class="c1"># 显式指定</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="312">3.1.2 计算图结构</h4>
+<p>PyTorch 的计算图是<strong>动态构建</strong>的。每执行一个操作（op），就创建一个新的节点（Function），并将它们连接成图。</p>
+<p>计算图中的两类节点：
+1. <strong>叶子节点（Leaf Nodes）</strong>：用户创建的张量，通常是模型参数
+2. <strong>中间节点（Intermediate Nodes）</strong>：操作产生的结果</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="c1"># 创建叶子节点</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">2.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># 执行操作，创建中间节点</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>  <span class="c1"># MulBackward</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">a</span>  <span class="c1"># AddBackward</span>
+
+<span class="c1"># 反向传播</span>
+<span class="n">d</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># tensor([3.])  # dc/da * 1 = b * 1 = 2</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># tensor([1.])  # dc/db * 1 = a * 1 = 1</span>
+</code></pre></div>
+<h3 id="32-function">3.2 Function 对象</h3>
+<p>在 PyTorch 计算图中，每个操作都对应一个 <code>Function</code> 对象。Function 对象包含：
+- <strong>forward()</strong>：执行操作，计算结果
+- <strong>backward()</strong>：反向传播，计算梯度</p>
+<p>PyTorch 提供两种使用 Function 的方式：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="c1"># 方式1：直接调用</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">2.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># 等价于 x.exp()</span>
+
+<span class="c1"># 方式2：显式调用 Function</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">2.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># 使用 .apply() 方法</span>
+</code></pre></div>
+<p>自定义 Function 示例：</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">MyReLU</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">Function</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;正向传播：保存反向传播需要的输入&quot;&quot;&quot;</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="n">save_for_backward</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">input</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">grad_output</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;反向传播：计算梯度&quot;&quot;&quot;</span>
+        <span class="nb">input</span><span class="p">,</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">saved_tensors</span>
+        <span class="n">grad_input</span> <span class="o">=</span> <span class="n">grad_output</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="n">grad_input</span><span class="p">[</span><span class="nb">input</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">grad_input</span>
+
+<span class="c1"># 使用自定义 Function</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">MyReLU</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>  <span class="c1"># tensor([1., 0., 3.], grad_fn=&lt;MyReLU&gt;)</span>
+</code></pre></div>
+<h3 id="33-backward">3.3 backward() 函数详解</h3>
+<p><code>tensor.backward()</code> 是触发反向传播的核心函数。</p>
+<h4 id="331">3.3.1 基本用法</h4>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="c1"># 创建输入张量</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">3.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># 定义计算图</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span>
+
+<span class="c1"># 反向传播</span>
+<span class="n">z</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+<span class="c1"># 查看梯度</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># tensor([10.])  # dz/dx = y + 2x = 4 + 6 = 10</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># tensor([3.])  # dz/dy = x = 3</span>
+</code></pre></div>
+<h4 id="332">3.3.2 非标量张量的反向传播</h4>
+<p>当输出不是标量时，需要提供 <code>gradient</code> 参数（初始梯度）：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="c1"># 输出是向量</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">]],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>  <span class="c1"># [[2, 4], [6, 8]]</span>
+
+<span class="c1"># 需要提供与y形状相同的梯度向量</span>
+<span class="n">gradient</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]])</span>
+<span class="n">y</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">gradient</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>
+<span class="c1"># tensor([[2., 2.],</span>
+<span class="c1">#         [2., 2.]])</span>
+</code></pre></div>
+<p>在深度学习中，损失通常是标量，所以通常不需要传入 gradient。</p>
+<h4 id="333-retain_graph">3.3.3 retain_graph 参数</h4>
+<p>默认情况下，反向传播后会释放计算图。如果需要多次反向传播，需要设置 <code>retain_graph=True</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">2.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">y</span> <span class="o">**</span> <span class="mi">2</span>
+
+<span class="c1"># 第一次反向传播</span>
+<span class="n">z</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">retain_graph</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># tensor([32.])  # dz/dx = 4x³ = 32</span>
+
+<span class="c1"># 第二次反向传播（梯度会累加）</span>
+<span class="n">z</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># tensor([64.])  # 32 + 32 = 64</span>
+
+<span class="c1"># 如果想覆盖而不是累加，需要先清零</span>
+<span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
+<span class="n">z</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># tensor([32.])</span>
+</code></pre></div>
+<h3 id="34">3.4 计算图构建过程</h3>
+<p>理解 PyTorch 计算图的构建过程，对于调试和优化非常重要。</p>
+<h4 id="341">3.4.1 叶子节点判定</h4>
+<p>只有叶子节点的梯度会被保留。叶子节点的定义：
+- 用户直接创建的张量（不是从操作结果得到的）
+- 设置 <code>requires_grad=True</code></p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="c1"># 叶子节点</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">is_leaf</span><span class="p">)</span>  <span class="c1"># True</span>
+
+<span class="c1"># 非叶子节点</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">is_leaf</span><span class="p">)</span>  <span class="c1"># False</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">grad_fn</span><span class="p">)</span>  <span class="c1"># &lt;MulBackward0&gt;</span>
+</code></pre></div>
+<p>叶子节点的梯度默认会累加到 <code>.grad</code> 属性：</p>
+<div class="highlight"><pre><span></span><code><span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">b</span> <span class="o">*</span> <span class="mi">2</span>
+
+<span class="n">c</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># tensor([4.])  # dc/da = dc/db * db/da = 4 * 2 = 4</span>
+</code></pre></div>
+<h4 id="342">3.4.2 计算图的可视化</h4>
+<p>可以使用 <code>register_full_hook</code> 查看计算图的结构：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="k">def</span> <span class="nf">print_grad_fn</span><span class="p">(</span><span class="n">grad</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">grad</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">x</span>
+
+<span class="c1"># 打印每个张量的grad_fn</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;x.grad_fn: </span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">grad_fn</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># None</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;y.grad_fn: </span><span class="si">{</span><span class="n">y</span><span class="o">.</span><span class="n">grad_fn</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># &lt;MulBackward0&gt;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;z.grad_fn: </span><span class="si">{</span><span class="n">z</span><span class="o">.</span><span class="n">grad_fn</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># &lt;AddBackward0&gt;</span>
+</code></pre></div>
+<h3 id="35">3.5 梯度累积与清零</h3>
+<p>PyTorch 默认会<strong>累加梯度</strong>，而不是覆盖。这是有意为之的设计，便于实现梯度累积（Gradient Accumulation）技术。</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># 模拟梯度累积：micro-batch</span>
+<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="c1"># 前向传播</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+    <span class="c1"># 反向传播（梯度累加）</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+<span class="c1"># 实际梯度 = 所有batch梯度的和</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># 累加后的梯度</span>
+
+<span class="c1"># 清零方法1：使用 optimizer.zero_grad()</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+
+<span class="c1"># 清零方法2：手动清零</span>
+<span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">grad</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="36-no_grad">3.6 no_grad 上下文</h3>
+<p>当不需要计算梯度时，可以使用 <code>torch.no_grad()</code> 上下文来<strong>禁用梯度计算</strong>，这可以显著提高执行效率并减少内存消耗。</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+
+<span class="c1"># 方法1：装饰器</span>
+<span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">inference</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># 方法2：上下文管理器</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">requires_grad</span><span class="p">)</span>  <span class="c1"># False</span>
+
+<span class="c1"># 方法3：entirely</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">set_grad_enabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">set_grad_enabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p>在推理（inference）阶段，必须使用 <code>no_grad</code>：
+1. 减少内存消耗（不需要保存中间结果）
+2. 提高推理速度
+3. 确保不会意外修改模型参数</p>
+<hr />
+<h2 id="4-hook">4 Hook机制详解</h2>
+<p>PyTorch 的 Hook 机制是一种强大的扩展功能，允许在反向传播过程中插入自定义逻辑，实现高级功能如梯度监控、梯度修改等。</p>
+<h3 id="41-hook">4.1 什么是Hook</h3>
+<p><strong>Hook（钩子）</strong> 是一种回调机制，允许在特定事件发生时被调用。在 PyTorch autograd 中，Hook 主要用于：</p>
+<ol>
+<li>查看中间变量的梯度</li>
+<li>修改（遮挡或缩放）梯度</li>
+<li>实现自定义的反向传播逻辑</li>
+</ol>
+<p>PyTorch 提供两种主要 Hook：
+- <strong>张量 Hook</strong>：注册在张量上的 Hook
+- <strong>模块 Hook</strong>：注册在 <code>nn.Module</code> 上的 Hook</p>
+<h3 id="42-hook">4.2 张量Hook详解</h3>
+<h4 id="421-register_hook">4.2.1 register_hook 基本用法</h4>
+<p>张量 Hook 通过 <code>tensor.register_hook()</code> 注册：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="c1"># 创建需要梯度的张量</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="c1"># 注册 hook 来打印梯度</span>
+<span class="k">def</span> <span class="nf">print_gradient</span><span class="p">(</span><span class="n">grad</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Gradient: </span><span class="si">{</span><span class="n">grad</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">z</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+<span class="c1"># z的梯度是1，打印出来</span>
+<span class="c1"># 输出: Gradient: tensor([1.])</span>
+</code></pre></div>
+<h4 id="422">4.2.2 修改梯度</h4>
+<p>Hook 最重要的用途之一是<strong>修改梯度</strong>。这在以下场景中很有用：</p>
+<ol>
+<li><strong>梯度裁剪（Gradient Clipping）</strong>：防止梯度爆炸</li>
+<li><strong>梯度遮挡（Gradient Masking）</strong>：某些参数不更新</li>
+<li><strong>自定义优化</strong>：修改梯度用于特殊目的</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># 梯度裁剪：限制梯度范数不超过1.0</span>
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">register_hook</span><span class="p">(</span><span class="k">lambda</span> <span class="n">grad</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+
+<span class="c1"># 或者使用更灵活的版本</span>
+<span class="k">def</span> <span class="nf">gradient_clipping_hook</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="n">max_norm</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="o">-</span><span class="n">max_norm</span><span class="p">,</span> <span class="n">max_norm</span><span class="p">)</span>
+
+<span class="n">param</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">weight</span>
+<span class="n">param</span><span class="o">.</span><span class="n">register_hook</span><span class="p">(</span><span class="n">gradient_clipping_hook</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="423">4.2.3 累计梯度处理</h4>
+<p>Hook 对梯度修改是<strong>即时生效</strong>的，所有后续操作都会看到修改后的梯度：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">3.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span>
+
+<span class="c1"># 修改梯度为固定值</span>
+<span class="k">def</span> <span class="nf">modify_grad</span><span class="p">(</span><span class="n">grad</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">])</span>
+
+<span class="n">y</span><span class="o">.</span><span class="n">register_hook</span><span class="p">(</span><span class="n">modify_grad</span><span class="p">)</span>
+
+<span class="n">z</span> <span class="o">=</span> <span class="n">y</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="n">z</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># tensor([0.])  # 不是 6*2=12，而是被hook改成了0</span>
+</code></pre></div>
+<h3 id="43-module-hook">4.3 Module Hook详解</h3>
+<p><code>nn.Module</code> 提供了更高级的 Hook 接口，可以在特定事件触发时执行回调。</p>
+<h4 id="431-hook">4.3.1 前向Hook</h4>
+<p>前向Hook在 <code>forward()</code> 执行后被调用：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+
+<span class="k">class</span> <span class="nc">SimpleNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">SimpleNet</span><span class="p">()</span>
+
+<span class="c1"># 注册前向hook</span>
+<span class="k">def</span> <span class="nf">forward_hook</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output shape: </span><span class="si">{</span><span class="n">output</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output mean: </span><span class="si">{</span><span class="n">output</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 在特定层注册hook</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fc</span><span class="o">.</span><span class="n">register_forward_hook</span><span class="p">(</span><span class="n">forward_hook</span><span class="p">)</span>
+
+<span class="c1"># 前向传播时会触发hook</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="c1"># 输出: Output shape: torch.Size([2, 5])</span>
+<span class="c1">#       Output mean: 0.1234</span>
+</code></pre></div>
+<h4 id="432-hook">4.3.2 反向Hook</h4>
+<p>反向Hook在 <code>backward()</code> 执行时被调用：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># 注册反向hook</span>
+<span class="k">def</span> <span class="nf">backward_hook</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">grad_input</span><span class="p">,</span> <span class="n">grad_output</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;grad_output: </span><span class="si">{</span><span class="n">grad_output</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;grad_input: </span><span class="si">{</span><span class="n">grad_input</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">fc</span><span class="o">.</span><span class="n">register_backward_hook</span><span class="p">(</span><span class="n">backward_hook</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</code></pre></div>
+<h4 id="433-hook">4.3.3 完整Hook示例：特征图提取</h4>
+<p>Hook 常用于<strong>特征提取</strong>和<strong>中间激活可视化</strong>：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+
+<span class="k">class</span> <span class="nc">FeatureExtractor</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">avgpool</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">AdaptiveAvgPool2d</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_maps</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># 存储中间特征</span>
+
+        <span class="c1"># 注册hook</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">register_forward_hook</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_activation</span><span class="p">(</span><span class="s1">&#39;relu1&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">register_forward_hook</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_activation</span><span class="p">(</span><span class="s1">&#39;relu2&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">save_activation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">hook</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">feature_maps</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">hook</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">avgpool</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+<span class="c1"># 使用</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">FeatureExtractor</span><span class="p">()</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">feature_maps</span><span class="p">[</span><span class="s1">&#39;relu1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># torch.Size([1, 64, 16, 16])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">feature_maps</span><span class="p">[</span><span class="s1">&#39;relu2&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># torch.Size([1, 128, 8, 8])</span>
+</code></pre></div>
+<h3 id="44-hook">4.4 Hook的高级应用</h3>
+<h4 id="441-gradient-checkpointing">4.4.1 梯度检查点（Gradient Checkpointing）</h4>
+<p>Hook 可以用于实现梯度检查点技术，在前向传播时不保存所有中间结果，而是在反向传播时重新计算需要的值：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="k">def</span> <span class="nf">checkpoint</span><span class="p">(</span><span class="n">forward_fn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;简化的checkpoint实现&quot;&quot;&quot;</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">forward_fn</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">recompute</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">forward_fn</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="c1"># 保存重新计算函数</span>
+    <span class="n">output</span><span class="o">.</span><span class="n">register_post_accumulate_grad_hook</span><span class="p">(</span><span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="n">recompute</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">output</span>
+</code></pre></div>
+<h4 id="442-hook">4.4.2 自定义优化器Hook</h4>
+<p>Hook 可以用于实现复杂的优化策略：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+
+<span class="k">class</span> <span class="nc">AdaptiveGradientScaling</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scales</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># 为每个参数注册hook</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scales</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+            <span class="n">param</span><span class="o">.</span><span class="n">register_hook</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">make_gradient_hook</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">make_gradient_hook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">hook</span><span class="p">(</span><span class="n">grad</span><span class="p">):</span>
+            <span class="c1"># 根据参数名称调整梯度</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scales</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">grad</span> <span class="o">*</span> <span class="n">scale</span>
+        <span class="k">return</span> <span class="n">hook</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="45-hook">4.5 Hook的注意事项</h3>
+<p>使用Hook时需要注意以下几点：</p>
+<ol>
+<li>
+<p><strong>Hook的执行时机</strong>：Hook在反向传播过程中执行，此时计算图可能已经被部分释放。</p>
+</li>
+<li>
+<p><strong>内存管理</strong>：如果Hook保存了梯度的引用，确保不会导致内存泄漏。</p>
+</li>
+<li>
+<p><strong>多线程</strong>：在DataLoader使用多个worker时，Hook的行为可能不符合预期。</p>
+</li>
+<li>
+<p><strong>梯度累加</strong>：Hook对梯度的修改会影响后续所有使用该梯度的操作。</p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="c1"># 注意事项示例</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">y</span> <span class="o">*</span> <span class="mi">2</span>
+
+<span class="c1"># 注册hook修改梯度</span>
+<span class="k">def</span> <span class="nf">modify_grad</span><span class="p">(</span><span class="n">grad</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">grad</span> <span class="o">*</span> <span class="mi">0</span>
+
+<span class="n">y</span><span class="o">.</span><span class="n">register_hook</span><span class="p">(</span><span class="n">modify_grad</span><span class="p">)</span>
+
+<span class="c1"># 注意：x的梯度会被修改，但不会影响z的值</span>
+<span class="n">z</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># tensor([0.])  # 被hook改成0了</span>
+</code></pre></div>
+<hr />
+<h2 id="5">5 自动微分的挑战与优化</h2>
+<h3 id="51">5.1 自动微分面临的挑战</h3>
+<p>虽然自动微分是深度学习的基础，但在大规模训练中仍面临诸多挑战。</p>
+<h4 id="511">5.1.1 内存优化挑战</h4>
+<p>反向模式需要保存所有中间结果以用于反向传播。这在深度网络中会成为严重的内存瓶颈。</p>
+<p>以一个简单的100层网络为例：
+- 每层需要保存输入、输出、权重、梯度
+- 对于参数量100M的模型，中间激活可能占用数GB内存</p>
+<p><strong>内存消耗的主要来源</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+<th>典型大小</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>参数</td>
+<td>模型权重 $W$</td>
+<td>$O(\text{参数量})$</td>
+</tr>
+<tr>
+<td>梯度</td>
+<td>参数梯度 $\frac{\partial L}{\partial W}$</td>
+<td>$O(\text{参数量})$</td>
+</tr>
+<tr>
+<td>优化器状态</td>
+<td>Adam的momentum和variance</td>
+<td>$O(2 \times \text{参数量})$</td>
+</tr>
+<tr>
+<td>激活</td>
+<td>前向传播中间结果</td>
+<td>$O(\text{批大小} \times \text{序列长度} \times \text{隐藏层维度})$</td>
+</tr>
+</tbody>
+</table>
+<h4 id="512">5.1.2 计算效率挑战</h4>
+<p>除了内存，计算效率也是重要考量：</p>
+<ol>
+<li>
+<p><strong>梯度计算本身</strong>：虽然反向传播的时间复杂度与前向传播相当，但额外的内存操作（读写）会影响性能。</p>
+</li>
+<li>
+<p><strong>通信开销</strong>：在分布式训练中，梯度同步需要大量通信。</p>
+</li>
+<li>
+<p><strong>操作符实现</strong>：某些操作的导数计算可能比前向计算更复杂。</p>
+</li>
+</ol>
+<h3 id="52">5.2 内存优化技术</h3>
+<h4 id="521-activation-checkpointing">5.2.1 激活检查点（Activation Checkpointing）</h4>
+<p><strong>激活检查点</strong>（也称为<strong>重计算，Recomputation</strong>）是一种用计算换内存的技术。</p>
+<p>核心思想：
+- 不保存所有中间激活，只保存部分"检查点"
+- 在反向传播时，从最近的检查点重新计算需要的中间结果</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+
+<span class="c1"># PyTorch的checkpoint实现</span>
+<span class="kn">from</span> <span class="nn">torch.utils.checkpoint</span> <span class="kn">import</span> <span class="n">checkpoint</span>
+
+<span class="k">class</span> <span class="nc">CheckpointedLayer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="n">module</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># 使用checkpoint包装前向传播</span>
+        <span class="k">return</span> <span class="n">checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># 使用示例</span>
+<span class="k">class</span> <span class="nc">Net</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">([</span>
+            <span class="n">CheckpointedLayer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+        <span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">layer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span>
+</code></pre></div>
+<p><strong>Checkpointing的权衡</strong>：
+- 内存节省：可达50%以上
+- 计算开销增加：约20-30%（需要重新计算部分激活）</p>
+<h4 id="522-gradient-accumulation">5.2.2 梯度累积（Gradient Accumulation）</h4>
+<p>梯度累积是一种在有限显存下模拟大批量训练的技术：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+
+<span class="c1"># 假设显存只能容纳 batch_size=4，但实际需要 batch_size=32</span>
+<span class="n">effective_batch_size</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">mini_batch_size</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">num_accumulation_steps</span> <span class="o">=</span> <span class="n">effective_batch_size</span> <span class="o">//</span> <span class="n">mini_batch_size</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_accumulation_steps</span><span class="p">):</span>
+        <span class="c1"># 模拟数据</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">mini_batch_size</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+        <span class="c1"># 反向传播（但不更新参数）</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+        <span class="c1"># 梯度会累加到 .grad 属性</span>
+        <span class="k">if</span> <span class="n">step</span> <span class="o">&lt;</span> <span class="n">num_accumulation_steps</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># 不清零，只是累积</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># 最后一步，累积完成，更新参数</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+</code></pre></div>
+<h4 id="523-mixed-precision-training">5.2.3 混合精度训练（Mixed Precision Training）</h4>
+<p>混合精度训练使用FP16进行大部分计算，以节省内存和加速：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.cuda.amp</span> <span class="kn">import</span> <span class="n">autocast</span><span class="p">,</span> <span class="n">GradScaler</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">GradScaler</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">target</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+
+    <span class="c1"># 自动混合精度</span>
+    <span class="k">with</span> <span class="n">autocast</span><span class="p">():</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+
+    <span class="c1"># Scales loss，防止下溢</span>
+    <span class="n">scaler</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+    <span class="c1"># Unscale gradients，优化器状态用FP32</span>
+    <span class="n">scaler</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">optimizer</span><span class="p">)</span>
+    <span class="n">scaler</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+</code></pre></div>
+<p><strong>混合精度的内存节省</strong>：
+- FP16 vs FP32：减少50%内存
+- 梯度也用FP16：额外节省
+- 某些操作仍需FP32（如BatchNorm统计）</p>
+<h3 id="53">5.3 效率优化技术</h3>
+<h4 id="531-jit">5.3.1 JIT编译优化</h4>
+<p>PyTorch 2.0引入的TorchDynamo可以通过JIT编译优化执行效率：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="c1"># 方式1：torch.compile (PyTorch 2.0+)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="c1"># 方式2：torch.jit.script</span>
+<span class="nd">@torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">script</span>
+<span class="k">def</span> <span class="nf">optimized_function</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
+</code></pre></div>
+<h4 id="532-operator-fusion">5.3.2 算子融合（Operator Fusion）</h4>
+<p>算子融合将多个小算子合并为一个，以减少内存访问和内核启动开销：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 融合前：多个核（kernel）</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">y</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">z</span> <span class="o">+</span> <span class="mi">3</span>
+
+<span class="c1"># 融合后：单个核</span>
+<span class="c1"># w = ((x + 1) * 2) + 3 只需要一次kernel launch</span>
+</code></pre></div>
+<h4 id="533">5.3.3 数据加载优化</h4>
+<p>高效的数据加载可以避免GPU等待：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+
+<span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+    <span class="n">dataset</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+    <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>        <span class="c1"># 多进程加载</span>
+    <span class="n">pin_memory</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>      <span class="c1"># 固定内存，加速传输</span>
+    <span class="n">prefetch_factor</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>   <span class="c1"># 预取因子</span>
+    <span class="n">persistent_workers</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</code></pre></div>
+<h3 id="54">5.4 分布式训练中的自动微分</h3>
+<p>在分布式训练中，自动微分面临额外的挑战。</p>
+<h4 id="541">5.4.1 梯度同步</h4>
+<p>数据并行中，每个设备独立计算梯度，然后需要同步：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch.distributed</span> <span class="k">as</span> <span class="nn">dist</span>
+
+<span class="c1"># 在反向传播后同步梯度</span>
+<span class="k">def</span> <span class="nf">reduce_gradients</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">grad</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dist</span><span class="o">.</span><span class="n">all_reduce</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">grad</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="n">dist</span><span class="o">.</span><span class="n">ReduceOp</span><span class="o">.</span><span class="n">SUM</span><span class="p">)</span>
+            <span class="n">param</span><span class="o">.</span><span class="n">grad</span> <span class="o">/=</span> <span class="n">world_size</span>
+</code></pre></div>
+<h4 id="542">5.4.2 分片梯度计算</h4>
+<p>ZeRO等技术将梯度分片存储，减少内存：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 伪代码：ZeRO-1 优化器状态分片</span>
+<span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+    <span class="c1"># 每个设备只保存1/N的优化器状态</span>
+    <span class="n">shard_id</span> <span class="o">=</span> <span class="n">getShardId</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">world_size</span><span class="p">)</span>
+    <span class="n">param</span><span class="o">.</span><span class="n">optim_state</span> <span class="o">=</span> <span class="n">load_shard</span><span class="p">(</span><span class="n">shard_id</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="6">6 动手实现自动微分</h2>
+<p>理论不如实践。本节将带领读者从头实现一个简单的自动微分系统，以深入理解其原理。</p>
+<h3 id="61">6.1 设计概述</h3>
+<p>我们将实现一个简化版的自动微分系统，支持：
+- 基本数学运算（加、减、乘、除）
+- 初等函数（sin、cos、exp、log）
+- 反向模式自动求导
+- 计算图可视化</p>
+<h3 id="62">6.2 核心数据结构</h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">TapeEntry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;记录一次操作的信息&quot;&quot;&quot;</span>
+    <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s1">&#39;Variable&#39;</span><span class="p">]</span>  <span class="c1"># 输入变量</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Variable&#39;</span><span class="p">]</span>      <span class="c1"># 输出变量</span>
+    <span class="n">grad_fn</span><span class="p">:</span> <span class="n">Callable</span>         <span class="c1"># 梯度计算函数</span>
+
+<span class="k">class</span> <span class="nc">Variable</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;自动微分中的变量&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="ow">or</span> <span class="n">fresh_name</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grad_fn</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># 如何计算梯度的函数</span>
+
+    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;执行反向传播&quot;&quot;&quot;</span>
+        <span class="c1"># 从自身开始，反向累积梯度</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># 根节点梯度为1</span>
+        <span class="n">_backward_list</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="p">]</span>
+
+        <span class="k">while</span> <span class="n">_backward_list</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">_backward_list</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">grad_fn</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">grads</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">grad_fn</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">input_var</span><span class="p">,</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">grad_fn</span><span class="o">.</span><span class="n">inputs</span><span class="p">,</span> <span class="n">grads</span><span class="p">):</span>
+                    <span class="n">input_var</span><span class="o">.</span><span class="n">grad</span> <span class="o">+=</span> <span class="n">g</span>
+                    <span class="k">if</span> <span class="n">input_var</span><span class="o">.</span><span class="n">grad_fn</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">_backward_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input_var</span><span class="p">)</span>
+
+<span class="c1"># 全局计数器</span>
+<span class="n">_name_counter</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="nf">fresh_name</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">_name_counter</span>
+    <span class="n">_name_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;v</span><span class="si">{</span><span class="n">_name_counter</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="c1"># 重置函数</span>
+<span class="k">def</span> <span class="nf">reset</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">_name_counter</span>
+    <span class="n">_name_counter</span> <span class="o">=</span> <span class="mi">0</span>
+</code></pre></div>
+<h3 id="63">6.3 基本运算实现</h3>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">left</span><span class="p">:</span> <span class="n">Variable</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="n">Variable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Variable</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;加法：导数为1&quot;&quot;&quot;</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="n">right</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">grad_fn</span><span class="p">(</span><span class="n">dout</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">dout</span><span class="p">,</span> <span class="n">dout</span><span class="p">]</span>
+
+    <span class="n">out</span><span class="o">.</span><span class="n">grad_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">g</span><span class="p">:</span> <span class="n">grad_fn</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+    <span class="n">out</span><span class="o">.</span><span class="n">grad_fn</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+<span class="k">def</span> <span class="nf">mul</span><span class="p">(</span><span class="n">left</span><span class="p">:</span> <span class="n">Variable</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="n">Variable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Variable</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;乘法：导数为另一个乘数&quot;&quot;&quot;</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="n">right</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">grad_fn</span><span class="p">(</span><span class="n">dout</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">dout</span> <span class="o">*</span> <span class="n">right</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">dout</span> <span class="o">*</span> <span class="n">left</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
+
+    <span class="n">out</span><span class="o">.</span><span class="n">grad_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">g</span><span class="p">:</span> <span class="n">grad_fn</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+    <span class="n">out</span><span class="o">.</span><span class="n">grad_fn</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+<span class="k">def</span> <span class="nf">power</span><span class="p">(</span><span class="n">base</span><span class="p">:</span> <span class="n">Variable</span><span class="p">,</span> <span class="n">exp</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Variable</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;幂函数：(x^n)&#39; = n * x^(n-1)&quot;&quot;&quot;</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">value</span> <span class="o">**</span> <span class="n">exp</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">grad_fn</span><span class="p">(</span><span class="n">dout</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">dout</span> <span class="o">*</span> <span class="n">exp</span> <span class="o">*</span> <span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">value</span> <span class="o">**</span> <span class="p">(</span><span class="n">exp</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))]</span>
+
+    <span class="n">out</span><span class="o">.</span><span class="n">grad_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">g</span><span class="p">:</span> <span class="n">grad_fn</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+    <span class="n">out</span><span class="o">.</span><span class="n">grad_fn</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">base</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+<span class="k">def</span> <span class="nf">sin</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Variable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Variable</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;正弦：sin(x)&#39; = cos(x)&quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">math</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">grad_fn</span><span class="p">(</span><span class="n">dout</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">dout</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span>
+
+    <span class="n">out</span><span class="o">.</span><span class="n">grad_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">g</span><span class="p">:</span> <span class="n">grad_fn</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+    <span class="n">out</span><span class="o">.</span><span class="n">grad_fn</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+<span class="k">def</span> <span class="nf">cos</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Variable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Variable</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;余弦：cos(x)&#39; = -sin(x)&quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">math</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">grad_fn</span><span class="p">(</span><span class="n">dout</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">dout</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">))]</span>
+
+    <span class="n">out</span><span class="o">.</span><span class="n">grad_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">g</span><span class="p">:</span> <span class="n">grad_fn</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+    <span class="n">out</span><span class="o">.</span><span class="n">grad_fn</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+<span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Variable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Variable</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;指数：exp(x)&#39; = exp(x)&quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">math</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">grad_fn</span><span class="p">(</span><span class="n">dout</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">dout</span> <span class="o">*</span> <span class="n">out</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
+
+    <span class="n">out</span><span class="o">.</span><span class="n">grad_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">g</span><span class="p">:</span> <span class="n">grad_fn</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+    <span class="n">out</span><span class="o">.</span><span class="n">grad_fn</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+<span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Variable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Variable</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;对数：log(x)&#39; = 1/x&quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">math</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">grad_fn</span><span class="p">(</span><span class="n">dout</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">dout</span> <span class="o">/</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
+
+    <span class="n">out</span><span class="o">.</span><span class="n">grad_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">g</span><span class="p">:</span> <span class="n">grad_fn</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+    <span class="n">out</span><span class="o">.</span><span class="n">grad_fn</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">out</span>
+</code></pre></div>
+<h3 id="64">6.4 算符重载</h3>
+<p>为了让代码更自然，我们重载Python的操作符：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">math</span>
+
+<span class="k">class</span> <span class="nc">Variable</span><span class="p">:</span>
+    <span class="c1"># ... (前面的代码不变)</span>
+
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="n">Constant</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__radd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__add__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="n">Constant</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mul</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__rmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__mul__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="n">Constant</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__rsub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Constant</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="o">.</span><span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__truediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="n">Constant</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">div</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__rtruediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Constant</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="o">.</span><span class="fm">__truediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__pow__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exp</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exp</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="n">power</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exp</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">sin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">sin</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">cos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Constant</span><span class="p">(</span><span class="n">Variable</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;常数类，不需要计算梯度&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grad_fn</span> <span class="o">=</span> <span class="kc">None</span>
+</code></pre></div>
+<h3 id="65">6.5 完整示例</h3>
+<p>现在我们可以使用自动微分系统了：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 示例：计算 f(x) = ln(x) + x^2 - sin(x) 在 x=2 处的导数</span>
+
+<span class="n">reset</span><span class="p">()</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">power</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;f(</span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">) = </span><span class="si">{</span><span class="n">f</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># f(2) = ...</span>
+<span class="n">f</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;f&#39;(</span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">) = </span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># 导数</span>
+
+<span class="c1"># 对比：手动求导</span>
+<span class="c1"># f(x) = ln(x) + x^2 - sin(x)</span>
+<span class="c1"># f&#39;(x) = 1/x + 2x - cos(x)</span>
+<span class="c1"># f&#39;(2) = 1/2 + 4 - cos(2) = 0.5 + 4 - (-0.416) = 4.916</span>
+</code></pre></div>
+<h3 id="66">6.6 扩展：支持向量和矩阵</h3>
+<p>上面的实现是标量版本的。实际应用中需要支持向量、矩阵运算（张量）。这需要：</p>
+<ol>
+<li>使用NumPy或PyTorch的张量代替Python标量</li>
+<li>梯度计算使用逐元素运算</li>
+<li>雅克比矩阵乘法的向量化实现</li>
+</ol>
+<p>完整的张量版本实现会复杂得多，但核心原理相同：记录操作，应用链式法则，反向累积梯度。</p>
+<hr />
+<h2 id="7-pytorch-autograd">7 PyTorch autograd 高级用法</h2>
+<h3 id="71">7.1 自定义可微函数</h3>
+<p>在实际应用中，可能需要实现自定义的操作。本节展示如何创建完全可微的自定义函数。</p>
+<h4 id="711">7.1.1 基础自定义函数</h4>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="kn">import</span> <span class="n">Function</span>
+
+<span class="k">class</span> <span class="nc">Sigmoid</span><span class="p">(</span><span class="n">Function</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;正向传播：保存sigmoid值供反向使用&quot;&quot;&quot;</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="n">save_for_backward</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sig</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">grad_output</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;反向传播：dsigmoid/dx = sigmoid * (1 - sigmoid)&quot;&quot;&quot;</span>
+        <span class="n">sig</span><span class="p">,</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">saved_tensors</span>
+        <span class="n">grad_input</span> <span class="o">=</span> <span class="n">sig</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">sig</span><span class="p">)</span> <span class="o">*</span> <span class="n">grad_output</span>
+        <span class="k">return</span> <span class="n">grad_input</span>
+
+<span class="c1"># 使用</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">Sigmoid</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># [0.25, 0.1966, 0.1966]</span>
+</code></pre></div>
+<h4 id="712-ctx">7.1.2 支持ctx参数</h4>
+<p><code>ctx</code>（context）是Function之间传递信息的机制：</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Softmax</span><span class="p">(</span><span class="n">Function</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># 计算softmax</span>
+        <span class="n">e_x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+        <span class="n">softmax</span> <span class="o">=</span> <span class="n">e_x</span> <span class="o">/</span> <span class="n">e_x</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># 保存softmax值和维度</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="n">save_for_backward</span><span class="p">(</span><span class="n">softmax</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">softmax</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">grad_output</span><span class="p">):</span>
+        <span class="n">softmax</span><span class="p">,</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">saved_tensors</span>
+        <span class="c1"># 复杂的梯度计算</span>
+        <span class="n">grad_input</span> <span class="o">=</span> <span class="n">softmax</span> <span class="o">*</span> <span class="p">(</span><span class="n">grad_output</span> <span class="o">-</span> <span class="p">(</span><span class="n">softmax</span> <span class="o">*</span> <span class="n">grad_output</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">grad_input</span>
+</code></pre></div>
+<h3 id="72">7.2 函数式梯度修改</h3>
+<p>有时需要对梯度进行更复杂的修改，比如实现自定义的优化器逻辑：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+
+<span class="c1"># 实现一个简单的梯度裁剪优化器</span>
+<span class="k">class</span> <span class="nc">GradientClippingOptimizer</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">max_norm</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lr</span> <span class="o">=</span> <span class="n">lr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_norm</span> <span class="o">=</span> <span class="n">max_norm</span>
+
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">total_norm</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">grad</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">total_norm</span> <span class="o">+=</span> <span class="n">p</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">total_norm</span> <span class="o">=</span> <span class="n">total_norm</span> <span class="o">**</span> <span class="mf">0.5</span>
+
+        <span class="c1"># 裁剪</span>
+        <span class="n">clip_coef</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_norm</span> <span class="o">/</span> <span class="p">(</span><span class="n">total_norm</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">clip_coef</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">grad</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">p</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">mul_</span><span class="p">(</span><span class="n">clip_coef</span><span class="p">)</span>
+
+        <span class="c1"># 更新参数</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">grad</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">p</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lr</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">grad</span>
+
+    <span class="k">def</span> <span class="nf">zero_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">grad</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="73">7.3 梯度检查点实用技巧</h3>
+<h4 id="731">7.3.1 选择性检查点</h4>
+<p>不一定所有层都需要检查点，对于那些：
+- 占用内存大的层（如大矩阵乘法）
+- 计算成本低的层（如激活函数）</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">torch.utils.checkpoint</span> <span class="kn">import</span> <span class="n">checkpoint_sequential</span>
+
+<span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">([</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+        <span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># 将模型分成几个段落，每个段落使用检查点</span>
+        <span class="n">segments</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="n">segment_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span> <span class="o">//</span> <span class="n">segments</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">segments</span><span class="p">):</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">segment_size</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">segment_size</span>
+            <span class="n">segment</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">segments</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">(</span><span class="n">segment</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">segment</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">x</span>
+</code></pre></div>
+<h4 id="732">7.3.2 自定义检查点函数</h4>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">torch.utils.checkpoint</span> <span class="kn">import</span> <span class="n">checkpoint</span>
+
+<span class="k">class</span> <span class="nc">MyModule</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># 使用自定义的检查点函数</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">custom_fn</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+    <span class="k">def</span> <span class="nf">custom_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span>
+</code></pre></div>
+<h3 id="74">7.4 调试自动微分</h3>
+<h4 id="741-naninf">7.4.1 检测NaN和Inf</h4>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="k">def</span> <span class="nf">check_gradients</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">grad</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NaN detected in gradient of </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Inf detected in gradient of </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 或者使用钩子检测</span>
+<span class="k">def</span> <span class="nf">gradient_hook</span><span class="p">(</span><span class="n">grad</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">grad</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;NaN in gradient!&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">grad</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Inf in gradient!&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">grad</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">100</span>  <span class="c1"># 可能导致梯度爆炸</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>  <span class="c1"># 可能导致梯度消失</span>
+<span class="n">z</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</code></pre></div>
+<h4 id="742">7.4.2 可视化计算图</h4>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="c1"># 使用torchviz可视化（需要安装torchviz）</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">torchviz</span> <span class="kn">import</span> <span class="n">make_dot</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">2.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">y</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">x</span>
+
+    <span class="n">dot</span> <span class="o">=</span> <span class="n">make_dot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">})</span>
+    <span class="n">dot</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s2">&quot;compute_graph&quot;</span><span class="p">)</span>  <span class="c1"># 生成PDF</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;torchviz not installed, skipping visualization&quot;</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="_4">本章小结</h2>
+<p>本章系统介绍了自动微分的原理与PyTorch实现。</p>
+<p><strong>核心要点回顾</strong>：</p>
+<ol>
+<li>
+<p><strong>微分的基本概念</strong>：导数衡量的是函数的局部变化率，是梯度下降等优化算法的基础。</p>
+</li>
+<li>
+<p><strong>四种求导方法对比</strong>：</p>
+</li>
+<li>手动微分：精度高但工作量大</li>
+<li>数值微分：简单但精度低</li>
+<li>符号微分：精度高但有表达式膨胀问题</li>
+<li>
+<p>自动微分：结合前两者优点，是深度学习的选择</p>
+</li>
+<li>
+<p><strong>前向模式与反向模式</strong>：</p>
+</li>
+<li>前向模式适合少输出多输入场景</li>
+<li>
+<p>反向模式适合多少出少输入场景，深度学习采用反向模式</p>
+</li>
+<li>
+<p><strong>PyTorch autograd机制</strong>：</p>
+</li>
+<li>基于动态计算图</li>
+<li>通过Function对象记录操作</li>
+<li>backward()触发反向传播</li>
+<li>
+<p>梯度会累加而非覆盖</p>
+</li>
+<li>
+<p><strong>Hook机制</strong>：</p>
+</li>
+<li>张量Hook：查看和修改梯度</li>
+<li>Module Hook：前向/反向钩子</li>
+<li>
+<p>用于梯度裁剪、特征提取等</p>
+</li>
+<li>
+<p><strong>优化方向</strong>：</p>
+</li>
+<li>内存优化：检查点、梯度累积、混合精度</li>
+<li>
+<p>效率优化：JIT编译、算子融合</p>
+</li>
+<li>
+<p><strong>实践实现</strong>：</p>
+</li>
+<li>理解了核心原理后，可以实现简化版自动微分系统</li>
+<li>PyTorch的高级用法支持复杂自定义需求</li>
+</ol>
+<p><strong>思考与练习</strong>：</p>
+<ol>
+<li>为什么深度学习选择反向模式而不是前向模式？</li>
+<li>如果要计算一个1000层网络的梯度，需要保存多少中间结果？</li>
+<li>梯度检查点技术是如何用计算换内存的？</li>
+<li>为什么PyTorch默认累加梯度而不是覆盖？这有什么好处？</li>
+<li>如果想在反向传播中跳过某些参数，应该如何实现？</li>
+<li>混合精度训练中，为什么有些操作必须用FP32？</li>
+<li>设计一个自定义的LeakyReLU函数，支持自动微分。</li>
+</ol>
+<hr />
+<h2 id="_5">本节视频</h2>
+<html>
+<iframe src="https://player.bilibili.com/player.html?aid=858374177&bvid=BV1FV4y1T7zp&cid=909151631&page=1&as_wide=1&high_quality=1&danmaku=0&t=30&autoplay=0" width="100%" height="500" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+</html>
+
+<!--Copyright © ZOMI 适用于[License](https://github.com/chenzomi12/AISystem)版权许可-->
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

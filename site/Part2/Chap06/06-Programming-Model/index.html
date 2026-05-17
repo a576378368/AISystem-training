@@ -1,0 +1,1917 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="专为零基础新人设计的AI系统培训教程">
+      
+      
+      
+        <link rel="canonical" href="https://a576378368.github.io/AISystem-training/Part2/Chap06/06-Programming-Model/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>06 Programming Model - AI系统工程师培训教程</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="AI系统工程师培训教程" class="md-header__button md-logo" aria-label="AI系统工程师培训教程" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AI系统工程师培训教程
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              06 Programming Model
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="AI系统工程师培训教程" class="md-nav__button md-logo" aria-label="AI系统工程师培训教程" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AI系统工程师培训教程
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第一阶段：AI基础入门
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第一阶段：AI基础入门
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part1/Chap01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap01 计算机基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part1/Chap02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap02 Python编程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part1/Chap03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap03 数学基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第二阶段：AI系统核心
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第二阶段：AI系统核心
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap04 AI系统概述
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap05 神经网络基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap06 AI芯片体系架构
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap07 AI编译器原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap08 推理系统与引擎
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap09 AI框架核心
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap10 大模型与集群
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第三阶段：附录
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第三阶段：附录
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part3/AppendixA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录A：术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part3/AppendixB/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录B：参考文献
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part3/AppendixC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录C：实践项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        学习目标
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        章节导言
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#61-simd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 SIMD模式
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.1 SIMD模式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#611-simd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.1 SIMD概述
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#612-simd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.2 SIMD的发展历程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#613-simd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.3 SIMD工作原理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#614-simdai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.4 SIMD在AI中的应用
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#615-simd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.5 SIMD的局限性
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#62-simt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 SIMT模式
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.2 SIMT模式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#621-simt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2.1 SIMT概述
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#622-simt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2.2 SIMT的工作原理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#623-simt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2.3 SIMT的分支处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#624-simtcuda" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2.4 SIMT与CUDA
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#63-dsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 DSA架构
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.3 DSA架构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#631-dsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.1 DSA概述
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#632-dsa-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.2 DSA vs 通用处理器
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#633-dsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.3 DSA的典型案例
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#634-dsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.4 DSA的编程挑战
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#635-dsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3.5 DSA的发展趋势
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 异构计算
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.4 异构计算">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#641" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4.1 异构计算概述
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#642-cpugpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4.2 CPU+GPU异构
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#643-cpufpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4.3 CPU+FPGA异构
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#644-cpuasic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4.4 CPU+ASIC异构
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#645" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4.5 超异构计算
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#65" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 编程模式的融合与演进
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.5 编程模式的融合与演进">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#651" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5.1 模式趋同
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#652" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5.2 编程抽象的发展
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#653" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5.3 未来编程趋势
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        本章小结
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        思考与练习
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<!--Copyright © 适用于[License](https://github.com/chenzomi12/AISystem)版权许可-->
+
+<h1 id="_1">芯片编程模式</h1>
+<h2 id="_2">学习目标</h2>
+<ol>
+<li>理解SIMD（单指令多数据）模式的工作原理和应用场景</li>
+<li>掌握SIMT（单指令多线程）模式与SIMD的区别和联系</li>
+<li>了解DSA（领域专用架构）的设计理念和编程特点</li>
+<li>理解异构计算的基本概念和CPU+GPU/FPGA/ASIC的协同模式</li>
+<li>掌握超异构计算的概念和未来发展趋势</li>
+</ol>
+<h2 id="_3">章节导言</h2>
+<p>在AI芯片领域，不同的硬件架构采用不同的并行计算模式，而编程模式则是连接软件与硬件的桥梁。理解各种编程模式的特点，对于AI开发者选择合适的硬件和优化应用性能至关重要。</p>
+<p>本章将详细介绍AI芯片领域的三种主要编程模式：SIMD、SIMT和DSA。SIMD是最基础的并行计算模式，广泛应用于CPU和GPU；SIMT是NVIDIA提出的GPU编程模型，兼顾了易用性和性能；DSA则是针对特定领域优化的专用架构，代表了后摩尔定律时代的重要技术方向。</p>
+<p>我们还将探讨异构计算的概念，即如何将CPU、GPU、FPGA、ASIC等多种不同类型的计算单元组合在一起，协同完成复杂任务。这种异构协同计算模式正在成为现代计算系统的主流架构。</p>
+<h2 id="61-simd">6.1 SIMD模式</h2>
+<h3 id="611-simd">6.1.1 SIMD概述</h3>
+<p>SIMD（Single Instruction, Multiple Data，单指令多数据）是一种数据并行的硬件实现技术。SIMD的核心思想是：使用一条指令同时对多个数据执行相同的操作，从而在单个时钟周期内完成更多计算。</p>
+<p><strong>SIMD的本质</strong></p>
+<p>SIMD通过增加硬件数据通路宽度，使一条指令能够同时处理多个数据元素。例如，一个256位的SIMD单元可以同时处理：</p>
+<ul>
+<li>8个32位浮点数</li>
+<li>16个16位整数</li>
+<li>32个8位整数</li>
+</ul>
+<div class="highlight"><pre><span></span><code>传统标量处理：
+指令1 → 处理数据1
+指令2 → 处理数据2
+指令3 → 处理数据3
+...
+
+SIMD处理：
+一条指令 → 同时处理 [数据1, 数据2, 数据3, ...]
+</code></pre></div>
+<h3 id="612-simd">6.1.2 SIMD的发展历程</h3>
+<p><strong>早期发展</strong></p>
+<p>SIMD的概念可以追溯到早期超级计算机：</p>
+<ul>
+<li>1970年代：CRAY-1引入向量处理</li>
+<li>1996年：Intel推出MMX指令集</li>
+<li>1999年：Intel推出SSE（Streaming SIMD Extensions）</li>
+</ul>
+<p><strong>现代SIMD</strong></p>
+<ul>
+<li>2001年：Intel推出SSE2</li>
+<li>2006年：Intel推出SSE4</li>
+<li>2011年：Intel推出AVX（Advanced Vector Extensions）256位</li>
+<li>2013年：Intel推出AVX-512 512位</li>
+<li>ARM：NEON 128位SIMD</li>
+</ul>
+<p><strong>SIMD演进</strong></p>
+<table>
+<thead>
+<tr>
+<th>指令集</th>
+<th>位宽</th>
+<th>可同时处理FP32数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MMX</td>
+<td>64位</td>
+<td>2</td>
+</tr>
+<tr>
+<td>SSE</td>
+<td>128位</td>
+<td>4</td>
+</tr>
+<tr>
+<td>AVX</td>
+<td>256位</td>
+<td>8</td>
+</tr>
+<tr>
+<td>AVX-512</td>
+<td>512位</td>
+<td>16</td>
+</tr>
+<tr>
+<td>NEON</td>
+<td>128位</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<h3 id="613-simd">6.1.3 SIMD工作原理</h3>
+<p><strong>硬件结构</strong></p>
+<p>SIMD单元的硬件结构：</p>
+<div class="highlight"><pre><span></span><code>┌─────────────────────────────────────┐
+│          控制单元 (Control)           │
+└─────────────────────────────────────┘
+                    ↓
+┌─────────────────────────────────────┐
+│     数据通道 (Data Path) 256位        │
+│  ┌────┬────┬────┬────┬────┬────┐   │
+│  │ D0 │ D1 │ D2 │ D3 │ D4 │... │   │
+│  └────┴────┴────┴────┴────┴────┘   │
+│         ↓              ↓             │
+│      算术逻辑单元    算术逻辑单元      │
+└─────────────────────────────────────┘
+</code></pre></div>
+<p><strong>向量加法示例</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">// 传统标量代码</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="c1">// SIMD向量化代码（使用AVX）</span>
+<span class="n">__m256d</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_mm256_load_pd</span><span class="p">(</span><span class="o">&amp;</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+<span class="n">__m256d</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_mm256_load_pd</span><span class="p">(</span><span class="o">&amp;</span><span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+<span class="n">__m256d</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_mm256_add_pd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+<span class="n">_mm256_store_pd</span><span class="p">(</span><span class="o">&amp;</span><span class="n">C</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+<span class="c1">// 一条指令处理4个double（256位/64位）</span>
+</code></pre></div>
+<h3 id="614-simdai">6.1.4 SIMD在AI中的应用</h3>
+<p><strong>神经网络中的SIMD</strong></p>
+<p>神经网络中的许多操作天然适合SIMD：</p>
+<ol>
+<li><strong>向量运算</strong>：激活函数、逐元素操作</li>
+<li><strong>矩阵运算</strong>：分解为向量运算</li>
+<li><strong>卷积运算</strong>：Img2Col + GEMM</li>
+</ol>
+<p><strong>性能提升</strong></p>
+<p>SIMD带来的性能提升：</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>标量 vs SIMD</th>
+<th>典型加速比</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>向量加法</td>
+<td>8倍</td>
+<td>4-8x</td>
+</tr>
+<tr>
+<td>矩阵乘法</td>
+<td>数十倍</td>
+<td>与矩阵大小相关</td>
+</tr>
+<tr>
+<td>卷积</td>
+<td>数十倍</td>
+<td>与实现相关</td>
+</tr>
+</tbody>
+</table>
+<h3 id="615-simd">6.1.5 SIMD的局限性</h3>
+<p>SIMD虽然强大，但也有其局限性：</p>
+<p><strong>1. 数据对齐要求</strong></p>
+<p>SIMD通常要求数据地址对齐：</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// AVX要求32字节对齐</span>
+<span class="n">__m256d</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_mm256_load_pd</span><span class="p">(</span><span class="o">&amp;</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span><span class="w">  </span><span class="c1">// 必须32字节对齐</span>
+<span class="c1">// 未对齐访问需要特殊指令</span>
+<span class="n">__m256d</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_mm256_loadu_pd</span><span class="p">(</span><span class="o">&amp;</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span><span class="w"> </span><span class="c1">// 较慢</span>
+</code></pre></div>
+<p><strong>2. 分支处理</strong></p>
+<p>当数据需要条件分支时：</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// 标量：每个元素独立判断</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// SIMD：需要masked operations或分支</span>
+<span class="c1">// 效率可能下降</span>
+</code></pre></div>
+<p><strong>3. 不规则访问</strong></p>
+<p>当数据访问模式不规则时：</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// 标量：任意索引</span>
+<span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">idx</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+
+<span class="c1">// SIMD：难以向量化</span>
+<span class="c1">// 需要gather/scatter指令（效率较低）</span>
+</code></pre></div>
+<h2 id="62-simt">6.2 SIMT模式</h2>
+<h3 id="621-simt">6.2.1 SIMT概述</h3>
+<p>SIMT（Single Instruction, Multiple Threads，单指令多线程）是NVIDIA在其GPU架构中引入的并行计算模式。SIMT可以看作是SIMD的推广，但提供了更高的灵活性。</p>
+<p><strong>SIMT vs SIMD</strong></p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>SIMD</th>
+<th>SIMT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>执行单位</td>
+<td>向量lane</td>
+<td>线程</td>
+</tr>
+<tr>
+<td>数据寻址</td>
+<td>连续/规则</td>
+<td>任意/独立</td>
+</tr>
+<tr>
+<td>分支处理</td>
+<td>困难</td>
+<td>自然支持</td>
+</tr>
+<tr>
+<td>编程模型</td>
+<td>显式向量</td>
+<td>线程模型</td>
+</tr>
+<tr>
+<td>代表架构</td>
+<td>CPU AVX</td>
+<td>GPU CUDA</td>
+</tr>
+</tbody>
+</table>
+<h3 id="622-simt">6.2.2 SIMT的工作原理</h3>
+<p><strong>线程模型</strong></p>
+<p>SIMT将每个执行单元映射为一个线程：</p>
+<div class="highlight"><pre><span></span><code>SIMD模式（向量lane）：
+[lane0][lane1][lane2][lane3]... 同一指令，强制对齐
+
+SIMT模式（线程）：
+[Thread0][Thread1][Thread2][Thread3]... 同一指令，独立数据
+</code></pre></div>
+<p><strong>硬件实现</strong></p>
+<div class="highlight"><pre><span></span><code>┌─────────────────────────────────────────┐
+│           Warp Scheduler                  │
+│         (管理32个线程)                   │
+└─────────────────────────────────────────┘
+         ↓ 发射同一条指令
+┌─────────────────────────────────────────┐
+│ Thread0 → RegFile → ALU                │
+│ Thread1 → RegFile → ALU                │
+│ Thread2 → RegFile → ALU                │
+│ ...                                    │
+│ Thread31 → RegFile → ALU               │
+└─────────────────────────────────────────┘
+</code></pre></div>
+<h3 id="623-simt">6.2.3 SIMT的分支处理</h3>
+<p>SIMT的重要优势是自然支持分支：</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// 假设 threadIdx.x 0-31，但条件分支：</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Thread 0-15 执行</span>
+<span class="w">    </span><span class="n">A</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...;</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Thread 16-31 执行</span>
+<span class="w">    </span><span class="n">B</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...;</span>
+<span class="p">}</span>
+
+<span class="c1">// GPU执行：</span>
+<span class="c1">// 时间步1: Thread 0-15 执行A, 16-31空转</span>
+<span class="c1">// 时间步2: Thread 16-31 执行B, 0-15空转</span>
+<span class="c1">// 总开销 = 2个时间步（而非串型的N个）</span>
+</code></pre></div>
+<p><strong>分支效率</strong></p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>SIMD效率</th>
+<th>SIMT效率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>无分支</td>
+<td>100%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>50%线程分支</td>
+<td>约50%</td>
+<td>接近100%*</td>
+</tr>
+<tr>
+<td>完全分歧</td>
+<td>难以处理</td>
+<td>线程独立执行</td>
+</tr>
+</tbody>
+</table>
+<p>*SIMT通过时间多路复用处理分歧线程</p>
+<h3 id="624-simtcuda">6.2.4 SIMT与CUDA</h3>
+<p>CUDA是SIMT编程模型的典型代表：</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// CUDA kernel：所有线程执行相同代码</span>
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">vectorAdd</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">B</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">N</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 每个线程有独立的数据索引</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// 每个线程独立执行</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">idx</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">C</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">idx</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>执行模型</strong>：</p>
+<div class="highlight"><pre><span></span><code>Grid (所有线程)
+└── Block 0 (1024线程)
+    ├── Warp 0 (32线程) → 同步执行同一条指令
+    ├── Warp 1 (32线程) → 同步执行同一条指令
+    └── ...
+</code></pre></div>
+<h2 id="63-dsa">6.3 DSA架构</h2>
+<h3 id="631-dsa">6.3.1 DSA概述</h3>
+<p>DSA（Domain-Specific Architecture，领域专用架构）是后摩尔定律时代最重要的技术趋势之一。DSA通过为特定应用领域专门设计硬件架构，在该领域实现数量级的性能提升和能效优化。</p>
+<p><strong>DSA的核心思想</strong></p>
+<ol>
+<li><strong>领域专用</strong></li>
+<li>针对特定应用场景优化</li>
+<li>牺牲通用性换取极致性能</li>
+<li>
+<p>硬件资源集中于核心计算</p>
+</li>
+<li>
+<p><strong>算法驱动</strong></p>
+</li>
+<li>由应用算法特征驱动硬件设计</li>
+<li>硬件结构匹配计算模式</li>
+<li>
+<p>减少通用性开销</p>
+</li>
+<li>
+<p><strong>垂直整合</strong></p>
+</li>
+<li>软硬件协同设计</li>
+<li>编译器深入理解硬件</li>
+<li>端到端优化</li>
+</ol>
+<h3 id="632-dsa-vs">6.3.2 DSA vs 通用处理器</h3>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>通用处理器 (CPU/GPU)</th>
+<th>DSA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>目标场景</td>
+<td>广泛适用</td>
+<td>特定领域</td>
+</tr>
+<tr>
+<td>性能（特定领域）</td>
+<td>一般</td>
+<td>极高 (10-100x)</td>
+</tr>
+<tr>
+<td>能效（特定领域）</td>
+<td>一般</td>
+<td>极高</td>
+</tr>
+<tr>
+<td>灵活性</td>
+<td>高</td>
+<td>低</td>
+</tr>
+<tr>
+<td>开发成本</td>
+<td>低</td>
+<td>高</td>
+</tr>
+<tr>
+<td>规模化成本</td>
+<td>低</td>
+<td>取决于产量</td>
+</tr>
+</tbody>
+</table>
+<h3 id="633-dsa">6.3.3 DSA的典型案例</h3>
+<p><strong>Google TPU</strong></p>
+<p>TPU是DSA最成功的案例之一：</p>
+<ul>
+<li>脉动阵列：专门优化矩阵运算</li>
+<li>简化控制：仅占芯片2%面积</li>
+<li>量化支持：INT8推理优化</li>
+<li>确定性执行：可预测性能</li>
+</ul>
+<p><strong>NVIDIA Tensor Core</strong></p>
+<p>Tensor Core是GPU中的DSA单元：</p>
+<ul>
+<li>专门加速矩阵乘法</li>
+<li>混合精度计算</li>
+<li>针对深度学习优化</li>
+</ul>
+<p><strong>DSA的应用领域</strong></p>
+<ul>
+<li>AI推理：TPU、NPU</li>
+<li>网络处理：SmartNIC、DPU</li>
+<li>图形处理：GPU</li>
+<li>信号处理：DSP</li>
+<li>数据库加速：Query engines</li>
+</ul>
+<h3 id="634-dsa">6.3.4 DSA的编程挑战</h3>
+<p>DSA架构虽然性能卓越，但编程难度较高：</p>
+<p><strong>1. 专用编程模型</strong></p>
+<p>每个DSA有自己的编程接口：</p>
+<div class="highlight"><pre><span></span><code>TPU: TensorFlow Lite Micro / JAX
+NPU: 厂商特定SDK (CANN, BANG C等)
+DPU: Data Path Development Kit
+</code></pre></div>
+<p><strong>2. 编译器支持有限</strong></p>
+<ul>
+<li>编译器难以自动矢量化</li>
+<li>需要手动优化</li>
+<li>工具链不成熟</li>
+</ul>
+<p><strong>3. 碎片化问题</strong></p>
+<ul>
+<li>各厂商DSA架构各异</li>
+<li>应用难以在不同DSA间迁移</li>
+<li>生态系统建设困难</li>
+</ul>
+<h3 id="635-dsa">6.3.5 DSA的发展趋势</h3>
+<p><strong>标准化努力</strong></p>
+<p>业界正在推动DSA标准化：</p>
+<ul>
+<li>OpenCL for DSA</li>
+<li>MLIR中间表示</li>
+<li>跨DSA编译框架</li>
+</ul>
+<p><strong>可编程性提升</strong></p>
+<ul>
+<li>领域特定语言 (DSL)</li>
+<li>高级综合 (HLS)</li>
+<li>智能编译器</li>
+</ul>
+<h2 id="64">6.4 异构计算</h2>
+<h3 id="641">6.4.1 异构计算概述</h3>
+<p>异构计算是指在同一个系统中整合多种不同类型的计算单元（如CPU、GPU、FPGA、ASIC），协同完成计算任务。</p>
+<p><strong>为什么需要异构？</strong></p>
+<p>单一处理器难以兼顾：
+- 通用性：需要CPU
+- 并行计算：需要GPU
+- 极致能效：需要DSA
+- 硬件加速：需要FPGA</p>
+<p><strong>异构计算的优势</strong></p>
+<ol>
+<li><strong>性能优化</strong></li>
+<li>不同任务分配给最适合的处理单元</li>
+<li>
+<p>发挥每种芯片的优势</p>
+</li>
+<li>
+<p><strong>能效提升</strong></p>
+</li>
+<li>根据任务动态选择处理单元</li>
+<li>
+<p>降低整体功耗</p>
+</li>
+<li>
+<p><strong>灵活性</strong></p>
+</li>
+<li>适应多样化工作负载</li>
+<li>兼顾通用和专用</li>
+</ol>
+<h3 id="642-cpugpu">6.4.2 CPU+GPU异构</h3>
+<p>最常见的异构模式是CPU+GPU：</p>
+<div class="highlight"><pre><span></span><code>┌─────────────────────────────────────────┐
+│                 主机 (CPU)               │
+│  ├── 操作系统                            │
+│  ├── 控制逻辑                            │
+│  ├── 任务调度                            │
+│  └── 数据准备                            │
+└─────────────────────────────────────────┘
+              ↓ PCIe/NVLink
+┌─────────────────────────────────────────┐
+│               设备 (GPU)                  │
+│  ├── 大规模并行计算                       │
+│  ├── 矩阵运算加速                         │
+│  └── 深度学习训练/推理                    │
+└─────────────────────────────────────────┘
+</code></pre></div>
+<p><strong>工作流程</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">// CPU负责任务编排</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">hybridCompute</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 1. CPU准备数据</span>
+<span class="w">    </span><span class="n">prepareData</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// 2. CPU启动GPU计算</span>
+<span class="w">    </span><span class="n">cudaMemcpy</span><span class="p">(</span><span class="n">d_data</span><span class="p">,</span><span class="w"> </span><span class="n">h_data</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">cudaMemcpyHostToDevice</span><span class="p">);</span>
+<span class="w">    </span><span class="n">kernel</span><span class="o">&lt;&lt;&lt;</span><span class="n">grid</span><span class="p">,</span><span class="w"> </span><span class="n">block</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">d_data</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// 3. CPU等待GPU完成</span>
+<span class="w">    </span><span class="n">cudaDeviceSynchronize</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// 4. CPU处理结果</span>
+<span class="w">    </span><span class="n">processResult</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="643-cpufpga">6.4.3 CPU+FPGA异构</h3>
+<p>CPU+FPGA是另一种重要的异构模式：</p>
+<p><strong>FPGA的优势</strong></p>
+<ul>
+<li>硬件可重构：可配置不同功能</li>
+<li>低延迟：硬件级流水</li>
+<li>高能效：专用电路</li>
+</ul>
+<p><strong>典型应用</strong></p>
+<ul>
+<li>网络加速：SmartNIC</li>
+<li>实时推理：低延迟要求场景</li>
+<li>数据加速：数据库、存储</li>
+</ul>
+<h3 id="644-cpuasic">6.4.4 CPU+ASIC异构</h3>
+<p>CPU+ASIC是最高能效的组合：</p>
+<p><strong>ASIC的特点</strong></p>
+<ul>
+<li>极致性能/功耗比</li>
+<li>固定功能</li>
+<li>难以修改</li>
+</ul>
+<p><strong>典型架构</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 推理系统中的CPU+ASIC</span>
+<span class="k">class</span> <span class="nc">InferenceSystem</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpu</span> <span class="o">=</span> <span class="n">ControlProcessor</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">npu</span> <span class="o">=</span> <span class="n">NeuralProcessor</span><span class="p">()</span>  <span class="c1"># ASIC</span>
+
+    <span class="k">def</span> <span class="nf">inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">):</span>
+        <span class="c1"># CPU预处理</span>
+        <span class="n">preprocessed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">preprocess</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+
+        <span class="c1"># ASIC执行推理</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">npu</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">preprocessed</span><span class="p">)</span>
+
+        <span class="c1"># CPU后处理</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">postprocess</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="645">6.4.5 超异构计算</h3>
+<p>超异构计算（Hyper-Heterogeneous Computing）是异构计算的进一步发展。</p>
+<p><strong>概念</strong></p>
+<p>超异构将三种以上类型的计算单元有机结合：</p>
+<div class="highlight"><pre><span></span><code>┌─────────────────────────────────────────┐
+│           超异构计算系统                   │
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐  │
+│  │   CPU   │  │   GPU   │  │   DSA   │  │
+│  │ (通用)  │  │ (并行)  │  │ (专用)  │  │
+│  └────┬────┘  └────┬────┘  └────┬────┘  │
+│       └────────────┼────────────┘        │
+│                    ↓                    │
+│            统一互联架构                   │
+│                    ↓                    │
+│            统一编程模型                   │
+└─────────────────────────────────────────┘
+</code></pre></div>
+<p><strong>核心特征</strong></p>
+<ol>
+<li><strong>多层级并行</strong></li>
+<li>CPU核内指令级并行</li>
+<li>GPU线程级并行</li>
+<li>
+<p>DSA数据级并行</p>
+</li>
+<li>
+<p><strong>统一内存</strong></p>
+</li>
+<li>CPU和加速器共享虚拟地址空间</li>
+<li>简化编程模型</li>
+<li>
+<p>支持内存一致性问题</p>
+</li>
+<li>
+<p><strong>智能任务映射</strong></p>
+</li>
+<li>运行时分析任务特征</li>
+<li>动态分配到最适合的处理单元</li>
+<li>编译器和运行时协同优化</li>
+</ol>
+<p><strong>未来展望</strong></p>
+<p>超异构计算代表了计算架构的发展方向：</p>
+<ul>
+<li>适应多样化AI工作负载</li>
+<li>兼顾性能和灵活性</li>
+<li>软硬件协同设计</li>
+<li>开放生态标准</li>
+</ul>
+<h2 id="65">6.5 编程模式的融合与演进</h2>
+<h3 id="651">6.5.1 模式趋同</h3>
+<p>现代AI芯片呈现出多种编程模式融合的趋势：</p>
+<p><strong>GPU中的DSA</strong></p>
+<ul>
+<li>NVIDIA在GPU中集成Tensor Core（SIMT + DSA）</li>
+<li>AMD在GPU中集成Matrix Core</li>
+<li>通用并行 + 专用矩阵运算</li>
+</ul>
+<p><strong>DSA中的SIMT</strong></p>
+<ul>
+<li>TPU等DSA开始支持更灵活的并行</li>
+<li>DSA编译器引入线程概念</li>
+<li>平衡效率和灵活性</li>
+</ul>
+<h3 id="652">6.5.2 编程抽象的发展</h3>
+<p><strong>从底层到高层</strong></p>
+<ol>
+<li><strong>硬件描述语言</strong> (Verilog/VHDL)</li>
+<li><strong>低级API</strong> (CUDA/OpenCL)</li>
+<li><strong>高级框架</strong> (TensorFlow/PyTorch)</li>
+<li><strong>AI编译优化</strong> (MLIR/XLA)</li>
+</ol>
+<p><strong>抽象层次</strong></p>
+<div class="highlight"><pre><span></span><code>应用层
+├── TensorFlow/PyTorch
+│
+框架层
+├── 算子融合
+├── 图优化
+│
+编译层
+├── MLIR/LLVM
+├── 目标硬件适配
+│
+硬件层
+├── CPU (SIMD)
+├── GPU (SIMT)
+└── DSA (专用)
+</code></pre></div>
+<h3 id="653">6.5.3 未来编程趋势</h3>
+<p><strong>1. 自动化并行化</strong></p>
+<p>编译器自动识别并行机会：</p>
+<ul>
+<li>依赖分析</li>
+<li>调度优化</li>
+<li>内存优化</li>
+</ul>
+<p><strong>2. 智能编译</strong></p>
+<p>AI辅助编译优化：</p>
+<ul>
+<li>性能建模</li>
+<li>自动调参</li>
+<li>代码生成</li>
+</ul>
+<p><strong>3. 统一编程模型</strong></p>
+<p>跨架构编程成为可能：</p>
+<ul>
+<li>OpenCL更新</li>
+<li>SYCL标准</li>
+<li>MLIR统一中间表示</li>
+</ul>
+<h2 id="_4">本章小结</h2>
+<p>本章系统介绍了AI芯片的编程模式：</p>
+<ol>
+<li><strong>SIMD模式</strong>：</li>
+<li>单指令多数据</li>
+<li>通过增加数据通路宽度实现并行</li>
+<li>广泛应用于CPU和GPU</li>
+<li>
+<p>数据对齐和分支处理是主要挑战</p>
+</li>
+<li>
+<p><strong>SIMT模式</strong>：</p>
+</li>
+<li>单指令多线程</li>
+<li>比SIMD更灵活，支持线程独立寻址</li>
+<li>NVIDIA CUDA是其典型代表</li>
+<li>
+<p>通过Warp调度掩盖延迟</p>
+</li>
+<li>
+<p><strong>DSA架构</strong>：</p>
+</li>
+<li>领域专用架构</li>
+<li>牺牲通用性换取极致性能</li>
+<li>代表后摩尔定律时代的重要方向</li>
+<li>
+<p>编程复杂性和碎片化是挑战</p>
+</li>
+<li>
+<p><strong>异构计算</strong>：</p>
+</li>
+<li>CPU+GPU/FPGA/ASIC协同</li>
+<li>发挥每种芯片的优势</li>
+<li>超异构是发展趋势</li>
+</ol>
+<p>理解这些编程模式，对于AI开发者选择合适的硬件、优化应用性能具有重要意义。</p>
+<h2 id="_5">思考与练习</h2>
+<ol>
+<li>
+<p><strong>SIMD vs SIMT</strong>：比较SIMD和SIMT两种并行计算模式的本质区别。SIMT相比SIMD在编程模型和硬件实现上有哪些优势？</p>
+</li>
+<li>
+<p><strong>DSA理解</strong>：什么是领域专用架构（DSA）？为什么说DSA代表了后摩尔定律时代的重要技术方向？DSA面临的主要挑战是什么？</p>
+</li>
+<li>
+<p><strong>分支处理</strong>：解释GPU中Warp分支处理的原理。当Warp内线程执行不同分支时，硬件如何保证正确性？这会带来什么性能影响？</p>
+</li>
+<li>
+<p><strong>异构计算</strong>：分析CPU+GPU异构计算中，CPU和GPU各自承担什么角色？这种分工的优势是什么？</p>
+</li>
+<li>
+<p><strong>Tensor Core分析</strong>：Tensor Core是一种DSA单元。分析它与传统CUDA Core在计算模型、编程接口和适用场景上的区别。</p>
+</li>
+<li>
+<p><strong>未来趋势</strong>：展望AI芯片编程模式的未来发展趋势。哪些技术创新可能改变未来的编程范式？</p>
+</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

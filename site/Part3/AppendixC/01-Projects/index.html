@@ -1,0 +1,1904 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="专为零基础新人设计的AI系统培训教程">
+      
+      
+      
+        <link rel="canonical" href="https://a576378368.github.io/AISystem-training/Part3/AppendixC/01-Projects/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>附录C：实践项目 - AI系统工程师培训教程</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#c" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="AI系统工程师培训教程" class="md-header__button md-logo" aria-label="AI系统工程师培训教程" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AI系统工程师培训教程
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              附录C：实践项目
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="AI系统工程师培训教程" class="md-nav__button md-logo" aria-label="AI系统工程师培训教程" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AI系统工程师培训教程
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第一阶段：AI基础入门
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第一阶段：AI基础入门
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part1/Chap01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap01 计算机基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part1/Chap02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap02 Python编程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part1/Chap03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap03 数学基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第二阶段：AI系统核心
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第二阶段：AI系统核心
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part2/Chap04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap04 AI系统概述
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part2/Chap05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap05 神经网络基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part2/Chap06/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap06 AI芯片体系架构
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part2/Chap07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap07 AI编译器原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part2/Chap08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap08 推理系统与引擎
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part2/Chap09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap09 AI框架核心
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part2/Chap10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap10 大模型与集群
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第三阶段：附录
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第三阶段：附录
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AppendixA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录A：术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AppendixB/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录B：参考文献
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录C：实践项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#numpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        项目一：使用NumPy从零实现前馈神经网络
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="项目一：使用NumPy从零实现前馈神经网络">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 项目背景
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 项目目标
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 实现要求
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 实现步骤
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 参考实现框架
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 扩展要求
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.7 验收标准
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pytorchonnx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        项目二：PyTorch模型量化与ONNX部署
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="项目二：PyTorch模型量化与ONNX部署">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 项目背景
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 项目目标
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 实现要求
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 实现步骤
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 参考实现框架
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 扩展要求
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 验收标准
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        项目三：分布式训练实践
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="项目三：分布式训练实践">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 项目背景
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 项目目标
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 实现要求
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 实现步骤
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 参考实现框架
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 扩展要求
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 验收标准
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tvm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        项目四：TVM深度学习编译器实践
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="项目四：TVM深度学习编译器实践">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 项目背景
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 项目目标
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 实现要求
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 实现步骤
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 参考实现框架
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 扩展要求
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#47" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.7 验收标准
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        项目提交要求
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="c">附录C：实践项目</h1>
+<p>本附录提供了一系列实践项目，涵盖神经网络实现、模型压缩、分布式训练、AI编译器等多个核心领域。每个项目都包含详细的背景介绍、实现要求和参考方案，旨在帮助读者将理论知识转化为实践能力。通过完成这些项目，读者可以深入理解AI系统的各个环节，掌握从模型设计到部署优化的完整流程。</p>
+<hr />
+<h2 id="numpy">项目一：使用NumPy从零实现前馈神经网络</h2>
+<h3 id="11">1.1 项目背景</h3>
+<p>前馈神经网络（Feedforward Neural Network）是深度学习的基础模型，理解其实现原理对于掌握深度学习系统至关重要。本项目要求使用纯NumPy实现一个完整的前馈神经网络，不依赖任何深度学习框架，以加深对神经网络前向传播、反向传播、梯度更新等核心机制的理解。</p>
+<p>通过本项目，学员将深入理解神经网络的基本工作原理，掌握向量化计算的实现技巧，了解反向传播算法中链式法则的应用，培养从零开始构建复杂系统的工程能力。这些能力对于后续理解AI框架的实现原理、分析神经网络系统性能问题、设计优化AI编译器都至关重要。</p>
+<h3 id="12">1.2 项目目标</h3>
+<p>本项目的核心目标是实现一个能够在MNIST手写数字数据集上训练和测试的前馈神经网络。具体来说，需要实现以下功能：</p>
+<p>第一，网络结构的前向传播计算。从输入层开始，依次计算每个隐藏层的输出，最终得到输出层的预测结果。需要正确实现矩阵乘法、偏置加法、激活函数等基本运算，确保数值计算的稳定性。</p>
+<p>第二，反向传播算法的实现。根据损失函数计算输出层的误差，然后逐层反向传播误差，计算每个参数的梯度。需要正确应用链式法则，处理多层网络的梯度计算问题。</p>
+<p>第三，参数更新机制的构建。使用计算得到的梯度更新网络参数，实现梯度下降算法。可以进一步实现动量法、Adam等自适应学习率优化器以提升训练效果。</p>
+<p>第四，模型训练与评估流程。实现完整的数据加载、批量训练、验证集评估等流程，支持训练过程中监控损失和准确率的变化。</p>
+<h3 id="13">1.3 实现要求</h3>
+<p><strong>网络架构要求</strong>：实现一个多层感知器（MLP），包含输入层、至少两个隐藏层和输出层。输入层神经元数量应与MNIST数据集的图片像素数匹配（784个特征），输出层神经元数量应为10（对应10个数字类别）。隐藏层激活函数使用ReLU，输出层使用Softmax函数。</p>
+<p><strong>损失函数要求</strong>：实现交叉熵损失函数，用于衡量模型预测与真实标签之间的差异。需要注意数值稳定性，避免log(0)导致的计算问题。</p>
+<p><strong>优化器要求</strong>：实现标准的随机梯度下降（SGD）优化器，支持学习率、批量大小、迭代轮数等超参数配置。可以额外实现带动量（momentum）的SGD和Adam优化器作为加分项。</p>
+<p><strong>数据处理要求</strong>：实现MNIST数据集的加载和预处理，包括图片数据的归一化、标签的one-hot编码、数据批量划分等功能。</p>
+<p><strong>性能要求</strong>：实现向量化计算，避免Python循环以提升计算效率。正确处理批量数据的矩阵运算，确保批量大小可变。</p>
+<h3 id="14">1.4 实现步骤</h3>
+<p><strong>第一步：数据加载与预处理</strong>。首先下载MNIST数据集，可以从官方网站下载或使用现有的数据加载工具。编写数据加载函数，将28x28的灰度图片展开为784维向量，并进行归一化处理使像素值落在[0,1]区间。将数字标签转换为one-hot编码格式，便于计算损失和准确率。将数据划分为训练集和测试集，通常使用60000个样本进行训练，10000个样本进行测试。</p>
+<p><strong>第二步：网络参数初始化</strong>。实现合理的参数初始化方法，如Xavier初始化或He初始化。初始化包括各层的权重矩阵和偏置向量。权重的维度应与相邻两层神经元的数量相匹配，偏置通常初始化为零向量。注意初始化对训练稳定性的影响，避免梯度消失或梯度爆炸。</p>
+<p><strong>第三步：实现激活函数与损失函数</strong>。实现ReLU激活函数及其导数，ReLU(x) = max(0, x)，在正区间保持线性，在负区间输出为零。实现Softmax函数，将输出层的logits转换为概率分布，注意数值稳定性处理。实现交叉熵损失函数，结合Softmax一起实现以提高数值稳定性。</p>
+<p><strong>第四步：实现前向传播</strong>。按照网络结构依次计算每层的线性变换和激活函数输出。线性变换：z = Wx + b，其中W是权重矩阵，x是输入，b是偏置。激活函数：对线性变换的结果应用ReLU激活函数。输出层：对隐藏层输出应用Softmax函数得到类别概率。保存各层中间值用于反向传播计算。</p>
+<p><strong>第五步：实现反向传播</strong>。计算输出层的误差，即损失对待输出层logits的导数。根据链式法则逐层反向传播误差，计算每层参数相对于损失的梯度。权重梯度：∂L/∂W = a^T * δ，其中a是上一层输出，δ是当前层误差。偏置梯度：∂L/∂b = δ。更新梯度：δ_next = W^T * δ * f'(z)，其中f'是激活函数的导数。</p>
+<p><strong>第六步：实现参数更新</strong>。使用计算得到的梯度更新网络参数。标准SGD更新：W = W - η * ∂L/∂W，其中η是学习率。实现训练循环，包括前向传播、损失计算、反向传播、参数更新的完整流程。</p>
+<p><strong>第七步：模型评估与测试</strong>。在测试集上评估模型性能，计算分类准确率。实现预测函数，对单个样本或批量样本进行预测。分析训练过程中的损失变化曲线和准确率提升曲线，观察模型是否正常收敛。</p>
+<h3 id="15">1.5 参考实现框架</h3>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">class</span> <span class="nc">Linear</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;线性层：y = Wx + b&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">input_dim</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">/</span> <span class="n">input_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">output_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grad_W</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grad_b</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span>
+
+    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grad</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grad_W</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">grad</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grad_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">grad</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lr</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">-=</span> <span class="n">lr</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">grad_W</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">-=</span> <span class="n">lr</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">grad_b</span>
+
+<span class="k">class</span> <span class="nc">ReLU</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;ReLU激活函数&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grad</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">grad</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask</span>
+
+<span class="k">class</span> <span class="nc">SoftmaxCrossEntropy</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Softmax激活函数与交叉熵损失的组合&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="c1"># 数值稳定的softmax</span>
+        <span class="n">x_shift</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">exp_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x_shift</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">probs</span> <span class="o">=</span> <span class="n">exp_x</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">exp_x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># 计算损失</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">probs</span><span class="p">,</span> <span class="mf">1e-10</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="mf">1e-10</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">probs</span><span class="p">))</span> <span class="o">/</span> <span class="n">n</span>
+        <span class="k">return</span> <span class="n">loss</span>
+
+    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">probs</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span>
+
+<span class="k">class</span> <span class="nc">MLP</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;多层感知器&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layers</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">layers</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">SoftmaxCrossEntropy</span><span class="p">):</span>
+                <span class="n">loss</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">loss</span>
+
+    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">grad</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">SoftmaxCrossEntropy</span><span class="p">):</span>
+                <span class="n">grad</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">grad</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">grad</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lr</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="s1">&#39;update&#39;</span><span class="p">):</span>
+                <span class="n">layer</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">SoftmaxCrossEntropy</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="16">1.6 扩展要求</h3>
+<p><strong>扩展一：实现更多优化器</strong>。在完成基础SGD实现后，尝试实现以下优化算法。带动量的SGD可以通过引入速度变量来加速收敛，减少振荡。Adam优化器结合了动量和自适应学习率的优点，是深度学习中最常用的优化器之一。学习率衰减可以在训练后期适当降低学习率，帮助模型稳定收敛。</p>
+<p><strong>扩展二：实现正则化</strong>。添加L2正则化项到损失函数中，防止过拟合。实现Dropout技术，在训练时随机丢弃部分神经元，增强模型泛化能力。添加批量归一化层（Batch Normalization），加速训练并提供一定的正则化效果。</p>
+<p><strong>扩展三：实现更复杂的网络结构</strong>。尝试实现卷积神经网络（CNN），处理图像数据比全连接网络更高效。实现残差连接（ResNet中的 shortcut），解决深层网络训练困难的问题。尝试注意力机制，提升模型对重要特征的关注能力。</p>
+<h3 id="17">1.7 验收标准</h3>
+<p>项目验收将依据以下标准进行评估。首先是功能完整性：正确实现前向传播、反向传播、参数更新三个核心功能。其次是训练效果：在MNIST测试集上达到95%以上的分类准确率。第三是代码质量：代码结构清晰，注释完整，没有明显的代码异味。第四是运行效率：使用向量化实现，单轮训练时间不超过30秒。</p>
+<hr />
+<h2 id="pytorchonnx">项目二：PyTorch模型量化与ONNX部署</h2>
+<h3 id="21">2.1 项目背景</h3>
+<p>模型量化是AI推理部署中最重要的优化技术之一，通过将高精度浮点数转换为低精度整数，可以显著减少模型体积、降低内存占用、加快推理速度。本项目要求使用PyTorch实现模型的动态量化和静态量化，将量化后的模型转换为ONNX格式，并使用ONNX Runtime进行推理部署。</p>
+<p>量化技术在实际生产环境中具有重要应用价值。许多部署场景对延迟和吞吐量有严格要求，而模型大小也限制了其在资源受限设备上的运行。通过本项目，学员将理解量化的基本原理、掌握PyTorch量化API的使用方法、了解ONNX模型转换和部署流程，培养端到端的模型部署能力。</p>
+<h3 id="22">2.2 项目目标</h3>
+<p>本项目的核心目标是完成一个完整模型量化与部署流程。具体包括以下几个子目标：</p>
+<p>第一，理解量化的基本原理。深入理解均匀量化的基本原理，包括零点、比例因子等量化参数的理解。掌握动态量化和静态量化两种模式的区别和适用场景。了解量化感知训练（QAT）与训练后量化（PTQ）的权衡。</p>
+<p>第二，使用PyTorch实现动态量化。选择一个预训练模型（如ResNet18），使用PyTorch的动态量化API对其进行量化。动态量化主要对权重进行量化，激活值在推理时动态量化。观察量化前后模型大小的变化和推理速度的提升。</p>
+<p>第三，使用PyTorch实现静态量化。首先对模型进行校准（calibration），收集激活值的统计信息。然后根据校准结果确定量化参数，将模型转换为静态量化格式。对比动态量化和静态量化在精度和性能上的差异。</p>
+<p>第四，转换为ONNX格式。将量化后的模型转换为ONNX中间表示格式。处理模型转换过程中可能出现的算子不兼容问题。验证ONNX模型与原始模型输出的一致性。</p>
+<p>第五，使用ONNX Runtime进行推理。搭建基于ONNX Runtime的推理服务。实现图像预处理和后处理流程。对比不同精度（FP32、INT8）在推理速度和精度上的表现。</p>
+<h3 id="23">2.3 实现要求</h3>
+<p><strong>模型选择要求</strong>：使用ImageNet预训练的ResNet18作为实验模型。也可以选择其他预训练模型如MobileNetV2、EfficientNet等进行对比实验。</p>
+<p><strong>量化配置要求</strong>：实现权重量化（weight-only quantization）和全量化（full quantization）。支持INT8量化精度。配置合适的校准数据集和校准方法。</p>
+<p><strong>ONNX转换要求</strong>：正确处理模型的输入输出名称和形状。指定Opset版本确保兼容性。验证转换后模型的数值正确性。</p>
+<p><strong>性能评测要求</strong>：实现吞吐量（Throughput）和延迟（Latency）的测量。对比原始模型和量化模型的性能指标。记录不同量化配置下的精度变化。</p>
+<h3 id="24">2.4 实现步骤</h3>
+<p><strong>第一步：环境准备</strong>。安装PyTorch、ONNX、ONNX Runtime等必要依赖。验证GPU环境是否可用（使用GPU可加速推理）。准备ImageNet验证集或使用较小的测试数据集。</p>
+<p><strong>第二步：加载预训练模型</strong>。使用torchvision加载预训练的ResNet18模型。将模型设置为评估模式（eval mode）。记录原始模型的参数量和大小。</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torchvision.models</span> <span class="k">as</span> <span class="nn">models</span>
+
+<span class="c1"># 加载预训练模型</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet18</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+<span class="c1"># 获取模型信息</span>
+<span class="n">num_params</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+<span class="n">model_size</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">element_size</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span> <span class="o">/</span> <span class="mi">1024</span> <span class="o">/</span> <span class="mi">1024</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;原始模型参数量: </span><span class="si">{</span><span class="n">num_params</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;原始模型大小: </span><span class="si">{</span><span class="n">model_size</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>第三步：实现动态量化</strong>。PyTorch的动态量化非常简单，只需一行代码即可完成。对Linear层和LSTM等支持动态量化的模块进行量化。观察量化后模型大小的变化。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 动态量化</span>
+ <span class="n">quantized_model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">quantization</span><span class="o">.</span><span class="n">quantize_dynamic</span><span class="p">(</span>
+     <span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">},</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">qint8</span>
+ <span class="p">)</span>
+</code></pre></div>
+<p><strong>第四步：实现静态量化</strong>。静态量化需要额外进行校准步骤。首先为模型插入_quantization标记，将float模型转换为量化版本。然后准备校准数据集，运行推理并收集激活值统计信息。最后根据校准结果完成量化。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 静态量化配置</span>
+<span class="n">model</span><span class="o">.</span><span class="n">qconfig</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">quantization</span><span class="o">.</span><span class="n">get_default_qconfig</span><span class="p">(</span><span class="s1">&#39;fbgemm&#39;</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">quantization</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># 校准</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">images</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">calibrate_loader</span><span class="p">:</span>
+        <span class="n">model</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
+
+<span class="c1"># 转换</span>
+<span class="n">quantized_model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">quantization</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>第五步：转换为ONNX格式</strong>。使用torch.onnx.export函数导出模型。指定输入张量的形状和类型。处理动态轴（如batch size）以便支持变长输入。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 导出ONNX</span>
+<span class="n">dummy_input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">onnx</span><span class="o">.</span><span class="n">export</span><span class="p">(</span>
+    <span class="n">quantized_model</span><span class="p">,</span> <span class="n">dummy_input</span><span class="p">,</span> <span class="s2">&quot;resnet18_quantized.onnx&quot;</span><span class="p">,</span>
+    <span class="n">input_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">],</span> <span class="n">output_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;output&#39;</span><span class="p">],</span>
+    <span class="n">dynamic_axes</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;batch_size&#39;</span><span class="p">},</span> <span class="s1">&#39;output&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;batch_size&#39;</span><span class="p">}}</span>
+<span class="p">)</span>
+</code></pre></div>
+<p><strong>第六步：使用ONNX Runtime推理</strong>。创建ONNX Runtime推理会话。实现图像预处理（调整大小、归一化）。运行推理并处理输出结果。对比不同模型的推理性能。</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">onnxruntime</span> <span class="k">as</span> <span class="nn">ort</span>
+
+<span class="c1"># 创建推理会话</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">ort</span><span class="o">.</span><span class="n">InferenceSession</span><span class="p">(</span><span class="s2">&quot;resnet18_quantized.onnx&quot;</span><span class="p">)</span>
+
+<span class="c1"># 准备输入数据</span>
+<span class="n">input_data</span> <span class="o">=</span> <span class="n">preprocess_image</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+
+<span class="c1"># 运行推理</span>
+<span class="n">outputs</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="n">input_data</span><span class="p">})</span>
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">postprocess_output</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>第七步：性能对比分析</strong>。测量不同模型的推理延迟。测量不同模型的吞吐量。评估量化对模型精度的影响。</p>
+<h3 id="25">2.5 参考实现框架</h3>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torchvision.models</span> <span class="k">as</span> <span class="nn">models</span>
+<span class="kn">import</span> <span class="nn">torchvision.transforms</span> <span class="k">as</span> <span class="nn">transforms</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">def</span> <span class="nf">measure_latency</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">input_data</span><span class="p">,</span> <span class="n">num_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;测量推理延迟&quot;&quot;&quot;</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    <span class="n">latencies</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">):</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+            <span class="n">latencies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">latencies</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span>  <span class="c1"># 转换为毫秒</span>
+
+<span class="k">def</span> <span class="nf">measure_throughput</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">input_data</span><span class="p">,</span> <span class="n">num_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;测量吞吐量&quot;&quot;&quot;</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    <span class="n">batch_size</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">):</span>
+            <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+        <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+
+    <span class="n">total_samples</span> <span class="o">=</span> <span class="n">num_iterations</span> <span class="o">*</span> <span class="n">batch_size</span>
+    <span class="k">return</span> <span class="n">total_samples</span> <span class="o">/</span> <span class="n">elapsed</span>
+
+<span class="c1"># 完整的评估流程</span>
+<span class="k">def</span> <span class="nf">evaluate_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_loader</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cpu&#39;</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+    <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">test_loader</span><span class="p">:</span>
+            <span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="n">labels</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">correct</span> <span class="o">+=</span> <span class="p">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span>
+    <span class="k">return</span> <span class="n">accuracy</span>
+</code></pre></div>
+<h3 id="26">2.6 扩展要求</h3>
+<p><strong>扩展一：实现INT4量化</strong>。INT4量化可以进一步压缩模型，但精度损失更大。尝试使用PyTorch的experimental API实现INT4量化。研究INT4量化的适用场景和注意事项。</p>
+<p><strong>扩展二：实现混合精度量化</strong>。对不同层使用不同的量化精度（如部分层INT8，部分层FP16）。根据各层对量化的敏感度自动选择精度。实现一个量化调度器来管理混合精度配置。</p>
+<p><strong>扩展三：实现自定义量化算子</strong>。当PyTorch内置量化不支持某些算子时，需要自定义量化实现。实现支持自定义量化方案的算子融合。研究量化精度与推理速度的权衡。</p>
+<p><strong>扩展四：实现量化模型的可视化分析</strong>。分析不同层量化后的数值分布。识别量化过程中信息损失最大的层。生成量化校准报告。</p>
+<h3 id="27">2.7 验收标准</h3>
+<p>项目验收将依据以下标准进行评估。功能完整性方面：正确实现动态量化和静态量化，完成ONNX转换和推理。性能指标方面：量化后模型大小减少70%以上，推理速度提升50%以上。精度保持方面：量化后Top-1准确率下降不超过2%。文档完整性方面：提供量化工具有效性的完整评估报告。</p>
+<hr />
+<h2 id="_1">项目三：分布式训练实践</h2>
+<h3 id="31">3.1 项目背景</h3>
+<p>随着深度学习模型规模的快速增长，单GPU训练已经无法满足大模型的训练需求。分布式训练通过利用多个计算设备的并行计算能力，可以显著加速训练过程。本项目要求使用PyTorch实现多GPU分布式训练，包括DataParallel和DistributedDataParallel两种并行模式，对比分析它们的优缺点和适用场景。</p>
+<p>分布式训练是AI系统中的核心技术之一。理解分布式训练的原理和实现，对于训练大规模模型、优化训练效率、调试分布式系统问题都非常重要。通过本项目，学员将掌握PyTorch分布式训练API的使用方法，深入理解数据并行和 DistributedDataParallel的内部实现原理，培养处理大规模训练问题的能力。</p>
+<h3 id="32">3.2 项目目标</h3>
+<p>本项目的核心目标是实现高效的多GPU分布式训练系统。具体包括以下几个方面：</p>
+<p>第一，理解分布式训练的基本原理。理解数据并行和模型并行的区别和应用场景。理解同步训练和异步训练的权衡。理解参数同步的通信模式（AllReduce、Broadcast等）。</p>
+<p>第二，实现DataParallel训练。使用PyTorch的torch.nn.DataParallel实现单节点多GPU数据并行。分析DataParallel的通信模式和性能特征。理解DataParallel的局限性（单进程、梯度累积问题）。</p>
+<p>第三，实现DistributedDataParallel训练。使用torch.nn.parallel.DistributedDataParallel实现更高效的分布式训练。配置多进程启动和环境变量。验证DDP的梯度同步正确性。</p>
+<p>第四，对比分析两种并行模式。从训练速度、通信开销、GPU利用率等方面对比DP和DDP。分析在不同模型规模和批量大小下的性能差异。理解DDP相对于DP的优势。</p>
+<p>第五，实现高级特性。实现梯度累积以模拟更大批量。实现混合精度训练以加速训练。实现学习率调度和最佳实践。</p>
+<h3 id="33">3.3 实现要求</h3>
+<p><strong>环境配置要求</strong>：正确配置多GPU环境，确保CUDA可见性。实现分布式环境的初始化和清理。处理多进程启动和进程间通信。</p>
+<p><strong>数据加载要求</strong>：实现分布式采样器，确保各进程处理不同的数据子集。正确配置num_workers和pin_memory以优化数据加载。实现数据预取和异步加载。</p>
+<p><strong>训练配置要求</strong>：支持配置批量大小的全局值和本地值。支持配置学习率缩放规则。支持配置梯度累积步数。</p>
+<p><strong>性能监控要求</strong>：实现各进程GPU利用率的监控。实现通信时间和计算时间的分解分析。记录训练吞吐量（samples/sec）和GPU利用率。</p>
+<h3 id="34">3.4 实现步骤</h3>
+<p><strong>第一步：环境验证</strong>。检查系统中的GPU数量，验证CUDA环境配置正确。安装NCCL（NVIDIA Collective Communications Library）确保高效的GPU通信。</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.distributed</span> <span class="k">as</span> <span class="nn">dist</span>
+
+<span class="c1"># 检查GPU数量</span>
+<span class="n">num_gpus</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">device_count</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;可用GPU数量: </span><span class="si">{</span><span class="n">num_gpus</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 验证GPU通信</span>
+<span class="k">if</span> <span class="n">num_gpus</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;GPU间通信测试...&quot;</span><span class="p">)</span>
+    <span class="c1"># 后续测试代码</span>
+</code></pre></div>
+<p><strong>第二步：实现DataParallel训练</strong>。DataParallel是最简单的多GPU并行方式，只需几行代码即可完成配置。包装模型为DataParallel对象，自动实现数据分发和结果聚合。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># DataParallel实现</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet50</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+<span class="c1"># 包装为DataParallel</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">DataParallel</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="c1"># 训练循环</span>
+<span class="k">for</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">train_loader</span><span class="p">:</span>
+    <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">labels</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+</code></pre></div>
+<p><strong>第三步：实现DistributedDataParallel训练</strong>。DDP需要更多的配置但性能更好。首先初始化分布式环境，然后使用DistributedDataParallel包装模型。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># DDP实现</span>
+<span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">world_size</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;MASTER_ADDR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;MASTER_PORT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;12355&#39;</span>
+    <span class="n">dist</span><span class="o">.</span><span class="n">init_process_group</span><span class="p">(</span><span class="s2">&quot;nccl&quot;</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">world_size</span><span class="o">=</span><span class="n">world_size</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">cleanup</span><span class="p">():</span>
+    <span class="n">dist</span><span class="o">.</span><span class="n">destroy_process_group</span><span class="p">()</span>
+
+<span class="c1"># 每个进程的训练</span>
+<span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">world_size</span><span class="p">):</span>
+    <span class="n">setup</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">world_size</span><span class="p">)</span>
+
+    <span class="c1"># 创建本地模型</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet50</span><span class="p">()</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">parallel</span><span class="o">.</span><span class="n">DistributedDataParallel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">device_ids</span><span class="o">=</span><span class="p">[</span><span class="n">rank</span><span class="p">])</span>
+
+    <span class="c1"># 创建分布式采样器</span>
+    <span class="n">train_sampler</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">DistributedSampler</span><span class="p">(</span>
+        <span class="n">train_dataset</span><span class="p">,</span> <span class="n">num_replicas</span><span class="o">=</span><span class="n">world_size</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span>
+    <span class="p">)</span>
+
+    <span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+                              <span class="n">sampler</span><span class="o">=</span><span class="n">train_sampler</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">):</span>
+        <span class="n">train_sampler</span><span class="o">.</span><span class="n">set_epoch</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_loader</span><span class="p">):</span>
+            <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">target</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+    <span class="n">cleanup</span><span class="p">()</span>
+</code></pre></div>
+<p><strong>第四步：实现多进程启动</strong>。使用torch.distributed.launch或torchrun启动多进程训练。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 使用torchrun启动</span>
+torchrun<span class="w"> </span>--nproc_per_node<span class="o">=</span><span class="m">2</span><span class="w"> </span>train_ddp.py
+
+<span class="c1"># 或使用torch.distributed.launch</span>
+python<span class="w"> </span>-m<span class="w"> </span>torch.distributed.launch<span class="w"> </span>--nproc_per_node<span class="o">=</span><span class="m">2</span><span class="w"> </span>train_ddp.py
+</code></pre></div>
+<p><strong>第五步：实现梯度累积</strong>。当单个GPU显存不足以容纳大批量时，使用梯度累积模拟大批量训练。累积多个小批量的梯度，然后统一更新参数。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 梯度累积实现</span>
+<span class="n">accumulation_steps</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">effective_batch_size</span> <span class="o">=</span> <span class="n">batch_size</span> <span class="o">*</span> <span class="n">accumulation_steps</span>
+
+<span class="k">for</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_loader</span><span class="p">):</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">target</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">loss</span> <span class="o">/</span> <span class="n">accumulation_steps</span>  <span class="c1"># 缩放损失</span>
+
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">batch_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">accumulation_steps</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+</code></pre></div>
+<p><strong>第六步：实现混合精度训练</strong>。使用torch.cuda.amp实现自动混合精度，减少显存占用并加速训练。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 混合精度训练</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">amp</span><span class="o">.</span><span class="n">GradScaler</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">train_loader</span><span class="p">:</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">target</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">amp</span><span class="o">.</span><span class="n">autocast</span><span class="p">():</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+
+    <span class="n">scaler</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+    <span class="n">scaler</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">optimizer</span><span class="p">)</span>
+    <span class="n">scaler</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+</code></pre></div>
+<p><strong>第七步：性能对比测试</strong>。测量DP和DDP的训练速度。测量GPU利用率和通信开销。分析不同配置下的性能瓶颈。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 性能测试</span>
+<span class="k">def</span> <span class="nf">benchmark_throughput</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">num_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">total_samples</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_loader</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">num_iterations</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">target</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="n">total_samples</span> <span class="o">+=</span> <span class="n">data</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+    <span class="k">return</span> <span class="n">total_samples</span> <span class="o">/</span> <span class="n">elapsed</span>
+</code></pre></div>
+<h3 id="35">3.5 参考实现框架</h3>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.distributed</span> <span class="k">as</span> <span class="nn">dist</span>
+<span class="kn">from</span> <span class="nn">torch.nn.parallel</span> <span class="kn">import</span> <span class="n">DistributedDataParallel</span> <span class="k">as</span> <span class="n">DDP</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">torch.multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">DistributedSampler</span>
+
+<span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">world_size</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;初始化分布式环境&quot;&quot;&quot;</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;MASTER_ADDR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;MASTER_PORT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;12355&#39;</span>
+    <span class="n">dist</span><span class="o">.</span><span class="n">init_process_group</span><span class="p">(</span><span class="s2">&quot;nccl&quot;</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">world_size</span><span class="o">=</span><span class="n">world_size</span><span class="p">)</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">set_device</span><span class="p">(</span><span class="n">rank</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">cleanup</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;清理分布式环境&quot;&quot;&quot;</span>
+    <span class="n">dist</span><span class="o">.</span><span class="n">destroy_process_group</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">run_training</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">world_size</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;训练函数&quot;&quot;&quot;</span>
+    <span class="n">setup</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="n">world_size</span><span class="p">)</span>
+
+    <span class="c1"># 创建模型</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+    <span class="n">ddp_model</span> <span class="o">=</span> <span class="n">DDP</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="c1"># 创建数据</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">TensorDataset</span><span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="p">(</span><span class="mi">10000</span><span class="p">,))</span>
+    <span class="p">)</span>
+    <span class="n">sampler</span> <span class="o">=</span> <span class="n">DistributedSampler</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">num_replicas</span><span class="o">=</span><span class="n">world_size</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">)</span>
+    <span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">sampler</span><span class="o">=</span><span class="n">sampler</span><span class="p">)</span>
+
+    <span class="c1"># 训练循环</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">ddp_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">sampler</span><span class="o">.</span><span class="n">set_epoch</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">loader</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">target</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">ddp_model</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s2"> completed&quot;</span><span class="p">)</span>
+
+    <span class="n">cleanup</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">world_size</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">device_count</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using </span><span class="si">{</span><span class="n">world_size</span><span class="si">}</span><span class="s2"> GPUs&quot;</span><span class="p">)</span>
+    <span class="n">mp</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">run_training</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">world_size</span><span class="p">,),</span> <span class="n">nprocs</span><span class="o">=</span><span class="n">world_size</span><span class="p">,</span> <span class="n">join</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="36">3.6 扩展要求</h3>
+<p><strong>扩展一：实现多节点训练</strong>。将训练扩展到多台机器上。配置节点间网络通信。分析网络带宽对训练的影响。</p>
+<p><strong>扩展二：实现模型并行</strong>。对于超大模型，实现模型并行将不同层分布到不同GPU。使用流水线并行提高GPU利用率。实现微批次调度减少流水线气泡。</p>
+<p><strong>扩展三：实现参数服务器</strong>。使用参数服务器架构进行分布式训练。实现异步参数更新。分析异步训练与同步训练的效果差异。</p>
+<p><strong>扩展四：实现弹性训练</strong>。支持训练过程中动态添加或移除节点。实现容错机制处理节点故障。实现训练状态检查点和恢复。</p>
+<h3 id="37">3.7 验收标准</h3>
+<p>项目验收将依据以下标准进行评估。功能完整性方面：正确实现DP和DDP两种训练方式，验证训练结果的正确性。性能指标方面：DDP相比单GPU有接近线性的加速比，GPU利用率达到80%以上。对比分析方面：提供DP和DDP的完整性能对比报告，包括通信开销分析。扩展实现方面：正确实现梯度累积和混合精度训练。</p>
+<hr />
+<h2 id="tvm">项目四：TVM深度学习编译器实践</h2>
+<h3 id="41">4.1 项目背景</h3>
+<p>深度学习编译器是AI系统中的关键基础设施，它能够将高层模型描述转换为高度优化的底层代码。Apache TVM是目前最活跃的开源深度学习编译器，支持从主流框架（PyTorch、TensorFlow、ONNX）导入模型，通过自动调优生成针对特定硬件优化的代码。本项目要求使用TVM将深度学习模型编译优化，深入理解TVM的编译流程和优化机制。</p>
+<p>AI编译器是连接AI框架和硬件的桥梁，它解决了不同框架定义不一致、硬件执行效率低下的问题。通过本项目，学员将理解TVM的整体架构，掌握模型导入、优化、代码生成的完整流程，学会使用AutoTVM进行算子自动调优，培养使用编译器技术优化AI系统的能力。</p>
+<h3 id="42">4.2 项目目标</h3>
+<p>本项目的核心目标是使用TVM完成模型的编译优化流程。具体包括以下几个方面：</p>
+<p>第一，理解TVM的编译流程。理解TVM的整体架构和各个组件的作用。理解从高层模型到底层代码的转换过程。理解Relay IR和Tensor Expression的作用。</p>
+<p>第二，将PyTorch模型导入TVM。使用torch2tvm或ONNX作为中间格式导入模型。处理模型导入中的算子转换问题。验证导入后模型的数值正确性。</p>
+<p>第三，实现算子融合优化。理解常见的算子融合模式（如Conv-BN-ReLU）。通过TVM实现计算图的优化。验证融合后模型的精度和性能变化。</p>
+<p>第四，使用AutoTVM进行自动调优。理解AutoTVM的工作原理。配置调优任务和搜索空间。运行自动调优并生成优化参数。</p>
+<p>第五，生成优化代码并验证性能。编译模型生成目标代码。测量优化后模型的推理性能。对比优化前后的性能提升。</p>
+<h3 id="43">4.3 实现要求</h3>
+<p><strong>模型要求</strong>：使用一个经典的CNN模型（如ResNet18或MobileNetV2）作为实验对象。也可以选择自定义的简单模型进行基础测试。</p>
+<p><strong>优化要求</strong>：实现至少一种图优化（如算子融合）。使用AutoTVM对关键算子进行调优。生成并测量优化代码的性能。</p>
+<p><strong>评测要求</strong>：对比TVM优化前后的推理速度。对比TVM与其他推理引擎（如ONNX Runtime）的性能。记录不同优化配置下的性能差异。</p>
+<h3 id="44">4.4 实现步骤</h3>
+<p><strong>第一步：环境安装</strong>。安装Apache TVM及其依赖。安装TVM的Python包。验证TVM安装正确（支持GPU）。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 克隆TVM仓库</span>
+git<span class="w"> </span>clone<span class="w"> </span>--recursive<span class="w"> </span>https://github.com/apache/tvm
+<span class="nb">cd</span><span class="w"> </span>tvm
+
+<span class="c1"># 编译TVM</span>
+mkdir<span class="w"> </span>build
+cp<span class="w"> </span>cmake/config.cmake<span class="w"> </span>build/
+cmake<span class="w"> </span>-H.<span class="w"> </span>-Bbuild<span class="w"> </span>-G<span class="w"> </span>Ninja
+ninja<span class="w"> </span>-C<span class="w"> </span>build
+
+<span class="c1"># 安装Python包</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">TVM_HOME</span><span class="o">=</span>/path/to/tvm
+<span class="nb">export</span><span class="w"> </span><span class="nv">PYTHONPATH</span><span class="o">=</span><span class="nv">$TVM_HOME</span>/python:<span class="nv">$TVM_HOME</span>/vta/python:<span class="nv">$PYTHONPATH</span>
+</code></pre></div>
+<p><strong>第二步：导入模型到TVM</strong>。使用Relay前端从ONNX导入模型，或使用torch2tvm从PyTorch直接导入。</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">tvm</span>
+<span class="kn">from</span> <span class="nn">tvm</span> <span class="kn">import</span> <span class="n">relay</span>
+<span class="kn">import</span> <span class="nn">onnx</span>
+
+<span class="c1"># 从ONNX导入模型</span>
+<span class="n">onnx_model</span> <span class="o">=</span> <span class="n">onnx</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;resnet18.onnx&quot;</span><span class="p">)</span>
+<span class="n">shape_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">]}</span>
+
+<span class="n">mod</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">relay</span><span class="o">.</span><span class="n">frontend</span><span class="o">.</span><span class="n">from_onnx</span><span class="p">(</span><span class="n">onnx_model</span><span class="p">,</span> <span class="n">shape_dict</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>第三步：配置目标硬件</strong>。指定编译的目标硬件平台。配置优化级别和自动调度规则。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 配置目标</span>
+<span class="n">target</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">Target</span><span class="p">(</span><span class="s2">&quot;cuda -keys=cuda,gpu&quot;</span><span class="p">)</span>
+
+<span class="c1"># 优化级别</span>
+<span class="k">with</span> <span class="n">tvm</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">PassContext</span><span class="p">(</span><span class="n">opt_level</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">lib</span> <span class="o">=</span> <span class="n">relay</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>第四步：实现算子融合</strong>。分析模型的计算图。识别可以融合的算子模式。执行融合优化并验证正确性。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 算子融合配置</span>
+<span class="k">with</span> <span class="n">tvm</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">PassContext</span><span class="p">(</span><span class="n">opt_level</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="c1"># 融合 passes</span>
+    <span class="n">seq</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+        <span class="n">relay</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">InferType</span><span class="p">(),</span>
+        <span class="n">relay</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">FoldConstant</span><span class="p">(),</span>
+        <span class="n">relay</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">AlterOpLayout</span><span class="p">(),</span>
+        <span class="n">relay</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">SimplifyInference</span><span class="p">(),</span>
+        <span class="n">relay</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">FuseOps</span><span class="p">(</span><span class="n">fuse_opt_level</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="n">mod</span> <span class="o">=</span> <span class="n">seq</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>第五步：使用AutoTVM进行调优</strong>。识别需要调优的算子。定义调优任务的搜索空间。运行调优器搜索最优配置。</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">tvm</span> <span class="kn">import</span> <span class="n">autotvm</span>
+
+<span class="c1"># 配置调优任务</span>
+<span class="n">task</span> <span class="o">=</span> <span class="n">autotvm</span><span class="o">.</span><span class="n">get_task</span><span class="p">(</span><span class="s2">&quot;dense&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">)</span>
+
+<span class="c1"># 配置搜索策略</span>
+<span class="n">tuning_option</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">n_trials</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+    <span class="n">early_stopping</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">measure_option</span><span class="o">=</span><span class="n">autotvm</span><span class="o">.</span><span class="n">measure_option</span><span class="p">(</span>
+        <span class="n">builder</span><span class="o">=</span><span class="n">autotvm</span><span class="o">.</span><span class="n">LocalBuilder</span><span class="p">(),</span>
+        <span class="n">runner</span><span class="o">=</span><span class="n">autotvm</span><span class="o">.</span><span class="n">LocalRunner</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+
+<span class="c1"># 运行调优</span>
+<span class="n">dispatcher</span> <span class="o">=</span> <span class="n">autotvm</span><span class="o">.</span><span class="n">template_dispatcher</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+<span class="n">dispatcher</span><span class="o">.</span><span class="n">tune</span><span class="p">(</span><span class="n">tuning_option</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>第六步：编译生成优化代码</strong>。使用调优得到的最佳配置编译模型。生成可部署的运行时模块。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 使用最佳配置编译</span>
+<span class="k">with</span> <span class="n">autotvm</span><span class="o">.</span><span class="n">apply_history_best</span><span class="p">(</span><span class="n">history_best</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">tvm</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">PassContext</span><span class="p">(</span><span class="n">opt_level</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">lib</span> <span class="o">=</span> <span class="n">relay</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+<span class="c1"># 保存编译结果</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">export_library</span><span class="p">(</span><span class="s2">&quot;deploy.so&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>第七步：部署和性能验证</strong>。加载编译后的模块。测量推理延迟和吞吐量。对比优化效果。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 部署</span>
+<span class="kn">from</span> <span class="nn">tvm.contrib</span> <span class="kn">import</span> <span class="n">graph_executor</span>
+
+<span class="n">dev</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+<span class="n">module</span> <span class="o">=</span> <span class="n">graph_executor</span><span class="o">.</span><span class="n">GraphModule</span><span class="p">(</span><span class="n">lib</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">](</span><span class="n">dev</span><span class="p">))</span>
+
+<span class="c1"># 运行推理</span>
+<span class="n">module</span><span class="o">.</span><span class="n">set_input</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="n">input_data</span><span class="p">)</span>
+<span class="n">module</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">get_output</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+<span class="c1"># 性能测量</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="n">num_iterations</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">):</span>
+    <span class="n">module</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="n">latency</span> <span class="o">=</span> <span class="n">elapsed</span> <span class="o">/</span> <span class="n">num_iterations</span> <span class="o">*</span> <span class="mi">1000</span>  <span class="c1"># 毫秒</span>
+<span class="n">throughput</span> <span class="o">=</span> <span class="n">batch_size</span> <span class="o">*</span> <span class="n">num_iterations</span> <span class="o">/</span> <span class="n">elapsed</span>
+</code></pre></div>
+<h3 id="45">4.5 参考实现框架</h3>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">tvm</span>
+<span class="kn">from</span> <span class="nn">tvm</span> <span class="kn">import</span> <span class="n">relay</span>
+<span class="kn">from</span> <span class="nn">tvm.contrib</span> <span class="kn">import</span> <span class="n">graph_executor</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">create_resnet18</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;创建简单的CNN模型用于测试&quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">tvm</span> <span class="kn">import</span> <span class="n">te</span>
+
+    <span class="c1"># 定义模型结构</span>
+    <span class="n">N</span><span class="p">,</span> <span class="n">CI</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">CO</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">10</span>
+    <span class="n">k1</span> <span class="o">=</span> <span class="n">te</span><span class="o">.</span><span class="n">compute</span><span class="p">((</span><span class="n">CO</span><span class="p">,</span> <span class="n">CI</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">o</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;w1&#39;</span><span class="p">)</span>
+    <span class="n">conv1</span> <span class="o">=</span> <span class="n">te</span><span class="o">.</span><span class="n">compute</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">CO</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">W</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span>
+                       <span class="n">te</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">k1</span><span class="p">[</span><span class="n">c</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">]),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;conv1&#39;</span><span class="p">)</span>
+
+    <span class="c1"># 调度优化</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">te</span><span class="o">.</span><span class="n">create_schedule</span><span class="p">(</span><span class="n">conv1</span><span class="o">.</span><span class="n">op</span><span class="p">)</span>
+    <span class="c1"># 简化的调度策略</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Schedule:&quot;</span><span class="p">,</span> <span class="n">tvm</span><span class="o">.</span><span class="n">lower</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="p">[</span><span class="n">k1</span><span class="p">,</span> <span class="n">conv1</span><span class="p">],</span> <span class="n">simple_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">conv1</span>
+
+<span class="k">def</span> <span class="nf">tune_task</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">n_trials</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;自动调优任务&quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">tvm</span> <span class="kn">import</span> <span class="n">autotvm</span>
+
+    <span class="n">tuning_option</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;n_trials&quot;</span><span class="p">:</span> <span class="n">n_trials</span><span class="p">,</span>
+        <span class="s2">&quot;measure_option&quot;</span><span class="p">:</span> <span class="n">autotvm</span><span class="o">.</span><span class="n">measure_option</span><span class="p">(</span>
+            <span class="n">builder</span><span class="o">=</span><span class="n">autotvm</span><span class="o">.</span><span class="n">LocalBuilder</span><span class="p">(),</span>
+            <span class="n">runner</span><span class="o">=</span><span class="n">autotvm</span><span class="o">.</span><span class="n">LocalRunner</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>
+        <span class="p">),</span>
+    <span class="p">}</span>
+
+    <span class="c1"># 运行调优</span>
+    <span class="n">tuner</span> <span class="o">=</span> <span class="n">autotvm</span><span class="o">.</span><span class="n">tuner</span><span class="o">.</span><span class="n">XGBTuner</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+    <span class="n">tuner</span><span class="o">.</span><span class="n">tune</span><span class="p">(</span><span class="n">tuning_option</span><span class="p">)</span>
+
+    <span class="c1"># 返回最佳配置</span>
+    <span class="k">return</span> <span class="n">dispatcher</span><span class="o">.</span><span class="n">extract_best</span><span class="p">()</span>
+
+<span class="c1"># 完整编译流程示例</span>
+<span class="k">def</span> <span class="nf">compile_model</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;cuda&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;TVM完整编译流程&quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">tvm</span> <span class="kn">import</span> <span class="n">autotvm</span>
+
+    <span class="c1"># 应用历史最佳配置</span>
+    <span class="k">with</span> <span class="n">autotvm</span><span class="o">.</span><span class="n">apply_history_best</span><span class="p">(</span><span class="s2">&quot;autotvm_records.json&quot;</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">tvm</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">PassContext</span><span class="p">(</span><span class="n">opt_level</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">lib</span> <span class="o">=</span> <span class="n">relay</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">lib</span>
+
+<span class="k">def</span> <span class="nf">benchmark_model</span><span class="p">(</span><span class="n">lib</span><span class="p">,</span> <span class="n">input_shape</span><span class="p">,</span> <span class="n">n_warmup</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n_run</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;性能基准测试&quot;&quot;&quot;</span>
+    <span class="n">dev</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">cuda</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">module</span> <span class="o">=</span> <span class="n">graph_executor</span><span class="o">.</span><span class="n">GraphModule</span><span class="p">(</span><span class="n">lib</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">](</span><span class="n">dev</span><span class="p">))</span>
+
+    <span class="c1"># 准备输入</span>
+    <span class="n">input_data</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">nd</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="o">*</span><span class="n">input_shape</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float32&quot;</span><span class="p">))</span>
+    <span class="n">module</span><span class="o">.</span><span class="n">set_input</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">input_data</span><span class="p">)</span>
+
+    <span class="c1"># 预热</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_warmup</span><span class="p">):</span>
+        <span class="n">module</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+    <span class="c1"># 测量</span>
+    <span class="kn">import</span> <span class="nn">time</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_run</span><span class="p">):</span>
+        <span class="n">module</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;latency_ms&quot;</span><span class="p">:</span> <span class="n">elapsed</span> <span class="o">/</span> <span class="n">n_run</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="s2">&quot;throughput_fps&quot;</span><span class="p">:</span> <span class="n">n_run</span> <span class="o">/</span> <span class="n">elapsed</span><span class="p">,</span>
+    <span class="p">}</span>
+</code></pre></div>
+<h3 id="46">4.6 扩展要求</h3>
+<p><strong>扩展一：实现自定义算子</strong>。在TVM中注册自定义算子。实现算子的TE schedule。导出自定义算子供Relay使用。</p>
+<p><strong>扩展二：实现VTA（Versatile Tensor Accelerator）优化</strong>。使用VTA硬件加速器。配置VTA的指令集和内存层次。分析VTA对特定算子的加速效果。</p>
+<p><strong>扩展三：实现MLIR集成</strong>。使用MLIR作为TVM的前端。理解TVM与MLIR的集成方式。探索统一编译器框架的可能性。</p>
+<p><strong>扩展四：对比不同后端</strong>。对比TVM在CPU、GPU、NPU上的性能。分析不同硬件的优化策略差异。研究跨硬件的模型可移植性。</p>
+<h3 id="47">4.7 验收标准</h3>
+<p>项目验收将依据以下标准进行评估。功能完整性方面：正确将模型导入TVM并完成编译，验证推理结果正确性。优化效果方面：通过AutoTVM调优实现显著的性能提升。报告质量方面：提供完整的编译优化报告，包括各阶段的时间分解。对比分析方面：与其他推理引擎进行性能对比分析。</p>
+<hr />
+<h2 id="_2">项目提交要求</h2>
+<p>每个项目完成后，学员需要提交以下材料：</p>
+<p>第一，项目代码。需要提交完整的、可运行的代码，包含必要的注释和说明文档。代码应该有良好的结构，便于阅读和理解。</p>
+<p>第二，实验报告。详细记录实验过程和结果，包括环境配置、参数设置、性能指标等。报告应该包含可视化图表展示性能对比。</p>
+<p>第三，结果分析。对实验结果进行深入分析，解释性能差异的原因，提出改进方向。</p>
+<p>第四，心得总结。总结项目实施过程中的收获和遇到的困难，以及对AI系统相关知识的理解提升。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

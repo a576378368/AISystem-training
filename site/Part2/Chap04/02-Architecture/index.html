@@ -1,0 +1,2284 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="专为零基础新人设计的AI系统培训教程">
+      
+      
+      
+        <link rel="canonical" href="https://a576378368.github.io/AISystem-training/Part2/Chap04/02-Architecture/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>AI系统全栈架构 - AI系统工程师培训教程</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ai" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="AI系统工程师培训教程" class="md-header__button md-logo" aria-label="AI系统工程师培训教程" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AI系统工程师培训教程
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              AI系统全栈架构
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="AI系统工程师培训教程" class="md-nav__button md-logo" aria-label="AI系统工程师培训教程" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AI系统工程师培训教程
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第一阶段：AI基础入门
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第一阶段：AI基础入门
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part1/Chap01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap01 计算机基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part1/Chap02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap02 Python编程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part1/Chap03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap03 数学基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第二阶段：AI系统核心
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第二阶段：AI系统核心
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap04 AI系统概述
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap05 神经网络基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap06/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap06 AI芯片体系架构
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap07 AI编译器原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap08 推理系统与引擎
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap09 AI框架核心
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap10 大模型与集群
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第三阶段：附录
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第三阶段：附录
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part3/AppendixA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录A：术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part3/AppendixB/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录B：参考文献
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part3/AppendixC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录C：实践项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        本节学习目标
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        前置知识
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 AI系统全栈架构概述
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1 AI系统全栈架构概述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#211" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1.1 全栈架构的层次划分
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#212" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1.2 各层的职责与交互
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 AI训练与推理框架
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 AI训练与推理框架">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#221-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.1 AI框架的核心作用
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#222-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.2 AI框架的核心功能模块
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2.2 AI框架的核心功能模块">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        网络模型构建模块
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        模型算法实现模块
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        计算图构建模块
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        自动求导模块
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        中间表达构建模块
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        工具链模块
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        生命周期管理模块
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#223-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.3 主流AI框架介绍
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2.3 主流AI框架介绍">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pytorch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PyTorch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tensorflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TensorFlow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mindspore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MindSpore
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JAX
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#224" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.4 推理框架的特殊需求
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 AI编译与计算架构
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3 AI编译与计算架构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#231-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3.1 AI编译器的定位
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#232-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3.2 为什么需要AI编译器
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#233-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3.3 AI编译器的核心特征
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3.3 AI编译器的核心特征">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        主前端语言
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        多层IR设计
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        面向神经网络优化
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DSA芯片架构支持
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#234-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3.4 主流AI编译器介绍
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3.4 主流AI编译器介绍">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tvm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TVM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xla" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XLA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#glow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Glow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jittor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Jittor
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#235" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3.5 编译优化的核心内容
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3.5 编译优化的核心内容">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        图优化
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        算子内循环优化
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        自动并行化
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        量化与低精度优化
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 AI硬件与体系结构
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.4 AI硬件与体系结构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#241-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4.1 AI硬件概述
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.4.1 AI硬件概述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        通用CPU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GPU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TPU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#npu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NPU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ai_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        其他AI加速器
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#242" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4.2 硬件互联技术
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.4.2 硬件互联技术">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nvlink" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NVLink
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nvswitch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NVSwitch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#infinity-fabric" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Infinity Fabric
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rdma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RDMA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#infiniband" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        InfiniBand
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#243" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4.3 硬件抽象层
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#25-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 AI生态组成
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.5 AI生态组成">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#251" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5.1 核心系统软硬件
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.5.1 核心系统软硬件">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        深度学习任务运行和优化环境
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        通用资源管理和调度系统
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        新型硬件及相关高性能网络和计算栈
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#252-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5.2 AI算法和框架
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.5.2 AI算法和框架">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ai_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        广泛用途的高效新型通用AI算法
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ai_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        多种AI框架的支持与进化
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        神经网络编译架构及优化
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#253-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5.3 更广泛的AI生态
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.5.3 更广泛的AI生态">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        机器学习新模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#automl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        自动机器学习（AutoML）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        安全与隐私
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        模型推理、压缩与优化
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#26-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 AI系统的设计目标
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.6 AI系统的设计目标">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#261" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6.1 高效编程语言、开发框架和工具链
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.6.1 高效编程语言、开发框架和工具链">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        设计更具表达能力和简洁的神经网络计算原语
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        更直观的编辑、调试和实验工具
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ai_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        支持AI生命周期中的各个环节
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#262-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6.2 AI任务系统级支持
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.6.2 AI任务系统级支持">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        支持强化学习、自动化机器学习等新的训练范式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        提供更强大和可扩展的计算能力
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        自动编译优化算法
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        云原生自动分布式化
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#263" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6.3 探索并解决新挑战下系统设计、实现和演化
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#27-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 AI训练与推理流程
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.7 AI训练与推理流程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#271-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7.1 AI训练全流程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#272-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7.2 AI推理全流程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#273" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7.3 分布式训练
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.7.3 分布式训练">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-parallelism" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        数据并行（Data Parallelism）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model-parallelism" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        模型并行（Model Parallelism）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        混合并行
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        本节小结
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        思考与练习
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="ai">AI系统全栈架构</h1>
+<h2 id="_1">本节学习目标</h2>
+<ol>
+<li>理解AI系统全栈架构的层次划分</li>
+<li>掌握各层的主要职责和交互方式</li>
+<li>了解AI训练与推理框架的作用</li>
+<li>认识AI编译器与计算架构的功能</li>
+<li>熟悉AI硬件与体系结构的基本概念</li>
+<li>了解AI生态的组成</li>
+</ol>
+<h2 id="_2">前置知识</h2>
+<ul>
+<li>理解1.1节AI系统基本概念</li>
+<li>具备基本的计算机系统知识</li>
+<li>了解操作系统和编译器的基本原理</li>
+</ul>
+<hr />
+<h2 id="21-ai">2.1 AI系统全栈架构概述</h2>
+<h3 id="211">2.1.1 全栈架构的层次划分</h3>
+<p>AI系统全栈架构是一个复杂的软硬件协同系统，从上到下可以分为四个主要层次：</p>
+<table>
+<thead>
+<tr>
+<th>层次</th>
+<th>主要组件</th>
+<th>核心职责</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>应用层</td>
+<td>AI应用、模型服务</td>
+<td>业务逻辑、接口封装</td>
+</tr>
+<tr>
+<td>AI框架层</td>
+<td>PyTorch、MindSpore等</td>
+<td>编程接口、自动微分、计算图构建</td>
+</tr>
+<tr>
+<td>AI编译器层</td>
+<td>TVM、XLA、Glow等</td>
+<td>代码生成、优化调度</td>
+</tr>
+<tr>
+<td>硬件层</td>
+<td>GPU、NPU、TPU等</td>
+<td>计算执行、加速运算</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="AI系统全栈架构" src="../../images/01Introduction/images/03Architecture06.png" /></p>
+<h3 id="212">2.1.2 各层的职责与交互</h3>
+<p>从上到下看，每一层都有其独特的职责：</p>
+<p><strong>应用层</strong>位于最顶层，直接面向最终用户和业务场景。这一层包括各类AI应用（如图像识别应用、自然语言处理应用）、模型部署服务等。应用层通过调用AI框架层提供的API来完成业务逻辑的实现。</p>
+<p><strong>AI框架层</strong>承上启下，是整个AI系统的核心中间层。这一层负责：
+- 提供高级编程语言（如Python）的API供开发者编写神经网络模型
+- 实现自动微分（Automatic Differentiation）功能，支持反向传播训练
+- 构建和优化计算图（静态图或动态图）
+- 管理模型的训练和推理流程
+- 提供数据加载、模型管理等工具链</p>
+<p>主流的AI框架包括PyTorch、MindSpore、TensorFlow、JAX等。</p>
+<p><strong>AI编译器层</strong>负责将计算图转换为底层硬件可执行的代码。这一层：
+- 解析神经网络模型的高级表达
+- 进行图优化、算子融合等编译优化
+- 生成针对特定硬件的优化代码
+- 管理运行时调度和资源分配</p>
+<p>典型的AI编译器包括TVM（由Apache TVM开源）、XLA（谷歌的加速线性代数编译器）、Glow（Facebook的编译器）等。</p>
+<p><strong>硬件层</strong>是整个栈的底层基础，提供实际的计算能力。这一层包括：
+- AI专用芯片（GPU、NPU、TPU等）
+- 通用CPU
+- 内存和存储系统
+- 网络互联设备（RDMA、NVLink等）</p>
+<p>各层之间通过精心设计的接口进行交互。上层调用下层提供的服务，下层为上层提供抽象后的能力支撑。这种分层架构使得开发者可以在不了解底层细节的情况下进行AI应用的开发，同时系统工程师可以在各个层面进行优化和创新。</p>
+<hr />
+<h2 id="22-ai">2.2 AI训练与推理框架</h2>
+<h3 id="221-ai">2.2.1 AI框架的核心作用</h3>
+<p>AI框架不仅仅是指如PyTorch等训练框架，还包括推理框架。其核心职责是：</p>
+<ol>
+<li><strong>提供编程接口</strong>：通过Python API供用户编写网络模型计算图结构</li>
+<li><strong>自动微分</strong>：高效地对网络模型自动求导等。由于网络模型中大部分算子较为通用，AI框架提前封装好算子的自动求导函数，待用户触发训练过程自动透明地进行全模型的自动求导</li>
+<li><strong>计算图构建</strong>：静态计算图、动态计算图构建等</li>
+<li><strong>中间表达构建</strong>：通过构建网络模型的中间表达及多层中间表达，让模型本身可以更好地被下层AI编译器编译生成高效的后端代码</li>
+</ol>
+<p><img alt="AI框架定位" src="../../images/01Introduction/images/03Architecture02.png" /></p>
+<h3 id="222-ai">2.2.2 AI框架的核心功能模块</h3>
+<p>AI框架作为一个复杂的软件系统，包含多个核心功能模块：</p>
+<h4 id="_3">网络模型构建模块</h4>
+<p>网络模型构建模块负责提供卷积神经网络CNN、循环神经网络RNN、Transformer结构等基本结构和算子支持的API。语言的基本语法和框架的API接口提供基本算子的支持。当前主要以使用Python语言内嵌调用AI框架的方式进行网络模型的开发。</p>
+<h4 id="_4">模型算法实现模块</h4>
+<p>模型算法实现模块封装了算法层面的配置和API供用户选择。算法一般被封装为AI框架的配置或API供用户选择，有些AI框架也提供拦截接口给用户一定程度灵活性定制自定义算法。</p>
+<h4 id="_5">计算图构建模块</h4>
+<p>不同的AI框架类型决定了其使用静态还是动态图进行构建：
+- <strong>静态计算图</strong>：在执行前完整地定义计算图，有利于获取更多信息做全图优化，但调试相对困难
+- <strong>动态计算图</strong>：在实际执行时才动态构建计算图，有利于调试，但优化机会有限</p>
+<p>目前实际处于一个融合的状态，如PyTorch 2.X版本后推出Dynamo特性支持原生静态图。</p>
+<h4 id="_6">自动求导模块</h4>
+<p>自动求导（Automatic Differentiation，AutoGrad）是深度学习框架的核心功能之一。由于网络模型中大部分算子较为通用，AI框架提前封装好算子的自动求导函数，待用户触发训练过程自动透明地进行全模型的自动求导，以支持梯度下降等训练算法需要的权重梯度数据的获取。</p>
+<h4 id="_7">中间表达构建模块</h4>
+<p>多层次中间表达（Intermediate Representation，IR）是连接AI框架和AI编译器的桥梁。通过构建网络模型的中间表达及多层中间表达，让模型本身可以更好地被下层AI编译器编译生成高效的后端代码。</p>
+<h4 id="_8">工具链模块</h4>
+<p>工具链模块提供了如模型在不同硬件的迁移、在不同框架的迁移、模型转换、调试、可视化、类型系统等功能。就像传统的软件工程中调试器、可视化、类型系统等工具链的支撑，让整个开发过程中跨平台、问题诊断、缺陷验证等得以高效实现。</p>
+<h4 id="_9">生命周期管理模块</h4>
+<p>生命周期管理模块负责数据读取、训练与推理等流程开发与管理。机器学习领域的DevOps也就是MLOps的基础工具支持。其可以让重复模块被复用，同时让底层工具有精确的信息进行模块间的调度与多任务的优化。</p>
+<h3 id="223-ai">2.2.3 主流AI框架介绍</h3>
+<h4 id="pytorch">PyTorch</h4>
+<p>PyTorch由Meta（原Facebook）开发，是目前最流行的深度学习框架之一。PyTorch采用命令式编程风格，动态图执行，调试方便，社区活跃。PyTorch 2.0引入了torch.compile特性，支持将动态图转换为静态图进行优化。</p>
+<h4 id="tensorflow">TensorFlow</h4>
+<p>TensorFlow由谷歌于2015年开源，是工业界应用最广泛的深度学习框架之一。TensorFlow提供静态图（Graph mode）和动态图（Eager mode）两种执行模式。TensorFlow 2.0默认启用动态图执行，大幅提升了开发体验。TensorFlow的高级封装Keras使得模型构建更加简便。</p>
+<h4 id="mindspore">MindSpore</h4>
+<p>MindSpore由华为于2020年开源，是国产AI框架的代表。MindSpore支持端云统一架构，可以在终端和云端无缝切换。MindSpore提供了自动微分、自动并行等功能，支持多种硬件平台。</p>
+<h4 id="jax">JAX</h4>
+<p>JAX由谷歌于2018年开源，定位为高性能数值计算框架。JAX的核心设计理念是函数转换，通过grad、jit等函数转换实现自动微分和即时编译。JAX在科学计算领域有广泛应用。</p>
+<h3 id="224">2.2.4 推理框架的特殊需求</h3>
+<p>推理框架与训练框架既有联系又有区别。推理框架需要关注：</p>
+<ol>
+<li><strong>低延迟</strong>：推理通常要求较低的响应延迟，需要针对延迟进行优化</li>
+<li><strong>资源高效利用</strong>：推理部署环境通常资源有限，需要高效利用计算资源</li>
+<li><strong>低精度计算</strong>：推理可以使用FP16、INT8等低精度格式来提升性能</li>
+<li><strong>模型压缩</strong>：量化、剪枝、知识蒸馏等模型压缩技术在推理中广泛应用</li>
+<li><strong>跨平台部署</strong>：模型可能需要部署到多种硬件平台，需要跨平台支持</li>
+</ol>
+<hr />
+<h2 id="23-ai">2.3 AI编译与计算架构</h2>
+<h3 id="231-ai">2.3.1 AI编译器的定位</h3>
+<p>AI框架充分赋能深度学习领域，为AI算法的开发者提供了极大便利。但随着AI技术应用的全面发展，各厂家根据自身业务场景的需求，在AI硬件和算法上不断优化和探索，AI系统的体系结构越来越复杂，更多新的AI加速芯片被提出来，其设计变得更加多样化，AI框架运行的硬件环境和算法也趋于更多样和复杂。</p>
+<p>为了提供不同框架和硬件体系结构之间的迁移性，ONNX等中间IR被提出，其定义了表示神经网络模型的统一格式，以促进不同AI框架之间的模型转换。</p>
+<p><img alt="AI编译器" src="../../images/01Introduction/images/04Sample06.png" /></p>
+<h3 id="232-ai">2.3.2 为什么需要AI编译器</h3>
+<p>在通用硬件上，高度优化的线性代数库为神经网络模型计算提供了基础加速库。此外，大多数硬件供应商还发布了专属的神经网络模型计算优化库，如MKL-DNN和cuDNN等。但基于基础加速库的优化往往落后于深度学习算法模型的更新，且大多数情况下需要针对不同的平台进行定制化的开发。</p>
+<p>为了解决多硬件平台上的性能优化的问题，多种AI编译器被提出并得到了普及和应用。</p>
+<h3 id="233-ai">2.3.3 AI编译器的核心特征</h3>
+<p>与传统编译器相比，AI编译器是一个领域特定的编译器，有四个明显的特征：</p>
+<h4 id="_10">主前端语言</h4>
+<p>与传统编译器不同，AI编译器通常不需要Lexer/Parser，而是基于前端高级编程语言（如Python）的AST将神经网络模型解析并构造为计算图IR，侧重于保留shape、layout等张量计算特征信息，当然部分编译器还能保留控制流的信息。</p>
+<h4 id="ir">多层IR设计</h4>
+<p>多层IR设计，为的是满足易用性与高性能这两种类型需求：</p>
+<ol>
+<li>为了让开发者使用方便，AI框架会尽量对张量的计算进行抽象封装成具体的API或者函数，算法开发者只要关注神经网络模型定义上的逻辑意义模型和算子</li>
+<li>在底层算子性能优化时，可以打破算子的边界，从更细粒度的循环调度等维度，结合不同的硬件特点完成优化</li>
+</ol>
+<h4 id="_11">面向神经网络优化</h4>
+<p>面向神经网络模型特殊的数据类型进行定义。AI领域，网络模型层的具体计算被抽象成张量的计算，这就意味着AI编译器中主要处理的数据类型也是张量。而在反向传播过程中，是深度学习最为代表性的特性，基于计算图构建的网络模型，需要具有自动微分功能。</p>
+<h4 id="dsa">DSA芯片架构支持</h4>
+<p>AI训练和推理对性能和时延都非常敏感，所以大量使用专用的AI加速芯片进行计算，而AI编译器其实是以DSA架构的AI加速芯片作为为中心的编译器，这也是区别于通用编译器的一个特征。</p>
+<h3 id="234-ai">2.3.4 主流AI编译器介绍</h3>
+<h4 id="tvm">TVM</h4>
+<p>TVM（Tensor Virtual Machine）由Apache开源，是一个端到端的深度学习编译器。TVM提供了从高层模型描述到硬件指令的完整编译流程。TVM的核心设计理念是通过调度（Schedule）来表达各种硬件加速优化。</p>
+<h4 id="xla">XLA</h4>
+<p>XLA（Accelerated Linear Algebra）是谷歌为TensorFlow开发的加速线性代数编译器。XLA将TensorFlow计算图编译成优化的设备特定内核。XLA还支持JAX框架。XLA的核心优化包括算子融合、内存管理优化、即时编译等。</p>
+<h4 id="glow">Glow</h4>
+<p>Glow由Meta（原Facebook）开发，是一个基于LLVM的深度学习编译器。Glow采用低级中间表示（LLVM IR）来进行图优化和代码生成，可以支持多种硬件后端。</p>
+<h4 id="jittor">Jittor</h4>
+<p>Jittor是清华大学开发的深度学习框架，采用了元算子统一计算图表达的技术。Jittor的编译器可以自动将计算图优化并生成高效的硬件代码。</p>
+<h3 id="235">2.3.5 编译优化的核心内容</h3>
+<p>AI编译器的主要优化内容包括：</p>
+<h4 id="_12">图优化</h4>
+<p>图优化是在计算图层面进行的优化，包括：
+- <strong>算子融合</strong>：将多个相邻的算子合并为一个算子，减少内存访问和内核启动开销
+- <strong>常量折叠</strong>：将可以在编译时计算的张量提前计算出来
+- <strong>公共子表达式消除</strong>：消除重复的计算</p>
+<h4 id="_13">算子内循环优化</h4>
+<p>在算子内部层面，编译器可以进行循环优化：
+- <strong>循环展开</strong>：减少循环控制开销
+- <strong>循环分块</strong>：优化数据局部性，提高缓存命中率
+- <strong>循环重排</strong>：优化内存访问模式</p>
+<h4 id="_14">自动并行化</h4>
+<p>AI编译器可以根据硬件拓扑结构自动进行并行化优化，包括：
+- <strong>算子间并行</strong>：多个独立的算子可以并行执行
+- <strong>算子内并行</strong>：利用SIMD或SIMT指令进行数据级并行
+- <strong>分布式并行</strong>：支持多卡、多节点的分布式计算</p>
+<h4 id="_15">量化与低精度优化</h4>
+<p>AI编译器支持将FP32模型量化到FP16、INT8等低精度格式：
+- 量化感知训练（Quantization Aware Training）
+- 训练后量化（Post-Training Quantization）
+- 混合精度计算</p>
+<hr />
+<h2 id="24-ai">2.4 AI硬件与体系结构</h2>
+<h3 id="241-ai">2.4.1 AI硬件概述</h3>
+<p>AI硬件是整个系统栈的底层基础，负责程序的真正执行、互联与加速。AI硬件的发展经历了从通用CPU到专用AI芯片的演化过程。</p>
+<h4 id="cpu">通用CPU</h4>
+<p>通用CPU是最基础的计算单元，具有高度的通用性，可以执行任何计算任务。但在AI场景下，CPU的并行计算能力有限，难以满足大规模神经网络模型的计算需求。</p>
+<h4 id="gpu">GPU</h4>
+<p>GPU（图形处理单元）最初为图形渲染设计，但其高度并行的架构非常适合矩阵运算，在深度学习领域得到广泛应用。GPU通过大量并行执行单元（流处理器）实现高吞吐量。</p>
+<p>英伟达（NVIDIA）是GPU领域的领导者，其推出的Tesla系列、Quadro系列等专业GPU，以及消费级的GeForce系列，都被广泛应用于AI训练和推理。英伟达还推出了专用的张量核（Tensor Core），专门针对深度学习中的矩阵运算进行优化。</p>
+<h4 id="tpu">TPU</h4>
+<p>TPU（张量处理单元）是谷歌专门为机器学习设计的专用芯片。TPU使用脉动阵列（Systolic Array）架构，专门优化矩阵乘法和向量运算。谷歌的TPU已经经历了多代迭代，从TPU v1用于推理，到TPU v2/v3同时支持训练和推理。</p>
+<h4 id="npu">NPU</h4>
+<p>NPU（神经网络处理器）是华为针对神经网络运算专门优化设计的专用芯片。华为昇腾达芬奇架构面向AI计算设计，通过独创3D Cube设计，每时钟周期可进行4096次MAC运算，为AI提供强大算力支持。</p>
+<h4 id="ai_1">其他AI加速器</h4>
+<p>除了上述主流AI加速器，还有多种专用AI芯片：
+- 英特尔（Intel）的Nervana和Myriad系列
+- 亚马逊（Amazon）的AWS Inferentia
+- 特斯拉（Tesla）的Dojo芯片
+- 苹果（Apple）的Neural Engine</p>
+<h3 id="242">2.4.2 硬件互联技术</h3>
+<p>在AI训练中，单个AI加速器的算力往往不够，需要多卡甚至多节点协同工作。硬件互联技术为这种协同提供了高带宽的通信基础。</p>
+<h4 id="nvlink">NVLink</h4>
+<p>NVLink是英伟达开发的高速互联技术，可以在GPU之间提供高带宽的点对点通信。NVLink 4.0提供900GB/s的双向带宽，显著高于传统的PCIe连接。</p>
+<h4 id="nvswitch">NVSwitch</h4>
+<p>NVSwitch是英伟达的交换芯片，可以连接多个GPU形成高速互联网络。一个基于NVSwitch的服务器最多可以连接8个GPU，提供全互联拓扑。</p>
+<h4 id="infinity-fabric">Infinity Fabric</h4>
+<p>Infinity Fabric是AMD的GPU互联技术，用于连接同一服务器内的多个GPU。</p>
+<h4 id="rdma">RDMA</h4>
+<p>RDMA（远程直接内存访问）是一种网络技术，允许直接访问远程服务器的内存，无需操作系统介入，可以大幅降低网络延迟和CPU开销。在AI集群中，RDMA常用于节点间的数据交换。</p>
+<h4 id="infiniband">InfiniBand</h4>
+<p>InfiniBand是一种高性能网络技术，提供高带宽和低延迟的互连，广泛应用于AI超级计算机和数据中心。</p>
+<h3 id="243">2.4.3 硬件抽象层</h3>
+<p>硬件抽象层（Hardware Abstraction Layer，HAL）是AI系统中的重要层次，它将底层硬件的复杂性抽象出来，为上层软件提供统一的编程接口。</p>
+<p>统一的硬件接口抽象可以：
+- 复用编译优化策略
+- 让优化方案与具体底层的AI硬件设备和AI体系结构适当解耦
+- 支持上层软件在不同硬件平台间移植</p>
+<p>AI芯片厂商通常会提供自家的运行时库和驱动，如NVIDIA的CUDA、cuDNN、cuBLAS等，华为的CANN（Compute Architecture for Neural Networks）等。</p>
+<hr />
+<h2 id="25-ai">2.5 AI生态组成</h2>
+<h3 id="251">2.5.1 核心系统软硬件</h3>
+<p>核心系统软硬件构成了AI系统的基础设施层。通过核心系统软硬件，底层的基础架构已经可以给上层提供算力、存储、网络等资源池，可以按需给需要执行的深度学习作业隔离出指定规格的资源，执行深度学习作业。</p>
+<h4 id="_16">深度学习任务运行和优化环境</h4>
+<p>提供更高的运行时性能，资源隔离与调度。当深度学习作业启动，AI框架或运行时提供更好的算子与任务调度、内存管理、I/O管理，甚至未来随着作业愈发复杂，提供作业的多路复用（Multiplexing）等支持。</p>
+<h4 id="_17">通用资源管理和调度系统</h4>
+<p>提供更公平、高效率和稳定的平台支持。性能并不是系统设计本身的唯一考虑因素，在多租环境，还要兼顾公平、效率和稳定性，为用户提供更加可靠好用的平台。</p>
+<p>Kubernetes等容器编排系统被广泛应用于AI集群的资源管理和调度。</p>
+<h4 id="_18">新型硬件及相关高性能网络和计算栈</h4>
+<p>随着加速器技术不断发展，网络互连技术提供更高的带宽，硬件层提供更高的算力与带宽支持模型训练与推理。系统需要更加灵活地支持在不同的硬件和规格假设下，不同作业如何静态与动态结合的自动优化与高性能执行。</p>
+<h3 id="252-ai">2.5.2 AI算法和框架</h3>
+<p>通过深度学习算法与框架，用户可以表达模型设计和训练配置等需求，就像提供了一套特定领域的"编程语言"，并且提供了相应的编译器及工具链可以翻译成运行时软硬件环境可以执行的指令。</p>
+<h4 id="ai_2">广泛用途的高效新型通用AI算法</h4>
+<p>提供更多样的模型支持，推进和支持模型效果的提升。支持新的算子（如控制流等）、更加灵活的模型结构（如图模型等）、模型的融合（如多专家系统等）支持。</p>
+<h4 id="ai_3">多种AI框架的支持与进化</h4>
+<p>由于多种框架与工具的存在，如何为用户提供更多样的框架的统一支持与优化对提升用户体验、复用已有代码有很强的实用价值。ONNX等中间格式标准促进了不同框架间的模型互转。</p>
+<h4 id="_19">神经网络编译架构及优化</h4>
+<p>在编译期，通过静态分析与优化的方法，提供更优化的编译支持，提升模型的性能、正确性等。类似传统编译器，网络模型的计算图可以通过融合等手段优化，算子内可以应用大量循环优化。同时面向网络模型本身的特点，也逐渐有工作利用一些等价和非等价计算图转换进行优化。</p>
+<h3 id="253-ai">2.5.3 更广泛的AI生态</h3>
+<p>随着深度学习高速发展，更大的搜索空间、运行时才能获取的数据、模型安全与隐私、部署推理的多样化需求变得日益迫切，我们需要考虑除训练以外更多的AI系统问题。</p>
+<h4 id="_20">机器学习新模式</h4>
+<p>强化学习等新训练范式需要通过与环境交互的过程中获取训练数据，需要设计新的系统以支持灵活的训练范式执行、部署与同步支持。</p>
+<h4 id="automl">自动机器学习（AutoML）</h4>
+<p>当用户想试错的搜索空间达到一定量级，通过自动化机器学习工具与算法可以更高效地进行模型的探索与训练。自动化机器学习系统可以提供多任务的高效管理与调度支持，支持搜索空间定义的程序语言等。</p>
+<h4 id="_21">安全与隐私</h4>
+<p>数据与模型的安全与隐私保护变得越来越重要。神经网络模型类似传统程序，功能上接受输入、处理后产生输出，但相比传统程序其解释性差，造成更容易产生安全问题，容易被攻击。同时模型本身的重要信息为权重，我们也要注意模型本身的隐私保护。</p>
+<h4 id="_22">模型推理、压缩与优化</h4>
+<p>如果不需要训练，只需要执行前向传播过程，则是用户开始使用模型进行推理。基于深度学习特有性质进行高效的模型部署推理是除训练外很重要的系统问题。模型推理相比训练有更低的延迟要求，更严苛的资源供给，不需要求解梯度和训练，有更低的精度要求等，如何设计面向推理的系统提出了新的机会。</p>
+<p>同时网络模型本身可以通过模型压缩、量化等手段精简计算量与内存消耗，加速模型的部署。</p>
+<hr />
+<h2 id="26-ai">2.6 AI系统的设计目标</h2>
+<p>深度学习系统的设计目标可以总结为以下几个部分：</p>
+<h3 id="261">2.6.1 高效编程语言、开发框架和工具链</h3>
+<h4 id="_23">设计更具表达能力和简洁的神经网络计算原语</h4>
+<p>设计更具表达能力和简洁的神经网络计算原语以及高级编程语言。让用户能够提升AI应用程序的开发效率，屏蔽底层硬件计算的细节，更灵活的原语支持。</p>
+<p>当前神经网络模型除了特定领域模型的算子和流程可以复用（如大语言模型Transformer架构在自然语言处理NLP领域被广泛作为基础结构），其新结构新算子的设计与开发仍遵循试错的方式进行。那么如何灵活表达新的计算算子，算子间的组合以及融合形式，屏蔽经典熟知的算子与基础模型，是算法工程师所需要语言、库与AI框架层所提供的功能支持。</p>
+<h4 id="_24">更直观的编辑、调试和实验工具</h4>
+<p>让用户可以完整地进行神经网络模型的开发、测试、调整诊断与修复和优化程序，提升所开发AI应用程序的性能与鲁棒性。</p>
+<p>训练过程不是一蹴而就，其中伴随着损失函数Loss曲线不收敛、Loss值出现NaN无效值、内存溢出等算法问题与算法设计缺陷。AI工具链与AI系统本身如何在设计之初就考虑到这点，提供良好的可观测性、可调试性、允许用户注册自定义扩展等支持，是需要工具链与AI系统的设计者在AI系统的设计之初就需要提上日程的。</p>
+<h4 id="ai_4">支持AI生命周期中的各个环节</h4>
+<p>数据处理、模型开发与训练、模型压缩与推理、安全和隐私保护等。不仅能构建AI模型，能够支持全生命周期的AI程序开发，并在AI系统内对全生命周期进行分析与优化。</p>
+<h3 id="262-ai">2.6.2 AI任务系统级支持</h3>
+<h4 id="_25">支持强化学习、自动化机器学习等新的训练范式</h4>
+<p>除了对深度学习训练与推理的支持，还能支持强化学习、自动化机器学习等新的训练范式。例如，需要不断和环境或模拟器交互以获取新数据的强化学习方式，批量大规模提交搜索空间的自动化机器学习方式等。</p>
+<h4 id="_26">提供更强大和可扩展的计算能力</h4>
+<p>让用户的AI程序可扩展并部署于可以并行计算的节点或者集群，应对大数据和大模型的挑战。</p>
+<p>因为当前AI模型不断通过大模型、多模态大模型以产生更好的算法效果，促使AI系统需要支持更大的模型、更多模态的输入。同时由于企业IT基础设施不断完善，能够不断沉淀新的数据，也会伴随着大数据而衍生的问题。</p>
+<h4 id="_27">自动编译优化算法</h4>
+<p>对计算图自动推导：尽可能的通过符号执行或即时编译JIT技术，获取更多的计算图信息，让AI框架或者AI编译器自动执行定制化的计算优化。</p>
+<p>根据不同体系结构自动并行化：面对部署场景的多样化体系结构、训练阶段异构硬件的趋势，AI框架让用户透明地进行任务配置和并行化，以期以最为优化的方式在AI集群配置下并行化、减少I/O、充分利用通信带宽，逼近硬件提供的极限性能上限。</p>
+<h4 id="_28">云原生自动分布式化</h4>
+<p>自动分布式并行扩展到多个计算节点，面对云与集群场景，自动将AI任务扩展与部署，进而支撑分布式计算、弹性计算，让用户按需使用资源，也是云原生背景下AI系统所需要考虑和支持的。</p>
+<h3 id="263">2.6.3 探索并解决新挑战下系统设计、实现和演化</h3>
+<p>在AI系统中会随着AI算法的发展，出现对动态图、动态Shape的支持需求，利用网络模型结构的稀疏性进行压缩加速优化，为了提升训练指标TTA实现混合精度训练与部署，还有混合训练范式（如强化学习）、多任务（如自动化机器学习）等特性支持。</p>
+<p>提供在更大规模的企业级环境的部署需求。如云环境、多租环境的训练部署需求：面对多组织、多研究员和工程师共享集群资源，以及大家迫切使用GPU资源的日益增长的需求，如何提供公平、稳定、高效的多租环境也是平台系统需要首先考虑的。</p>
+<p>跨平台的推理部署需求。面对割裂的边缘侧硬件与软件栈，如何让模型训练一次，跨平台部署到不同软硬件平台，也是推理场景需要解决的重要问题。</p>
+<p>最后是安全与隐私的需求。由于网络模型类似传统程序的功能，接受输入，处理后产生输出，但是相比传统程序，其解释性差，造成更容易产生安全问题，容易被攻击。同时模型本身的重要信息为权重，我们也要注意模型本身的隐私保护。</p>
+<hr />
+<h2 id="27-ai">2.7 AI训练与推理流程</h2>
+<h3 id="271-ai">2.7.1 AI训练全流程</h3>
+<p>AI训练是将模型从随机初始化的状态，通过学习数据中的规律，逐渐优化到能够较好完成目标任务的过程。一个完整的AI训练流程包括：</p>
+<ol>
+<li><strong>数据准备</strong>：收集、清洗、标注训练数据，设计合适的数据增强策略</li>
+<li><strong>模型设计</strong>：选择合适的网络结构，设计损失函数</li>
+<li><strong>训练循环</strong>：重复执行前向传播、损失计算、反向传播、权重更新</li>
+<li><strong>评估与调优</strong>：使用验证集评估模型性能，调整超参数</li>
+<li><strong>模型保存</strong>：将训练好的模型保存为特定格式</li>
+</ol>
+<p><img alt="训练过程" src="../../images/01Introduction/images/02Develop02.png" /></p>
+<h3 id="272-ai">2.7.2 AI推理全流程</h3>
+<p>AI推理是使用训练好的模型对新数据进行预测的过程。相比训练，推理流程更加简单直接：</p>
+<ol>
+<li><strong>模型加载</strong>：加载训练好的模型权重</li>
+<li><strong>输入处理</strong>：对待预测的数据进行预处理</li>
+<li><strong>前向传播</strong>：执行推理计算</li>
+<li><strong>输出后处理</strong>：将模型输出转换为可读的结果</li>
+</ol>
+<p>推理相比训练有以下几个显著区别：
+- 不需要计算梯度，资源消耗更低
+- 通常有更严格的延迟要求
+- 可以使用模型压缩技术（如量化、剪枝）进行优化
+- 常需要支持跨平台部署</p>
+<h3 id="273">2.7.3 分布式训练</h3>
+<p>当单个AI加速器的算力和显存无法满足训练需求时，需要使用分布式训练。分布式训练主要有两种策略：</p>
+<h4 id="data-parallelism">数据并行（Data Parallelism）</h4>
+<p>将训练数据分成多个批次（batch），每个计算设备持有完整的模型副本，分别处理不同的数据批次，然后通过通信聚合梯度更新。</p>
+<p>优点是实现简单，每个设备需要存储完整的模型；缺点是通信压力大，批大小受单设备显存限制。</p>
+<h4 id="model-parallelism">模型并行（Model Parallelism）</h4>
+<p>将模型的不同部分分配到不同的计算设备上。适用于模型过大，单个设备无法完整存储模型参数的情况。</p>
+<p>模型并行可以分为：
+- <strong>流水线并行（Pipeline Parallelism）</strong>：将模型的不同层分配到不同设备
+- <strong>张量并行（Tensor Parallelism）</strong>：将同一层的参数分割到不同设备
+- <strong>专家并行（Expert Parallelism）</strong>：MoE架构中不同专家分配到不同设备</p>
+<h4 id="_29">混合并行</h4>
+<p>实际训练大模型时，通常会组合多种并行策略，形成3D并行或更复杂的并行策略。</p>
+<hr />
+<h2 id="_30">本节小结</h2>
+<ol>
+<li>
+<p><strong>AI系统全栈架构分为四个层次</strong>：应用层、AI框架层、AI编译器层、硬件层，各层有明确的职责分工和交互接口。</p>
+</li>
+<li>
+<p><strong>AI框架层是核心中间层</strong>：提供高级编程API、自动微分、计算图构建、生命周期管理等核心功能，是AI系统中最接近开发者的层次。</p>
+</li>
+<li>
+<p><strong>AI编译器负责代码生成与优化</strong>：将计算图转换为硬件可执行代码，进行图优化、算子融合、自动并行化等优化工作。</p>
+</li>
+<li>
+<p><strong>AI硬件提供计算基础</strong>：包括GPU、NPU、TPU等专用AI加速器，以及高带宽互联技术如NVLink、RDMA等。</p>
+</li>
+<li>
+<p><strong>AI生态包含核心系统和更广泛的应用</strong>：核心系统软硬件、AI算法框架、更广泛的机器学习新模式和AutoML等共同构成AI生态。</p>
+</li>
+<li>
+<p><strong>AI系统的设计目标</strong>：高效编程语言与工具链、对多种AI任务的系统级支持、解决新挑战下的系统设计与演化。</p>
+</li>
+<li>
+<p><strong>分布式训练是处理大模型的主要手段</strong>：包括数据并行、模型并行、流水线并行等多种策略，实际中常采用混合并行策略。</p>
+</li>
+</ol>
+<hr />
+<h2 id="_31">思考与练习</h2>
+<ol>
+<li>
+<p>请描述AI系统全栈架构的层次划分，并说明每一层的核心职责。</p>
+</li>
+<li>
+<p>AI框架在AI系统中扮演什么角色？请列举AI框架的核心功能模块。</p>
+</li>
+<li>
+<p>AI编译器相比传统编译器有哪些特征？为什么AI领域需要专门的编译器？</p>
+</li>
+<li>
+<p>主流的AI硬件有哪些？它们各自有什么特点？硬件互联技术的作用是什么？</p>
+</li>
+<li>
+<p>请解释数据并行和模型并行的区别，以及各自的优缺点。</p>
+</li>
+<li>
+<p>AI系统的设计目标有哪些？这些目标分别针对哪些具体的挑战？</p>
+</li>
+<li>
+<p>在大模型时代，AI系统需要支持哪些新的需求和挑战？</p>
+</li>
+<li>
+<p>思考：如果你要设计一个支持大模型训练的分布式系统，需要考虑哪些核心问题？</p>
+</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

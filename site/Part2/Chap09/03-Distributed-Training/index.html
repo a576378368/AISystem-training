@@ -1,0 +1,3085 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="专为零基础新人设计的AI系统培训教程">
+      
+      
+      
+        <link rel="canonical" href="https://a576378368.github.io/AISystem-training/Part2/Chap09/03-Distributed-Training/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>分布式训练 - AI系统工程师培训教程</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="AI系统工程师培训教程" class="md-header__button md-logo" aria-label="AI系统工程师培训教程" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AI系统工程师培训教程
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              分布式训练
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="AI系统工程师培训教程" class="md-nav__button md-logo" aria-label="AI系统工程师培训教程" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AI系统工程师培训教程
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第一阶段：AI基础入门
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第一阶段：AI基础入门
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part1/Chap01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap01 计算机基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part1/Chap02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap02 Python编程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part1/Chap03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap03 数学基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第二阶段：AI系统核心
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第二阶段：AI系统核心
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap04 AI系统概述
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap05 神经网络基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap06/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap06 AI芯片体系架构
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap07 AI编译器原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap08 推理系统与引擎
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap09 AI框架核心
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap10 大模型与集群
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第三阶段：附录
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第三阶段：附录
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part3/AppendixA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录A：术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part3/AppendixB/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录B：参考文献
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part3/AppendixC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录C：实践项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        本章学习目标
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        预备知识
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1 分布式训练概述
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1 分布式训练概述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 为什么需要分布式训练
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 分布式训练的基本思想
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 分布式训练的系统架构
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 分布式训练的挑战
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.4 分布式训练的挑战">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#141" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4.1 通信带宽
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#142" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4.2 负载均衡
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#143" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4.3 收敛性
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2 数据并行
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2 数据并行">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 数据并行的基本原理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-dp-vs-ddp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 DP vs DDP
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 DP vs DDP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#221-dataparallel-dp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.1 DataParallel (DP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#222-distributeddataparallel-ddp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.2 DistributedDataParallel (DDP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-ddp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 DDP核心原理
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3 DDP核心原理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#231-ring-allreduce" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3.1 Ring AllReduce
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#232" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3.2 梯度同步时机
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-ddp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 DDP实现细节
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.4 DDP实现细节">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#241" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4.1 进程组初始化
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#242-distributedsampler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4.2 DistributedSampler
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#243" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4.3 保存和加载检查点
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 数据并行的通信分析
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.5 数据并行的通信分析">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#251" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5.1 通信量
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#252" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5.2 通信与计算重叠
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 数据并行的挑战
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.6 数据并行的挑战">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#261" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6.1 内存挑战
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#262" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6.2 通信挑战
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-fsdpzero" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 FSDP与ZeRO优化
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3 FSDP与ZeRO优化">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-zero" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 ZeRO的核心思想
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-zero-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 ZeRO-1: 优化器状态分片
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-zero-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 ZeRO-2: 梯度分片
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-zero-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 ZeRO-3: 参数分片
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-fsdp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 FSDP实现
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-zero" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 ZeRO通信分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-zero-offload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 ZeRO-Offload
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4 模型并行
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4 模型并行">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 张量并行基础
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.1 张量并行基础">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#411-column-parallel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1.1 列切分（Column Parallel）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#412-row-parallel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1.2 行切分（Row Parallel）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-transformer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Transformer中的张量并行
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2 Transformer中的张量并行">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#421-mlp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2.1 MLP层的并行
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#422" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2.2 自注意力层的并行
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 张量并行的通信
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-devicemesh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 DeviceMesh实现
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 流水线并行基础
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 朴素流水线的问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#47-micro-batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.7 微批次（Micro-batch）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#48-gpipe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.8 Gpipe流水线
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#49-pipedream" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.9 PipeDream流水线
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#410" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.10 流水线并行的挑战
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5 混合并行
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5 混合并行">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 为什么需要混合并行
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-3d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 3D混合并行
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 混合并行的通信
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 混合并行的配置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.5 混合并行的挑战
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#56" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.6 混合并行的最佳实践
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6 分布式训练实战
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6 分布式训练实战">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 环境设置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-ddp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 DDP训练模板
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-fsdp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 FSDP训练模板
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 梯度累积与分布式训练
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 混合精度训练
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#66" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.6 检查点保存与恢复
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#67" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.7 性能调优
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.7 性能调优">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#671-cuda" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.7.1 CUDA加速
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#672" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.7.2 数据加载优化
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#673" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.7.3 梯度同步优化
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7 分布式通信原语
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7 分布式通信原语">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 集合通信概述
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-allreduce" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 AllReduce
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-broadcast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 Broadcast
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74-allgather" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 AllGather
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#75" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.5 点对点通信
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#76" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6 通信与计算重叠
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8 分布式训练中的常见问题
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8 分布式训练中的常见问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 梯度不一致
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 死锁
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 负载不均衡
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#84" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.4 通信瓶颈
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        本章小结
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        本节视频
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="_1">分布式训练</h1>
+<h2 id="_2">本章学习目标</h2>
+<ol>
+<li>理解分布式训练的基本概念和必要性</li>
+<li>掌握数据并行（DP与DDP）的原理与实现</li>
+<li>理解FSDP和ZeRO优化的原理</li>
+<li>掌握模型并行（张量并行与流水线并行）的原理</li>
+<li>了解混合并行（DP+PP+TP）的概念</li>
+<li>理解分布式训练中的通信优化</li>
+</ol>
+<h2 id="_3">预备知识</h2>
+<ul>
+<li>深度学习训练流程</li>
+<li>PyTorch编程基础</li>
+<li>计算机网络基础（通信原语）</li>
+</ul>
+<hr />
+<h2 id="1">1 分布式训练概述</h2>
+<h3 id="11">1.1 为什么需要分布式训练</h3>
+<p>深度学习模型正在变得越来越大。让我用一个具体的例子来说明这个问题：</p>
+<table>
+<thead>
+<tr>
+<th>模型</th>
+<th>参数量</th>
+<th>模型大小(FP32)</th>
+<th>训练硬件需求</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ResNet-50</td>
+<td>2500万</td>
+<td>~100MB</td>
+<td>单卡可训练</td>
+</tr>
+<tr>
+<td>BERT-Base</td>
+<td>1.1亿</td>
+<td>~440MB</td>
+<td>多卡加速</td>
+</tr>
+<tr>
+<td>GPT-3</td>
+<td>1750亿</td>
+<td>~700GB</td>
+<td>需要分布式</td>
+</tr>
+<tr>
+<td>GPT-4</td>
+<td>约1万亿</td>
+<td>~4TB</td>
+<td>超大规模集群</td>
+</tr>
+<tr>
+<td>LLaMA-65B</td>
+<td>650亿</td>
+<td>~260GB</td>
+<td>多卡多机</td>
+</tr>
+</tbody>
+</table>
+<p>当模型参数量达到数十亿甚至万亿级别时：
+1. <strong>单个设备内存放不下</strong>：一张NVIDIA A100 GPU只有80GB HBM，而1750亿的模型需要约700GB
+2. <strong>单设备计算太慢</strong>：训练GPT-3使用单卡需要几十年</p>
+<p>分布式训练通过多设备协作，解决这两个问题。</p>
+<h3 id="12">1.2 分布式训练的基本思想</h3>
+<p>分布式训练的核心思想是<strong>并行化</strong>：</p>
+<ol>
+<li><strong>数据并行</strong>：让多个设备处理不同的数据批次，并行加速</li>
+<li><strong>模型并行</strong>：把模型拆分到多个设备，解决内存问题</li>
+</ol>
+<div class="highlight"><pre><span></span><code>数据并行示意：
+设备0: Batch0 ──► [Model] ──► Grad0 ──┐
+设备1: Batch1 ──► [Model] ──► Grad1 ──┼──► 平均梯度 ──► 更新模型
+设备2: Batch2 ──► [Model] ──► Grad2 ──┤
+设备3: Batch3 ──► [Model] ──► Grad3 ──┘
+
+模型并行示意：
+        参数分片
+      ┌────────────┐
+Layer1 │ Layer2   │ Layer3
+      ▼           ▼
+  设备0        设备1
+</code></pre></div>
+<h3 id="13">1.3 分布式训练的系统架构</h3>
+<p>典型的分布式训练系统包含：</p>
+<div class="highlight"><pre><span></span><code>┌─────────────────────────────────────────────────┐
+│                   训练集群                        │
+│  ┌─────────────┐     ┌─────────────┐            │
+│  │   Node 0   │◄───►│   Node 1   │            │
+│  │ GPU0 GPU1   │     │ GPU0 GPU1   │            │
+│  │   │    │    │     │   │    │    │            │
+│  └─────────────┘     └─────────────┘            │
+│         ▲                   ▲                    │
+│         │      Network     │                    │
+│         └─────────────────┘                    │
+└─────────────────────────────────────────────────┘
+</code></pre></div>
+<p>关键组件：
+- <strong>节点（Node）</strong>：一台物理服务器，包含多块GPU
+- <strong>GPU/NPU</strong>：实际的计算设备
+- <strong>网络</strong>：节点间通信（InfiniBand/NVLink）
+- <strong>集合通信</strong>：AllReduce、Broadcast等</p>
+<h3 id="14">1.4 分布式训练的挑战</h3>
+<p>分布式训练面临三大挑战：</p>
+<h4 id="141">1.4.1 通信带宽</h4>
+<p>不同设备间的通信带宽差异巨大：</p>
+<table>
+<thead>
+<tr>
+<th>通信路径</th>
+<th>带宽</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NVLink (同节点GPU间)</td>
+<td>~900 GB/s</td>
+</tr>
+<tr>
+<td>PCIe (GPU间)</td>
+<td>~32 GB/s</td>
+</tr>
+<tr>
+<td>InfiniBand HDR</td>
+<td>~50 GB/s</td>
+</tr>
+<tr>
+<td>以太网</td>
+<td>~12.5 GB/s</td>
+</tr>
+</tbody>
+</table>
+<p>通信往往成为瓶颈，需要精心设计以减少通信量。</p>
+<h4 id="142">1.4.2 负载均衡</h4>
+<p>需要确保：
+- 各设备计算量相近，避免空闲等待
+- 各设备通信量均衡
+- 考虑内存限制</p>
+<h4 id="143">1.4.3 收敛性</h4>
+<p>并行化不能影响模型训练的收敛性：
+- 梯度同步的一致性
+- 异步训练的梯度陈旧问题</p>
+<hr />
+<h2 id="2">2 数据并行</h2>
+<p>数据并行是最简单也最常用的分布式训练方法。</p>
+<h3 id="21">2.1 数据并行的基本原理</h3>
+<p>数据并行的核心思想：
+1. 复制模型到所有设备
+2. 各设备用不同数据批次前向传播
+3. 汇总梯度，更新模型参数
+4. 同步更新后的参数</p>
+<div class="highlight"><pre><span></span><code>        数据分片
+    ┌─────────────┐
+    │ Batch[0:4]  │──► 设备0: Forward → Backward → Grad0
+    │ Batch[4:8]  │──► 设备1: Forward → Backward → Grad1
+    │ Batch[8:12] │──► 设备2: Forward → Backward → Grad2
+    │ Batch[12:16]│──► 设备3: Forward → Backward → Grad3
+    └─────────────┘
+            │
+            ▼
+    AllReduce: Grad_avg = (Grad0 + Grad1 + Grad2 + Grad3) / 4
+            │
+            ▼
+    参数更新: W_new = W_old - lr * Grad_avg
+            │
+            ▼
+    Broadcast: 所有设备获得相同的新参数
+</code></pre></div>
+<h3 id="22-dp-vs-ddp">2.2 DP vs DDP</h3>
+<p>PyTorch提供两种数据并行方式：<strong>DataParallel (DP)</strong> 和 <strong>DistributedDataParallel (DDP)</strong>。</p>
+<h4 id="221-dataparallel-dp">2.2.1 DataParallel (DP)</h4>
+<p>DP是单进程多线程的实现：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="c1"># 使用DataParallel包装模型</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">DataParallel</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="c1"># 输入会自动分到多个GPU</span>
+<span class="n">inputs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>  <span class="c1"># 16个样本分到4个GPU</span>
+</code></pre></div>
+<p><strong>DP的特点</strong>：
+- 单进程，使用多线程
+- 受Python GIL限制
+- 通信成为瓶颈
+- 第一个GPU负载更重（汇总梯度）</p>
+<h4 id="222-distributeddataparallel-ddp">2.2.2 DistributedDataParallel (DDP)</h4>
+<p>DDP是多进程的实现：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.distributed</span> <span class="k">as</span> <span class="nn">dist</span>
+<span class="kn">from</span> <span class="nn">torch.nn.parallel</span> <span class="kn">import</span> <span class="n">DistributedDataParallel</span> <span class="k">as</span> <span class="n">DDP</span>
+<span class="kn">import</span> <span class="nn">torch.multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># 初始化分布式环境</span>
+    <span class="n">dist</span><span class="o">.</span><span class="n">init_process_group</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;nccl&quot;</span><span class="p">)</span>
+
+    <span class="c1"># 每个进程创建自己的模型</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+    <span class="c1"># 用DDP包装</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">DDP</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="c1"># 训练循环</span>
+    <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">outputs</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>  <span class="c1"># DDP自动处理梯度同步</span>
+
+    <span class="n">dist</span><span class="o">.</span><span class="n">destroy_process_group</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># 启动多个进程</span>
+    <span class="n">mp</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">main</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="n">nprocs</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>DDP的优势</strong>：
+- 多进程，无GIL限制
+- 梯度通过AllReduce同步
+- 通信与计算重叠
+- 扩展性好</p>
+<h3 id="23-ddp">2.3 DDP核心原理</h3>
+<h4 id="231-ring-allreduce">2.3.1 Ring AllReduce</h4>
+<p>DDP使用Ring AllReduce算法进行梯度同步：</p>
+<div class="highlight"><pre><span></span><code>假设4个GPU形成环形：
+GPU0 → GPU1 → GPU2 → GPU3 → GPU0
+
+Reduce Scatter阶段（3步）：
+Step 1: GPU0处理chunk0, GPU1处理chunk1, ...
+Step 2: 每个GPU接收并累加
+Step 3: 最终每GPU有聚合后的部分梯度
+
+AllGather阶段（3步）：
+类似地广播最终结果
+</code></pre></div>
+<p>Ring AllReduce的优点：
+- 通信量与设备数量无关
+- 通信带宽利用率高
+- 去中心化，无通信瓶颈</p>
+<h4 id="232">2.3.2 梯度同步时机</h4>
+<p>DDP的梯度同步时机与backward执行重叠：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># DDP的backward执行流程：</span>
+<span class="c1"># 1. 本地的backward计算梯度</span>
+<span class="c1"># 2. 自动触发AllReduce同步梯度</span>
+<span class="c1"># 3. 通信与计算重叠</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+
+<span class="c1"># 这里backward会触发梯度同步</span>
+<span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>  <span class="c1"># DDP内部处理AllReduce</span>
+</code></pre></div>
+<h3 id="24-ddp">2.4 DDP实现细节</h3>
+<h4 id="241">2.4.1 进程组初始化</h4>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">torch.distributed</span> <span class="k">as</span> <span class="nn">dist</span>
+
+<span class="c1"># 环境变量方式</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;MASTER_ADDR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;localhost&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;MASTER_PORT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;29500&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;RANK&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">rank</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;WORLD_SIZE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">world_size</span><span class="p">)</span>
+
+<span class="n">dist</span><span class="o">.</span><span class="n">init_process_group</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;nccl&quot;</span><span class="p">)</span>
+
+<span class="c1"># 或者显式初始化</span>
+<span class="n">dist</span><span class="o">.</span><span class="n">init_process_group</span><span class="p">(</span>
+    <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;nccl&quot;</span><span class="p">,</span>  <span class="c1"># 使用NCCL后端（NVIDIA）</span>
+    <span class="n">init_method</span><span class="o">=</span><span class="s2">&quot;env://&quot;</span><span class="p">,</span>  <span class="c1"># 从环境变量读取</span>
+    <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span>
+    <span class="n">world_size</span><span class="o">=</span><span class="n">world_size</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="242-distributedsampler">2.4.2 DistributedSampler</h4>
+<p>Dataloader使用DistributedSampler确保数据不重复：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">torch.utils.data.distributed</span> <span class="kn">import</span> <span class="n">DistributedSampler</span>
+
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">DistributedSampler</span><span class="p">(</span>
+    <span class="n">dataset</span><span class="p">,</span>
+    <span class="n">num_replicas</span><span class="o">=</span><span class="n">world_size</span><span class="p">,</span>
+    <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span>
+    <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+    <span class="n">dataset</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+    <span class="n">sampler</span><span class="o">=</span><span class="n">sampler</span><span class="p">,</span>
+    <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="243">2.4.3 保存和加载检查点</h4>
+<div class="highlight"><pre><span></span><code><span class="c1"># 只在rank 0保存</span>
+<span class="k">if</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_rank</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">checkpoint_path</span><span class="p">)</span>
+
+<span class="c1"># 所有进程同步后加载</span>
+<span class="n">dist</span><span class="o">.</span><span class="n">barrier</span><span class="p">()</span>  <span class="c1"># 等待所有进程</span>
+<span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">checkpoint_path</span><span class="p">))</span>
+</code></pre></div>
+<h3 id="25">2.5 数据并行的通信分析</h3>
+<h4 id="251">2.5.1 通信量</h4>
+<p>对于参数量为 $\Psi$ 的模型，一个AllReduce的通信量：
+- 数据并行度为 $N$ 时，每个设备通信量约为 $2\Psi$（使用Ring AllReduce）
+- 通信量与模型参数量成正比</p>
+<h4 id="252">2.5.2 通信与计算重叠</h4>
+<p>DDP通过钩子函数实现通信与计算重叠：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 伪代码示意</span>
+<span class="k">def</span> <span class="nf">backward_hook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grad</span><span class="p">):</span>
+    <span class="c1"># 梯度就绪时触发</span>
+    <span class="c1"># 异步启动AllReduce</span>
+    <span class="n">dist</span><span class="o">.</span><span class="n">all_reduce</span><span class="p">(</span><span class="n">grad</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">grad</span>
+</code></pre></div>
+<h3 id="26">2.6 数据并行的挑战</h3>
+<h4 id="261">2.6.1 内存挑战</h4>
+<p>每个设备需要存储：
+- 模型参数：$\Psi$
+- 梯度：$\Psi$
+- 优化器状态：$2\Psi$ (Adam)
+- 激活值：取决于模型深度和批次大小</p>
+<p>使用混合精度训练（FP16）可减少约一半内存。</p>
+<h4 id="262">2.6.2 通信挑战</h4>
+<p>当GPU数量增加时：
+- 通信时间占比增加
+- 可能成为瓶颈</p>
+<p>解决方案：
+- 增加计算量（增大批次）
+- 减少通信量（梯度压缩）
+- 优化通信算法</p>
+<hr />
+<h2 id="3-fsdpzero">3 FSDP与ZeRO优化</h2>
+<p>当模型变得非常大时，即使使用数据并行，单个设备的内存也可能不够。<strong>ZeRO（Zero Redundancy Optimizer）</strong> 和 <strong>FSDP（Fully Sharded Data Parallel）</strong> 提供了一种解决方案。</p>
+<h3 id="31-zero">3.1 ZeRO的核心思想</h3>
+<p>ZeRO的核心思想是<strong>分片（Sharding）</strong>：不复制完整的模型状态到每个设备，而是将状态分区存储。</p>
+<table>
+<thead>
+<tr>
+<th>优化阶段</th>
+<th>分片内容</th>
+<th>内存节省</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ZeRO-1</td>
+<td>优化器状态</td>
+<td>4倍</td>
+</tr>
+<tr>
+<td>ZeRO-2</td>
+<td>优化器状态 + 梯度</td>
+<td>8倍</td>
+</tr>
+<tr>
+<td>ZeRO-3</td>
+<td>优化器状态 + 梯度 + 参数</td>
+<td>N倍</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32-zero-1">3.2 ZeRO-1: 优化器状态分片</h3>
+<p>ZeRO-1将优化器状态按设备数量分片：</p>
+<div class="highlight"><pre><span></span><code>原始：每个设备存储完整的优化器状态（8字节/参数 for Adam）
+ZeRO-1：每个设备只存储1/N的优化器状态
+
+Before: [GPU0: O_ful, GPU1: O_ful, GPU2: O_ful, GPU3: O_ful]
+After:  [GPU0: O_1/4, GPU1: O_2/4, GPU2: O_3/4, GPU3: O_4/4]
+</code></pre></div>
+<p>通信量不变，但内存节省4倍。</p>
+<h3 id="33-zero-2">3.3 ZeRO-2: 梯度分片</h3>
+<p>ZeRO-2在ZeRO-1基础上增加梯度分片：</p>
+<div class="highlight"><pre><span></span><code>Before: [GPU0: G_ful, GPU1: G_ful, GPU2: G_ful, GPU3: G_ful]
+After:  [GPU0: G_1/4, GPU1: G_2/4, GPU2: G_3/4, GPU3: G_4/4]
+</code></pre></div>
+<p>使用Reduce-Scatter，每个设备只负责部分梯度的聚合和更新。</p>
+<p>内存节省8倍。</p>
+<h3 id="34-zero-3">3.4 ZeRO-3: 参数分片</h3>
+<p>ZeRO-3将模型参数也分片：</p>
+<div class="highlight"><pre><span></span><code>每个设备只存储1/N的参数
+需要参数时通过All-Gather获取
+</code></pre></div>
+<p>这是最激进的优化，允许训练超出单设备内存的模型。</p>
+<h3 id="35-fsdp">3.5 FSDP实现</h3>
+<p>FSDP是PyTorch对ZeRO的实现：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.distributed.fsdp</span> <span class="kn">import</span> <span class="n">FullyShardedDataParallel</span> <span class="k">as</span> <span class="n">FSDP</span>
+<span class="kn">from</span> <span class="nn">torch.distributed.fsdp</span> <span class="kn">import</span> <span class="n">ShardingStrategy</span>
+
+<span class="c1"># ZeRO-2 策略</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">FSDP</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="n">sharding_strategy</span><span class="o">=</span><span class="n">ShardingStrategy</span><span class="o">.</span><span class="n">SHARD_GRAD_OP</span><span class="p">,</span>  <span class="c1"># 分片梯度+优化器状态</span>
+    <span class="n">device_id</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">current_device</span><span class="p">(),</span>
+    <span class="c1"># 混合精度支持</span>
+    <span class="n">mixed_precision</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;param_dtype&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span>
+        <span class="s2">&quot;reduce_dtype&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span>
+        <span class="s2">&quot;buffer_dtype&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># ZeRO-3 策略</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">FSDP</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="n">sharding_strategy</span><span class="o">=</span><span class="n">ShardingStrategy</span><span class="o">.</span><span class="n">FULL_SHARD</span><span class="p">,</span>  <span class="c1"># 分片参数+梯度+优化器状态</span>
+<span class="p">)</span>
+</code></pre></div>
+<h3 id="36-zero">3.6 ZeRO通信分析</h3>
+<table>
+<thead>
+<tr>
+<th>策略</th>
+<th>通信量（相对于DP）</th>
+<th>内存节省</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DP</td>
+<td>1x</td>
+<td>1x</td>
+</tr>
+<tr>
+<td>ZeRO-1</td>
+<td>~1x</td>
+<td>4x</td>
+</tr>
+<tr>
+<td>ZeRO-2</td>
+<td>~1x</td>
+<td>8x</td>
+</tr>
+<tr>
+<td>ZeRO-3</td>
+<td>~1.5x</td>
+<td>N倍</td>
+</tr>
+</tbody>
+</table>
+<p>ZeRO-3通信量增加约50%，但换来了线性增长的内存节省。</p>
+<h3 id="37-zero-offload">3.7 ZeRO-Offload</h3>
+<p>ZeRO-Offload将部分数据卸载到CPU或NVMe：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">deepspeed.runtime.zero</span> <span class="kn">import</span> <span class="n">Stage3</span>
+
+<span class="c1"># 卸载优化器状态到CPU</span>
+<span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">deepspeed</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span>
+    <span class="n">config</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;zero_optimization&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;stage&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s2">&quot;offload_optimizer&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;device&quot;</span><span class="p">:</span> <span class="s2">&quot;cpu&quot;</span><span class="p">,</span>  <span class="c1"># 卸载到CPU</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>这允许用有限的GPU内存训练超大模型。</p>
+<hr />
+<h2 id="4">4 模型并行</h2>
+<p>当模型太大无法放入单个设备时，需要使用<strong>模型并行</strong>。模型并行分为两种：
+- <strong>张量并行（Tensor Parallelism）</strong>：将单层的参数分到多个设备
+- <strong>流水线并行（Pipeline Parallelism）</strong>：将不同层的计算分到不同设备</p>
+<h3 id="41">4.1 张量并行基础</h3>
+<p>张量并行将单层（如矩阵乘法）的参数矩阵按维度切分：</p>
+<h4 id="411-column-parallel">4.1.1 列切分（Column Parallel）</h4>
+<p>将权重矩阵按列切分：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Y = X @ W</span>
+<span class="c1"># W shape: [input_dim, output_dim]</span>
+<span class="c1"># 如果切分W为 [input_dim, output_dim/N] x N</span>
+
+<span class="n">W1</span><span class="p">,</span> <span class="n">W2</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">output_dim</span> <span class="o">//</span> <span class="n">N</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">Y1</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">W1</span>  <span class="c1"># 设备0</span>
+<span class="n">Y2</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">W2</span>  <span class="c1"># 设备1</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">Y1</span><span class="p">,</span> <span class="n">Y2</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># 拼接结果</span>
+</code></pre></div>
+<h4 id="412-row-parallel">4.1.2 行切分（Row Parallel）</h4>
+<p>将权重矩阵按行切分：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Y = X @ W</span>
+<span class="c1"># W shape: [input_dim, output_dim]</span>
+<span class="c1"># 如果切分W为 [input_dim/N, output_dim] x N</span>
+
+<span class="n">X1</span><span class="p">,</span> <span class="n">X2</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">input_dim</span> <span class="o">//</span> <span class="n">N</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">Y1</span> <span class="o">=</span> <span class="n">X1</span> <span class="o">@</span> <span class="n">W1</span>  <span class="c1"># 设备0</span>
+<span class="n">Y2</span> <span class="o">=</span> <span class="n">X2</span> <span class="o">@</span> <span class="n">W2</span>  <span class="c1"># 设备1</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">Y1</span> <span class="o">+</span> <span class="n">Y2</span>  <span class="c1"># 求和合并</span>
+</code></pre></div>
+<h3 id="42-transformer">4.2 Transformer中的张量并行</h3>
+<p>现代大模型主要使用Transformer架构，其张量并行实现如下：</p>
+<h4 id="421-mlp">4.2.1 MLP层的并行</h4>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ParallelMLP</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">,</span> <span class="n">n_devices</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># 切分第一个线性层（列切）</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">ColumnParallelLinear</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">,</span> <span class="n">n_devices</span><span class="p">)</span>
+        <span class="c1"># 切分第二个线性层（行切）</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">RowParallelLinear</span><span class="p">(</span><span class="n">hidden_dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">n_devices</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># [B, H/N]</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">gelu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># [B, H]</span>
+        <span class="k">return</span> <span class="n">x</span>
+</code></pre></div>
+<h4 id="422">4.2.2 自注意力层的并行</h4>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ParallelSelfAttention</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">n_heads</span><span class="p">,</span> <span class="n">n_devices</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_heads</span> <span class="o">=</span> <span class="n">n_heads</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_devices</span> <span class="o">=</span> <span class="n">n_devices</span>
+
+        <span class="c1"># QKV投影，列切</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qkv</span> <span class="o">=</span> <span class="n">ColumnParallelLinear</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="n">n_devices</span><span class="p">)</span>
+
+        <span class="c1"># 输出投影，行切</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proj</span> <span class="o">=</span> <span class="n">RowParallelLinear</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">n_devices</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">B</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="c1"># QKV分到不同设备</span>
+        <span class="n">qkv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qkv</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># [B, N, 3C/N]</span>
+        <span class="n">q</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">qkv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">C</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_devices</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># 计算注意力（需要AllReduce）</span>
+        <span class="n">attn</span> <span class="o">=</span> <span class="p">(</span><span class="n">q</span> <span class="o">@</span> <span class="n">k</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">attn</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">attn</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">attn</span> <span class="o">=</span> <span class="n">attn</span> <span class="o">@</span> <span class="n">v</span>
+
+        <span class="c1"># 输出</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj</span><span class="p">(</span><span class="n">attn</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span>
+</code></pre></div>
+<h3 id="43">4.3 张量并行的通信</h3>
+<p>张量并行需要额外的集合通信：</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>通信类型</th>
+<th>通信量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AllGather (输入)</td>
+<td>集合通信</td>
+<td>$O(seq \times hidden)$</td>
+</tr>
+<tr>
+<td>AllReduce (输出)</td>
+<td>集合通信</td>
+<td>$O(seq \times hidden)$</td>
+</tr>
+</tbody>
+</table>
+<p>通信量与张量并行的设备数成正比。</p>
+<h3 id="44-devicemesh">4.4 DeviceMesh实现</h3>
+<p>PyTorch的DeviceMesh提供了高层API：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">torch.distributed.device_mesh</span> <span class="kn">import</span> <span class="n">init_device_mesh</span>
+
+<span class="c1"># 创建一个2D设备网格</span>
+<span class="c1"># 8 GPU: 4路张量并行 x 2路数据并行</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">init_device_mesh</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+<span class="c1"># 获取子网格</span>
+<span class="n">tp_mesh</span> <span class="o">=</span> <span class="n">mesh</span><span class="p">[</span><span class="s2">&quot;tp&quot;</span><span class="p">]</span>  <span class="c1"># 张量并行网格</span>
+<span class="n">dp_mesh</span> <span class="o">=</span> <span class="n">mesh</span><span class="p">[</span><span class="s2">&quot;dp&quot;</span><span class="p">]</span>  <span class="c1"># 数据并行网格</span>
+</code></pre></div>
+<h3 id="45">4.5 流水线并行基础</h3>
+<p>流水线并行将模型按层切分：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 8层模型分配到4个设备</span>
+<span class="c1"># 设备0: Layer0-1</span>
+<span class="c1"># 设备1: Layer2-3</span>
+<span class="c1"># 设备2: Layer4-5</span>
+<span class="c1"># 设备3: Layer6-7</span>
+
+<span class="k">class</span> <span class="nc">PipelineParallel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_stages</span><span class="p">,</span> <span class="n">n_devices</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">devices</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cuda:</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_devices</span><span class="p">)]</span>
+
+        <span class="c1"># 每个设备有自己的模型分片</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stage0</span> <span class="o">=</span> <span class="n">Stage0</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">devices</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stage1</span> <span class="o">=</span> <span class="n">Stage1</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">devices</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="c1"># ...</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">devices</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stage0</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">devices</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stage1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="c1"># ...</span>
+</code></pre></div>
+<h3 id="46">4.6 朴素流水线的问题</h3>
+<p>朴素流水线会有<strong>气泡（Bubble）</strong>问题：</p>
+<div class="highlight"><pre><span></span><code>朴素流水线示意（4阶段）：
+时间  T1   T2   T3   T4   T5   T6   T7   T8
+设备0 [F0  ][F1  ][F2  ][F3  ][idle][idle][idle][idle]
+设备1 [idle][F0  ][F1  ][F2  ][F3  ][idle][idle][idle]
+设备2 [idle][idle][F0  ][F1  ][F2  ][F3  ][idle][idle]
+设备3 [idle][idle][idle][F0  ][F1  ][F2  ][F3  ][idle]
+
+气泡比例 = (N-1) / N（N为阶段数）
+</code></pre></div>
+<p><strong>气泡造成GPU利用率低</strong>。</p>
+<h3 id="47-micro-batch">4.7 微批次（Micro-batch）</h3>
+<p>为减少气泡，将批次划分为更小的微批次：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 原始：batch_size=16</span>
+<span class="c1"># 微批次：num_microbatches=4, micro_batch_size=4</span>
+
+<span class="c1"># 流水线调度：</span>
+<span class="c1"># T1: F0(m0) F1(m0) F2(m0) F3(m0)</span>
+<span class="c1"># T2: F0(m1) F1(m1) F2(m1) F3(m1)</span>
+<span class="c1"># T3: F0(m2) F1(m2) F2(m2) F3(m2)</span>
+<span class="c1"># T4: F0(m3) F1(m3) F2(m3) F3(m3)</span>
+</code></pre></div>
+<h3 id="48-gpipe">4.8 Gpipe流水线</h3>
+<p>Gpipe使用同步流水线：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">torch.distributed.pipeline.sync</span> <span class="kn">import</span> <span class="n">Pipe</span>
+
+<span class="c1"># 将模型切分为多个stage</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+    <span class="n">stage0</span><span class="p">,</span> <span class="n">stage1</span><span class="p">,</span> <span class="n">stage2</span><span class="p">,</span> <span class="n">stage3</span>
+<span class="p">)</span>
+
+<span class="c1"># 使用Pipe进行流水线并行</span>
+<span class="n">pipe_model</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># 4个微批次</span>
+
+<span class="c1"># 执行</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">pipe_model</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="49-pipedream">4.9 PipeDream流水线</h3>
+<p>PipeDream使用异步流水线（1F1B策略）：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># One Forward One Backward</span>
+<span class="c1"># 设备完成一个micro-batch的前向后立即反向</span>
+<span class="c1"># 而不是等待所有设备完成后再反向</span>
+</code></pre></div>
+<p>PipeDream的优点：
+- 气泡更少
+- 内存效率更高（无需保存所有激活）</p>
+<h3 id="410">4.10 流水线并行的挑战</h3>
+<ol>
+<li><strong>负载均衡</strong>：每阶段的计算量需要相近</li>
+<li><strong>通信开销</strong>：阶段间需要传输中间结果</li>
+<li><strong>调度复杂</strong>：需要精心设计调度策略</li>
+<li><strong>内存压力</strong>：需要保存或重计算激活</li>
+</ol>
+<hr />
+<h2 id="5">5 混合并行</h2>
+<p>混合并行结合多种并行策略，以最佳利用大规模集群。</p>
+<h3 id="51">5.1 为什么需要混合并行</h3>
+<p>单一并行策略的局限性：</p>
+<table>
+<thead>
+<tr>
+<th>并行策略</th>
+<th>优势</th>
+<th>局限</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据并行</td>
+<td>扩展性好</td>
+<td>内存占用大</td>
+</tr>
+<tr>
+<td>张量并行</td>
+<td>内存节省</td>
+<td>通信开销大</td>
+</tr>
+<tr>
+<td>流水线并行</td>
+<td>内存节省</td>
+<td>气泡问题</td>
+</tr>
+</tbody>
+</table>
+<p><strong>混合并行</strong>取长补短：
+- 张量并行：用于单机内多GPU
+- 数据并行：用于多机间
+- 流水线并行：进一步切分模型</p>
+<h3 id="52-3d">5.2 3D混合并行</h3>
+<p>3D混合并行 = 数据并行 × 张量并行 × 流水线并行</p>
+<div class="highlight"><pre><span></span><code>8x8 GPU集群的3D并行布局：
+
+      数据并行维度 (8)
+    ┌─────────────────────┐
+    │ GPU0,0 │ GPU0,1 │ ... │ GPU0,7 │ ← 同一行是数据并行
+    ├────────┼────────┼─────┼────────┤
+    │ GPU1,0 │ GPU1,1 │ ... │ GPU1,7 │
+    ├────────┼────────┼─────┼────────┤
+    │  ...   │  ...   │ ... │  ...   │
+    ├────────┼────────┼─────┼────────┤
+    │ GPU7,0 │ GPU7,1 │ ... │ GPU7,7 │ ← 张量并行在一行内
+    └────────┴────────┴─────┴────────┘
+              ↑
+         流水线并行维度（按行切分）
+
+例如：
+- 每个节点8 GPU（8路张量并行）
+- 8个节点（8路数据并行）
+- 流水线切分模型到4个阶段
+</code></pre></div>
+<h3 id="53">5.3 混合并行的通信</h3>
+<p>混合并行的通信模式：</p>
+<table>
+<thead>
+<tr>
+<th>通信类型</th>
+<th>范围</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AllReduce</td>
+<td>张量并行组内</td>
+<td>梯度平均</td>
+</tr>
+<tr>
+<td>AllGather</td>
+<td>流水线阶段间</td>
+<td>激活传递</td>
+</tr>
+<tr>
+<td>AllReduce</td>
+<td>数据并行组间</td>
+<td>梯度同步</td>
+</tr>
+</tbody>
+</table>
+<p><strong>关键优化</strong>：让通信与计算重叠。</p>
+<h3 id="54">5.4 混合并行的配置</h3>
+<p>使用PyTorch实现混合并行：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">torch.distributed.device_mesh</span> <span class="kn">import</span> <span class="n">init_device_mesh</span>
+<span class="kn">from</span> <span class="nn">torch.distributed.fsdp</span> <span class="kn">import</span> <span class="n">FullyShardedDataParallel</span> <span class="k">as</span> <span class="n">FSDP</span>
+<span class="kn">from</span> <span class="nn">torch.distributed.tensor.parallel</span> <span class="kn">import</span> <span class="n">parallelize_module</span><span class="p">,</span> <span class="n">ColwiseParallel</span>
+
+<span class="c1"># 1. 创建2D设备网格</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">init_device_mesh</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>  <span class="c1"># 8路张量并行 x 8路数据并行</span>
+<span class="n">tp_mesh</span> <span class="o">=</span> <span class="n">mesh</span><span class="p">[</span><span class="s2">&quot;tp&quot;</span><span class="p">]</span>
+<span class="n">dp_mesh</span> <span class="o">=</span> <span class="n">mesh</span><span class="p">[</span><span class="s2">&quot;dp&quot;</span><span class="p">]</span>
+
+<span class="c1"># 2. 张量并行（单机内）</span>
+<span class="n">tp_plan</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;attention.q_proj&quot;</span><span class="p">:</span> <span class="n">ColwiseParallel</span><span class="p">(),</span>
+    <span class="s2">&quot;attention.k_proj&quot;</span><span class="p">:</span> <span class="n">ColwiseParallel</span><span class="p">(),</span>
+    <span class="s2">&quot;attention.v_proj&quot;</span><span class="p">:</span> <span class="n">ColwiseParallel</span><span class="p">(),</span>
+    <span class="s2">&quot;attention.out_proj&quot;</span><span class="p">:</span> <span class="n">RowwiseParallel</span><span class="p">(),</span>
+    <span class="c1"># ...</span>
+<span class="p">}</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">parallelize_module</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tp_mesh</span><span class="p">,</span> <span class="n">tp_plan</span><span class="p">)</span>
+
+<span class="c1"># 3. 数据并行（多机间）</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">FSDP</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">device_mesh</span><span class="o">=</span><span class="n">dp_mesh</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="55">5.5 混合并行的挑战</h3>
+<ol>
+<li><strong>拓扑感知</strong>：需要考虑NVLink、PCIe、InfiniBand的带宽差异</li>
+<li><strong>调度复杂</strong>：多维度的并行需要协调</li>
+<li><strong>内存管理</strong>：不同层级的内存策略不同</li>
+<li><strong>故障恢复</strong>：大规模集群的容错</li>
+</ol>
+<h3 id="56">5.6 混合并行的最佳实践</h3>
+<ol>
+<li><strong>优先张量并行</strong>：利用NVLink高带宽</li>
+<li><strong>流水线并行用于跨机</strong>：减少跨机通信</li>
+<li><strong>数据并行作为最后手段</strong>：当其他方式不够时</li>
+<li><strong>ZeRO叠加</strong>：进一步节省内存</li>
+</ol>
+<hr />
+<h2 id="6">6 分布式训练实战</h2>
+<h3 id="61">6.1 环境设置</h3>
+<p>分布式训练需要正确的环境配置：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 单机多卡：设置可见GPU</span>
+<span class="nv">CUDA_VISIBLE_DEVICES</span><span class="o">=</span><span class="m">0</span>,1,2,3<span class="w"> </span>python<span class="w"> </span>train.py
+
+<span class="c1"># 多机多卡：设置各节点信息</span>
+<span class="c1"># Node 0:</span>
+torchrun<span class="w"> </span>--nnodes<span class="o">=</span><span class="m">2</span><span class="w"> </span>--nproc_per_node<span class="o">=</span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--master_addr<span class="o">=</span><span class="m">192</span>.168.1.1<span class="w"> </span>--master_port<span class="o">=</span><span class="m">29500</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--node_rank<span class="o">=</span><span class="m">0</span><span class="w"> </span>train.py
+
+<span class="c1"># Node 1:</span>
+torchrun<span class="w"> </span>--nnodes<span class="o">=</span><span class="m">2</span><span class="w"> </span>--nproc_per_node<span class="o">=</span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--master_addr<span class="o">=</span><span class="m">192</span>.168.1.1<span class="w"> </span>--master_port<span class="o">=</span><span class="m">29500</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--node_rank<span class="o">=</span><span class="m">1</span><span class="w"> </span>train.py
+</code></pre></div>
+<h3 id="62-ddp">6.2 DDP训练模板</h3>
+<p>完整的DDP训练模板：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.distributed</span> <span class="k">as</span> <span class="nn">dist</span>
+<span class="kn">from</span> <span class="nn">torch.nn.parallel</span> <span class="kn">import</span> <span class="n">DistributedDataParallel</span> <span class="k">as</span> <span class="n">DDP</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data.distributed</span> <span class="kn">import</span> <span class="n">DistributedSampler</span>
+<span class="kn">import</span> <span class="nn">torch.multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
+
+<span class="k">class</span> <span class="nc">Trainer</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+        <span class="c1"># 初始化分布式</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_distributed</span><span class="p">()</span>
+
+        <span class="c1"># 移动模型到GPU并包装DDP</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">DDP</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">device_ids</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">local_rank</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_loader</span> <span class="o">=</span> <span class="n">train_loader</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">setup_distributed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_rank</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;LOCAL_RANK&quot;</span><span class="p">])</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">set_device</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_rank</span><span class="p">)</span>
+
+        <span class="n">dist</span><span class="o">.</span><span class="n">init_process_group</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;nccl&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">world_size</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_world_size</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_rank</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_epochs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">):</span>
+            <span class="c1"># 设置epoch（确保数据shuffle一致）</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">train_loader</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">set_epoch</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_loader</span><span class="p">):</span>
+                <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">target</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+                <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+                <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+                <span class="k">if</span> <span class="n">batch_idx</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s2">, Batch </span><span class="si">{</span><span class="n">batch_idx</span><span class="si">}</span><span class="s2">, Loss </span><span class="si">{</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dist</span><span class="o">.</span><span class="n">destroy_process_group</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># 创建模型和数据</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">784</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">MyDataset</span><span class="p">()</span>
+    <span class="n">sampler</span> <span class="o">=</span> <span class="n">DistributedSampler</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">sampler</span><span class="o">=</span><span class="n">sampler</span><span class="p">)</span>
+
+    <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">loader</span><span class="p">)</span>
+    <span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">n_epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">trainer</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">mp</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">main</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="n">nprocs</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="63-fsdp">6.3 FSDP训练模板</h3>
+<p>FSDP训练的完整模板：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.distributed</span> <span class="k">as</span> <span class="nn">dist</span>
+<span class="kn">from</span> <span class="nn">torch.distributed.fsdp</span> <span class="kn">import</span> <span class="n">FullyShardedDataParallel</span> <span class="k">as</span> <span class="n">FSDP</span>
+<span class="kn">from</span> <span class="nn">torch.distributed.fsdp</span> <span class="kn">import</span> <span class="n">ShardingStrategy</span><span class="p">,</span> <span class="n">MixedPrecision</span>
+<span class="kn">from</span> <span class="nn">torch.distributed.fsdp.wrap</span> <span class="kn">import</span> <span class="n">transformer_auto_wrap_policy</span>
+<span class="kn">import</span> <span class="nn">torch.multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
+
+<span class="c1"># 混合精度配置</span>
+<span class="n">mixed_precision</span> <span class="o">=</span> <span class="n">MixedPrecision</span><span class="p">(</span>
+    <span class="n">param_dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span>
+    <span class="n">reduce_dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span>
+    <span class="n">buffer_dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">train_fsdp</span><span class="p">():</span>
+    <span class="c1"># 初始化</span>
+    <span class="n">dist</span><span class="o">.</span><span class="n">init_process_group</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;nccl&quot;</span><span class="p">)</span>
+    <span class="n">rank</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_rank</span><span class="p">()</span>
+    <span class="n">world_size</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_world_size</span><span class="p">()</span>
+    <span class="n">local_rank</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;LOCAL_RANK&quot;</span><span class="p">])</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">set_device</span><span class="p">(</span><span class="n">local_rank</span><span class="p">)</span>
+
+    <span class="c1"># 创建模型</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">MyTransformerModel</span><span class="p">()</span>
+
+    <span class="c1"># FSDP包装</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">FSDP</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="n">sharding_strategy</span><span class="o">=</span><span class="n">ShardingStrategy</span><span class="o">.</span><span class="n">FULL_SHARD</span><span class="p">,</span>  <span class="c1"># ZeRO-3</span>
+        <span class="n">mixed_precision</span><span class="o">=</span><span class="n">mixed_precision</span><span class="p">,</span>
+        <span class="n">auto_wrap_policy</span><span class="o">=</span><span class="n">transformer_auto_wrap_policy</span><span class="p">,</span>
+        <span class="n">device_id</span><span class="o">=</span><span class="n">local_rank</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># 训练</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">AdamW</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">loss</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+    <span class="c1"># 清理</span>
+    <span class="n">dist</span><span class="o">.</span><span class="n">destroy_process_group</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="64">6.4 梯度累积与分布式训练</h3>
+<p>梯度累积是扩大有效批次的常用技术：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 在DDP中使用梯度累积</span>
+<span class="n">accumulation_steps</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">effective_batch_size</span> <span class="o">=</span> <span class="n">batch_size</span> <span class="o">*</span> <span class="n">accumulation_steps</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+<span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">step</span><span class="p">,</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dataloader</span><span class="p">):</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">target</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">loss</span> <span class="o">/</span> <span class="n">accumulation_steps</span>  <span class="c1"># 缩放损失</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">step</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">accumulation_steps</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="65">6.5 混合精度训练</h3>
+<p>使用torch.cuda.amp进行混合精度：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">torch.cuda.amp</span> <span class="kn">import</span> <span class="n">autocast</span><span class="p">,</span> <span class="n">GradScaler</span>
+
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">GradScaler</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">target</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+
+    <span class="c1"># 自动混合精度</span>
+    <span class="k">with</span> <span class="n">autocast</span><span class="p">():</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+
+    <span class="c1"># 缩放损失，反向传播</span>
+    <span class="n">scaler</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+    <span class="c1"># 梯度裁剪（需要unscale）</span>
+    <span class="n">scaler</span><span class="o">.</span><span class="n">unscale_</span><span class="p">(</span><span class="n">optimizer</span><span class="p">)</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clip_grad_norm_</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">max_norm</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="n">scaler</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">optimizer</span><span class="p">)</span>
+    <span class="n">scaler</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="66">6.6 检查点保存与恢复</h3>
+<p>分布式训练的检查点需要特别处理：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch.distributed</span> <span class="k">as</span> <span class="nn">dist</span>
+
+<span class="k">def</span> <span class="nf">save_checkpoint</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+    <span class="c1"># 只在rank 0保存</span>
+    <span class="k">if</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_rank</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">checkpoint</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;epoch&#39;</span><span class="p">:</span> <span class="n">epoch</span><span class="p">,</span>
+            <span class="s1">&#39;model_state_dict&#39;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span>
+            <span class="s1">&#39;optimizer_state_dict&#39;</span><span class="p">:</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span>
+        <span class="p">}</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+    <span class="c1"># 同步所有进程</span>
+    <span class="n">dist</span><span class="o">.</span><span class="n">barrier</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">load_checkpoint</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+    <span class="c1"># 所有进程都加载（模型状态会被broadcast）</span>
+    <span class="n">checkpoint</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;cuda:</span><span class="si">{</span><span class="n">local_rank</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;model_state_dict&#39;</span><span class="p">])</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;optimizer_state_dict&#39;</span><span class="p">])</span>
+
+    <span class="c1"># 等待所有进程完成</span>
+    <span class="n">dist</span><span class="o">.</span><span class="n">barrier</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;epoch&#39;</span><span class="p">]</span>
+</code></pre></div>
+<h3 id="67">6.7 性能调优</h3>
+<h4 id="671-cuda">6.7.1 CUDA加速</h4>
+<div class="highlight"><pre><span></span><code><span class="c1"># 启用CUDA加速</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="c1"># 选择最佳算法</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">deterministic</span> <span class="o">=</span> <span class="kc">False</span>
+</code></pre></div>
+<h4 id="672">6.7.2 数据加载优化</h4>
+<div class="highlight"><pre><span></span><code><span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+    <span class="n">dataset</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+    <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>           <span class="c1"># 多进程数据加载</span>
+    <span class="n">pin_memory</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>         <span class="c1"># 固定内存加速传输</span>
+    <span class="n">persistent_workers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="c1"># 保持worker进程</span>
+    <span class="n">prefetch_factor</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>       <span class="c1"># 预取因子</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="673">6.7.3 梯度同步优化</h4>
+<div class="highlight"><pre><span></span><code><span class="c1"># 使用梯度作为bucket，减少通信次数</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">DDP</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">bucket_cap_mb</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="7">7 分布式通信原语</h2>
+<p>理解分布式通信原语对于优化分布式训练至关重要。</p>
+<h3 id="71">7.1 集合通信概述</h3>
+<table>
+<thead>
+<tr>
+<th>原语</th>
+<th>功能</th>
+<th>典型用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AllReduce</td>
+<td>所有设备求和/平均</td>
+<td>梯度同步</td>
+</tr>
+<tr>
+<td>Broadcast</td>
+<td>一对多广播</td>
+<td>参数同步</td>
+</tr>
+<tr>
+<td>AllGather</td>
+<td>收集所有设备数据</td>
+<td>张量并行</td>
+</tr>
+<tr>
+<td>ReduceScatter</td>
+<td>分散求和</td>
+<td>流水线并行</td>
+</tr>
+<tr>
+<td>Send/Recv</td>
+<td>点对点通信</td>
+<td>Pipeline调度</td>
+</tr>
+</tbody>
+</table>
+<h3 id="72-allreduce">7.2 AllReduce</h3>
+<p>AllReduce是最常用的集合通信原语：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">torch.distributed</span> <span class="k">as</span> <span class="nn">dist</span>
+
+<span class="c1"># 所有设备求和，结果同步到所有设备</span>
+<span class="n">tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+<span class="n">dist</span><span class="o">.</span><span class="n">all_reduce</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="n">dist</span><span class="o">.</span><span class="n">ReduceOp</span><span class="o">.</span><span class="n">SUM</span><span class="p">)</span>
+
+<span class="c1"># 现在所有设备的tensor值相同（都等于原始值的和）</span>
+</code></pre></div>
+<h3 id="73-broadcast">7.3 Broadcast</h3>
+<p>Broadcast用于广播数据：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 只在rank 0有有效数据</span>
+<span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+
+<span class="c1"># 广播给所有设备</span>
+<span class="n">dist</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">src</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># 现在所有设备都有相同的数据</span>
+</code></pre></div>
+<h3 id="74-allgather">7.4 AllGather</h3>
+<p>AllGather收集所有设备的数据：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 每个设备有不同的输入</span>
+<span class="n">local_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">rank</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+<span class="c1"># 收集所有设备的数据</span>
+<span class="n">world_size</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_world_size</span><span class="p">()</span>
+<span class="n">gather_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">world_size</span><span class="p">)]</span>
+<span class="n">dist</span><span class="o">.</span><span class="n">all_gather</span><span class="p">(</span><span class="n">gather_list</span><span class="p">,</span> <span class="n">local_tensor</span><span class="p">)</span>
+
+<span class="c1"># gather_list[0] = [0,0,...0]</span>
+<span class="c1"># gather_list[1] = [1,1,...1]</span>
+<span class="c1"># ...</span>
+</code></pre></div>
+<h3 id="75">7.5 点对点通信</h3>
+<p>Send和Recv用于更灵活的通信：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 发送</span>
+<span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+    <span class="n">dist</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># 接收</span>
+<span class="k">if</span> <span class="n">rank</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="n">tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+    <span class="n">dist</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">src</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="76">7.6 通信与计算重叠</h3>
+<p>关键的优化是让通信与计算重叠：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 错误的顺序：先通信后计算</span>
+<span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>  <span class="c1"># 计算梯度</span>
+<span class="n">dist</span><span class="o">.</span><span class="n">all_reduce</span><span class="p">(</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># 通信（等待）</span>
+<span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+<span class="c1"># 正确的顺序：通信与计算重叠</span>
+<span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>  <span class="c1"># 计算部分梯度</span>
+<span class="c1"># 启动异步AllReduce</span>
+<span class="n">handle</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">all_reduce</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="n">async_op</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># 在通信进行时可以做其他计算</span>
+<span class="n">compute_something</span><span class="p">()</span>
+<span class="c1"># 等待通信完成</span>
+<span class="n">handle</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+<span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+</code></pre></div>
+<hr />
+<h2 id="8">8 分布式训练中的常见问题</h2>
+<h3 id="81">8.1 梯度不一致</h3>
+<p>问题：不同设备的梯度值有微小差异</p>
+<p>原因：
+- 浮点精度
+- 计算顺序不同</p>
+<p>解决：
+<div class="highlight"><pre><span></span><code><span class="c1"># 使用reducers进行同步</span>
+<span class="n">dist</span><span class="o">.</span><span class="n">all_reduce</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="n">dist</span><span class="o">.</span><span class="n">ReduceOp</span><span class="o">.</span><span class="n">SUM</span><span class="p">)</span>
+<span class="n">grad</span><span class="o">.</span><span class="n">div_</span><span class="p">(</span><span class="n">world_size</span><span class="p">)</span>
+</code></pre></div></p>
+<h3 id="82">8.2 死锁</h3>
+<p>问题：多个进程互相等待</p>
+<p>原因：
+- 通信调用不匹配
+- 同步点过多</p>
+<p>解决：
+<div class="highlight"><pre><span></span><code><span class="c1"># 使用barrier同步</span>
+<span class="n">dist</span><span class="o">.</span><span class="n">barrier</span><span class="p">()</span>
+
+<span class="c1"># 确保所有进程的通信调用一致</span>
+</code></pre></div></p>
+<h3 id="83">8.3 负载不均衡</h3>
+<p>问题：某些GPU空闲等待</p>
+<p>原因：
+- 各设备数据量不同
+- 模型切分不均匀</p>
+<p>解决：
+<div class="highlight"><pre><span></span><code><span class="c1"># 使用DistributedSampler均匀分配</span>
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">DistributedSampler</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div></p>
+<h3 id="84">8.4 通信瓶颈</h3>
+<p>问题：训练速度受通信限制</p>
+<p>解决：
+- 增加计算量（增大批次）
+- 使用梯度压缩
+- 选择合适的并行策略
+- 利用NVLink等高速互连</p>
+<hr />
+<h2 id="_4">本章小结</h2>
+<p>本章系统介绍了分布式训练的核心概念与技术。</p>
+<p><strong>核心要点回顾</strong>：</p>
+<ol>
+<li>
+<p><strong>分布式训练的必要性</strong>：大模型参数量巨大，单设备无法容纳和高效训练。</p>
+</li>
+<li>
+<p><strong>数据并行（DP/DDP）</strong>：</p>
+</li>
+<li>复制模型到多设备，处理不同数据</li>
+<li>DDP比DP更高效，使用Ring AllReduce同步梯度</li>
+<li>
+<p>通信与计算可重叠</p>
+</li>
+<li>
+<p><strong>FSDP与ZeRO优化</strong>：</p>
+</li>
+<li>ZeRO通过分片减少内存冗余</li>
+<li>ZeRO-1/2/3分别优化器状态、梯度、参数分片</li>
+<li>
+<p>通信量增加换取内存节省</p>
+</li>
+<li>
+<p><strong>张量并行</strong>：</p>
+</li>
+<li>将单层参数切分到多设备</li>
+<li>适合Transformer等层</li>
+<li>
+<p>通信开销较大</p>
+</li>
+<li>
+<p><strong>流水线并行</strong>：</p>
+</li>
+<li>将不同层分配到不同设备</li>
+<li>使用微批次减少气泡</li>
+<li>
+<p>Gpipe和PipeDream是两种主要策略</p>
+</li>
+<li>
+<p><strong>混合并行</strong>：</p>
+</li>
+<li>结合数据并行、张量并行、流水线并行</li>
+<li>3D并行是大模型训练主流</li>
+<li>
+<p>需要考虑拓扑和负载均衡</p>
+</li>
+<li>
+<p><strong>通信原语</strong>：</p>
+</li>
+<li>AllReduce、Broadcast、AllGather等</li>
+<li>通信与计算重叠是关键优化</li>
+</ol>
+<p><strong>思考与练习</strong>：</p>
+<ol>
+<li>为什么DDP比DP效率更高？</li>
+<li>ZeRO-3相比数据并行，通信量增加了多少？内存节省了多少？</li>
+<li>张量并行和流水线并行各适合什么场景？</li>
+<li>为什么微批次能减少流水线的气泡？</li>
+<li>混合并行中，为什么通常把张量并行放在单机内，流水线并行放在跨机？</li>
+<li>如何调试分布式训练中的死锁问题？</li>
+<li>如果网络带宽有限，应该选择哪种并行策略？为什么？</li>
+</ol>
+<hr />
+<h2 id="_5">本节视频</h2>
+<html>
+<iframe src="https://player.bilibili.com/player.html?aid=263809674&bvid=BV1ve411w7DL&cid=925113485&page=1&as_wide=1&high_quality=1&danmaku=0&t=30&autoplay=0" width="100%" height="500" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+</html>
+
+<!--Copyright © ZOMI 适用于[License](https://github.com/chenzomi12/AISystem)版权许可-->
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

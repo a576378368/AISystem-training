@@ -1,0 +1,2393 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="专为零基础新人设计的AI系统培训教程">
+      
+      
+      
+        <link rel="canonical" href="https://a576378368.github.io/AISystem-training/Part2/Chap07/03-Frontend-Optimization/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>第三章 前端优化 - AI系统工程师培训教程</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="AI系统工程师培训教程" class="md-header__button md-logo" aria-label="AI系统工程师培训教程" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AI系统工程师培训教程
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              第三章 前端优化
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="AI系统工程师培训教程" class="md-nav__button md-logo" aria-label="AI系统工程师培训教程" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AI系统工程师培训教程
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第一阶段：AI基础入门
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第一阶段：AI基础入门
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part1/Chap01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap01 计算机基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part1/Chap02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap02 Python编程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part1/Chap03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap03 数学基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第二阶段：AI系统核心
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第二阶段：AI系统核心
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap04 AI系统概述
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap05 神经网络基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap06/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap06 AI芯片体系架构
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap07 AI编译器原理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap08 推理系统与引擎
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap09 AI框架核心
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Chap10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chap10 大模型与集群
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第三阶段：附录
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第三阶段：附录
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part3/AppendixA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录A：术语表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part3/AppendixB/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录B：参考文献
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Part3/AppendixC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    附录C：实践项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        学习目标
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        引言
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 前端优化概述
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.1 前端优化概述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#311-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.1 前端优化在AI编译器中的位置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#312" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.2 前端优化流程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#313-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.3 前端优化的Pass机制
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#314-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.4 优化Pass的依赖管理
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 计算图基础
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 计算图基础">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#321" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2.1 计算图的定义与构成
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#322" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2.2 计算图与自动微分
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#323" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2.3 静态图与动态图
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#324" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2.4 计算图的中间表示
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 算子融合
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3 算子融合">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#331" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.1 算子融合的概念与意义
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#332" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.2 算子融合的分类
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3.2 算子融合的分类">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3321" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.2.1 按融合方向分类
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3322" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.2.2 按算子类型分类
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#333" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.3 算子融合的原理
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3.3 算子融合的原理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3331" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.3.1 融合条件
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3332" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.3.2 融合算法
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#334" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.4 算子融合的实现
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3.4 算子融合的实现">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3341" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.4.1 融合步骤
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3342-conv-bn-relu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.4.2 Conv-BN-ReLU融合案例
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#335" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.5 算子融合的挑战与限制
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#34" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 常量折叠
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.4 常量折叠">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#341" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.1 常量折叠的概念
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#342-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.2 AI编译器中常量折叠的类型
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.4.2 AI编译器中常量折叠的类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3421" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.2.1 纯常量折叠
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3422-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.2.2 Shape常量折叠
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3423" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.2.3 条件常量折叠
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#343" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.3 常量折叠的实现
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.4.3 常量折叠的实现">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3431" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.3.1 实现步骤
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#344" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.4 常量折叠的注意事项
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#35" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 公共子表达式消除
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.5 公共子表达式消除">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#351" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.1 公共子表达式消除的概念
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#352" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.2 公共子表达式消除的原理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#353" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.3 公共子表达式消除的实现
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#354" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.4 代数化简
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#36" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 死代码消除
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.6 死代码消除">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#361" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6.1 死代码消除的概念
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#362" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6.2 不可达算子消除
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#363" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6.3 无用算子消除
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#364" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6.4 训练相关算子消除
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#365" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6.5 死代码消除的实现
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#37" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 内存优化
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.7 内存优化">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#371" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7.1 内存优化的意义
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#372" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7.2 静态内存规划
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#373" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7.3 内存复用算法
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#374" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7.4 数据布局转换
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#38" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8 调度优化
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.8 调度优化">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#381" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8.1 静态调度与动态调度
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#382" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8.2 调度优化策略
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#39" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.9 小结
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#310" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.10 参考文献与扩展阅读
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="_1">第三章 前端优化</h1>
+<h2 id="_2">学习目标</h2>
+<ol>
+<li>理解AI编译器前端优化的基本概念和整体流程</li>
+<li>掌握计算图的基本构成，理解张量和算子的表示方法</li>
+<li>深入理解算子融合（Operator Fusion）的原理、分类和实现方式</li>
+<li>掌握常量折叠（Constant Folding）在AI编译器中的应用</li>
+<li>理解公共子表达式消除（Common Subexpression Elimination）的原理</li>
+<li>了解死代码消除（Dead Code Elimination）在AI编译器中的实现</li>
+<li>理解内存优化和调度优化的基本概念</li>
+</ol>
+<h2 id="_3">引言</h2>
+<p>在第一章和第二章中，我们学习了传统编译器和AI编译器的基础知识，理解了编译器的基本工作原理和AI编译器的整体架构。本章我们将深入学习AI编译器的前端优化技术。</p>
+<p>AI编译器的前端优化是在计算图层进行的优化，其核心是对神经网络模型的分析和变换。这些优化不依赖于具体的硬件平台，是平台无关的通用优化。通过前端优化，可以显著减少计算量和内存占用，为后续的后端优化打下良好基础。</p>
+<p>前端优化涉及的知识点很多，本章将重点介绍几种核心的优化技术：算子融合、常量折叠、公共子表达式消除、死代码消除以及内存优化和调度优化。理解这些技术的原理和实现，对于深入掌握AI编译器的工作机制至关重要。</p>
+<h2 id="31">3.1 前端优化概述</h2>
+<h3 id="311-ai">3.1.1 前端优化在AI编译器中的位置</h3>
+<p>AI编译器的优化可以分为前端优化和后端优化两个阶段。前端优化位于AI编译器的前端，主要关注计算图层（Graph Layer）的优化；后端优化位于AI编译器的后端，主要关注算子层（Operator Layer）和具体硬件相关的优化。</p>
+<p>从AI编译器的整体架构来看，前端优化接收来自AI框架的计算图表示，进行一系列图级别的优化后，将优化后的计算图传递给后端进行进一步的优化和代码生成。前端优化是AI编译器优化的第一道关口，其优化效果直接影响到后续后端优化的效果和最终的执行性能。</p>
+<p>前端优化与后端优化的主要区别在于：</p>
+<ul>
+<li><strong>优化层次</strong>：前端优化在计算图层进行，关注的是算子之间的关系；后端优化在算子内部进行，关注的是算子的具体实现</li>
+<li><strong>优化范围</strong>：前端优化具有全局视野，可以进行跨算子的优化；后端优化只关注单个算子的优化</li>
+<li><strong>平台相关性</strong>：前端优化是平台无关的优化；后端优化是平台相关的优化</li>
+<li><strong>优化手段</strong>：前端优化主要包括算子融合、常量折叠、死代码消除等；后端优化主要包括循环优化、指令调度、寄存器分配等</li>
+</ul>
+<h3 id="312">3.1.2 前端优化流程</h3>
+<p>AI编译器的前端优化流程通常包括以下几个步骤：</p>
+<p><strong>1. 计算图构建</strong></p>
+<p>从前端框架（如PyTorch、TensorFlow）接收模型表示，构建AI编译器内部的计算图IR。计算图是一个有向无环图（DAG），节点表示算子，边表示张量（Tensor）之间的依赖关系。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 计算图示例：ResNet的一部分</span>
+<span class="c1"># conv1 -&gt; bn1 -&gt; relu1 -&gt; conv2 -&gt; bn2 -&gt; relu2</span>
+</code></pre></div>
+<p><strong>2. 图验证与规范化</strong></p>
+<p>对计算图进行验证，确保图的完整性和正确性。同时进行必要的规范化操作，如算子顺序调整、冗余节点消除等。</p>
+<p><strong>3. 图优化Pass应用</strong></p>
+<p>依次应用各种优化Pass，每个Pass完成特定的优化任务。优化Pass之间可能存在依赖关系，需要按照正确的顺序执行。</p>
+<p><strong>4. 优化后的图验证</strong></p>
+<p>优化后的计算图需要再次验证，确保优化没有改变图的语义。</p>
+<p><strong>5. 传递给后端</strong></p>
+<p>将优化后的计算图转换为算子IR，传递给后端进行进一步的优化和代码生成。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 前端优化流程的伪代码</span>
+<span class="k">def</span> <span class="nf">frontend_optimize</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="c1"># 1. 图构建</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">build_graph</span><span class="p">(</span><span class="n">frontend_model</span><span class="p">)</span>
+
+    <span class="c1"># 2. 图验证与规范化</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">validate_and_normalize</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+
+    <span class="c1"># 3. 应用优化Pass</span>
+    <span class="n">passes</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">constant_folding_pass</span><span class="p">,</span>
+        <span class="n">common_subexpression_elimination_pass</span><span class="p">,</span>
+        <span class="n">operator_fusion_pass</span><span class="p">,</span>
+        <span class="n">dead_code_elimination_pass</span><span class="p">,</span>
+        <span class="n">memory_planning_pass</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="k">for</span> <span class="k">pass</span> <span class="ow">in</span> <span class="n">passes</span><span class="p">:</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="k">pass</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+
+    <span class="c1"># 4. 图验证</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">validate</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+
+    <span class="c1"># 5. 传递给后端</span>
+    <span class="k">return</span> <span class="n">lower_to_backend</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="313-pass">3.1.3 前端优化的Pass机制</h3>
+<p>与LLVM的Pass机制类似，AI编译器也广泛采用Pass机制来实现各种优化。每个Pass完成特定的优化任务，通过组合多个Pass实现完整的优化流程。</p>
+<p>Pass的设计遵循一些基本原则：</p>
+<ul>
+<li><strong>单一职责</strong>：每个Pass只负责一项优化任务</li>
+<li><strong>可组合性</strong>：Pass可以按需组合，形成不同的优化Pipeline</li>
+<li><strong>可扩展性</strong>：可以方便地添加新的Pass</li>
+<li><strong>可重复性</strong>：同一个Pass可以多次应用而不产生副作用</li>
+</ul>
+<p>常见的Pass分类包括：</p>
+<ul>
+<li><strong>分析Pass（Analysis Pass）</strong>：分析计算图的特性，收集信息供其他Pass使用</li>
+<li><strong>转换Pass（Transform Pass）</strong>：对计算图进行修改，实现优化目标</li>
+<li><strong>规范Pass（Canonicalization Pass）</strong>：对计算图进行规范化，为其他Pass做准备</li>
+</ul>
+<h3 id="314-pass">3.1.4 优化Pass的依赖管理</h3>
+<p>在实际编译过程中，优化Pass之间往往存在依赖关系。例如，死代码消除Pass需要知道哪些算子是被使用的，这可能需要先进行活跃性分析Pass。</p>
+<p>为了正确处理Pass之间的依赖关系，AI编译器通常采用以下策略：</p>
+<p><strong>声明式依赖</strong>：每个Pass声明它需要哪些分析结果，以及它会破坏哪些分析结果。其他Pass在使用这些分析结果时会检查依赖是否满足。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Pass依赖声明示例</span>
+<span class="k">class</span> <span class="nc">DeadCodeEliminationPass</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">get_dependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;LivenessAnalysisPass&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">invalidates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;LivenessAnalysisPass&#39;</span><span class="p">]</span>
+</code></pre></div>
+<p><strong>自动依赖解析</strong>：编译器自动分析Pass之间的依赖关系，生成正确的执行顺序。</p>
+<p><strong>层次化Pass组织</strong>：将Pass组织成多个层次，同一层次内的Pass执行完后，再执行下一层次的Pass。</p>
+<h2 id="32">3.2 计算图基础</h2>
+<h3 id="321">3.2.1 计算图的定义与构成</h3>
+<p><strong>计算图（Computational Graph）</strong> 是AI框架和AI编译器用来表示神经网络模型的核心数据结构。计算图是一个有向无环图（DAG），用于描述神经网络模型中算子之间的依赖关系和执行顺序。</p>
+<p>计算图的两个核心构成要素是：</p>
+<p><strong>张量（Tensor）</strong>：在深度学习中，张量是多维数组的推广，是神经网络中数据的基本载体。张量具有以下属性：</p>
+<ul>
+<li><strong>形状（Shape）</strong>：张量的维度大小，如(64, 128, 512)表示一个三维张量</li>
+<li><strong>数据类型（Dtype）</strong>：张量元素的数据类型，如float32、int64等</li>
+<li><strong>值（Value）</strong>：张量的实际数据</li>
+</ul>
+<p><strong>算子（Operator）</strong>：算子是计算图中的节点，表示对张量的操作。算子具有以下属性：</p>
+<ul>
+<li><strong>输入张量</strong>：算子的输入数据</li>
+<li><strong>输出张量</strong>：算子的输出数据</li>
+<li><strong>属性（Attributes）</strong>：算子的参数配置，如卷积的步长、填充等</li>
+<li><strong>类型（Type）</strong>：算子的操作类型，如Conv2D、MatMul、ReLU等</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># 计算图示例</span>
+<span class="c1"># 节点：算子</span>
+<span class="c1"># 边：张量</span>
+
+<span class="c1"># 简化计算图表示</span>
+<span class="n">conv1</span><span class="p">:</span> <span class="p">(</span><span class="nb">input</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">conv1_output</span><span class="p">)</span>
+<span class="n">bn1</span><span class="p">:</span> <span class="p">(</span><span class="n">conv1_output</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">bn1_output</span><span class="p">)</span>
+<span class="n">relu1</span><span class="p">:</span> <span class="p">(</span><span class="n">bn1_output</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">relu1_output</span><span class="p">)</span>
+<span class="n">conv2</span><span class="p">:</span> <span class="p">(</span><span class="n">relu1_output</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">conv2_output</span><span class="p">)</span>
+<span class="n">bn2</span><span class="p">:</span> <span class="p">(</span><span class="n">conv2_output</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">bn2_output</span><span class="p">)</span>
+<span class="n">relu2</span><span class="p">:</span> <span class="p">(</span><span class="n">bn2_output</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">output</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="322">3.2.2 计算图与自动微分</h3>
+<p>计算图的一个重要功能是支持<strong>自动微分（Automatic Differentiation）</strong>。在神经网络训练中，需要计算损失函数对模型参数的梯度，自动微分是实现这一计算的关键技术。</p>
+<p>自动微分的核心思想是利用链式法则，将复杂函数的梯度计算分解为简单操作的梯度计算。在计算图中，自动微分通过以下方式实现：</p>
+<p><strong>正向传播（Forward Pass）</strong>：计算每个算子的输出，同时记录每个算子的输入和输出之间的依赖关系。</p>
+<p><strong>反向传播（Backward Pass）</strong>：根据链式法则，从输出向输入方向计算梯度。梯度从损失函数开始，反向传播到每个参数。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 自动微分示例</span>
+<span class="c1"># 假设有计算 y = (w * x + b)^2</span>
+<span class="c1"># 需要计算 dy/dw, dy/dx, dy/db</span>
+
+<span class="c1"># 正向传播</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b</span>  <span class="c1"># z = w*x + b</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">z</span> <span class="o">*</span> <span class="n">z</span>     <span class="c1"># y = z^2</span>
+
+<span class="c1"># 反向传播</span>
+<span class="n">dy</span><span class="o">/</span><span class="n">dz</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">z</span>      <span class="c1"># dy/dz = 2z</span>
+<span class="n">dy</span><span class="o">/</span><span class="n">dw</span> <span class="o">=</span> <span class="n">dy</span><span class="o">/</span><span class="n">dz</span> <span class="o">*</span> <span class="n">dz</span><span class="o">/</span><span class="n">dw</span> <span class="o">=</span> <span class="mi">2</span><span class="n">z</span> <span class="o">*</span> <span class="n">x</span>  <span class="c1"># 根据链式法则</span>
+<span class="n">dy</span><span class="o">/</span><span class="n">dx</span> <span class="o">=</span> <span class="n">dy</span><span class="o">/</span><span class="n">dz</span> <span class="o">*</span> <span class="n">dz</span><span class="o">/</span><span class="n">dx</span> <span class="o">=</span> <span class="mi">2</span><span class="n">z</span> <span class="o">*</span> <span class="n">w</span>
+<span class="n">dy</span><span class="o">/</span><span class="n">db</span> <span class="o">=</span> <span class="n">dy</span><span class="o">/</span><span class="n">dz</span> <span class="o">*</span> <span class="n">dz</span><span class="o">/</span><span class="n">db</span> <span class="o">=</span> <span class="mi">2</span><span class="n">z</span> <span class="o">*</span> <span class="mi">1</span>
+</code></pre></div>
+<p>AI编译器在处理计算图时，需要同时考虑正向图和反向图。一些优化（如算子融合）需要在包含反向图的完整计算图上进行，才能获得最佳的优化效果。</p>
+<h3 id="323">3.2.3 静态图与动态图</h3>
+<p>计算图可以分为<strong>静态图（Static Graph）</strong>和<strong>动态图（Dynamic Graph）</strong>两种模式。</p>
+<p><strong>静态图</strong>的特点是计算图在执行前完全定义，之后不再改变。静态图的优点是：</p>
+<ul>
+<li>编译器可以获得完整的计算图信息，进行全局优化</li>
+<li>可以进行更激进的优化，如算子融合、内存优化等</li>
+<li>图结构固定，便于部署和推理</li>
+</ul>
+<p>静态图的缺点是：</p>
+<ul>
+<li>缺乏灵活性，难以处理动态形状和控制流</li>
+<li>调试困难，难以在运行时检查中间结果</li>
+</ul>
+<p><strong>动态图</strong>的特点是计算图在执行过程中动态构建。动态图的优点是：</p>
+<ul>
+<li>灵活性高，可以处理任意Python控制流</li>
+<li>调试友好，可以随时打印中间结果</li>
+<li>易于使用，符合Python编程习惯</li>
+</ul>
+<p>动态图的缺点是：</p>
+<ul>
+<li>编译器难以获得完整的计算图信息，优化受限</li>
+<li>执行效率可能较低</li>
+</ul>
+<p>主流AI框架对静态图和动态图采取了不同的策略：</p>
+<ul>
+<li><strong>TensorFlow 1.x</strong>：主要采用静态图，使用<code>tf.Session</code>执行</li>
+<li><strong>PyTorch</strong>：主要采用动态图，易用性好</li>
+<li><strong>TensorFlow 2.x + PyTorch 2.0</strong>：尝试融合两种模式的优点，TensorFlow 2.x默认使用动态图，PyTorch 2.0引入了<code>torch.compile</code>实现动静结合</li>
+</ul>
+<h3 id="324">3.2.4 计算图的中间表示</h3>
+<p>AI编译器在内部使用特定的中间表示（IR）来描述计算图。不同的AI编译器可能使用不同的IR：</p>
+<p><strong>Relay IR（TVM）</strong>：TVM的图级别IR，支持静态和动态形状、控制流、自动微分等。</p>
+<p><strong>HLO IR（XLA）</strong>：XLA的高级优化器IR，是一种平台无关的IR。</p>
+<p><strong>ONNX IR</strong>：ONNX定义的标准化IR，用于不同框架之间的模型交换。</p>
+<p><strong>TorchScript IR（PyTorch）</strong>：PyTorch的图表示，用于静态分析和优化。</p>
+<p><strong>MindIR（MindSpore）</strong>：MindSpore的统一IR，支持动静统一。</p>
+<p>这些IR虽然实现不同，但本质上都是对计算图的描述，包括算子节点、张量边、属性信息等。</p>
+<h2 id="33">3.3 算子融合</h2>
+<h3 id="331">3.3.1 算子融合的概念与意义</h3>
+<p><strong>算子融合（Operator Fusion）</strong> 是AI编译器前端优化中最重要、最有效的优化技术之一。算子融合将多个连续的算子合并为一个算子，在保持语义等价的前提下，减少中间结果的内存访问和Kernel调度开销。</p>
+<p>算子融合的意义主要体现在：</p>
+<p><strong>1. 减少内存访问</strong></p>
+<p>在没有融合的情况下，每个算子执行完后需要将结果写回内存，下一个算子再从内存读取。融合后，多个算子在一次Kernel执行中完成，减少了内存的写读次数。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 融合前</span>
+<span class="n">y1</span> <span class="o">=</span> <span class="n">relu</span><span class="p">(</span><span class="n">conv</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>    <span class="c1"># 需要写回内存</span>
+<span class="n">y2</span> <span class="o">=</span> <span class="n">relu</span><span class="p">(</span><span class="n">conv</span><span class="p">(</span><span class="n">y1</span><span class="p">))</span>   <span class="c1"># 需要从内存读取</span>
+
+<span class="c1"># 融合后</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">fused_conv_relu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># 一次内存访问</span>
+</code></pre></div>
+<p><strong>2. 减少Kernel调度开销</strong></p>
+<p>在GPU等并行设备上，每次Kernel启动都有一定的调度开销（GPU上下文切换、命令提交等）。融合后，多个操作可以在一个Kernel中完成，减少了调度次数。</p>
+<p><strong>3. 增加计算密度</strong></p>
+<p>融合后，算子之间可以使用更高效的计算模式。例如，融合后的算子可以更好地利用寄存器和共享内存，减少对全局内存的访问。</p>
+<p><strong>4. 为后续优化创造机会</strong></p>
+<p>融合后的算子在编译器看来是一个整体，可能打开更多的优化空间。例如，可以进行更好的指令调度和寄存器分配。</p>
+<h3 id="332">3.3.2 算子融合的分类</h3>
+<p>算子融合可以根据融合的算子类型和融合方向进行分类。</p>
+<h4 id="3321">3.3.2.1 按融合方向分类</h4>
+<p><strong>垂直融合（Vertical Fusion）</strong>：融合具有数据依赖关系的上下游算子。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 垂直融合示例</span>
+<span class="c1"># 融合前</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">conv</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>   <span class="c1"># Conv算子</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">relu</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>   <span class="c1"># ReLU算子，依赖t</span>
+
+<span class="c1"># 融合后</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">fused_conv_relu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># 一个融合算子</span>
+</code></pre></div>
+<p>垂直融合是最常见的融合方式，通常用于融合"计算+激活"等模式。</p>
+<p><strong>水平融合（Horizontal Fusion）</strong>：融合具有相同计算模式但相互独立的算子。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 水平融合示例</span>
+<span class="c1"># 融合前</span>
+<span class="n">y1</span> <span class="o">=</span> <span class="n">conv</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span>  <span class="c1"># 两个独立的Conv算子</span>
+<span class="n">y2</span> <span class="o">=</span> <span class="n">conv</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span>
+
+<span class="c1"># 融合后</span>
+<span class="n">y1</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">fused_conv_conv</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span>  <span class="c1"># 一个融合算子，处理两个输入</span>
+</code></pre></div>
+<p>水平融合通过一次Kernel执行处理多个数据通道，可以提高GPU等并行设备的利用率。</p>
+<h4 id="3322">3.3.2.2 按算子类型分类</h4>
+<p><strong>逐元素融合（Element-wise Fusion）</strong>：融合逐元素操作，如ReLU、Sigmoid、Add等。</p>
+<p>常见的逐元素融合模式包括：</p>
+<ul>
+<li>Conv + ReLU</li>
+<li>Conv + ReLU + Add（残差连接）</li>
+<li>MatMul + Add（带偏置的矩阵乘法）</li>
+<li>BN + ReLU</li>
+</ul>
+<p><strong>计算密集型融合（Compute-intensive Fusion）</strong>：融合计算密集型操作，如大型矩阵乘法、卷积等。</p>
+<p>常见的融合模式包括：</p>
+<ul>
+<li>Conv + BN + ReLU（卷积+归一化+激活）</li>
+<li>Multi-Head Attention融合</li>
+<li>Layer Normalization融合</li>
+</ul>
+<p><strong>内存密集型融合（Memory-intensive Fusion）</strong>：融合涉及大量内存访问的操作。</p>
+<h3 id="333">3.3.3 算子融合的原理</h3>
+<p>算子融合的原理基于对计算图的分析和等效变换。</p>
+<h4 id="3331">3.3.3.1 融合条件</h4>
+<p>两个或多个算子能够融合，需要满足以下基本条件：</p>
+<p><strong>1. 数据依赖关系</strong></p>
+<p>融合的算子之间必须存在数据依赖关系，即一个算子的输出是另一个算子的输入。对于垂直融合，这种依赖关系必须是单向的；对于水平融合，算子之间通常没有数据依赖。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 垂直融合条件</span>
+<span class="c1"># op1的输出是op2的输入</span>
+<span class="c1"># 且op2只依赖op1的输出（无其他来源）</span>
+
+<span class="c1"># 可以融合</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">op1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">op2</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>  <span class="c1"># op2只使用op1的输出</span>
+
+<span class="c1"># 不可以融合（op2还依赖其他输入）</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">op1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">op2</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">other_input</span><span class="p">)</span>  <span class="c1"># op2依赖其他输入，无法简单融合</span>
+</code></pre></div>
+<p><strong>2. 硬件支持</strong></p>
+<p>融合后的算子必须能够在目标硬件上高效执行。如果融合后的算子过于复杂，硬件无法高效实现，融合可能反而降低性能。</p>
+<p><strong>3. 内存约束</strong></p>
+<p>融合可能会增加融合算子的临时内存需求。如果临时内存需求超过硬件限制，融合可能无法进行。</p>
+<h4 id="3332">3.3.3.2 融合算法</h4>
+<p>算子融合通常通过图遍历和模式匹配来实现。</p>
+<p><strong>基于模式匹配的融合</strong>：预定义需要融合的算子模式，然后在计算图中搜索匹配的模式。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 融合模式定义示例（TVM风格）</span>
+<span class="c1"># 定义Conv + BN + ReLU的融合模式</span>
+<span class="k">def</span> <span class="nf">match_conv_bn_relu</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="n">patterns</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+        <span class="c1"># 匹配Conv节点</span>
+        <span class="k">if</span> <span class="n">is_conv</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+            <span class="c1"># 检查后继是否是BN</span>
+            <span class="n">successors</span> <span class="o">=</span> <span class="n">get_successors</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">successors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">is_bn</span><span class="p">(</span><span class="n">successors</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="n">bn</span> <span class="o">=</span> <span class="n">successors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="c1"># 检查BN后继是否是ReLU</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">get_successors</span><span class="p">(</span><span class="n">bn</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">is_relu</span><span class="p">(</span><span class="n">get_successors</span><span class="p">(</span><span class="n">bn</span><span class="p">)[</span><span class="mi">0</span><span class="p">]):</span>
+                    <span class="n">relu</span> <span class="o">=</span> <span class="n">get_successors</span><span class="p">(</span><span class="n">bn</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="c1"># 形成融合组</span>
+                    <span class="n">patterns</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">node</span><span class="p">,</span> <span class="n">bn</span><span class="p">,</span> <span class="n">relu</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">patterns</span>
+</code></pre></div>
+<p><strong>基于代价模型的融合</strong>：使用代价模型评估融合的收益，选择收益最大的融合方案。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 代价模型评估融合收益</span>
+<span class="k">def</span> <span class="nf">evaluate_fusion_cost</span><span class="p">(</span><span class="n">fusion_group</span><span class="p">):</span>
+    <span class="c1"># 计算融合前的开销</span>
+    <span class="n">cost_before</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">compute_kernel_cost</span><span class="p">(</span><span class="n">op</span><span class="p">)</span> <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">fusion_group</span><span class="p">)</span>
+    <span class="n">cost_before</span> <span class="o">+=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">compute_memory_access_cost</span><span class="p">(</span><span class="n">op</span><span class="p">)</span> <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">fusion_group</span><span class="p">)</span>
+
+    <span class="c1"># 计算融合后的开销</span>
+    <span class="n">cost_after</span> <span class="o">=</span> <span class="n">compute_fused_kernel_cost</span><span class="p">(</span><span class="n">fusion_group</span><span class="p">)</span>
+
+    <span class="c1"># 计算融合收益</span>
+    <span class="n">benefit</span> <span class="o">=</span> <span class="n">cost_before</span> <span class="o">-</span> <span class="n">cost_after</span>
+    <span class="k">return</span> <span class="n">benefit</span>
+</code></pre></div>
+<h3 id="334">3.3.4 算子融合的实现</h3>
+<p>算子融合的实现涉及对计算图的修改。</p>
+<h4 id="3341">3.3.4.1 融合步骤</h4>
+<p><strong>1. 模式识别</strong>：在计算图中识别可以融合的算子模式。</p>
+<p><strong>2. 构建融合节点</strong>：创建一个新的融合节点，代替原来的多个节点。</p>
+<p><strong>3. 更新边关系</strong>：更新算子之间的边关系，将原来连接到被融合节点的边，连接到融合节点。</p>
+<p><strong>4. 图清理</strong>：删除被融合的原始节点，更新图结构。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 融合操作伪代码</span>
+<span class="k">def</span> <span class="nf">fuse_operators</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">fusion_group</span><span class="p">):</span>
+    <span class="c1"># 1. 创建融合节点</span>
+    <span class="n">fused_node</span> <span class="o">=</span> <span class="n">create_fused_node</span><span class="p">(</span><span class="n">fusion_group</span><span class="p">)</span>
+
+    <span class="c1"># 2. 更新输入边</span>
+    <span class="k">for</span> <span class="n">input_tensor</span> <span class="ow">in</span> <span class="n">fusion_group</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+        <span class="c1"># 将融合节点的输入指向融合节点的第一个算子的输入</span>
+        <span class="n">redirect_edge</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">,</span> <span class="n">fused_node</span><span class="p">)</span>
+
+    <span class="c1"># 3. 更新输出边</span>
+    <span class="k">for</span> <span class="n">output_tensor</span> <span class="ow">in</span> <span class="n">fusion_group</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
+        <span class="c1"># 将原来连接到融合组最后一个算子的边，连接到融合节点</span>
+        <span class="n">redirect_edge</span><span class="p">(</span><span class="n">output_tensor</span><span class="p">,</span> <span class="n">fused_node</span><span class="p">)</span>
+
+    <span class="c1"># 4. 删除被融合的节点</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">fusion_group</span><span class="p">:</span>
+        <span class="n">remove_node</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+
+    <span class="c1"># 5. 添加融合节点</span>
+    <span class="n">add_node</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">fused_node</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">graph</span>
+</code></pre></div>
+<h4 id="3342-conv-bn-relu">3.3.4.2 Conv-BN-ReLU融合案例</h4>
+<p>Conv（卷积）+ BN（批归一化）+ ReLU（激活）是深度学习中非常常见的融合模式。下面详细分析这个融合案例。</p>
+<p><strong>BN的计算公式</strong>：</p>
+<p>前向传播中，BN的计算过程为：</p>
+<ol>
+<li>计算均值：$\mu_B = \frac{1}{m} \sum_{i=1}^{m} x_i$</li>
+<li>计算方差：$\sigma_B^2 = \frac{1}{m} \sum_{i=1}^{m} (x_i - \mu_B)^2$</li>
+<li>归一化：$\hat{x}_i = \frac{x_i - \mu_B}{\sqrt{\sigma_B^2 + \epsilon}}$</li>
+<li>线性变换：$y_i = \gamma \hat{x}_i + \beta$</li>
+</ol>
+<p><strong>融合原理</strong>：</p>
+<p>将卷积的结果直接送入BN计算，可以将整个计算过程化简为一次卷积操作：</p>
+<p>设卷积输出为：$z = w * x + b$</p>
+<p>BN计算为：$y = \gamma \frac{z - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta$</p>
+<p>展开后：$y = \gamma \frac{w}{\sqrt{\sigma^2 + \epsilon}} * x + \gamma \frac{b - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta$</p>
+<p>因此，融合后的卷积权重和偏置为：</p>
+<p>$$w' = \gamma \frac{w}{\sqrt{\sigma^2 + \epsilon}}$$</p>
+<p>$$b' = \gamma \frac{b - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta$$</p>
+<p><strong>融合效果</strong>：</p>
+<p>融合前需要两次Kernel调用（Conv + BN），融合后只需要一次Kernel调用（融合Conv），大幅减少了内存访问和调度开销。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Conv-BN-ReLU融合示例</span>
+
+<span class="c1"># 融合前</span>
+<span class="n">conv_out</span> <span class="o">=</span> <span class="n">conv</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">bias</span><span class="p">)</span>           <span class="c1"># Kernel 1: Conv</span>
+<span class="n">bn_out</span> <span class="o">=</span> <span class="n">bn</span><span class="p">(</span><span class="n">conv_out</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">var</span><span class="p">)</span>  <span class="c1"># Kernel 2: BN</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">relu</span><span class="p">(</span><span class="n">bn_out</span><span class="p">)</span>                           <span class="c1"># Kernel 3: ReLU</span>
+
+<span class="c1"># 融合后</span>
+<span class="c1"># 将BN的参数融合到Conv的权重和偏置中</span>
+<span class="n">new_weight</span> <span class="o">=</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">weight</span> <span class="o">/</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">var</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span>
+<span class="n">new_bias</span> <span class="o">=</span> <span class="n">gamma</span> <span class="o">*</span> <span class="p">(</span><span class="n">bias</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">var</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span> <span class="o">+</span> <span class="n">beta</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">relu</span><span class="p">(</span><span class="n">conv</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">new_weight</span><span class="p">,</span> <span class="n">new_bias</span><span class="p">))</span>   <span class="c1"># Kernel 1: Fused Conv + 1 Kernel: ReLU</span>
+<span class="c1"># 或者进一步融合为</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">fused_conv_bn_relu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">bias</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">var</span><span class="p">)</span>  <span class="c1"># 只调用一次融合Kernel</span>
+</code></pre></div>
+<h3 id="335">3.3.5 算子融合的挑战与限制</h3>
+<p>算子融合虽然是有效的优化技术，但在实际应用中也面临一些挑战和限制。</p>
+<p><strong>1. 融合pattern的爆炸性</strong></p>
+<p>随着融合规则的增长，可能的融合组合数量会爆炸性增长。需要有效的算法来管理融合规则和搜索融合机会。</p>
+<p><strong>2. 硬件特性的依赖</strong></p>
+<p>融合策略需要考虑目标硬件的特性。不同的硬件（GPU、NPU等）有不同的并行度和内存层次结构，需要不同的融合策略。</p>
+<p><strong>3. 内存约束</strong></p>
+<p>融合可能增加融合算子的临时内存需求。如果融合算子的临时内存需求超过硬件的共享内存或寄存器容量，融合可能反而降低性能。</p>
+<p><strong>4. 编译时间</strong></p>
+<p>更复杂的融合策略意味着更大的搜索空间和更长的编译时间。需要权衡优化效果和编译时间。</p>
+<p><strong>5. 边界情况处理</strong></p>
+<p>融合需要处理各种边界情况，如不同形状、不同数据类型、动态形状等。</p>
+<h2 id="34">3.4 常量折叠</h2>
+<h3 id="341">3.4.1 常量折叠的概念</h3>
+<p><strong>常量折叠（Constant Folding）</strong> 在第一章中已经介绍过，是编译器的基本优化技术之一。在AI编译器中，常量折叠同样是一个重要的优化手段，其核心思想是在编译时计算那些只包含常量输入的算子，用计算结果替换原来的算子。</p>
+<p>常量折叠可以减少运行时的计算量，降低内存占用，因为在推理阶段不需要为常量结果分配额外的存储和计算资源。</p>
+<h3 id="342-ai">3.4.2 AI编译器中常量折叠的类型</h3>
+<p>在AI编译器中，常量折叠可以分为以下几类：</p>
+<h4 id="3421">3.4.2.1 纯常量折叠</h4>
+<p>当算子的所有输入都是编译期已知的常量时，可以在编译时完全计算出结果。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 纯常量折叠示例</span>
+<span class="c1"># 假设在模型定义时就知道某个卷积层的权重是固定的</span>
+
+<span class="c1"># 融合前</span>
+<span class="n">weight</span> <span class="o">=</span> <span class="n">constant_tensor</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>  <span class="c1"># 常量</span>
+<span class="n">x</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">conv</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>   <span class="c1"># 运行时计算</span>
+
+<span class="c1"># 融合后（将常量折叠到后续算子）</span>
+<span class="c1"># 编译器预计算 conv 算子在常量权重下的结果</span>
+<span class="c1"># 但通常的做法是将weight标记为常量，让运行时高效处理</span>
+</code></pre></div>
+<h4 id="3422-shape">3.4.2.2 Shape常量折叠</h4>
+<p>当算子的输出形状只依赖于输入形状，而与具体数据值无关时，可以折叠Shape相关算子。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Shape常量折叠示例</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">placeholder</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">))</span>
+<span class="n">shape</span> <span class="o">=</span> <span class="n">shape_of</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>       <span class="c1"># 得到 (1, 3, 224, 224)</span>
+<span class="n">size</span> <span class="o">=</span> <span class="n">shape</span> <span class="o">*</span> <span class="mi">1</span>          <span class="c1"># 编译时可计算为 1*3*224*224 = 150528</span>
+
+<span class="c1"># 折叠后</span>
+<span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">)</span>  <span class="c1"># 常量元组</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">150528</span>             <span class="c1"># 常量整数</span>
+</code></pre></div>
+<h4 id="3423">3.4.2.3 条件常量折叠</h4>
+<p>当条件分支的条件是常量时，可以折叠整个分支。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 条件常量折叠示例</span>
+<span class="k">if</span> <span class="n">is_training</span><span class="p">():</span>  <span class="c1"># 假设 is_training() 是常量 False</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">train_forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">eval_forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># 折叠后（因为条件恒为False）</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">eval_forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="343">3.4.3 常量折叠的实现</h3>
+<p>AI编译器中的常量折叠通常作为独立的Pass实现。</p>
+<h4 id="3431">3.4.3.1 实现步骤</h4>
+<p><strong>1. 识别常量算子</strong></p>
+<p>遍历计算图，识别那些所有输入都是常量的算子。</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">identify_constant_ops</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="n">constant_ops</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">is_operator</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+            <span class="n">all_inputs_constant</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span>
+                <span class="n">is_constant_tensor</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span> <span class="k">for</span> <span class="n">inp</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">inputs</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">all_inputs_constant</span><span class="p">:</span>
+                <span class="n">constant_ops</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">constant_ops</span>
+</code></pre></div>
+<p><strong>2. 计算常量结果</strong></p>
+<p>对于识别出的常量算子，计算其结果值。</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">compute_constant_result</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_const_value</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span> <span class="k">for</span> <span class="n">inp</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">inputs</span><span class="p">]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">evaluate_operator</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div>
+<p><strong>3. 替换为常量张量</strong></p>
+<p>将算子替换为包含计算结果的常量张量，并更新依赖关系。</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">replace_with_constant</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">const_result</span><span class="p">):</span>
+    <span class="c1"># 创建常量张量</span>
+    <span class="n">const_tensor</span> <span class="o">=</span> <span class="n">create_constant_tensor</span><span class="p">(</span><span class="n">const_result</span><span class="p">)</span>
+
+    <span class="c1"># 更新依赖节点</span>
+    <span class="k">for</span> <span class="n">out_tensor</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">successor</span> <span class="ow">in</span> <span class="n">get_successors</span><span class="p">(</span><span class="n">out_tensor</span><span class="p">):</span>
+            <span class="n">replace_input</span><span class="p">(</span><span class="n">successor</span><span class="p">,</span> <span class="n">out_tensor</span><span class="p">,</span> <span class="n">const_tensor</span><span class="p">)</span>
+
+    <span class="c1"># 删除常量算子</span>
+    <span class="n">remove_node</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="344">3.4.4 常量折叠的注意事项</h3>
+<p>在AI编译器中实现常量折叠需要注意以下几点：</p>
+<p><strong>1. 数值精度</strong></p>
+<p>浮点运算可能存在精度问题。在常量折叠时需要考虑数值精度，避免引入显著误差。</p>
+<p><strong>2. 副作用处理</strong></p>
+<p>某些算子可能有副作用（如打印操作、状态更新等）。常量折叠不能改变程序的副作用。</p>
+<p><strong>3. 内存占用</strong></p>
+<p>如果常量结果非常大，可能会导致编译产物体积增大。需要设置阈值，超过阈值的常量不进行折叠。</p>
+<p><strong>4. 运行时行为</strong></p>
+<p>某些情况下，开发者可能期望在运行时动态计算（如使用占位符）。常量折叠不能破坏这种灵活性。</p>
+<h2 id="35">3.5 公共子表达式消除</h2>
+<h3 id="351">3.5.1 公共子表达式消除的概念</h3>
+<p><strong>公共子表达式消除（Common Subexpression Elimination，CSE）</strong> 是一种经典的编译器优化技术，旨在消除程序中重复计算的公共表达式。</p>
+<p>在AI编译器中，公共子表达式消除通过识别计算图中相同的子图，将重复计算替换为对已有结果的引用，从而减少计算量。</p>
+<h3 id="352">3.5.2 公共子表达式消除的原理</h3>
+<p>公共子表达式消除的核心是识别"相同"的计算。</p>
+<p><strong>相同的定义</strong>：两个子图相同，当且仅当：</p>
+<ul>
+<li>它们的算子类型相同</li>
+<li>它们的所有输入张量相同（指向同一个生产者）</li>
+<li>它们的属性参数相同</li>
+</ul>
+<p>满足上述条件的子图，其计算结果必然相同，可以相互替代。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 公共子表达式消除示例</span>
+
+<span class="c1"># 消除前</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">op1</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>  <span class="c1"># 第一次计算 op1(x, y)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">op2</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">op2</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>  <span class="c1"># 重复计算 op2(t, z)</span>
+
+<span class="c1"># 消除后</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">op1</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>  <span class="c1"># 第一次计算 op1(x, y)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">op2</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">op2</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>  <span class="c1"># 直接使用 a 的输入</span>
+<span class="c1"># 或者更优化地</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">op1</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">op2</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">a</span>          <span class="c1"># b 和 a 结果相同</span>
+</code></pre></div>
+<h3 id="353">3.5.3 公共子表达式消除的实现</h3>
+<p>AI编译器中的公共子表达式消除通常包括以下步骤：</p>
+<p><strong>1. 构建哈希表</strong></p>
+<p>为每个算子计算一个哈希值，用于快速查找可能的重复算子。</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">compute_node_hash</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+    <span class="c1"># 哈希值由以下因素决定：</span>
+    <span class="c1"># 1. 算子类型</span>
+    <span class="n">hash_val</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">op_type</span><span class="p">)</span>
+
+    <span class="c1"># 2. 输入张量的哈希</span>
+    <span class="k">for</span> <span class="n">inp</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+        <span class="n">hash_val</span> <span class="o">=</span> <span class="n">combine</span><span class="p">(</span><span class="n">hash_val</span><span class="p">,</span> <span class="nb">hash</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">producer</span><span class="p">))</span>
+
+    <span class="c1"># 3. 属性参数的哈希</span>
+    <span class="k">for</span> <span class="n">attr_name</span><span class="p">,</span> <span class="n">attr_val</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">hash_val</span> <span class="o">=</span> <span class="n">combine</span><span class="p">(</span><span class="n">hash_val</span><span class="p">,</span> <span class="nb">hash</span><span class="p">(</span><span class="n">attr_val</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">hash_val</span>
+</code></pre></div>
+<p><strong>2. 查找重复算子</strong></p>
+<p>遍历计算图，查找具有相同哈希值的算子。</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">find_duplicate_nodes</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="n">hash_map</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># 哈希值 -&gt; 算子列表</span>
+    <span class="n">duplicates</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">compute_node_hash</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">hash_map</span><span class="p">:</span>
+            <span class="c1"># 找到可能的重复</span>
+            <span class="k">for</span> <span class="n">existing_node</span> <span class="ow">in</span> <span class="n">hash_map</span><span class="p">[</span><span class="n">h</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">are_equivalent</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">existing_node</span><span class="p">):</span>
+                    <span class="n">duplicates</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">node</span><span class="p">,</span> <span class="n">existing_node</span><span class="p">))</span>
+                    <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">hash_map</span><span class="p">[</span><span class="n">h</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">duplicates</span>
+</code></pre></div>
+<p><strong>3. 替换重复计算</strong></p>
+<p>将重复算子替换为对已有算子的引用。</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">eliminate_common_subexpr</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">duplicates</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">dup_node</span><span class="p">,</span> <span class="n">original_node</span> <span class="ow">in</span> <span class="n">duplicates</span><span class="p">:</span>
+        <span class="c1"># 将所有指向dup_node的边指向original_node</span>
+        <span class="k">for</span> <span class="n">out_tensor</span> <span class="ow">in</span> <span class="n">dup_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">successor</span> <span class="ow">in</span> <span class="n">get_successors</span><span class="p">(</span><span class="n">out_tensor</span><span class="p">):</span>
+                <span class="n">replace_input</span><span class="p">(</span><span class="n">successor</span><span class="p">,</span> <span class="n">out_tensor</span><span class="p">,</span> <span class="n">original_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="c1"># 删除重复节点</span>
+        <span class="n">remove_node</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">dup_node</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="354">3.5.4 代数化简</h3>
+<p><strong>代数化简（Algebraic Simplification）</strong> 是公共子表达式消除的扩展，利用代数规则简化表达式。</p>
+<p>代数化简的规则包括：</p>
+<p><strong>恒等变换</strong>：</p>
+<ul>
+<li>$x + 0 = x$</li>
+<li>$x \times 1 = x$</li>
+<li>$x \div 1 = x$</li>
+</ul>
+<p><strong>幂等变换</strong>：</p>
+<ul>
+<li>$x \times x = x^2$</li>
+<li>$x + x = 2x$</li>
+</ul>
+<p><strong>消去变换</strong>：</p>
+<ul>
+<li>$\frac{x \times y}{x} = y$</li>
+<li>$(x + y) - y = x$</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># 代数化简示例</span>
+
+<span class="c1"># 消除前</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">0</span>     <span class="c1"># 加零</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">y</span> <span class="o">*</span> <span class="mi">1</span>     <span class="c1"># 乘一</span>
+
+<span class="c1"># 消除后</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">x</span>         <span class="c1"># 直接赋值</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">y</span>         <span class="c1"># 直接引用</span>
+</code></pre></div>
+<h2 id="36">3.6 死代码消除</h2>
+<h3 id="361">3.6.1 死代码消除的概念</h3>
+<p><strong>死代码消除（Dead Code Elimination，DCE）</strong> 是编译器优化中非常重要的一项技术，旨在删除程序中不会被执行或结果不会被使用的代码。</p>
+<p>在AI编译器中，死代码主要包括：</p>
+<p><strong>不可达算子</strong>：从模型输入无法到达的算子。</p>
+<p><strong>无用算子</strong>：算子的结果对最终输出没有影响的算子。</p>
+<p><strong>训练相关算子</strong>：在推理阶段不需要的算子（如优化器状态、梯度计算等）。</p>
+<h3 id="362">3.6.2 不可达算子消除</h3>
+<p>不可达算子是指从模型输入无法到达的算子。这些算子可能是由于控制流、静态分析等原因造成的。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 不可达算子示例</span>
+
+<span class="c1"># 由于条件恒为False，train_only_op是不可达算子</span>
+<span class="k">if</span> <span class="n">is_training</span><span class="p">():</span>  <span class="c1"># 恒为False（推理模式）</span>
+    <span class="n">train_only_op</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># 不可达</span>
+
+<span class="c1"># 消除后</span>
+<span class="c1"># train_only_op 被删除</span>
+</code></pre></div>
+<p>不可达算子的识别通常通过图遍历实现：从模型输入开始，使用深度优先或广度优先搜索遍历计算图，标记所有可达算子。未被标记的算子即为不可达算子。</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">find_unreachable_nodes</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="n">reachable</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">queue</span> <span class="o">=</span> <span class="p">[</span><span class="n">graph</span><span class="o">.</span><span class="n">inputs</span><span class="p">]</span>  <span class="c1"># 从输入开始</span>
+
+    <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">reachable</span><span class="p">:</span>
+            <span class="n">reachable</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="c1"># 将后继加入队列</span>
+            <span class="k">for</span> <span class="n">succ</span> <span class="ow">in</span> <span class="n">get_successors</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+                <span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">succ</span><span class="p">)</span>
+
+    <span class="c1"># 未被标记的节点是不可达的</span>
+    <span class="n">unreachable</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">reachable</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">unreachable</span>
+</code></pre></div>
+<h3 id="363">3.6.3 无用算子消除</h3>
+<p>无用算子是指那些虽然可达，但其输出对最终输出没有影响的算子。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 无用算子示例</span>
+
+<span class="c1"># 中间的 debug_op 对最终输出没有影响</span>
+<span class="n">x</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">op1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>       <span class="c1"># 有用</span>
+<span class="n">debug_op</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>      <span class="c1"># 无用（只用于调试）</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">op2</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>       <span class="c1"># 有用（使用 t，不是 debug_op 的结果）</span>
+
+<span class="c1"># 消除后</span>
+<span class="n">x</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">op1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">op2</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</code></pre></div>
+<p>无用算子的识别需要<strong>活跃性分析（Liveness Analysis）</strong>：从模型输出反向遍历，确定每个算子的输出是否被后续算子使用。</p>
+<h3 id="364">3.6.4 训练相关算子消除</h3>
+<p>在模型部署（推理）时，某些仅用于训练阶段的算子可以安全地被消除：</p>
+<p><strong>优化器状态</strong>：如Adam优化器的动量项、方差估计等。</p>
+<p><strong>梯度计算</strong>：反向传播相关的算子。</p>
+<p><strong>训练控制流</strong>：如learning rate调度、early stopping等。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 训练相关算子消除示例</span>
+
+<span class="c1"># 完整模型（包含训练和推理）</span>
+<span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">training</span><span class="p">:</span>
+            <span class="c1"># 训练相关</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backbone</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">loss</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># 推理相关</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backbone</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># 推理时，消除训练相关算子</span>
+<span class="c1"># 消除后</span>
+<span class="k">class</span> <span class="nc">ModelInference</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backbone</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="365">3.6.5 死代码消除的实现</h3>
+<p>死代码消除的实现通常包括以下步骤：</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">dead_code_elimination</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="c1"># 1. 不可达算子消除</span>
+    <span class="n">unreachable</span> <span class="o">=</span> <span class="n">find_unreachable_nodes</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">unreachable</span><span class="p">:</span>
+        <span class="n">remove_node</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+
+    <span class="c1"># 2. 无用算子消除（迭代进行）</span>
+    <span class="n">changed</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">while</span> <span class="n">changed</span><span class="p">:</span>
+        <span class="n">changed</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># 活跃性分析</span>
+        <span class="n">live_nodes</span> <span class="o">=</span> <span class="n">compute_live_nodes</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+        <span class="c1"># 找出无用算子</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_live</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">live_nodes</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_output</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+                <span class="n">remove_node</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+                <span class="n">changed</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="n">graph</span>
+</code></pre></div>
+<h2 id="37">3.7 内存优化</h2>
+<h3 id="371">3.7.1 内存优化的意义</h3>
+<p>在深度学习模型执行中，内存带宽往往是性能瓶颈之一。特别是在GPU等并行设备上，内存访问的开销远大于计算开销。因此，内存优化是AI编译器前端优化的重要内容。</p>
+<p>内存优化的主要目标是：</p>
+<ul>
+<li><strong>减少内存分配</strong>：通过内存复用，减少内存分配和释放的开销</li>
+<li><strong>优化数据布局</strong>：通过更好的数据布局，提高内存访问效率</li>
+<li><strong>减少内存拷贝</strong>：通过融合操作，减少不必要的数据拷贝</li>
+</ul>
+<h3 id="372">3.7.2 静态内存规划</h3>
+<p><strong>静态内存规划（Static Memory Planning）</strong> 是AI编译器中常用的内存优化技术。其核心思想是在编译时确定模型执行过程中所有张量的内存分配，避免运行时的动态内存分配开销。</p>
+<p>静态内存规划需要考虑：</p>
+<p><strong>张量的生命周期</strong>：确定每个张量何时被创建、何时被销毁。</p>
+<p><strong>内存复用</strong>：生命周期不重叠的张量可以复用同一块内存。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 静态内存规划示例</span>
+
+<span class="c1"># 张量生命周期分析</span>
+<span class="c1"># t1: [0, 3) - conv算子使用</span>
+<span class="c1"># t2: [1, 2) - bn算子使用（在t1的生命周期内）</span>
+<span class="c1"># t3: [2, 4) - relu算子使用</span>
+
+<span class="c1"># 内存分配方案</span>
+<span class="c1"># 地址0: t1 (conv输出)</span>
+<span class="c1"># 地址0: t2 (bn输出，复用t1的内存，因为t1在[1,2)后不再使用)</span>
+<span class="c1"># 地址0: t3 (relu输出，复用t1的内存，因为t1在[2,3)后不再使用)</span>
+
+<span class="c1"># 执行序列</span>
+<span class="c1"># Time 0: allocate 0</span>
+<span class="c1"># Time 1: t1 written, t2 allocated at same address</span>
+<span class="c1"># Time 2: t2 read, t3 allocated at same address</span>
+<span class="c1"># Time 3: t1 deallocated</span>
+<span class="c1"># Time 4: t3 read, deallocated</span>
+</code></pre></div>
+<h3 id="373">3.7.3 内存复用算法</h3>
+<p>静态内存规划通常采用<strong> Arena Allocation</strong>或<strong> Tile Allocation</strong>算法。</p>
+<p><strong>Arena Allocation</strong>：将内存划分为多个"Arena"，每个Arena管理一块连续的内存区域。生命周期重叠的张量分配在不同的Arena，生命周期不重叠的张量可以复用同一Arena的空间。</p>
+<p><strong>Tile Allocation</strong>：将内存划分为多个"Tile"（块），每个张量分配一个或多个Tile。通过分析张量的访问模式，可以优化Tile的大小和放置。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 简化的Arena Allocation算法</span>
+<span class="k">class</span> <span class="nc">MemoryPlanner</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memory_size</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">memory_size</span> <span class="o">=</span> <span class="n">memory_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arenas</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># 每个arena是一段内存区域</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_offset</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">allocate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">lifetime</span><span class="p">):</span>
+        <span class="c1"># 尝试在现有arena中分配</span>
+        <span class="k">for</span> <span class="n">arena</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arenas</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">arena</span><span class="o">.</span><span class="n">can_allocate</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">lifetime</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">arena</span><span class="o">.</span><span class="n">allocate</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">lifetime</span><span class="p">)</span>
+
+        <span class="c1"># 创建新的arena</span>
+        <span class="n">arena</span> <span class="o">=</span> <span class="n">Arena</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">next_offset</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arenas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arena</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_offset</span> <span class="o">+=</span> <span class="n">size</span>
+        <span class="k">return</span> <span class="n">arena</span><span class="o">.</span><span class="n">allocate</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">lifetime</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">plan_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensors</span><span class="p">):</span>
+        <span class="c1"># 按拓扑顺序处理张量</span>
+        <span class="k">for</span> <span class="n">tensor</span> <span class="ow">in</span> <span class="n">topological_sort</span><span class="p">(</span><span class="n">tensors</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">allocate</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">tensor</span><span class="o">.</span><span class="n">lifetime</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="374">3.7.4 数据布局转换</h3>
+<p><strong>数据布局（Data Layout）</strong>是指张量数据在内存中的存储方式。不同的数据布局适用于不同的硬件和操作。</p>
+<p>常见的数据布局包括：</p>
+<p><strong>NCHW（通道优先）</strong>：适用于卷积操作，通道维度在前面。</p>
+<p><strong>NHWC（通道最后）</strong>：适用于ReLU等逐元素操作，可能更好地利用硬件的向量化支持。</p>
+<p><strong>CHWN（通道-高度-宽度-通道）</strong>：某些特殊硬件优化使用。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 数据布局转换示例</span>
+
+<span class="c1"># NCHW布局（PyTorch默认）</span>
+<span class="c1"># shape: (N, C, H, W)</span>
+<span class="c1"># 内存排列: [n0,c0,h0,w0], [n0,c0,h0,w1], ...</span>
+
+<span class="c1"># NHWC布局（TensorFlow默认）</span>
+<span class="c1"># shape: (N, H, W, C)</span>
+<span class="c1"># 内存排列: [n0,h0,w0,c0], [n0,h0,w0,c1], ...</span>
+
+<span class="c1"># 布局转换</span>
+<span class="k">def</span> <span class="nf">layout_transform</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">from_layout</span><span class="p">,</span> <span class="n">to_layout</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">from_layout</span> <span class="o">==</span> <span class="n">to_layout</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">tensor</span>
+
+    <span class="c1"># 实现实际的布局转换</span>
+    <span class="c1"># 转换操作会被编译器优化，可能融合到相邻算子中</span>
+    <span class="k">return</span> <span class="n">permute</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">get_permutation</span><span class="p">(</span><span class="n">from_layout</span><span class="p">,</span> <span class="n">to_layout</span><span class="p">))</span>
+</code></pre></div>
+<h2 id="38">3.8 调度优化</h2>
+<h3 id="381">3.8.1 静态调度与动态调度</h3>
+<p><strong>调度（Scheduling）</strong> 决定了算子在硬件上的执行顺序和方式。在AI编译器中，调度可以分为<strong>静态调度</strong>和<strong>动态调度</strong>两种。</p>
+<p><strong>静态调度</strong>在编译时确定算子的执行顺序，不依赖于运行时的实际数据。静态调度的优点是：</p>
+<ul>
+<li>可以进行更多的编译时优化</li>
+<li>没有调度运行时开销</li>
+<li>适合确定性场景</li>
+</ul>
+<p>静态调度的缺点是：</p>
+<ul>
+<li>难以处理动态形状和控制流</li>
+<li>无法适应运行时的负载变化</li>
+</ul>
+<p><strong>动态调度</strong>在运行时根据实际情况动态确定算子的执行顺序。动态调度的优点是：</p>
+<ul>
+<li>可以处理动态形状和控制流</li>
+<li>可以适应运行时的负载变化</li>
+<li>适合复杂场景</li>
+</ul>
+<p>动态调度的缺点是：</p>
+<ul>
+<li>增加了运行时开销</li>
+<li>优化空间受限</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># 静态调度示例</span>
+<span class="c1"># 编译时确定执行顺序</span>
+<span class="k">def</span> <span class="nf">schedule_static</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="c1"># 按拓扑顺序调度</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">topological_sort</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+        <span class="n">execute</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+<span class="c1"># 动态调度示例</span>
+<span class="c1"># 运行时根据实际负载调度</span>
+<span class="k">def</span> <span class="nf">schedule_dynamic</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+    <span class="n">ready_queue</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># 就绪队列</span>
+    <span class="k">while</span> <span class="n">has_pending_nodes</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+        <span class="c1"># 动态选择下一个执行的节点</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">select_next</span><span class="p">(</span><span class="n">ready_queue</span><span class="p">,</span> <span class="n">policy</span><span class="o">=</span><span class="s2">&quot;workload_aware&quot;</span><span class="p">)</span>
+        <span class="n">execute</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="n">update_ready_queue</span><span class="p">(</span><span class="n">ready_queue</span><span class="p">,</span> <span class="n">graph</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="382">3.8.2 调度优化策略</h3>
+<p>AI编译器中常用的调度优化策略包括：</p>
+<p><strong>1. 流水线调度</strong>：将算子组织成流水线，实现算子级的并行。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 流水线调度示例</span>
+<span class="c1"># 原始执行：Stage1 -&gt; Stage2 -&gt; Stage3（串行）</span>
+<span class="c1"># 流水线执行：</span>
+<span class="c1"># Time:  0  1  2  3  4  5  6</span>
+<span class="c1"># S1:    A  B  C  D  E  F  -</span>
+<span class="c1"># S2:    -  A  B  C  D  E  F</span>
+<span class="c1"># S3:    -  -  A  B  C  D  E</span>
+</code></pre></div>
+<p><strong>2. 负载均衡</strong>：将算子均匀分配到各个执行单元，避免某些单元过载而其他单元空闲。</p>
+<p><strong>3. 数据局部性优化</strong>：将访问相同数据的算子调度到相近的时间，利用缓存。</p>
+<p><strong>4. 通信与计算重叠</strong>：在分布式训练场景下，将通信操作和计算操作重叠，减少等待时间。</p>
+<h2 id="39">3.9 小结</h2>
+<p>本章系统地介绍了AI编译器前端优化的核心技术。核心要点回顾：</p>
+<ol>
+<li>
+<p><strong>前端优化的定位</strong>：前端优化在计算图层进行，关注算子之间的关系，是平台无关的优化。</p>
+</li>
+<li>
+<p><strong>计算图基础</strong>：计算图是有向无环图，用节点表示算子，用边表示张量依赖。计算图支持静态图和动态图两种模式。</p>
+</li>
+<li>
+<p><strong>算子融合</strong>：是最重要的前端优化技术，通过将多个连续算子合并为一个，减少内存访问和Kernel调度开销。算子融合包括垂直融合和水平融合。</p>
+</li>
+<li>
+<p><strong>常量折叠</strong>：在编译时计算只包含常量输入的算子，减少运行时计算量。</p>
+</li>
+<li>
+<p><strong>公共子表达式消除</strong>：识别并消除重复的计算子图。</p>
+</li>
+<li>
+<p><strong>死代码消除</strong>：删除不可达和无用的算子。</p>
+</li>
+<li>
+<p><strong>内存优化</strong>：通过静态内存规划和数据布局转换优化内存使用。</p>
+</li>
+<li>
+<p><strong>调度优化</strong>：通过静态或动态调度优化算子的执行顺序。</p>
+</li>
+</ol>
+<p><strong>思考与练习</strong>：</p>
+<ol>
+<li>请解释为什么算子融合是AI编译器中最重要的优化技术之一。</li>
+<li>垂直融合和水平融合有什么区别？请各举一个实际例子。</li>
+<li>Conv-BN-ReLU融合的原理是什么？为什么融合后可以减少计算量？</li>
+<li>死代码消除和公共子表达式消除有什么区别？</li>
+<li>静态内存规划和动态内存分配相比有什么优势？</li>
+<li>静态调度和动态调度各有什么优缺点？适用场景是什么？</li>
+<li>为什么前端优化通常采用Pass机制？Pass之间如何管理依赖关系？</li>
+</ol>
+<h2 id="310">3.10 参考文献与扩展阅读</h2>
+<ol>
+<li>
+<p>Chen, T., Moreau, T., Jiang, Z., et al. (2018). TVM: An Automated End-to-End Optimizing Compiler for Deep Learning. <em>OSDI</em>. — TVM论文，详细介绍了算子融合等优化技术。</p>
+</li>
+<li>
+<p>Roesch, J., et al. (2018). Relay: A High-Level IR for Deep Learning Systems. <em>SysML</em>. — Relay IR的设计论文。</p>
+</li>
+<li>
+<p>Vasilache, N., et al. (2018). Tensor Comprehensions: A Language for Framework Integration. <em>ICML</em>. — 张量理解论文，介绍了算子融合的框架。</p>
+</li>
+<li>
+<p>The Deep Learning Compiler: A Comprehensive Survey. https://arxiv.org/abs/2002.03794 — 深度学习编译器综述，包含前端优化的详细讨论。</p>
+</li>
+<li>
+<p>Zophon. (2021). Understanding Operator Fusion in Deep Learning. <em>Blog Post</em>. — 关于算子融合的详细博客。</p>
+</li>
+<li>
+<p>TVM Documentation: Relay Operator Strategy. https://tvm.apache.org/docs/api/python/relay/transform.html — TVM算子策略文档。</p>
+</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
